@@ -1,0 +1,214 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml" xmlns:datas="http://java.sun.com/jsf/composite/datas">
+
+    <ui:define name="content">
+        <h:form id="catFormId">
+            <p:growl id="growlDatatableCatService" showDetail="true" showSummary="false"
+                     widgetVar="growlCatServiceWid"/>
+
+            <p:outputPanel id="panelCatService" style="display: none">
+                <div class="Card">
+                    <p:outputPanel class="Container100 Responsive50" id="panelCatServiceAdd">
+                        <p:row>
+                            <div class="Container33 MarTop30">
+                            <span class="title-top WidMoz">
+                                <p:inputText value="#{catServiceController.catServiceCurr.serviceCode}"
+                                             style="width: 55%;"
+                                             id="cServiceCode"/>
+                                <label class="title-elem">Mã dịch vụ</label>
+                                <p:message for="cServiceCode"/>
+                            </span>
+                            </div>
+                            <div class="Container33 MarTop30">
+                            <span class="title-top WidMoz">
+                                <p:inputText value="#{catServiceController.catServiceCurr.serviceName}"
+                                             style="width: 55%;"
+                                             id="cServiceName"/>
+                                <label class="title-elem">Tên dịch vụ</label>
+                                <p:message for="cServiceName"/>
+                            </span>
+                            </div>
+                            <div class="Container33 MarTop30">
+                            <span class="title-top WidMoz">
+                                <p:inputNumber value="#{catServiceController.catServiceCurr.price}" decimalPlaces="0"
+                                               symbol=" VNĐ" symbolPosition="suffix"
+                                               id="cServicePrice"/>
+                                <label class="title-elem">Giá</label>
+                                <p:message for="cServicePrice"/>
+                            </span>
+                            </div>
+                            <div class="Container33 MarTop30">
+                            <span class="title-top WidMoz">
+                                <p:inputText value="#{catServiceController.catServiceCurr.effect}" style="width: 55%;"
+                                             id="cServiceEff"/>
+                                <label class="title-elem">Hiệu quả</label>
+                                <p:message for="cServiceEff"/>
+                            </span>
+                            </div>
+                            <div class="Container33 MarTop30">
+                            <span class="title-top WidMoz">
+                                <p:inputText value="#{catServiceController.catServiceCurr.description}"
+                                             style="width: 55%;"
+                                             id="cServiceDes"/>
+                                <label class="title-elem">Mô tả</label>
+                                <p:message for="cServiceDes"/>
+                            </span>
+                            </div>
+                            <div class="Container33 MarTop30">
+                            <span class="title-top WidMoz">
+                                 <p:selectOneMenu value="#{catServiceController.catServiceCurr.status}"
+                                                  style="width: 21%;">
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="ENABLE"/>
+                                    <f:selectItem itemValue="0" itemLabel="DISABLE"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Trạng thái</label>
+                            </span>
+                            </div>
+
+                        </p:row>
+                    </p:outputPanel>
+                    <div class="Container100 MarTop20">
+                            <span class="title-top WidMoz" style="float: right;">
+                                <p:commandButton value="#{msg['button.save']}" icon="fa fa-floppy-o"
+                                                 styleClass="GreenButton White"
+                                                 actionListener="#{catServiceController.onSaveOrUpdate}"
+                                                 update="@widgetVar(tblWidgetId),@widgetVar(growlCatServiceWid),@form:panelCatService:panelCatServiceAdd"
+                                                 process="@form:panelCatService">
+                                </p:commandButton>
+                                <p:commandButton value="Đóng" icon="fa fa-close" styleClass="GrayButton White"
+                                                 process="@this">
+                                    <p:effect type="clip" event="click" for="panelCatService" delay="0">
+                                        <f:param name="mode" value="'hide'"/>
+                                    </p:effect>
+                                </p:commandButton>
+                            </span>
+                    </div>
+                </div>
+            </p:outputPanel>
+
+            <p:dataTable value="#{catServiceController.lazyDataModel}" id="tableCatService"
+                         lazy="true" var="catService" rowKey="#{catService.id}" filterDelay="1500"
+                         rowIndexVar="idx" editable="true" editMode="cell"
+                         rows="10" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tblWidgetId"
+                         emptyMessage="#{msg['datatable.empty']}" styleClass="MemTable Container100 NoPadding MarTop10">
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 Responsive50" style="text-align: left;">
+                            <p:tooltip position="right"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();"
+                                             actionListener="#{catServiceController.preAdd}"
+                                             update="@form:panelCatService:panelCatServiceAdd"
+                                             title="#{msg['button.add']}">
+                                <p:effect type="clip" event="click" for="@form:panelCatService" delay="0">
+                                    <f:param name="mode" value="'show'"/>
+                                </p:effect>
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5">
+                                <p:dataExporter type="xls" target="tableCatService" fileName="catService"
+                                                pageOnly="false"/>
+                            </p:commandButton>
+
+                        </div>
+                        <div class="Container60 Responsive50 TexAlCenter">
+                            <h:outputText styleClass="Fs18" value="#{msg['table.catService.lbl']}"/>
+                        </div>
+                        <div class="Container20" style="text-align: left;">
+                            <p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-sliders"
+                                             styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableCatService" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{vCustomerCheckinController.onToggler}"/>
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" style="text-align: center">
+                    <h:outputText value="#{idx +1 }"/>
+                </p:column>
+
+                <p:column width="10" exportable="false"
+                          headerText="#{msg['datatable.header.action']}" style="text-align:center;">
+
+                    <p:tooltip position="left"/>
+                    <p:commandButton
+                            title="Cập nhật" styleClass="Fs14 White GreenButton"
+                            icon="fa fa-edit" process="@widgetVar(tblWidgetId)"
+                            actionListener="#{catServiceController.preEdit(catService)}"
+                            style="color:green; font-weight: bold;font-size: 13px "
+                            update="@form:panelCatService:panelCatServiceAdd">
+                        <p:effect type="clip" event="click" for="@form:panelCatService" delay="0">
+                            <f:param name="mode" value="'show'"/>
+                        </p:effect>
+                    </p:commandButton>
+
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{catServiceController.onDelete(catService)}"
+                                     onclick="PF('block').show()" oncomplete="PF('block').hide();"
+                                     update="tableCatService "
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catService.code']}" width="20" sortBy="#{catService.serviceCode}"
+                          filterBy="#{catService.serviceCode}" filterStyle="width:70%">
+                    <h:outputText value="#{catService.serviceCode}" style="text-align: center;"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catService.name']}" width="20" sortBy="#{catService.serviceName}"
+                          filterBy="#{catService.serviceName}" filterStyle="width:70%">
+                    <h:outputText value="#{catService.serviceName}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catService.price']}" width="20" sortBy="#{catService.price}"
+                          style="text-align: right;"
+                          filterBy="#{catService.price}" filterStyle="width:70%">
+                    <h:outputText value="#{catService.price}" style="text-align: right;">
+                    <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catService.effect']}" width="20" sortBy="#{catService.effect}"
+                          filterBy="#{catService.effect}" filterStyle="width:70%">
+                    <h:outputText value="#{catService.effect}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catService.des']}" width="20" sortBy="#{catService.description}"
+                          filterBy="#{catService.description}" filterStyle="width:70%">
+                    <h:outputText value="#{catService.description}"/>
+                </p:column>
+
+
+                <p:column headerText="#{msg['table.catService.status']}" width="20" sortBy="#{catService.status}"
+                          style="text-align: center;"
+                          filterBy="#{catService.status}" filterStyle="width:70%">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tblWidgetId').filter()" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="ENABLE" itemValue="1"/>
+                            <f:selectItem itemLabel="DISABLE" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{catService.statusName}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </ui:define>
+
+</ui:composition>

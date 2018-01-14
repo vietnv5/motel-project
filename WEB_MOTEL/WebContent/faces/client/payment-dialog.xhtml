@@ -1,0 +1,245 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <p:dialog modal="true" header="Thanh toán" widgetVar="clientPaymentDlg" width="90%" id="clientPaymentDlgId">
+
+        <h:form id="insertClientPaymentForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth3" >
+                    <div class=" Container100">
+                        <div class=" Container25">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{clientController.curClient.clientPayment.paymentCode}"
+                                             id="grouppackcode" readonly="true" disabled="true"
+                                             title="#{msg['clientPayment.paymentCode']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['clientPayment.paymentCode']}</label>
+                            </span>
+                            <p:message for="grouppackcode"/>
+                        </div>
+                        <div class=" Container25">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{authenticationController.user.userName}"
+                                             readonly="true" disabled="true"
+                                             title="#{msg['clientPayment.employee']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['clientPayment.employee']}</label>
+                            </span>
+                        </div>
+
+                        <div class="Container25 TexAlLeft">
+                            <span class="title-top">
+                                <p:selectBooleanCheckbox value="#{clientController.curClient.clientPayment.isPromotion}" style="margin-top: 3px" >
+                                    <p:ajax update="catPromotionId" />
+                                </p:selectBooleanCheckbox>
+                                <label>Khuyến mãi</label>
+                            </span>
+                        </div>
+                        <div class="Container25 ">
+                            <span class="title-top">
+
+                                <p:selectOneMenu id="catPromotionId" value="#{clientController.curClient.clientPayment.catPromotion}"
+                                                 filter="true" filterMatchMode="contains"  disabled="#{!clientController.curClient.clientPayment.isPromotion}"
+                                                 converter="catPromotionConverter" var="c" style="width: 135px;"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{clientController.lstCatPromotions}" var="item" itemLabel="#{item.catPromotionCode}" 
+                                                   itemValue="#{item}"  />
+                                    <p:column style="width:20%">
+                                        <h:outputText value="#{c.catPromotionCode}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{c.catPromotionName}" />
+                                    </p:column>
+                                    <p:ajax update="@this,priceId,debtId,typeNameId,promotionValueId, panelPromotionCode"  process="@this" event="change" 
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                            listener="#{clientController.onChangeComputingPrice()}" />
+                                </p:selectOneMenu>
+
+                                <label class="title-elem">#{msg['catPromotion.catPromotionCode']}</label>
+                            </span>
+                            <p:message for="catPromotionId"/>
+                        </div>
+                    </div>
+                    <h:panelGroup id="panelPromotionCode" >
+                        <h:panelGroup id="panelPromotionCodeRender" rendered="#{clientController.curClient.clientPayment.catPromotion.requireCode==1}">
+                                
+                            <div class=" Container100" >
+                                <div class=" Container25 MarTop20">
+                                    <span class="md-inputfield">
+                                        <p:inputText value="#{clientController.curClient.clientPayment.voucherCode}" id="promotionCodeId"
+                                                     required="#{clientController.curClient.clientPayment.catPromotion.requireCode==1}"
+                                                     requiredMessage="#{msg['clientPayment.voucherCode']} bắt buộc nhập!"
+                                                     title="#{msg['clientPayment.voucherCode']}"
+                                                     >
+                                        </p:inputText>
+
+                                        <label>#{msg['clientPayment.voucherCode']} *</label>
+                                    </span>
+                                </div>
+                            </div>
+                        </h:panelGroup>
+                    </h:panelGroup>
+                    <div class=" Container100">
+
+                        <div class=" Container25 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{clientController.curClient.clientPayment.catPromotion.typeName}" id="typeNameId"
+                                             readonly="true" disabled="#{!clientController.curClient.clientPayment.isPromotion}"
+                                             title="#{msg['catPromotion.type']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['catPromotion.type']}</label>
+                            </span>
+                        </div>
+                        <div class=" Container25 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{clientController.curClient.clientPayment.catPromotion.value} #{clientController.curClient.clientPayment.catPromotion.type==2
+                                                      ?'%':clientController.curClient.clientPayment.catPromotion.type==3 ? 'VNĐ':''}"
+                                             readonly="true"  disabled="#{!clientController.curClient.clientPayment.isPromotion}"
+                                             title="#{msg['catPromotion.value']}" id="promotionValueId"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['catPromotion.value']}</label>
+                            </span>
+                        </div>
+
+
+                        <div class="Container25 MarTop20 TexAlLeft">
+                            <span class="title-top">
+                                <p:selectBooleanCheckbox value="#{clientController.curClient.clientPayment.isVAT}" style="margin-top: 3px" >
+                                    <p:ajax update="vatId, priceId,debtId"  process="@this" 
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                            listener="#{clientController.onChangeComputingPrice()}" />
+                                </p:selectBooleanCheckbox>
+                                <label>Lấy hóa đơn VAT</label>
+                            </span>
+                        </div>
+                        <div class=" Container25 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{clientController.curClient.clientPayment.vat}" id="vatId"
+                                             disabled="#{!clientController.curClient.clientPayment.isVAT}"
+                                             required="#{clientController.curClient.clientPayment.isVAT}"
+                                             requiredMessage="#{msg['clientPayment.vat']} bắt buộc nhập!"
+                                             title="#{msg['clientPayment.vat']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['clientPayment.vat']} *</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class=" Container100">
+
+                        <div class="Container25 MarTop30">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{clientController.curClient.clientPayment.price}" decimalPlaces="0"
+                                               id="priceId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
+                                               title="#{msg['clientPayment.price']}"
+                                               >
+                                </p:inputNumber>
+
+                                <label>#{msg['clientPayment.price']} *</label>
+                            </span>
+                            <p:message for="priceId"/>
+                        </div>
+                        <div class="Container25 MarTop30">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{clientController.curClient.clientPayment.paymentValue}"
+                                               id="paymentValueId" symbol=" VNĐ" symbolPosition="suffix"
+                                               required="true" decimalPlaces="0"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['clientPayment.paymentValue'])}"
+                                               title="#{msg['clientPayment.paymentValue']}"
+                                               >
+
+                                    <p:ajax update="priceId,debtId,reasonId"  process="@this" 
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                            listener="#{clientController.onChangeComputingPrice()}" />
+                                </p:inputNumber>
+
+                                <label>#{msg['clientPayment.paymentValue']} *</label>
+                            </span>
+                            <p:message for="paymentValueId"/>
+                        </div>
+                        <div class="Container25 MarTop30">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{clientController.curClient.clientPayment.debt}"  styleClass="boldText" 
+                                               id="debtId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
+                                               title="#{msg['payment.surplus']}" decimalPlaces="0"
+                                               >
+                                </p:inputNumber>
+
+                                <label>#{msg['payment.surplus']} *</label>
+                            </span>
+                            <p:message for="debtId"/>
+                        </div>
+                        <div class="Container25 MarTop30 ">
+                            <span class="title-top">
+
+                                <p:selectOneMenu id="reasonId" value="#{clientController.curClient.clientPayment.reason}"
+                                                 filter="true" filterMatchMode="contains" style="width: 135px;"
+                                                 required="#{memberController.curMember.memberPayment.debt lt 0}"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['memberPayment.reason'])}"
+                                                 >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItems value="#{clientController.lstReason}" var="item" itemLabel="#{item.name}" 
+                                                   itemValue="#{item.name}"  />
+                                </p:selectOneMenu>
+
+                                <label class="title-elem">#{msg['clientPayment.reason']} </label>
+                            </span>
+                            <p:message for="reasonId"/>
+                        </div>
+                    </div>
+                    <div class=" Container100">
+
+                        <div class="Container70  MarTop30">
+                            <span class="md-inputfield">
+                                <p:inputTextarea value="#{clientController.curClient.clientPayment.description}"
+                                                 id="descriptionId" rows="1" style="width: 50%"
+                                                 title="#{msg['clientPayment.description']}" 
+                                                 >
+                                </p:inputTextarea>
+                                <label>#{msg['clientPayment.description']} </label>
+                            </span>
+                            <p:message for="descriptionId"/>
+                        </div>
+                    </div>
+                </p:outputPanel>  
+                <p:outputPanel class="Container100 TexAlRight" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" update="@widgetVar(tblMembership),@widgetVar(growlClient),:insertClientForm,:insertClientPaymentForm"
+                                     actionListener="#{clientController.paymentClientUsePack()}" process=":insertClientPaymentForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('clientPaymentDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <style>
+        .boldText .ui-inputfield{
+            font-weight: bold !important;
+        }
+        /*       .ui-widget-content .ui-inputnumber .ui-inputfield {
+                    font-weight: bold;
+                }*/
+    </style>
+</ui:composition>

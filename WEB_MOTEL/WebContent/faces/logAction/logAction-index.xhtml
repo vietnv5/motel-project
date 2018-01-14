@@ -1,0 +1,166 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui" xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="searchForm">
+            <p:growl id="growlSearch" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <p:blockUI block="@form:@parent:form" widgetVar="blockUiSearch" trigger="search"/>
+            <p:panel header="#{msg['label.search.info']}" style="text-align: left" styleClass="" toggleable="true">
+                <h:panelGrid columns="8" cellpadding="5" width="100%">
+
+                    <h:outputText value="Từ ngày" class="cd-text-required"/>
+                    <p:calendar id="fromDateSearchId" value="#{logActionController.fromDate}"
+                                pattern="dd/MM/yyyy HH:mm:ss"/>
+                    <h:outputText value="Đến ngày" class="cd-text-required"
+                    />
+                    <p:calendar id="toDateSearchId" value="#{logActionController.toDate}"
+                                pattern="dd/MM/yyyy HH:mm:ss"/>
+
+                <p:commandButton id="search" onclick="PF('block').show()"
+                                 oncomplete="PF('block').hide();"
+                                 update="growlSearch,:form"
+                                 actionListener="#{logActionController.search}" value="Search"
+                                 icon="fa fa-search"/>
+                </h:panelGrid>
+
+            </p:panel>
+        </h:form>
+
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <p:dataTable value="#{logActionController.lazyDataModel}" id="tblId"
+                         lazy="true" var="logAction" rowKey="#{logAction.logActionId}"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200" widgetVar="tblWidgetId"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         resizableColumns="true"
+                         styleClass="EnodeBTable Container100 NoPadding MarTop10">
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 Responsive50" style="text-align: left;">
+
+
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['logAction.header']}"/>
+                        </div>
+                        <div class="Container20" style="text-align: right;">
+                            <p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-sliders"
+                                             styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tblId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{logActionController.onToggler}"/>
+
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+
+                <p:column headerText="#{msg['datatable.header.stt']}" styleClass="TexAlCenter" width="10"
+                          visible="#{logActionController.columnVisibale[0]}">
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+
+                <p:column headerText="#{msg['logAction.userName']}" width="50" styleClass="TexAlLeft"
+                          filterBy="#{logAction.userName}"
+                          visible="#{logActionController.columnVisibale[1]}">
+                    <h:outputText value="#{logAction.userName}"/>
+                </p:column>
+                <p:column headerText="#{msg['logAction.clientIp']}" width="50" styleClass="TexAlLeft"
+                          filterBy="#{logAction.clientIp}"
+                          visible="#{logActionController.columnVisibale[2]}">
+                    <h:outputText value="#{logAction.clientIp}"/>
+                </p:column>
+                <p:column headerText="#{msg['logAction.className']}" width="100" styleClass="TexAlLeft"
+                          filterBy="#{logAction.className}"
+                          visible="#{logActionController.columnVisibale[3]}">
+                    <h:outputText value="#{logAction.className}"/>
+                </p:column>
+                <p:column headerText="#{msg['logAction.function']}" width="150" styleClass="TexAlLeft"
+                          filterBy="#{logAction.function}"
+                          visible="#{logActionController.columnVisibale[5]}">
+                    <h:outputText value="#{logAction.function}"/>
+                </p:column>
+                <p:column headerText="#{msg['logAction.actionType']}" width="100" styleClass="TexAlLeft"
+                          filterBy="#{logAction.actionType}"
+                          visible="#{logActionController.columnVisibale[4]}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tblWidgetId').filter()">
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                            <f:selectItem itemValue="1" itemLabel="Insert"/>
+                            <f:selectItem itemValue="2" itemLabel="Update"/>
+                            <f:selectItem itemValue="3" itemLabel="Delete"/>
+                            <f:selectItem itemValue="4" itemLabel="Import"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{logAction.actionTypeName}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['logAction.oldValue']}" width="150" styleClass="TexAlLeft"
+                          visible="#{logActionController.columnVisibale[6]}">
+                    <p:commandLink
+                            actionListener="#{commonUtilsController.onClickDetail(msg['logAction.oldValue']
+                                          , logAction.oldValue)}"
+                            style="text-decoration: none;">
+                        <h:outputText value="#{logAction.oldValue}"/>
+                    </p:commandLink>
+                </p:column>
+                <p:column headerText="#{msg['logAction.newValue']}" width="150" styleClass="TexAlLeft"
+                          visible="#{logActionController.columnVisibale[7]}">
+                    <p:commandLink
+                            actionListener="#{commonUtilsController.onClickDetail(msg['logAction.newValue']
+                                          , logAction.newValue)}"
+                            style="text-decoration: none;">
+                        <h:outputText value="#{logAction.newValue}"/>
+                    </p:commandLink>
+                </p:column>
+
+                <p:column headerText="#{msg['logAction.eventTime']}" width="100" styleClass="TexAlCenter"
+                          filterBy="#{logAction.eventTime-BW-DEFAULT}"
+                          visible="#{logActionController.columnVisibale[8]}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
+                            <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
+                            <p:ajax event="change" execute="@this" oncomplete="PF('tblWidgetId').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{logAction.eventTime}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+
+            </p:dataTable>
+
+        </h:form>
+        <style type="text/css">
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .hasDatepicker {
+                width: 76% !important;
+            }
+
+            .ui-panelgrid tbody tr td {
+                border: none !important;
+                background-color: #fff;
+            }
+        </style>
+    </ui:define>
+</ui:composition>

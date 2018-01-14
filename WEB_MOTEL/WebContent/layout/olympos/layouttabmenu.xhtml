@@ -1,0 +1,219 @@
+<ui:composition
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    >
+
+    <ul id="layout-tab-menu">
+        <li><a href="#" class="active" rel="layout-hr"> <i class="icon-male238"></i> <span
+                    class="layout-tab-menu-link-text"><span></span> Nhân sự</span> </a></li>
+        <li><a href="#" rel="layout-category"> <i class="fa fa-list"></i> <span
+                    class="layout-tab-menu-link-text"><span></span> Danh mục</span> </a></li>
+        <li><a href="#" rel="layout-admin"> <i class="icon-settings47"></i> <span
+                    class="layout-tab-menu-link-text"><span></span> Quản trị</span> </a></li>
+        <li><a href="#" rel="layout-report"> <i class="fa fa-file-excel-o"></i> <span
+                    class="layout-tab-menu-link-text"><span></span> Báo cáo</span> </a></li>
+    </ul>
+
+    <ul class="layout-tab-submenu active" id="layout-hr">
+        <li id="menuform:om_dashboards" role="menuitem">
+            <a href="#" class="menulink"> <span> BÁN HÀNG</span></a>
+            <ul role="menu">
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customerSchedule')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/customerSchedule"><i
+                            class="fa fa-calendar"></i><span>Đặt lịch</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/checkinServiceTicket')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/checkinServiceTicket"><i
+                            class="fa fa-sign-in"></i><span>Checkin dịch vụ</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/member')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/member"><i
+                            class="icon-user7"></i><span>Hội viên/Nhóm</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/client')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/client"><i
+                            class="icon-user7"></i><span>Khách lẻ</span></a>
+                </li>
+                <li role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/custom_checkin')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/custom_checkin"><i
+                            class="fa fa-cart-plus"></i><span>Thêm dịch vụ</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customer_checkout')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/customer_checkout"><i
+                            class="fa fa-credit-card"></i><span>Ngừng sử dụng</span></a>
+                </li>
+            </ul>
+            <a href="#" class="menulink"> <span> QUẢN LÝ</span></a>
+            <ul role="menu">
+
+                <li role="menuitem" style="display: #{(sessionUtil.getUrlDisplay('/customerAccessStatus') and sessionUtil.getConfigByKeyEQ('IS_LOCAL','1'))? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/customerAccessStatus"><i
+                            class="fa fa-user-secret "></i><span>Quản lý hoạt động vòng khóa</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customer_checkin_his')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/customer_checkin_his"><i
+                            class="fa fa-list"></i><span>Lịch sử kích hoạt</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/employee')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/employee"><i
+                            class="fa fa-user-secret "></i><span>HLV/Nhân viên</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/member_care')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/member_care"><i
+                            class="fa fa-smile-o "></i><span>Chăm sóc khách hàng</span></a>
+                </li>
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/')? '':'none'}">
+                    <a class="menulink"
+                       href="#"><i
+                            class="fa fa-file "></i><span> Báo cáo</span></a>
+                </li>
+            </ul>
+
+        </li>
+    </ul>
+    <ul class="layout-tab-submenu" id="layout-category">
+        <li id="" role="menuitem">
+            <a href="#" class="menulink"><span> DANH MỤC</span></a>
+            <ul role="menu">
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/branch')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/branch"><i
+                            class="fa fa-building"></i><span>Danh mục chi nhánh</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/department')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/department"><i
+                            class="fa fa-building"></i><span>Danh mục bộ phận</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/room')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/room"><i
+                            class="fa fa-home"></i><span>Danh mục phòng tập</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catMachine')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/catMachine"><i
+                            class="fa fa-home"></i><span>Danh mục máy quẹt thẻ</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/pack')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/pack"><i
+                            class="fa fa-dropbox"></i><span>Danh mục gói tập</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catService')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/catService"><i
+                            class="fa fa-building"></i><span>Danh mục dịch vụ</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catPromotion')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/catPromotion"><i
+                            class="fa fa-tags"></i><span>Danh mục khuyến mại</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/schedule')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/schedule"><i
+                            class="icon-calendar68"></i><span>Lịch trình</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/jobtitle')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/jobtitle"><i
+                            class="fa fa-users"></i><span>Danh mục chức danh</span></a>
+                </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catItem')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/catItem"><i
+                            class="fa fa-building"></i><span>Danh mục khác</span></a>
+                </li>
+
+            </ul>
+        </li>
+    </ul>
+    <ul class="layout-tab-submenu" id="layout-admin">
+        <li id="" role="menuitem">
+            <a href="#" class="menulink" > <span> QUẢN TRỊ</span></a>
+            <ul role="menu">
+                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/catUser')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/catUser"><i
+                            class="fa fa-user"></i><span>Acount</span></a>
+                </li>
+                <li id="" role="menuitem">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/catRole"><i
+                            class="fa fa-user"></i><span>Phân quyền</span></a>
+                </li>
+                <li  role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/logAction')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/logAction"><i
+                            class="fa fa-user"></i><span>Lịch sử tác động</span></a>
+                </li>
+                <li  role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/document')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/document"><i
+                            class="fa fa-file"></i><span>Hướng dẫn</span></a>
+                </li>
+            </ul>
+        </li>
+    </ul>
+    <ul class="layout-tab-submenu" id="layout-report">
+        <li id="" role="menuitem">
+            <a href="#" class="menulink" > <span> BÁO CÁO DỊCH VỤ</span></a>
+            <ul role="menu">
+                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportPaymentGroupPack')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/reportPaymentGroupPack"><i
+                            class="fa fa-user"></i><span>Doanh thu theo dịch vụ</span></a>
+                </li>
+                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportEmployeePayment')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/reportEmployeePayment"><i
+                            class="fa fa-user"></i><span>Doanh thu theo nhân viên</span></a>
+                </li>
+                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportEmployeePayment')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/reportUseGroupPack"><i
+                            class="fa fa-user"></i><span>Tỉ lệ sử dụng dịch vụ</span></a>
+                </li>
+                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportCustomerPayment')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/reportCustomerPayment"><i
+                            class="fa fa-user"></i><span>Doanh thu khách hàng</span></a>
+                </li>
+                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportServiceTicket')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/reportServiceTicket"><i
+                            class="fa fa-user"></i><span>Thống kê công kỹ thuật viên</span></a>
+                </li>
+
+            </ul>
+        </li>
+    </ul>
+    <style type="text/css">
+        #layout-tab-menu i {
+            width: 100%;
+        }
+
+        .screen-reader {
+            border: 0;
+            clip: rect(0 0 0 0);
+            height: 1px;
+            margin: -1px;
+            overflow: hidden;
+            padding: 0;
+            position: absolute;
+            white-space: nowrap;
+            width: 1px;
+        }
+    </style>
+</ui:composition>

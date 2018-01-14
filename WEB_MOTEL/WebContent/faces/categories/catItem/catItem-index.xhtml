@@ -1,0 +1,240 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui"
+    template="/layout/olympos/template.xhtml">
+
+
+    <ui:define name="content">
+        <h:form id="catItemForm">
+            <p:growl id="growlDatatableCatalog" showDetail="true" showSummary="false" />
+
+            <p:dataTable value="#{catItemController.lazyVCatItem}" id="tableCatItemId" widgetVar="widTableCatItem"
+                         lazy="true" var="catItem" rowKey="#{catItem.itemId}"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="10,15,20,30,50,60,80,100,150,200"
+                         resizableColumns="false"
+                         emptyMessage="#{msg['datatable.empty']}" styleClass="DatabaseTable Container100 NoPadding MarTop10 upperColumnTitle" >
+
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 Responsive50" style="text-align: left;">
+
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs18" value="#{msg['catItem.header']}" />
+                        </div>
+                        <div class="Container20" style="text-align: right;">
+                            <p:tooltip position="right"></p:tooltip>
+
+                            <p:commandButton  icon="fa fa-plus-circle" styleClass="OrangeButton Fs14 White"
+                                              onclick="PF('blockDlg').show()"
+                                              oncomplete="PF('catItemDlg').show();PF('blockDlg').hide();" update=":dlgCatItemId"
+                                              actionListener="#{catItemController.preInsert}"
+                                              title="#{msg['button.add']}"
+                                              />
+                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5">
+                                <p:dataExporter type="xls" target="tableCatItemId" fileName="catItem" pageOnly="false"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White" />
+                            <p:columnToggler datasource="tableCatItemId" trigger="toggler" >
+                                <p:ajax event="toggle" listener="#{catItemController.onToggler}" />
+
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+                <p:column headerText="#{msg['datatable.header.stt']}" width="20" style="text-align: center"
+                          visible="#{catItemController.columnVisibale[0]}" >
+                    <h:outputText value="#{cusIdx +1 }" />
+                </p:column>
+                <p:column width="60"  exportable="false"
+                          headerText="#{msg['datatable.header.action']}" style="text-align:center;"
+                          visible="#{catItemController.columnVisibale[1]}" >
+
+                    <p:tooltip  position="left" />
+                    <p:commandButton
+                        title="#{msg['label.edit']}" styleClass="Fs14 White GreenButton"
+                        icon="fa fa-edit" update=":dlgCatItemId"
+                        actionListener="#{catItemController.preEdit(catItem)}"
+                        oncomplete="PF('catItemDlg').show();"
+                        style="color:green; font-weight: bold;font-size: 13px ">
+                    </p:commandButton>
+
+                    <p:spacer width="2px;" />
+                    <p:commandButton icon="fa fa-trash" actionListener="#{catItemController.onDelete(catItem)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update=":catItemForm " id="deleteId"
+                                     title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5" >
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}" >
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+                <p:column headerText="#{msg['catItem.itemCode']}" width="150" filterStyle="width:70%"
+                          filterBy="#{catItem.itemCode}" sortBy="#{catItem.itemCode}"
+                          visible="#{catItemController.columnVisibale[2]}">
+                    <h:outputText value="#{catItem.itemCode}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['catItem.itemName']}" width="150" filterStyle="width:70%"
+                          filterBy="#{catItem.itemName}" sortBy="#{catItem.itemName}"
+                          visible="#{catItemController.columnVisibale[3]}">
+                    <h:outputText value="#{catItem.itemName}"/>
+                </p:column>
+                <p:column headerText="#{msg['catItem.value']}" width="70" filterStyle="width:70%"
+                          filterBy="#{catItem.value}" sortBy="#{catItem.value}"
+                          visible="#{catItemController.columnVisibale[4]}">
+                    <h:outputText value="#{catItem.value}"/>
+                </p:column>
+                <p:column headerText="#{msg['catItem.description']}" width="200" filterStyle="width:70%"
+                          filterBy="#{catItem.description}" sortBy="#{catItem.description}"
+                          visible="#{catItemController.columnVisibale[5]}">
+                    <h:outputText value="#{catItem.description}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['catItem.catCode']}" width="150" filterStyle="width:70%"
+                          filterBy="#{catItem.catCode}" sortBy="#{catItem.catCode}"
+                          visible="#{catItemController.columnVisibale[6]}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu  label="Choose" onchange="PF('widTableCatItem').filter()"
+                                          filter="true" filterMatchMode="contains">
+                            <f:selectItem itemValue="" itemLabel="Choose"/>
+                            <f:selectItems value="#{catItemController.lstCatDictionary}" var="catDic"
+                                           itemLabel="#{catDic.catCode}" itemValue="#{catDic.catCode}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{catItem.catCode}"/>
+                </p:column>
+                <p:column headerText="#{msg['catItem.catName']}" width="170" filterStyle="width:70%"
+                          filterBy="#{catItem.catCode}" sortBy="#{catItem.catName}"
+                          visible="#{catItemController.columnVisibale[7]}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu  label="Choose" onchange="PF('widTableCatItem').filter()"
+                                          filter="true" filterMatchMode="contains">
+                            <f:selectItem itemValue="" itemLabel="--Lựa chọn--"/>
+                            <f:selectItems value="#{catItemController.lstCatDictionary}" var="catDic"
+                                           itemLabel="#{catDic.catName}" itemValue="#{catDic.catCode}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{catItem.catName}"/>
+                </p:column>
+
+            </p:dataTable>
+
+
+        </h:form>
+
+
+        <p:dialog modal="true" class="transparent-dialog" showHeader="false"
+                  widgetVar="blockDlg" draggable="false" closable="false" resizable="false" >
+            <span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;" >
+                <i class="fa fa-fire fa-stack-1x" style="bottom: 40px; color: #FAFAFA; font-size: 0.8em"  ></i>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-stack-2x" style="color: #00AAFF; font-size: 3em;"></i>
+                <i class="fa fa-coffee fa-stack-1x" style="color: #975524; bottom: 20px;font-size: 1.2em"></i>
+            </span>
+        </p:dialog>
+        <p:dialog widgetVar="catItemDlg" width="60%" id="dlgCatItemId"
+                  height="50%"  modal="true" showEffect="size" hideEffect="scale">
+            <f:facet name="header">
+                <h:outputText value="#{msg['view.dlg.update']}" rendered="#{catItemController.isEdit}"/>
+                <h:outputText value="#{msg['view.dlg.insert']}" rendered="#{!catItemController.isEdit}"/>
+            </f:facet>
+            <h:form id="catItemDlgForm">
+                <p:growl id="growlFormDlg" showDetail="true" showSummary="false" />
+                <h:panelGrid columns="4" width="100%" cellpadding="5" id="panelGridId">
+                    <h:outputText class="cd-text-required" value="#{msg['catItem.catName']}"/>
+                    <p:selectOneMenu value="#{catItemController.objCatItemBO.catCode}" disabled="#{catItemController.isEdit}"
+                                     style="width: 135px;" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemValue="" itemLabel="Choose"/>
+                        <f:selectItems value="#{catItemController.lstCatDictionary}" var="catDic"
+                                       itemLabel="#{catDic.catName}" itemValue="#{catDic.catCode}"/>
+                        <p:ajax event="change" update="valueHId,valuePId" listener="#{catItemController.onchangeCatDictionary}" process="@this"/>
+
+                    </p:selectOneMenu>
+
+                    <h:outputText value="#{msg['catItem.itemCode']}" class="cd-text-required"/>
+                    <p:inputText label="#{msg['catItem.itemCode']}" maxlength="30" validatorMessage="#{msg['catItem.itemCode']} invalid"
+                                 value="#{catItemController.objCatItemBO.code}" converter="trimConverter" >
+                        <f:validateRegex pattern="^(\w*\d*)*$" />
+                    </p:inputText>
+
+                    <h:outputText class="cd-text-required" value="#{msg['catItem.itemName']}"/>
+                    <p:inputText label="#{msg['catItem.itemName']}" maxlength="200"
+                                 value="#{catItemController.objCatItemBO.name}" converter="trimConverter" />
+                    <p:outputPanel id="valueHId">
+
+                        <h:outputText  value="#{msg['catItem.value']}"  class="#{catItemController.requireValue==1 ?'cd-text-required':''}"/>
+                    </p:outputPanel>
+                    <p:outputPanel id="valuePId">
+
+                        <p:inputText label="#{msg['catItem.value']}" maxlength="200" validatorMessage="#{catItemController.messageValid}"
+                                     value="#{catItemController.objCatItemBO.value}" converter="trimConverter"
+                                     >
+                            <f:validateRegex pattern="#{catItemController.regexValue}" disabled="#{catItemController.regexValue==null or catItemController.regexValue==''}"
+                                              />
+                        </p:inputText>
+                    </p:outputPanel>
+
+                </h:panelGrid>
+                <h:panelGrid columns="2" cellpadding="5" >
+                    <h:outputText value="#{msg['catItem.description']}"/>
+                    <p:inputTextarea label="#{msg['catItem.description']}" maxlength="200"  style="margin-left: 85px;width: 190%"
+                                     value="#{catItemController.objCatItemBO.description}" rows="3" converter="trimConverter">
+                    </p:inputTextarea>
+                </h:panelGrid>
+
+                <div class="row" style="margin-bottom: 10px; text-align: center;margin-left: auto;margin-right: auto;display: block">
+                    <p:commandButton style="color: white;" icon="fa fa-save" process=":catItemDlgForm" onstart="PF('blockDlg').show()"
+                                     actionListener="#{catItemController.onSaveOrUpdate()}" oncomplete="PF('blockDlg').hide();"
+                                     update=":catItemForm, :catItemDlgForm:growlFormDlg" value="#{msg['button.save']}"/>
+                    <p:commandButton style="color: white;" icon="fa fa-close" styleClass="RedButton"
+                                     onclick="PF('catItemDlg').hide()" value="#{msg['button.close']}"/>
+                </div>
+            </h:form>
+
+
+        </p:dialog>
+
+
+        <p:confirmDialog global="true" closeOnEscape="true">
+            <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        </p:confirmDialog>
+
+
+        <style>
+            /*.ui-column-title{*/
+                /*color: white !important;*/
+            /*}*/
+            .ui-datatable .ui-datatable-header {
+                background: transparent;
+                color: #333333;
+                font-weight: bold;
+                text-transform: uppercase;
+                border: none;
+            }
+
+            .ui-selectonemenu {
+                min-width: 188px !important;
+                /*min-width: 225px !important;*/
+                padding: 0 !important;
+            }
+            .ui-selectonemenu label {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                min-width: 135px !important;
+            }
+        </style>
+
+    </ui:define>
+
+</ui:composition>

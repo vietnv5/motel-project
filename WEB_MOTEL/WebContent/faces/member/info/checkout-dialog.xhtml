@@ -1,0 +1,139 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <p:dialog modal="true" header="#{msg['customer.checkout']}" widgetVar="checkoutDlg" width="70%" id="checkoutDlgId">
+
+
+        <h:form id="checkoutForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckout" >
+                    <div class=" Container50">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{memberController.customerCheckin.cardCode}"
+                                         id="cardCodeId"
+                                         title="#{msg['client.cardCode']}"
+                                         required="true"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['client.cardCode'])}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['client.cardCode']} *</label>
+                        </span>
+                        <p:message for="cardCodeId"/>
+                    </div>
+                    <div class=" Container50 TexAlRight">
+                        <p:commandButton value="#{msg['customer.checkout']}" styleClass="GreenButton White" update="@widgetVar(growl),:insertForm,:checkoutForm"
+                                         actionListener="#{memberController.checkout()}" process=":checkoutForm" 
+                                         onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();"
+                                         >
+                            <p:confirm icon="ui-icon-alert" header="#{msg['customer.checkout']}"
+                                       message="#{msg['title.confirm.checkout']}" >
+                            </p:confirm>
+                        </p:commandButton>
+                        <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                         onclick="PF('checkoutDlg').hide()"  >
+
+                        </p:commandButton>
+
+                    </div>
+                </p:outputPanel>
+                <p:outputPanel class="Container100" >
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+        <h:form id ="tablleVcusCheckinForm">
+            <p:dataTable value="#{memberController.lazyDataVCusCheckin}" id="tableVCustomCheckinInMember"
+                         lazy="true" var="customCheckin" rowKey="#{customCheckin.id}"
+                         rowIndexVar="idx"
+                         rows="10" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tbltblWidgetIdWidgetId"
+                         emptyMessage="#{msg['datatable.empty']}" styleClass="MemTable Container100 NoPadding MarTop10">
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 Responsive50" style="text-align: left;">
+                            <p:tooltip position="right"></p:tooltip>
+
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5">
+                                <p:dataExporter type="xls" target="tableVCustomCheckinInMember" fileName="tableVCustomCheckinInMember"
+                                                pageOnly="false"/>
+                            </p:commandButton>
+
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs18" value="Gói đang sử dụng"/>
+                        </div>
+                        <div class="Container20" style="text-align: left;">
+                            <p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-sliders"
+                                             styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableVCustomCheckinInMember" trigger="toggler">
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+                <p:column headerText="#{msg['datatable.header.stt']}" width="10" style="text-align: center">
+                    <h:outputText value="#{idx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['client.cardCode']}" width="100" sortBy="#{customCheckin.cardCode}"
+                          filterBy="#{customCheckin.cardCode}" filterStyle="width:70%">
+                    <h:outputText value="#{customCheckin.cardCode}"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="250">
+                    <h:outputText value="#{customCheckin.catGroupPack.groupPackName} ("/>
+
+                    <p:repeat value="#{customCheckin.catGroupPack.packs}" var="p" varStatus="v" >
+                        <h:outputText value="#{p.packName}"/>
+                        <h:outputText value=", " rendered="#{!v.last}"/>
+                    </p:repeat>
+
+                    <h:outputText value=")"/>
+
+                </p:column>
+                <p:column headerText="#{msg['client.name']}" width="100" filterStyle="width:70%">
+                    <h:outputText value="#{customCheckin.name}"/>
+                </p:column>
+
+                <p:column headerText="Thời gian bắt đầu" width="100" sortBy="#{customCheckin.checkTime}"
+                          filterStyle="width:70%">
+                    <h:outputText value="#{customCheckin.checkTime}"><f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                </p:column>
+
+                <p:column headerText="Thời gian kết thúc" width="100" sortBy="#{customCheckin.checkoutTime}"
+                          visible="false"
+                          filterStyle="width:70%">
+                    <h:outputText value="#{customCheckin.checkoutTime}"><f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                </p:column>
+
+
+                <p:column headerText="Group Name" width="100" sortBy="#{customCheckin.groupMemberName}"
+                          filterBy="#{customCheckin.groupMemberName}" filterStyle="width:70%">
+                    <h:outputText value="#{customCheckin.groupMemberName}"/>
+                </p:column>
+
+                <p:column headerText="Trạng thái" width="80"  filterStyle="width:70%">
+
+                    <h:outputText value="#{customCheckin.statusName}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+</ui:composition>

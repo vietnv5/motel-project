@@ -1,0 +1,271 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <p:dialog modal="true" header="Thanh toán" widgetVar="clientPaymentFinalDlg" width="80%" id="clientPaymentFinalId" height="600px">
+
+        <h:form id="insertClientPaymentFinalForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth3">
+                    <div class=" Container25">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{clientController.curClient.clientPayment.paymentCode}"
+                                         id="grouppackcode" readonly="true" disabled="true"
+                                         title="#{msg['memberPayment.paymentCode']}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['memberPayment.paymentCode']}</label>
+                        </span>
+                        <p:message for="grouppackcode"/>
+                    </div>
+                    <div class=" Container25">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{authenticationController.user.userName}"
+                                         readonly="true" disabled="true"
+                                         title="#{msg['memberPayment.employee']}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['memberPayment.employee']}</label>
+                        </span>
+                    </div>
+
+
+                    <div class="Container25 ">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.price}" decimalPlaces="0"
+                                           id="priceId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
+                                           title="#{msg['clientPayment.price']}"
+                                           >
+                            </p:inputNumber>
+
+                            <label>#{msg['clientPayment.price']} </label>
+                        </span>
+                        <p:message for="priceId"/>
+                    </div>
+                    <div class="Container25 ">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.totalDeposit}" decimalPlaces="0"
+                                           id="totalDeposit" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
+                                           title="#{msg['payment.totalDeposit']}"
+                                           >
+                            </p:inputNumber>
+
+                            <label>#{msg['payment.totalDeposit']} </label>
+                        </span>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.paymentValue}"
+                                           id="paymentValueId" symbol=" VNĐ" symbolPosition="suffix"
+                                           required="true" decimalPlaces="0"
+                                           requiredMessage="#{msg['common.required'].replace('{0}',msg['membership.memberPayment.paymentValue'])}"
+                                           title="#{msg['memberPayment.paymentValue']}"
+                                           >
+
+                                <p:ajax update="priceId,debtId" process="@this"
+                                        onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                        listener="#{clientController.onChangeComputingClientPaymentFinal()}"/>
+                            </p:inputNumber>
+
+                            <label>#{msg['membership.memberPayment.paymentValue']} *</label>
+                        </span>
+                        <p:message for="paymentValueId"/>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.debt}" styleClass="boldText"
+                                           id="debtId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
+                                           title="#{msg['payment.surplus']}" decimalPlaces="0"
+                                           >
+                            </p:inputNumber>
+
+                            <label>#{msg['payment.surplus']} *</label>
+                        </span>
+                        <p:message for="debtId"/>
+                    </div>
+                    <div class="Container25 MarTop30 " hidden="true">
+                        <span class="title-top">
+
+                            <p:selectOneMenu id="reasonId" value="#{clientController.curClient.clientPayment.reason}"
+                                             filter="true" filterMatchMode="contains" style="width: 135px;"
+                                             required="#{false and clientController.curClient.clientPayment.debt lt 0}"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['memberPayment.reason'])}"
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
+                                <f:selectItems value="#{clientController.lstReason}" var="item" itemLabel="#{item.name}"
+                                               itemValue="#{item.name}"/>
+                            </p:selectOneMenu>
+
+                            <label class="title-elem">#{msg['memberPayment.reason']} </label>
+                        </span>
+                        <p:message for="reasonId"/>
+                    </div>
+                    <div class="Container50  MarTop30">
+                        <span class="md-inputfield">
+                            <p:inputTextarea value="#{clientController.curClient.clientPayment.description}"
+                                             id="descriptionId" rows="1" style="width: 70%"
+                                             title="#{msg['memberPayment.description']}"
+                                             >
+                            </p:inputTextarea>
+                            <label>#{msg['memberPayment.description']} </label>
+                        </span>
+                        <p:message for="descriptionId"/>
+                    </div>
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlRight">
+
+                    <p:commandButton id="openCfImgDlgLocal" icon="fa fa-print" styleClass="BrownButton Fs14 White"
+                                     onclick="PF('block').show()" rendered="false"
+                                     update=":cfImgDlgLocal,@widgetVar(tblPayment),@widgetVar(growl),:insertClientForm,:insertClientPaymentFinalForm"
+                                     actionListener="#{clientController.onPrintBill()}"
+                                     oncomplete="PF('cfImgDlgLocal').show();PF('block').hide()"
+                                     value="In hóa đơn"
+                                     title="In từ máy cá nhân"/>
+
+                    <p:commandButton value="#{msg['payment.button']}  &amp; Ngừng sử dụng" styleClass="GreenButton White"
+                                     update="@widgetVar(tblPayment),@widgetVar(growl),:insertClientForm,:insertClientPaymentFinalForm
+                                     ,:clientForm,:customerCheckoutSearchForm, :cfImgFormLocal"
+                                     actionListener="#{clientController.clientPaymentFinal()}" process=":insertClientPaymentFinalForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();">
+                    </p:commandButton>
+
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('clientPaymentFinalDlg').hide()">
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+            </div>
+        </h:form>
+        <h:form id="clientPaymentFinalForm">
+            <p:dataTable value="#{clientController.lstClientPaymentUsingPack}" var="obj2" widgetVar="tblClientPaymentFinal"
+                         rowIndexVar="r2" editable="true" editMode="cell" id="tblClientPaymentFinalId"
+                         rows="10" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50"
+                         >
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+
+                        <h:outputText value="#{msg['view.header.clientPayment']}"/>
+                        <p:commandButton icon="fa fa-file-excel-o" ajax="false" styleClass="White BlueButton Fs14 MarTop5" rendered="false"
+                                         actionListener="#{commonUtilsController.attributeListener}" style="float: right">
+                            <f:attribute name="headerExport" value="Thông tin thanh toán"/>
+                            <p:dataExporter type="xls" target="tblClientPaymentFinalId" fileName="client" pageOnly="false"
+                                            postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                        </p:commandButton>
+                    </div>
+                </f:facet>
+                <p:ajax event="cellEdit" listener="#{clientController.onCellClientPaymentUsingPackEdit}" update=":insertClientPaymentFinalForm:panelAddHealth3"/>
+                <p:column headerText="#{msg['datatable.header.stt']}" width="10">
+                    <h:outputText value="#{r2 + 1}"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.payment.code']}" width="100">
+                    <h:outputText value="#{obj2.paymentCode} "/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="150">
+                    <h:outputText value="#{obj2.clientUsePack.groupPack.groupPackName} (" rendered="#{obj2.clientUsePack.groupPack.groupPackName!=null}"/>
+
+                    <p:repeat value="#{obj2.clientUsePack.groupPack.packs}" var="p" varStatus="v">
+                        <h:outputText value="#{p.packName}"/>
+                        <h:outputText value=", " rendered="#{!v.last}"/>
+                    </p:repeat>
+
+                    <h:outputText value=")" rendered="#{obj2.clientUsePack.groupPack.groupPackName!=null}"/>
+
+                </p:column>
+                <p:column headerText="#{msg['memberPayment.price']}" styleClass="TexAlRight" width="100">
+                    <h:outputText value="#{obj2.price}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+                <p:column headerText="#{msg['paymentFinal.guestDeposit']}" styleClass="TexAlRight" width="100">
+                    <h:outputText value="#{obj2.guestDeposit}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+                <p:column headerText="#{msg['clientPayment.status']}" width="60" >
+                    <p:cellEditor rendered="#{obj2.type==1}">
+                        <f:facet name="output"><h:outputText value="#{obj2.statusName}"/></f:facet>
+                        <f:facet name="input" >
+                            <h:selectOneMenu value="#{obj2.status}" style="width:100%">
+                                <f:selectItem itemLabel="#{msg['payment.status0']}" itemValue="0"/>
+                                <f:selectItem itemLabel="#{msg['payment.status1']}" itemValue="1"/>
+                            </h:selectOneMenu>
+                        </f:facet>
+                    </p:cellEditor>
+                    <h:outputText value="#{obj2.statusName}" rendered="#{obj2.type!=1}"/>
+                </p:column>
+                <p:column headerText="#{msg['payment.type']}" width="60">
+                    <h:outputText value="#{obj2.typeName}"/>
+                </p:column>
+                <p:column headerText="#{msg['memberPayment.createTime']}" width="100" sortBy="#{obj2.createTime}"
+                          ><h:outputText value="#{obj2.createTime}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+            </p:dataTable>
+
+
+        </h:form>
+    </p:dialog>
+    <style>
+        .boldText .ui-inputfield {
+            font-weight: bold !important;
+        }
+    </style>
+    <script type="text/javascript">
+
+    </script>
+    <p:dialog modal="true" header="Thông tin thanh toán" widgetVar="clientPaymentFinalDlgExport" width="30%">
+        <h:form id="clientPaymentFinalDlgExportForm">
+            <p:outputPanel class="Container100 TexAlLeft">
+                <h:outputText value="Bạn có muốn tải file thông tin thanh toán không?"/>
+                <!--                <h:outputText value="file thông tin #{clientController.desPathImg}"/>
+                                <h:outputText value="file thông tin #{clientController.curClient.name}"/>-->
+            </p:outputPanel>
+            <p:outputPanel class="Container100 TexAlCenter">
+
+                <!--                <p:commandButton value="In hóa đơn" type="button" icon="ui-icon-print" style="display:block;margin-bottom: 20px">
+                                    <p:printer target="filePaymentId" />
+                                </p:commandButton>-->
+
+                <h:panelGroup rendered="#{clientController.desPathImg != null}">
+                    <div class="Container20 Responsive50">
+                        <p:panelGrid columns="1" styleClass="TexAlCenter">
+                            <p:commandButton value="Print" type="button" icon="ui-icon-print" style="display:block">
+                                <p:printer target="gaucon2017"/>
+                            </p:commandButton>
+                        </p:panelGrid>
+                        <p:graphicImage id="gaucon2017" value="#{clientController.desPathImg}" width="315" height="484">
+                            <!--<f:param name="imgPath" value="# {iEmpPrint.imgCard}"/>-->
+                        </p:graphicImage>
+                    </div>
+                </h:panelGroup>
+                <p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5" widgetVar="exportClientPayment"
+                                 id="exportClientPaymentId"
+                                 title="#{msg['view.dlg.export.obj']}"
+                                 value="Tải file"
+                                 onclick="PF('clientPaymentFinalDlgExport').hide();"
+                                 update="@widgetVar(growl)"
+                                 ajax="false"
+                                 >
+                    <p:fileDownload value="#{clientController.fileExported}"/>
+                </p:commandButton>
+                <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                 onclick="PF('clientPaymentFinalDlgExport').hide()">
+
+                </p:commandButton>
+            </p:outputPanel>
+        </h:form>
+    </p:dialog>
+</ui:composition>

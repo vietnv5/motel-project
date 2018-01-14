@@ -1,0 +1,53 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml" >
+
+
+    <ui:define name="content">
+        <p:tabView id='tabViewMain'>
+            <p:tab title="#{msg['datatable.header.member']}" id='tabMemberId'> 
+
+                <ui:include src="info/table.xhtml"/>
+
+            </p:tab>
+            <p:tab title="#{msg['groupMember.header']}" id='tabGroupMemberId'>
+                <ui:include src="group/groupMember-main.xhtml"></ui:include>
+            </p:tab>
+
+        </p:tabView>
+        <ui:include src="info/info-dialog.xhtml"></ui:include>
+        <ui:include src="info/payment-dialog.xhtml"></ui:include>
+        <ui:include src="info/liquidate-dialog.xhtml"></ui:include>
+        <ui:include src="info/memberUsedService-info.xhtml"></ui:include>
+        <ui:include src="info/checkin-dialog.xhtml"></ui:include>
+        <ui:include src="info/checkout-dialog.xhtml"></ui:include>
+        <ui:include src="info/checkinResult-dialog.xhtml"></ui:include>
+        <!--<ui:include src="info/confirmImagesLocal.xhtml"></ui:include>-->
+        <ui:include src="info/checkinFingerprintResult-dialog.xhtml"></ui:include>
+        <ui:include src="info/checkinTicket-dialog.xhtml"></ui:include>
+        <ui:include src="info/showPdf-dialog.xhtml"></ui:include>
+        <ui:include src="info/showPaymentPdf-dialog.xhtml"></ui:include>
+        <ui:include src="info/editPaymentTime-dialog.xhtml"></ui:include>
+        <!--groupMem-->
+        <ui:include src="group/groupMemberLiquidate-dialog.xhtml"></ui:include>
+        <ui:include src="group/groupMemberPayment-dialog.xhtml"></ui:include>
+        <ui:include src="group/info-dialog.xhtml"></ui:include>
+        <ui:include src="group/groupMemberUsedService-info.xhtml"></ui:include>
+        <ui:include src="group/groupCheckin-dialog.xhtml"></ui:include>
+        <ui:include src="group/groupCheckinResult-dialog.xhtml"></ui:include>
+        <!--<ui:include src="group/confirmImagesLocalGroupMem.xhtml"></ui:include>-->
+        <ui:include src="group/showPaymentGroupPdf-dialog.xhtml"></ui:include>
+        <script type="text/javascript">
+            //chi goi lay van tay khi vao chuc nang quan ly hoi vien
+//            setInterval(function () {
+//
+////                document.getElementById('insertForm:memberTabViewId:btnLoadData').click();
+//                document.getElementById('insertForm:btnLoadData').click();
+//                console.log("kiem tra lay dau van tay");
+//            }, 2 * 1000);
+        </script>
+    </ui:define>
+</ui:composition>

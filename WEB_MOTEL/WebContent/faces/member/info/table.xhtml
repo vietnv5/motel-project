@@ -1,0 +1,263 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:datas="http://java.sun.com/jsf/composite/datas">
+
+    <!--<ui:define name="content">-->
+    <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+    <h:form id="form">
+
+        <p:dataTable value="#{memberController.lazyMember}" id="tableMemId"
+                     lazy="true" var="objMember" rowKey="#{objMember.memberId}" filterDelay="1500"
+                     selection="#{memberController.selectedMember}"
+                     rowIndexVar="idx" editable="true" editMode="cell"
+                     rows="20" paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                     rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tableMemWidget"
+                     emptyMessage="#{msg['datatable.empty']}" styleClass="MemTable Container100 NoPadding MarTop10 ">
+            <f:facet name="header">
+                <div class="Card NoPadding" style="background: transparent;">
+                    <div class="Container20 Responsive50" style="text-align: left;">
+                        <p:tooltip position="right" ></p:tooltip>
+                        <p:commandButton id="addMemBtId" icon="fa fa-plus-circle"
+                                         styleClass="OrangeButton Fs14 White"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('memberInfoDlg').show();PF('block').hide()"
+                                         update=":insertForm"
+                                         actionListener="#{memberController.preAddMember(1)}"
+                                         title="Thêm hội viên"
+                                         />
+                        <p:spacer width="2px;" />
+                        <!--                        <p:commandButton id="addGroupMemBtId" icon="fa fa-users"
+                                                                 styleClass="GreenButton Fs14 White"
+                                                                 onclick="PF('block').show()"
+                                                                 oncomplete="PF('memberInfoDlg').show();PF('block').hide()"
+                                                                 update=":insertForm"
+                                                                 actionListener="# {memberController.preAddMember(2)}"
+                                                                 title="Thêm nhóm hội viên"
+                                                                 />-->
+                        <!--<p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5"-->
+                        <!--onclick="PF('block').show()"-->
+                        <!--oncomplete="PF('exportDlg').show();PF('block').hide()"-->
+                        <!--actionListener="# {memberController.preAddMember}"-->
+                        <!--title="#{msg['view.dlg.export.obj']}"-->
+                        <!--/>-->
+                        <p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5"
+                                         title="#{msg['view.dlg.export.obj']}"
+                                         onstart="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{memberController.exportMember}"
+                                         update="@widgetVar(growl)"
+                                         ajax="false" rendered="false"
+                                         >
+                            <p:fileDownload value="#{memberController.fileExported}"/>
+                        </p:commandButton>
+                        <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                         actionListener="#{commonUtilsController.attributeListener}">
+                            <f:attribute name="headerExport" value="#{msg['datatable.header.member']}" />
+                            <p:dataExporter type="xls" target="tableMemId" fileName="member" pageOnly="false"
+                                            postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                        </p:commandButton>
+                    </div>
+                    <div class="Container60 Responsive50">
+                        <h:outputText styleClass="Fs20" value="#{msg['datatable.header.member']}"/>
+                    </div>
+                    <div class="Container20" style="text-align: right;">
+                        <p:commandButton id="toggler" type="button"
+                                         style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                        <p:columnToggler datasource="tableMemId" trigger="toggler"/>
+                    </div>
+                </div>
+
+            </f:facet>
+
+            <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"></p:ajax>
+            <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"></p:ajax>
+            <p:column headerText="#{msg['datatable.header.stt']}" width="5" style="text-align: center">
+                <h:outputText value="#{idx +1 }"/>
+            </p:column>
+
+            <p:column headerText="#{msg['member.header.memberCode']}" width="30" sortBy="#{objMember.memberCode}"
+                      filterBy="#{objMember.memberCode}" filterStyle="width:70%"
+                      ><h:outputText value="#{objMember.memberCode}"/></p:column>
+            <p:column headerText="#{msg['member.header.memberName']}" width="50" sortBy="#{objMember.memberName}"
+                      filterBy="#{objMember.memberName}" filterStyle="width:70%"
+                      ><h:outputText value="#{objMember.memberName}"/></p:column>
+            <p:column headerText="#{msg['datatable.header.cardCode']}" width="50" sortBy="#{objMember.cardCode}"
+                      filterBy="#{objMember.cardCode}" filterStyle="width:70%" visible="false"
+                      >
+                <h:outputText value="#{objMember.cardCode}" rendered="#{objMember.type!=2}"/>
+                <h:outputText value="#{objMember.lstCardCodeStr}" rendered="#{objMember.type==2}"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="50" sortBy="#{objMember.phoneNumber}"
+                      filterBy="#{objMember.phoneNumber}" filterStyle="width:70%"
+                      ><h:outputText value="#{objMember.phoneNumber}"/></p:column>
+            <p:column headerText="#{msg['datatable.header.email']}" width="50" sortBy="#{objMember.email}"
+                      filterBy="#{objMember.email}" filterStyle="width:70%"
+                      visible="false"
+                      ><h:outputText value="#{objMember.email}"/></p:column>
+            <p:column headerText="#{msg['datatable.header.address']}" width="50" sortBy="#{objMember.address}"
+                      filterBy="#{objMember.address}" filterStyle="width:70%"
+                      visible="false"
+                      ><h:outputText value="#{objMember.address}"/></p:column>
+            <p:column headerText="#{msg['datatable.header.sex']}" width="50" sortBy="#{objMember.sex}" visible="false"
+                      ><h:outputText value="#{objMember.sex}"/></p:column>
+            <p:column headerText="#{msg['datatable.header.birthDay']}" width="50" sortBy="#{objMember.birthDay}" visible="false"
+                      filterBy="#{objMember.birthDay-BW}" >
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" >
+                        <p:ajax event="dateSelect" oncomplete="PF('tableMemWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{objMember.birthDay}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['member.groupPackAvailable']}" width="110" exportable="false">
+                <p:dataList value="#{objMember.membershipAvailbles}" var="membership">
+                    #{membership.groupPack.groupPackName} - 
+                    <h:outputText value="#{membership.endDate}" rendered="#{membership.available==null}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                    <h:outputText value="#{membership.available} lượt" rendered="#{membership.available!=null}">
+                    </h:outputText>
+                </p:dataList>
+            </p:column>
+            <p:column headerText="#{msg['member.groupPackAvailable']}" width="110"  exportable="true" visible="false">
+                <h:outputText value="#{objMember.membershipAvailblesStr}" >
+                </h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['member.debt']}" width="50" style="text-align: right">
+                <h:outputText value="#{objMember.totalPayment}">
+                    <f:convertNumber pattern="#,###"/>
+                </h:outputText>
+                <h:outputText value=" VNĐ"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.joinDate']}" width="50" sortBy="#{objMember.joinDate}" filterStyle="width:70%"
+                      filterBy="#{objMember.joinDate-BW}" >
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" >
+                        <p:ajax event="dateSelect" oncomplete="PF('tableMemWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{objMember.joinDate}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.endDate']}" width="50" sortBy="#{objMember.endDate}" filterStyle="width:70%"
+                      filterBy="#{objMember.endDate-BW}" >
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" >
+                        <p:ajax event="dateSelect" oncomplete="PF('tableMemWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{objMember.endDate}"><f:convertDateTime pattern="dd/MM/yyyy"/></h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.status']}" width="50" sortBy="#{objMember.statusName}"
+                      filterBy="#{objMember.status}" filterStyle="width:70%" >
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tableMemWidget').filter()"  filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="#{msg['member.status.NEW']}"
+                                      itemValue="0"/>
+                        <f:selectItem itemLabel="#{msg['member.status.ACTIVE']}"
+                                      itemValue="1"/>
+                        <f:selectItem itemLabel="#{msg['member.status.PAUSE']}"
+                                      itemValue="2"/>
+                        <f:selectItem itemLabel="#{msg['member.status.STOP']}"
+                                      itemValue="4"/>
+                    </p:selectOneMenu>
+                </f:facet>
+
+                <h:outputText value="#{objMember.statusName}"/></p:column>
+            <p:column headerText="#{msg['datatable.header.point']}" width="50" sortBy="#{objMember.point}" visible="false"
+                      ><h:outputText value="#{objMember.point}"/></p:column>
+            <p:column headerText="#{msg['catUser.employee']}" width="50" filterBy="#{objMember.employeeId}" visible="true"
+                      filterStyle="width:70%"  >
+                <f:facet name="filter">
+
+                    <p:selectOneMenu                                   
+                        onchange="PF('tableMemWidget').filter()"
+                        filter="true" filterMatchMode="contains"
+                        >
+                        <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{employeeController.allEmployees}" var="o"
+                                       itemLabel="#{o.employeeCode} - #{o.employeeName}"
+                                       itemValue="#{o.employeeId}">
+                        </f:selectItems>
+
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{objMember.employee.employeeName}"/></p:column>
+            <!--            <p:column headerText="# {msg['datatable.header.memberType']}" width="20" sortBy="# {objMember.memberType}"
+                                  ><h:outputText value="# {objMember.memberType}"/></p:column>
+                        <p:column headerText="Số thành viên" width="20" style="text-align: center">
+                            <h:outputText value="# {objMember.numMemberInGroup}" />
+                        </p:column>
+                        <p:column headerText="# {msg['member.type']}" width="20" sortBy="# {objMember.typeName}"
+                                  filterBy="# {objMember.type}"  >
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('tableMemWidget').filter()">
+                                    <f:selectItem itemLabel="# {msg['label.choose']}" itemValue=""
+                                                  noSelectionOption="true"/>
+                                    <f:selectItem itemLabel="Hội viên" itemValue="1"/>
+                                    <f:selectItem itemLabel="Nhóm" itemValue="2"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="# {objMember.typeName}"/>
+                        </p:column>-->
+            <p:column headerText="#{msg['datatable.header.action']}" width="40" exportable="false">
+                <p:commandButton icon="fa fa-info" actionListener="#{memberController.preEditMember(objMember)}"
+                                 onclick="PF('block').show()" styleClass="White" update="@widgetVar(memberInfoDlg)"
+                                 oncomplete="PF('memberInfoDlg').show(), PF('block').hide();
+                                 document.getElementById('insertForm:memberTabViewId:chartvalue_btn2').click();">
+
+                </p:commandButton>
+                <p:commandButton icon="fa fa-trash" actionListener="#{memberController.onDelete(objMember)}"
+                                 onclick="PF('block').show()" oncomplete="PF('block').hide();"
+                                 update="tabViewMain:form " id="deleteId" rendered="#{sessionUtil.getUrlDisplay('/member.action_delete_member')}"
+                                 title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5">
+                    <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                               message="#{msg['title.confirm.delete']}">
+                    </p:confirm>
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+        <h:outputText value="."  style="color: white"/>
+
+    </h:form>
+    <!--        <ui:include src="info-dialog.xhtml"></ui:include>
+            <ui:include src="payment-dialog.xhtml"></ui:include>
+            <ui:include src="liquidate-dialog.xhtml"></ui:include>-->
+    <p:dialog widgetVar="capture" width="50%">
+
+        <p:ajax event="close" update="@widgetVar(lighbox)"/>
+        <h:panelGrid columns="3" cellpadding="5">
+            <p:photoCam widgetVar="pc" listener="#{memberController.oncapture}" update="photo"/>
+            <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>
+            <p:outputPanel id="photo">
+                <p:graphicImage value="#{imageStreamer.image}" cache="false"/>
+            </p:outputPanel>
+        </h:panelGrid>
+
+    </p:dialog>
+    <style>
+
+        .ui-column-customfilter .ui-selectonemenu {
+            min-width: 50px !important;
+            padding: 0 !important;
+        }
+        .ui-column-customfilter .ui-selectonemenu label {
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+            width: 70px !important;
+        }
+    </style>
+
+    <!--</ui:define>-->
+
+</ui:composition>

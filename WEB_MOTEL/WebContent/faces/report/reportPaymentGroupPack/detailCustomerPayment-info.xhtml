@@ -1,0 +1,162 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+
+    <p:panel id="detailCustomerPaymentPanel" style="display: block;padding: 0px;margin: 0px;"
+             >
+        <p:dataTable value="#{reportPaymentController.lazyCustomerPaymentDeltail}"
+                     id="tableVCustomerPaymentDetail" rendered="#{reportPaymentController.showDetailTable}"
+                     lazy="true" var="customerPaymentDetail" rowKey="#{customerPaymentDetail.rowkey}" 
+                     rowIndexVar="cidx" editable="true" editMode="cell"
+                     rows="10" paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                     rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tblWidgetVCustomerPaymentDetail"
+                     emptyMessage="#{msg['datatable.empty']}"
+                     styleClass="MemTable Container100 NoPadding MarTop10">
+            <f:facet name="header">
+                <div class="Card NoPadding" style="background: transparent;">
+                    <div class="Container80 Responsive50 TexAlCenter">
+                        <p:commandButton styleClass="RedButton Fs14 White" icon="fa fa-times" style="float: left"
+                                         actionListener="#{reportPaymentController.closeDetailTable()}"
+                                         update="@form:detailCustomerPaymentPanel">
+                        </p:commandButton>
+
+                        <h:outputText styleClass="Fs18" value="Thông tin chi tiết giao dịch"/>
+                    </div>
+                    <div class="Container20" style="text-align: right;">
+
+                        <p:tooltip position="right"></p:tooltip>
+                        <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                         actionListener="#{commonUtilsController.attributeListener}">
+                            <f:attribute name="headerExport" value="Thông tin chi tiết giao dịch" />
+                            <p:dataExporter type="xls" target="tableVCustomerPaymentDetail" fileName="CustomerPaymentDetail" pageOnly="false"
+                                            postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                        </p:commandButton>
+
+                    </div>
+                </div>
+
+            </f:facet>
+            <p:column headerText="#{msg['datatable.header.stt']}" width="10" style="text-align: center">
+                <h:outputText value="#{cidx +1 }"/>
+            </p:column>
+
+            <p:column headerText="#{msg['customerPaymentDetail.customerName']}" width="100"
+                      sortBy="#{customerPaymentDetail.customerName}"
+                      filterBy="#{customerPaymentDetail.customerName}" filterStyle="width:70%">
+                <h:outputText value="#{customerPaymentDetail.customerName}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['customerPaymentDetail.phoneNumber']}" width="100" sortBy="#{customerPaymentDetail.phoneNumber}"
+                      filterBy="#{customerPaymentDetail.phoneNumber}" filterStyle="width:70%">
+                <h:outputText value="#{customerPaymentDetail.phoneNumber}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['customerPaymentDetail.groupPackName']}" width="100" sortBy="#{customerPaymentDetail.groupPackName}"
+                      filterBy="#{customerPaymentDetail.groupPackName}" filterStyle="width:70%">
+                <h:outputText value="#{customerPaymentDetail.groupPackName}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['customerPaymentDetail.customerTypeName']}" width="100" sortBy="#{customerPaymentDetail.customerType}" visible="true"
+                      filterBy="#{customerPaymentDetail.customerType}" filterStyle="width:70%">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tblWidgetVCustomerPaymentDetail').filter()" filter="true"
+                                     filterMatchMode="contains">
+                        <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Hội viên" itemValue="1"/>
+                        <f:selectItem itemLabel="Khách lẻ" itemValue="2"/>
+                        <f:selectItem itemLabel="Nhóm hội viên" itemValue="3"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{customerPaymentDetail.customerTypeName}"/>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.employeeName']}" width="100" filterBy="#{customerPaymentDetail.employeeId}" 
+
+                      filterStyle="width:70%"  >
+                <f:facet name="filter">
+                    <p:selectOneMenu                                   
+                        onchange="PF('tblWidgetVCustomerPaymentDetail').filter()"
+                        filter="true" filterMatchMode="contains"
+                        >
+                        <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{employeeController.allEmployees}" var="o"
+                                       itemLabel="#{o.employeeCode} - #{o.employeeName}"
+                                       itemValue="#{o.employeeId}">
+                        </f:selectItems>
+
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{customerPaymentDetail.employeeName}"/>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.numberPack']}" width="50"  >
+                <h:outputText value="#{customerPaymentDetail.numberPack}"/>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.createTime']}" width="100" sortBy="#{customerPaymentDetail.createTime}"
+                      filterBy="#{customerPaymentDetail.createTime-BW}" filterStyle="width:70%">
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy"  >
+                        <p:ajax event="dateSelect" oncomplete="PF('tblWidgetVCustomerPaymentDetail').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{customerPaymentDetail.createTime}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['customerPaymentDetail.typeName']}" width="80" 
+                      filterBy="#{customerPaymentDetail.type}" filterStyle="width:70%">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tblWidgetVCustomerPaymentDetail').filter()" filter="true"
+                                     filterMatchMode="contains">
+                        <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Thanh toán" itemValue="1"/>
+                        <f:selectItem itemLabel="Trả nợ" itemValue="2"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{customerPaymentDetail.typeName}"/>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.joinDate']}" width="100" sortBy="#{customerPaymentDetail.joinDate}"
+                      filterBy="#{customerPaymentDetail.joinDate-BW}" filterStyle="width:70%">
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy"  >
+                        <p:ajax event="dateSelect" oncomplete="PF('tblWidgetVCustomerPaymentDetail').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{customerPaymentDetail.joinDate}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.endDate']}" width="100" sortBy="#{customerPaymentDetail.endDate}"
+                      filterBy="#{customerPaymentDetail.endDate-BW}" filterStyle="width:70%">
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy"  >
+                        <p:ajax event="dateSelect" oncomplete="PF('tblWidgetVCustomerPaymentDetail').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{customerPaymentDetail.endDate}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.price']}" width="80" style="text-align: right"  >
+                <h:outputText value="#{customerPaymentDetail.price}">
+                    <f:convertNumber pattern="#,###"/>
+                </h:outputText>
+                <h:outputText value=" VNĐ"/>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.danop']}" width="80" style="text-align: right"  >
+                <h:outputText value="#{customerPaymentDetail.danop}">
+                    <f:convertNumber pattern="#,###"/>
+                </h:outputText>
+                <h:outputText value=" VNĐ"/>
+            </p:column>
+            <p:column headerText="#{msg['customerPaymentDetail.debt']}" width="80" style="text-align: right"  >
+                <h:outputText value="#{customerPaymentDetail.debt}">
+                    <f:convertNumber pattern="#,###"/>
+                </h:outputText>
+                <h:outputText value=" VNĐ"/>
+            </p:column>
+        </p:dataTable>
+    </p:panel>
+</ui:composition>

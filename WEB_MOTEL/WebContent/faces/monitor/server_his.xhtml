@@ -1,0 +1,226 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <p:dataTable value="#{serverHisController.lazyServerHis}" id="tableServerHis"
+                 lazy="true" var="serverHis" rowKey="#{serverHis.gscnttHisId}"
+                 filterDelay="2000"
+                 rowIndexVar="cusIdx" editable="true" editMode="cell"
+                 rows="20" paginator="true" paginatorPosition="bottom"
+                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                 currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                 rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200" widgetVar="serverHisWg"
+                 emptyMessage="#{msg['datatable.empty']}"
+                 scrollable="true" scrollWidth="96%" scrollHeight="300"
+                 resizableColumns="false"
+            >
+        <!--Header-->
+        <f:facet name="header">
+            <div class="Card NoPadding" style="background: transparent;">
+                <!--Header Name-->
+                <div class="Container80 Responsive50">
+                    <h:outputText styleClass="Fs20" value="#{msg['datatable.header.alarmHis']}"/>
+                </div>
+                <!--Column Toggler-->
+                <div class="Container20" style="text-align: right;">
+                    <p:commandButton id="toggler" type="button"
+                                     style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                    <p:columnToggler datasource="tableServerHis" trigger="toggler">
+                        <p:ajax event="toggle" listener="#{serverHisController.onToggler}"/>
+                    </p:columnToggler>
+                </div>
+            </div>
+        </f:facet>
+        <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+        <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+
+        <!--STT-->
+        <p:column headerText="#{msg['datatable.header.stt']}" width="2" styleClass="TexAlCenter"
+                  visible="#{serverHisController.colVisible.get('index')}">
+            <h:outputText value="#{cusIdx +1 }"/>
+        </p:column>
+
+        <!--Checkbox-->
+        <p:column selectionMode="multiple" width="2" exportable="false" styleClass="TexAlCenter"
+                  visible="#{serverHisController.colVisible.get('selection')}"/>
+
+        <!--gscnttHisId-->
+        <p:column headerText="#{msg['alarmHis.gscnttHisId']}" width="30"
+                  filterBy="#{serverHis.gscnttHisId}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('gscnttHisId')}">
+            <h:outputText id="gscnttHisId" value="#{serverHis.gscnttHisId}"
+                          title="#{msg['alarmHis.gscnttHisId']}"/>
+        </p:column>
+
+        <!--serviceName-->
+        <p:column headerText="#{msg['alarmHis.serviceName']}" width="30"
+                  styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('serviceName')}">
+            <h:outputText id="serviceId" value="#{serverHis.service.serviceName}"
+                          title="#{msg['alarmHis.serviceName']}"/>
+            <p:tooltip for="serviceId" value="#{serverHis.service.serviceName}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--moduleCode-->
+        <p:column headerText="#{msg['alarmHis.moduleCode']}" width="30"
+                  styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('moduleCode')}">
+            <h:outputText id="moduleCode" value="#{serverHis.moduleCode}"
+                          title="#{msg['alarmHis.moduleCode']}"/>
+            <p:tooltip for="moduleCode" value="#{serverHis.moduleCode}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--moduleId-->
+        <p:column headerText="#{msg['alarmHis.moduleId']}" width="30"
+                  styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('moduleId')}">
+            <h:outputText id="moduleId" value="#{serverHis.moduleId}"
+                          title="#{msg['alarmHis.moduleId']}"/>
+        </p:column>
+
+        <!--respondCode-->
+        <p:column headerText="#{msg['alarmHis.respondCode']}" width="30"
+                  filterBy="#{serverHis.respondCode}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('respondCode')}">
+            <h:outputText id="respondCode" value="#{serverHis.respondCode}"
+                          title="#{msg['alarmHis.respondCode']}"/>
+        </p:column>
+
+        <!--ip-->
+        <p:column headerText="#{msg['alarmHis.ip']}" width="30"
+                  styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('ip')}">
+            <h:outputText id="ip" value="#{serverHis.ip}"
+                          title="#{msg['alarmHis.ip']}"/>
+            <p:tooltip for="ip" value="#{serverHis.ip}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--startTime-->
+        <p:column headerText="#{msg['alarmHis.startTime']}" width="30"
+                  filterBy="#{serverHis.startTime-BW}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('startTime')}">
+            <f:facet name="filter">
+                <p:calendar pattern="dd/MM/yyyy" value="#{now}">
+                    <p:ajax event="dateSelect" oncomplete="PF('serverHisWg').filter()"/>
+                    <p:ajax event="change" execute="@this" oncomplete="PF('serverHisWg').filter()"/>
+                </p:calendar>
+            </f:facet>
+
+            <h:outputText id="startTime" value="#{serverHis.startTime}"
+                          title="#{msg['alarmHis.startTime']}">
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+            </h:outputText>
+        </p:column>
+
+        <!--endTime-->
+        <p:column headerText="#{msg['alarmHis.endTime']}" width="30"
+                  filterBy="#{serverHis.endTime-BW}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('endTime')}">
+            <f:facet name="filter">
+                <p:calendar pattern="dd/MM/yyyy">
+                    <p:ajax event="dateSelect" oncomplete="PF('serverHisWg').filter()"/>
+                    <p:ajax event="change" execute="@this" oncomplete="PF('serverHisWg').filter()"/>
+                </p:calendar>
+            </f:facet>
+            <h:outputText id="endTime" value="#{serverHis.endTime}"
+                          title="#{msg['alarmHis.endTime']}">
+                <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+            </h:outputText>
+        </p:column>
+
+        <!--logContent-->
+        <p:column headerText="#{msg['alarmHis.logContent']}" width="60"
+                  filterBy="#{serverHis.logContent}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('logContent')}">
+            <h:outputText id="logContent" value="#{serverHis.logContent}"
+                          title="#{msg['alarmHis.logContent']}"/>
+            <p:tooltip for="logContent" value="#{serverHis.logContent}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--alarmConfigId-->
+        <p:column headerText="#{msg['alarmHis.alarmConfigId']}" width="30"
+                  styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('alarmConfigId')}">
+            <h:outputText id="alarmConfigId" value="#{serverHis.alarmConfigId}"
+                          title="#{msg['alarmHis.alarmConfigId']}"/>
+        </p:column>
+
+        <!--appCode-->
+        <p:column headerText="#{msg['alarmHis.appCode']}" width="30"
+                  styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('appCode')}">
+            <h:outputText id="appCode" value="#{serverHis.appCode}"
+                          title="#{msg['alarmHis.appCode']}"/>
+            <p:tooltip for="appCode" value="#{serverHis.appCode}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--currentValue-->
+        <p:column headerText="#{msg['alarmHis.currentValue']}" width="30"
+                  filterBy="#{serverHis.currentValue}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('currentValue')}">
+            <h:outputText id="currentValue" value="#{serverHis.currentValue}"
+                          title="#{msg['alarmHis.currentValue']}"/>
+        </p:column>
+
+        <!--errorType-->
+        <p:column headerText="#{msg['alarmHis.errorType']}" width="30"
+                  filterBy="#{serverHis.errorType}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('errorType')}">
+            <h:outputText id="errorType" value="#{serverHis.errorType}"
+                          title="#{msg['alarmHis.errorType']}"/>
+            <p:tooltip for="errorType" value="#{serverHis.errorType}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--extraInfor-->
+        <p:column headerText="#{msg['alarmHis.extraInfor']}" width="30"
+                  filterBy="#{serverHis.extraInfor}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('extraInfor')}">
+            <h:outputText id="extraInfor" value="#{serverHis.extraInfor}"
+                          title="#{msg['alarmHis.extraInfor']}"/>
+            <p:tooltip for="extraInfor" value="#{serverHis.extraInfor}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--logInfor-->
+        <p:column headerText="#{msg['alarmHis.logInfor']}" width="30"
+                  filterBy="#{serverHis.logInfor}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('logInfor')}">
+            <h:outputText id="logInfor" value="#{serverHis.logInfor}"
+                          title="#{msg['alarmHis.logInfor']}"/>
+            <p:tooltip for="logInfor" value="#{serverHis.logInfor}"
+                       trackMouse="true" showEffect="clip"/>
+        </p:column>
+
+        <!--executionId-->
+        <p:column headerText="#{msg['alarmHis.executionId']}" width="30"
+                  filterBy="#{serverHis.executionId}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('executionId')}">
+            <h:outputText id="executionId" value="#{serverHis.executionId}"
+                          title="#{msg['alarmHis.executionId']}"/>
+        </p:column>
+
+        <!--workerIp-->
+        <p:column headerText="#{msg['alarmHis.workerIp']}" width="30"
+                  filterBy="#{serverHis.workerIp}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('workerIp')}">
+            <h:outputText id="workerIp" value="#{serverHis.workerIp}"
+                          title="#{msg['alarmHis.workerIp']}"/>
+        </p:column>
+
+        <!--workerPort-->
+        <p:column headerText="#{msg['alarmHis.workerPort']}" width="30"
+                  filterBy="#{serverHis.workerPort}" styleClass="TexAlLeft"
+                  visible="#{serverHisController.colVisible.get('workerPort')}">
+            <h:outputText id="workerPort" value="#{serverHis.workerPort}"
+                          title="#{msg['alarmHis.workerPort']}"/>
+        </p:column>
+    </p:dataTable>
+</ui:composition>

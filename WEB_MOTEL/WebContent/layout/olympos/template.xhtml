@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      >
+    <f:view locale="#{language.localeCode}" />
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes"/>
+        </f:facet>
+        <title>#{msg['page.title']}</title>
+
+        <!-- <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js"></script> -->
+        <h:outputScript name="js/nanoscroller.js" library="olympos-layout"/>
+        <h:outputScript name="js/layout.js" library="olympos-layout"/>
+        <!--<h:outputScript name="js/core.js" library="other"/>-->
+        <h:outputScript name="js/my.js" library="other"/>
+
+        <!--Highchart-->
+        <h:outputScript name="js/highcharts.src.js" library="highchart"/>
+        <h:outputScript name="js/mychart.js" library="highchart"/>
+        <h:outputScript name="js/exporting.js" library="highchart"/>
+        <h:outputScript name="js/offline-exporting.js" library="highchart"/>
+
+        <link rel="shortcut icon" href="#{facesContext.externalContext.request.contextPath}/other/favicon.png" type="image/x-icon"/>
+        <ui:insert name="head"/>
+    </h:head>
+
+    <h:body styleClass="LeadenTopbar SlimMenu">
+
+        <ui:include src="topbar.xhtml"/>
+
+        <!-- LAYOUT CONTAINER -->
+
+        <div id="layout-container">
+            <div id="layout-container-row">
+
+                <!-- LAYOUT MENU COVER -->
+                <div id="layout-menu-cover" class="nano Animated03">
+                    <div id="layout-menu-cover-scroll-content" class="nano-content">
+
+                        <ui:include src="layouttabmenu.xhtml"/>
+
+                    </div>
+                </div>
+
+                <!-- PORTLETS COVER -->
+                <div id="layout-portlets-cover">
+
+                    <ui:insert name="content">
+                        Template
+                    </ui:insert>
+
+                    <!--<ui:include src="footer.xhtml" />-->
+
+                </div>
+
+            </div>
+        </div>
+
+        <!--dungvv8_11/03/2017-->
+        <!--to top-->
+        <p:tooltip for="to_top" position="right" showEffect="clip"/>
+        <p:button id="to_top" href="#top" icon="fa fa-chevron-up" title="#{msg['label.back.to_top']}"
+                  styleClass="White GreenButton Fs14 DispNone"
+                  onclick="$('html, body').animate({scrollTop: 0}, 'fast');return false;">
+        </p:button>
+
+        <script type="text/javascript">
+    //        $("a[href='#top']").click(function () {
+    //            $("html, body").animate({scrollTop: 0}, "fast");
+    //            return false;
+    //        });
+            $(window).scroll(function () {
+                if ($(window).scrollTop() >= 200)
+                    $('#to_top').fadeIn();
+                else
+                    $('#to_top').fadeOut()
+            });
+        </script>
+        <style type="text/css">
+            #to_top {
+                bottom: 30px;
+                position: fixed;
+                right: 20px;
+                /*z-index: 9999;*/
+                /*background: #05c436 none repeat scroll 0 0;*/
+                /*border: 1px solid #0ca533 ;*/
+                /*color: white;*/
+                /*display: none;*/
+                /*height: 30px;*/
+                /*width: 33px;*/
+                /*line-height: 30px;*/
+                /*text-align: center;*/
+                /*border-radius: 3px !important;*/
+            }
+
+            /*#to_top:hover {*/
+            /*background-color: #05e63f;*/
+            /*}*/
+        </style>
+        <!--Loading dialog-->
+        <p:dialog modal="true" class="transparent-dialog" showHeader="false"
+                  widgetVar="block" draggable="false" closable="false" resizable="false">
+            <span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;">
+                <i class="fa fa-fire fa-stack-1x" style="bottom: 40px; color: #FAFAFA; font-size: 0.8em"></i>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-stack-2x" style="color: #00AAFF; font-size: 3em;"></i>
+                <i class="fa fa-coffee fa-stack-1x" style="color: #975524; bottom: 20px;font-size: 1.2em"></i>
+            </span>
+        </p:dialog>
+        <p:dialog modal="true" class="transparent-dialog" showHeader="false"
+                  widgetVar="blockDlg" draggable="false" closable="false" resizable="false" >
+            <span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;" >
+                <i class="fa fa-fire fa-stack-1x" style="bottom: 40px; color: #FAFAFA; font-size: 0.8em"  ></i>
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-stack-2x" style="color: #00AAFF; font-size: 3em;"></i>
+                <i class="fa fa-coffee fa-stack-1x" style="color: #975524; bottom: 20px;font-size: 1.2em"></i>
+            </span>
+        </p:dialog>
+        <p:dialog widgetVar="showDetailCommonUtilsDlg"  header="#{commonUtilsController.titleDetail}"  width="550" height="200"
+                  id="dlgdetailLogCommonUtilsId" >
+            <h:form id="formDetailCommonUtilsId">
+                <p:inputTextarea value="#{commonUtilsController.logDetail}" cols="60" readonly="true" autoResize="true"/>
+            </h:form>
+        </p:dialog>
+        <p:confirmDialog global="true" closeOnEscape="true">
+            <p:commandButton value="#{msg['button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+            <p:commandButton value="#{msg['button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        </p:confirmDialog>
+        <ui:include src="../../faces/login/changePassword-dialog.xhtml"/>
+        <style>
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+        <!--dungvv8_11/03/2017-->
+        <h:outputStylesheet name="css/core-layout.css" library="olympos-layout"/>
+        <h:outputStylesheet name="css/animate.css" library="olympos-layout"/>
+        <h:outputStylesheet name="css/nanoscroller.css" library="olympos-layout"/>
+        <h:outputStylesheet name="css/olympos-font.css" library="olympos-layout"/>
+        <h:outputStylesheet name="css/font-awesome.css" library="olympos-layout"/>
+        <h:outputStylesheet name="css/olympos-layout.css" library="olympos-layout"/>
+        <h:outputStylesheet name="style.css" library="icomoon"/>
+        <h:outputStylesheet name="css/my.css" library="other"/>
+
+        <style type="text/css">
+            .jqplot-target, .jqplot-axis {
+                color: #546E7A;
+            }
+        </style>
+        <!--<style>-->
+        <!--.BlueTopbar #layout-topbar-cover {-->
+        <!--background-color: #0275d8 !important;-->
+        <!--}-->
+        <!--#stackmenu img{-->
+        <!--width: 48px;-->
+        <!--}-->
+        <!--#stackmenu_stack li a span{-->
+        <!--width: 96px;-->
+        <!--}-->
+        <!--#stackmenu_stack li a img{-->
+        <!--width: 50px !important;-->
+        <!--}-->
+        <!--#stackmenu img {-->
+        <!--/*padding-top: 35px !important;*/-->
+        <!--}-->
+        <!--#stackmenu ul {-->
+        <!--display: none;-->
+        <!--}-->
+        <!--#stackmenu .openStack {-->
+        <!--display: block !important;-->
+        <!--}-->
+
+        <!--/*            .ui-stack {-->
+        <!--bottom: 64px !important;-->
+        <!--}*/-->
+        <!--</style>-->
+    </h:body>
+
+</html>

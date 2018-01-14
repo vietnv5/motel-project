@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:panel id="detailCustomerCheckinHisPanel" style="display: block;padding: 0px;margin: 0px;"
+             >
+        <p:dataTable value="#{reportPaymentController.lazyDataModel}" id="tableDetailCustomerCheckinHis"
+                     lazy="true" var="customCheckin" rowKey="#{customCheckin.id}" filterDelay="100"
+                     rendered="#{reportPaymentController.showDetailTable}"
+                     rowIndexVar="idx" editable="true" editMode="cell"
+                     rows="10" paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                     rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tblDetailCustomerCheckin"
+                     emptyMessage="#{msg['datatable.empty']}" styleClass="MemTable Container100 NoPadding MarTop10">
+            <f:facet name="header">
+                <div class="Card NoPadding" style="background: transparent;">
+                    <div class="Container20 Responsive50 TexAlCenter">
+                        <p:commandButton styleClass="RedButton Fs14 White" icon="fa fa-times" style="float: left"
+                                         actionListener="#{reportPaymentController.closeDetailTable()}"
+                                         update="@form:detailCustomerCheckinHisPanel">
+                        </p:commandButton>
+
+                    </div>
+                    <div class="Container60 Responsive50 TexAlCenter">
+                        <h:outputText styleClass="Fs18" value="Lịch sử hoạt động"/>
+
+                    </div>
+                    <div class="Container20 Responsive50" style="text-align: right;">
+                        <p:tooltip position="right"></p:tooltip>
+
+                        <p:commandButton icon="fa fa-download" ajax="false"
+                                         styleClass="White BlueButton Fs14 MarTop5">
+                            <p:dataExporter type="xls" target="tableDetailCustomerCheckinHis" fileName="DetailCustomerCheckinHis"
+                                            pageOnly="false"/>
+                        </p:commandButton>
+
+                    </div>
+                    
+                </div>
+
+            </f:facet>
+            <p:column headerText="#{msg['datatable.header.stt']}" width="15" style="text-align: center">
+                <h:outputText value="#{idx +1 }"/>
+            </p:column>
+            <p:column headerText="#{msg['client.cardCode']}" width="100" sortBy="#{customCheckin.cardCode}"
+                      filterBy="#{customCheckin.cardCode}" filterStyle="width:70%">
+                <h:outputText value="#{customCheckin.cardCode}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['client.name']}" width="100" sortBy="#{customCheckin.name}"
+                      filterBy="#{customCheckin.name}" filterStyle="width:70%">
+                <h:outputText value="#{customCheckin.name}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['customerCheckin.type']}" width="100" sortBy="#{customCheckin.type}"
+                      filterBy="#{customCheckin.type}" filterStyle="width:70%">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tblDetailCustomerCheckin').filter()" filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Hội viên" itemValue="1"/>
+                        <f:selectItem itemLabel="Khách lẻ" itemValue="2"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{customCheckin.typeName}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['customerCheckin.checkinTime']}" width="100" sortBy="#{customCheckin.checkTime}"
+                      filterBy="#{customCheckin.checkTime-BW}" filterStyle="width:70%">
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" widgetVar="widInDate">
+                        <p:ajax event="dateSelect" oncomplete="PF('tblDetailCustomerCheckin').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{customCheckin.checkTime}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100" sortBy="#{customCheckin.checkoutTime}"
+                      visible="true"
+                      filterBy="#{customCheckin.checkoutTime-BW}" filterStyle="width:70%">
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" widgetVar="widOutDate">
+                        <p:ajax event="dateSelect" oncomplete="PF('tblDetailCustomerCheckin').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{customCheckin.checkoutTime}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+
+
+            <p:column headerText="#{msg['customerCheckin.groupName']}" width="100" sortBy="#{customCheckin.groupMemberName}"
+                      filterBy="#{customCheckin.groupMemberName}" filterStyle="width:70%">
+                <h:outputText value="#{customCheckin.groupMemberName}"/>
+            </p:column>
+
+            <p:column headerText="Trạng thái" width="100" sortBy="#{customCheckin.status}"
+                      filterBy="#{customCheckin.status}" filterStyle="width:70%">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tblDetailCustomerCheckin').filter()"  filter="true" filterMatchMode="contains">
+                        <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                        <f:selectItem itemLabel="Đang sử dụng" itemValue="1"/>
+                        <f:selectItem itemLabel="Đã ngừng sử dụng" itemValue="2"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{customCheckin.statusName}"  style=" font-weight: bold; color: #{customCheckin.status==1 ? '#00aeef':'gray'}" />
+            </p:column>
+
+            <p:column headerText="#{msg['customerAccessStatus.groupPackName']}" width="100" >
+                <h:outputText value="#{customCheckin.catGroupPack.groupPackName}"/>
+            </p:column>
+        </p:dataTable>  
+    </p:panel>            
+
+</ui:composition>

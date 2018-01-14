@@ -1,0 +1,305 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <h:form id="form">
+
+            <div class=" Card Flex">
+                <div class="Container33 TexAlCenter" >
+                    <p:fieldset legend="#{msg['datatable.header.branch.name']}">
+
+                        <p:selectOneMenu  value="#{scheduleController.currBranch.branchId}" >
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"/>
+                            <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
+                            <p:ajax event="change" listener="#{scheduleController.loadSchedule}" update="roomId,@widgetVar(scheduleGym)"/>
+                        </p:selectOneMenu>
+                    </p:fieldset>
+                </div>
+                <div class="Container33 TexAlCenter" >
+                    <p:fieldset legend="#{msg['datatable.header.room.name']}">
+                        <p:selectOneMenu  id="roomId" value="#{scheduleController.currRoom.roomId}">
+                            <f:selectItem itemLabel="#{msg['label.choose']}"/>
+                            <f:selectItems value="#{roomController.getRoomsInBranch(scheduleController.currBranch.branchId)}" var="r" itemValue="#{r.roomId}" itemLabel="#{r.roomName}"/>
+                            <p:ajax event="change" listener="#{scheduleController.loadSchedule}" update="@widgetVar(scheduleGym)"/>
+                        </p:selectOneMenu>
+                    </p:fieldset>
+                </div>
+                <div class="Container33 TexAlCenter" >
+                    <p:fieldset legend="#{msg['datatable.header.pack.name']}">
+                        <p:selectOneMenu  value="#{scheduleController.currPack.packId}" filter="true"
+                                         filterMatchMode="contains"
+                                         style="width: 43%" scrollHeight="100"
+                        >
+                            <f:selectItem itemLabel="#{msg['label.choose']}"/>
+                            <f:selectItems value="#{scheduleController.getPackInRoom(scheduleController.currRoom.roomId)}" var="pa" itemLabel="#{pa.packName}" itemValue="#{pa.packId}"/>
+                            <p:ajax event="change" listener="#{scheduleController.loadSchedule}" update="@widgetVar(scheduleGym)"/>
+                        </p:selectOneMenu>
+                    </p:fieldset>
+                </div>
+            </div>
+            <div class=" Card">
+                    <h:panelGrid columns="4" id="tip" style="width: 50%">
+                        <c:forEach items="#{scheduleController.scheduleGym.packStyles}" var="pack">
+                            <h:panelGroup>
+                                <div style="width: 25px; height: 25px; float: left" class="#{pack.value}"/>
+                                <h:outputText value="#{pack.key}" style="line-height: 25px; margin-left: 5px"/>
+                            </h:panelGroup>
+                        </c:forEach>
+
+                    </h:panelGrid>
+            </div>
+            <p:schedule widgetVar="scheduleGym" view="agendaWeek" value="#{scheduleController.scheduleGym}" timeZone="Asia/Ho_Chi_Minh" tooltip="true"
+                    allDaySlot="false">
+                <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" onstart="PF('block').show()" update="eventDetails" oncomplete="PF('eventDialog').show();PF('block').hide()" />
+                <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" onstart="PF('block').show()" update="eventDetails" oncomplete="PF('eventDialog').show();PF('block').hide()" />
+                <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}"  />
+                <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}"  />
+                <p:ajax event="viewChange" update=":form:tip" listener="#{scheduleController.onChangeView}" />
+            </p:schedule>
+            <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                <h:panelGrid id="eventDetails" columns="2">
+                    <p:outputLabel for="title" value="#{msg['datatable.header.schedule.name']}:" />
+                    <p:inputText id="title" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.scheduleName}" required="true" />
+
+                    <p:outputLabel for="branch" value="#{msg['datatable.header.branch.name']}" />
+                    <p:selectOneMenu id="branch" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.room.branchId}" filter="true"
+                                     filterMatchMode="contains" disabled="false"
+                                     required="true" style="width: 43%" scrollHeight="100"
+                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branch.name'])}"
+                        >
+                        <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                        <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
+                        <p:ajax event="change" update="room" onstart="PF('block').show()" oncomplete="PF('block').hide()" />
+                    </p:selectOneMenu>
+                    <p:outputLabel for="room" value="#{msg['datatable.header.room.name']}" />
+                    <p:selectOneMenu id="room" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.roomId}" filter="true"
+                                     filterMatchMode="contains"
+                                     required="true" style="width: 43%" scrollHeight="100"
+                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
+                        >
+                        <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                        <f:selectItems value="#{roomController.getRoomsInBranch(scheduleController.event.data.room.branchId)}" var="p" itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                    </p:selectOneMenu>
+                    <p:outputLabel for="pack" value="#{msg['datatable.header.pack.name']}" />
+                    <p:selectOneMenu id="pack" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.packId}" filter="true"
+                                     filterMatchMode="contains"
+                                     required="true" style="width: 43%" scrollHeight="100"
+                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.name'])}"
+                        >
+                        <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                        <f:selectItems value="#{catGroupPackController.catPacks}" var="pa" itemLabel="#{pa.packName}" itemValue="#{pa.packId}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel for="from" value="Từ:" />
+                    <p:calendar id="from" required="true" value="#{scheduleController.event.startDate}" maxdate="#{scheduleController.event.endDate}"  pattern="dd/MM/yyyy HH:mm">
+                        <p:ajax update="to"/>
+                    </p:calendar>
+
+                    <p:outputLabel for="to" value="Đến:" />
+                    <p:calendar id="to" required="true" value="#{scheduleController.event.endDate}" mindate="#{scheduleController.event.startDate}"  pattern="dd/MM/yyyy HH:mm">
+                        <p:ajax update="from"/>
+                    </p:calendar>
+
+                    <p:outputLabel for="employee" value="HLV/Nhân viên" />
+                    <p:autoComplete id="employee" value="#{scheduleController.event.data.employee}" completeMethod="#{employeeController.completeEmployee}"
+                                    style="" placeholder="HLV/Nhân viên" converter="employeeConverter" dropdown="true"
+                                    var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                        <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
+                        <p:column><h:outputText value="#{emp.employeeName}"/></p:column>
+                        <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
+                        <p:column><h:outputText value="#{emp.telephone}"/></p:column>
+
+                    </p:autoComplete>
+                    <p:commandButton id="addButton" value="#{msg['button.save']}" actionListener="#{scheduleController.addEvent}"
+                                     update="@widgetVar(growl),@widgetVar(scheduleGym)"
+                                     oncomplete="PF('scheduleGym').update();" />
+                </h:panelGrid>
+            </p:dialog>
+        </h:form>
+
+
+        <!--Style-->
+        <style type="text/css">
+
+            .fc-scroller{
+                height: 100% !important;
+            }
+            .fc-content{
+                color: black !important;
+            }
+            .Pack1Room1{
+                background: #FFFF66 !important;
+                border-right: solid red 5px !important;
+                
+            }
+            .Pack2Room1{
+                background: #66FF66 !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack3Room1{
+                background: #FFCC66 !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack4Room1{
+                background: #FF99CC !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack5Room1{
+                background: #3399CC !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack6Room1{
+                background: #3366CC !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack7Room1{
+                background: #9933CC !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack8Room1{
+                background: #3300FF !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack9Room1{
+                background: #05c436 !important;
+                border-right: solid red 5px !important;
+            }
+            .Pack10Room1{
+                background: #666633 !important;
+                border-right: solid red 5px !important;
+            }
+
+            .Pack1Room2{
+                background: #FFFF66 !important;
+                border-right: solid blue 5px !important;
+
+            }
+            .Pack2Room2{
+                background: #66FF66 !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack3Room2{
+                background: #FFCC66 !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack4Room2{
+                background: #FF99CC !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack5Room2{
+                background: #3399CC !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack6Room2{
+                background: #3366CC !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack7Room2{
+                background: #9933CC !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack8Room2{
+                background: #3300FF !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack9Room2{
+                background: #05c436 !important;
+                border-right: solid blue 5px !important;
+            }
+            .Pack10Room2{
+                background: #666633 !important;
+                border-right: solid blue 5px !important;
+            }
+
+            .Pack1Room3{
+                background: #FFFF66 !important;
+                border-right: solid gray 5px !important;
+
+            }
+            .Pack2Room3{
+                background: #66FF66 !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack3Room3{
+                background: #FFCC66 !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack4Room3{
+                background: #FF99CC !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack5Room3{
+                background: #3399CC !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack6Room3{
+                background: #3366CC !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack7Room3{
+                background: #9933CC !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack8Room3{
+                background: #3300FF !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack9Room3{
+                background: #05c436 !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack10Room3{
+                background: #666633 !important;
+                border-right: solid gray 5px !important;
+            }
+            .Pack1Room4{
+                background: #FFFF66 !important;
+                border-right: solid yellow 5px !important;
+
+            }
+            .Pack2Room4{
+                background: #66FF66 !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack3Room4{
+                background: #FFCC66 !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack4Room4{
+                background: #FF99CC !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack5Room4{
+                background: #3399CC !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack6Room4{
+                background: #3366CC !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack7Room4{
+                background: #9933CC !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack8Room4{
+                background: #3300FF !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack9Room4{
+                background: #05c436 !important;
+                border-right: solid yellow 5px !important;
+            }
+            .Pack10Room4{
+                background: #666633 !important;
+                border-right: solid yellow 5px !important;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

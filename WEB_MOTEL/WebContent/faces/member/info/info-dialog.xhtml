@@ -1,0 +1,254 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+    <p:dialog modal="true" header="#{msg['dialog.header.member.info']}" widgetVar="memberInfoDlg" width="90%" height="650px" maximizable="true" >
+        <f:facet name="header">
+            <h:outputText value="#{msg['dialog.header.member.info']}" rendered="#{memberController.typeMember==1 }"/>
+            <h:outputText value="#{msg['dialog.header.groupMember.info']}" rendered="#{memberController.typeMember==2}"/>
+        </f:facet>
+        <h:form id="insertForm">
+            <div class="Container100 Responsive50">
+                <div class="Container20 Responsive50 TexAlCenter ">
+                    <div class="Card">
+                        <p:lightBox widgetVar="lighbox">
+                            <h:outputLink value="#">
+                                <p:graphicImage id="img1" value="#{imageStreamer.image}" cache="false"
+                                                width="100%">
+                                    <f:param name="fileName" value="#{memberController.curMember.imgPath}"/>
+                                    <f:param name="sex" value="#{memberController.curMember.sex}"/>
+                                    <f:param name="isPreviewProfile"
+                                             value="#{memberController.curMember.previewProfile}"/>
+                                </p:graphicImage>
+                                <p:resizable for="img1"/>
+                            </h:outputLink>
+
+                            <f:facet name="inline">
+                                <p:scrollPanel id="scp"
+                                               style="min-width: 500px; min-height: 500px" mode="native">
+                                    <p:graphicImage id="img" value="#{imageStreamer.image}" cache="false"
+                                                    width="100%">
+                                        <f:param name="fileName" value="#{memberController.curMember.imgPath}"/>
+                                        <f:param name="sex" value="#{memberController.curMember.sex}"/>
+                                        <f:param name="isPreviewProfile"
+                                                 value="#{memberController.curMember.previewProfile}"/>
+                                    </p:graphicImage>
+                                </p:scrollPanel>
+                                <p:resizable for="scp"/>
+
+                            </f:facet>
+                        </p:lightBox>
+                        <div class="Container100 Responsive50">
+                            <div class="Container60 Responsive50">
+                                <p:fileUpload label="#{msg['view.choose.file.image']}"
+                                              update="@widgetVar(lighbox)" allowTypes="/(\.|\/)(gif|jpe?g|png)$/"
+                                              invalidFileMessage="#{msg['view.fileupload.invalid.msg']}"
+                                              skinSimple="true"
+                                              fileUploadListener="#{memberController.handleImageUpload}"
+                                              auto="true">
+                                </p:fileUpload>
+                            </div>
+                            <div class="Container40 Responsive50">
+                                <p:commandButton value="#{msg['view.button.capture']}"
+                                                 oncomplete="PF('capture').show()"/>
+                            </div>
+                        </div>
+                        <div class="Container100 Responsive50"  style="align-content: center">
+                            <h:panelGrid id="panelFingerpirnt">
+                                <!--<h:panelGroup rendered="# {memberController.fingerprintPathNew!=null and memberController.fingerprintPathNew!=''}">-->
+
+                                <p:graphicImage id="gaucon2017" value="#{imageStreamerBill.image}"
+                                                cache="false"  width="120" height="180"
+                                                rendered="false"
+                                                >
+                                    <f:param name="imgPath" value="#{memberController.fingerprintPathNew}"/>
+                                </p:graphicImage>
+                                <!--</h:panelGroup>-->
+                                <h:outputText id="fingerpirntPathId" value="#{memberController.curMember.fingerprintPath !=null 
+                                                                              ? 'Đã có dấu vân tay':'Chưa có dấu vân tay'}"/>
+                                <h:commandButton id="btnLoadData" value="Hidden" action="#{memberController.synFingerprintPath()}"
+                                                 style="display:none" >
+                                    <f:ajax execute="@this" render=":fingerpirntPathId,:panelFingerpirnt" />
+                                </h:commandButton>
+                                <p:commandButton id="enableCallFinger" value="#{(memberController.isEdit==true) ? 'Lấy lại dấu vân tay' : 'Lấy dấu vân tay'}"
+                                                 action="#{memberController.synCallbackFingerprint()}"
+                                                 disabled="#{memberController.isChangeFingerprint  or memberController.IS_LOCAL==false}" process="@this">
+                                    <p:confirm icon="ui-icon-alert" header="Xác nhận lấy lại dấu vân tay" 
+                                               message="Dấu vân tay cũ sẽ bị xóa, bạn muốn nhập dấu vân tay mới không? "  disabled="#{!(memberController.isEdit
+                                                                                                                                      and memberController.curMember.fingerprintPath !=null)}">
+                                    </p:confirm>
+                                </p:commandButton>
+                            </h:panelGrid>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="Container80 Responsive50">
+                    <!--<p:tabView widgetVar="tabViewMemberInfo" id="memberTabViewId">-->
+                    <p:accordionPanel widgetVar="tabViewMemberInfo" id="memberTabViewId">
+                        <ui:include src="info-global.xhtml"/>
+                        <ui:include src="info-membership.xhtml"/>
+
+                        <p:tab title="#{msg['view.header.member.account']}">
+                            <p:dataTable value="#{memberController.curMember.memberPayments}" var="obj2" widgetVar="tblPayment"
+                                         rowIndexVar="r2"
+                                         rows="10" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                         rowsPerPageTemplate="5,10,15,20,30,50" 
+                                         >
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['view.header.member.account']}"/>
+                                </f:facet>
+                                <p:column headerText="#{msg['datatable.header.stt']}" width="10">
+                                    <h:outputText value="#{r2 + 1}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.payment.code']}" width="100">
+                                    <h:outputText value="#{obj2.paymentCode} "/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="120">
+                                    <h:outputText value="#{obj2.membership.groupPack.groupPackName}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['memberPayment.price']}" styleClass="TexAlRight" width="100">
+                                    <h:outputText value="#{obj2.price}">
+                                        <f:convertNumber pattern="#,###"/>
+                                    </h:outputText>
+                                    <h:outputText value=" VNĐ"/>
+                                </p:column>
+                                <p:column headerText="#{msg['membership.memberPayment.paymentValue']}" styleClass="TexAlRight"  width="100">
+                                    <h:outputText value="#{obj2.paymentValue}">
+                                        <f:convertNumber pattern="#,###"/>
+                                    </h:outputText>
+                                    <h:outputText value=" VNĐ"/>
+                                </p:column>
+                                <p:column headerText="#{msg['memberPayment.debt']}" styleClass="TexAlRight" width="100">
+                                    <h:outputText value="#{obj2.debt}">
+                                        <f:convertNumber pattern="#,###"/>
+                                    </h:outputText>
+                                    <h:outputText value=" VNĐ"/>
+                                </p:column>
+                                <p:column headerText="#{msg['payment.type']}" width="100">
+                                    <h:outputText value="#{obj2.typeName}"/>
+                                </p:column>
+
+                                <p:column headerText="#{msg['memberPayment.createTime']}" width="100" sortBy="#{obj2.createTime}"
+                                          ><h:outputText value="#{obj2.createTime}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                                    </h:outputText>
+                                </p:column>
+                                <p:column headerText="#{msg['clientPayment.voucherCode']}" width="80">
+                                    <h:outputText value="#{obj2.voucherCode}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.reason']}" width="100">
+                                    <h:outputText value="#{obj2.reason}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.description']}" width="100">
+                                    <h:outputText value="#{obj2.description}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.action']}" width="40" rendered="#{sessionUtil.getUrlDisplay('/member.action_edit_paymentTime')}"
+                                          visible="#{serviceTicketController.columnVisibale[1]}" styleClass="TexAlCenter">
+                                    <p:tooltip position="top" for="employeeServiceId" value="Sửa thời gian thanh toán" ></p:tooltip>
+                                    <p:commandButton icon="fa fa-edit" actionListener="#{memberController.preEditPaymentTime(obj2)}"
+                                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('editPaymentTimeDlg').show()"
+                                                     update=":editPaymentTimeForm" id="employeeServiceId"
+                                                     title="Sửa thời gian thanh toán" styleClass="White  Fs14 MarTop5 OrangeButton" >
+                                    </p:commandButton>
+                                </p:column>
+                            </p:dataTable>
+                            <p:outputPanel class="Container100 TexAlRight" id="memberPaymentPanel">
+                                <b> <h:outputText  value="Tổng công nợ: "/>
+                                    <h:outputText id="totalPaymentId" value="#{memberController.curMember.totalPayment}">
+                                        <f:convertNumber pattern="#,###"/>
+                                    </h:outputText>
+                                    <h:outputText value=" VNĐ "/>
+                                </b>
+                                <p:commandButton  value="Tất toán" styleClass="GreenButton White" disabled="#{memberController.curMember.totalPayment gt 0}"
+                                                  onclick="PF('blockDlg').show()" actionListener="#{memberController.preAddLiquidate()}"
+                                                  oncomplete="PF('liquidateDlg').show();PF('blockDlg').hide();" update=":liquidateDlgId"
+                                                  title="Tất toán"
+                                                  />
+                            </p:outputPanel>
+                        </p:tab>
+                        <p:tab title="#{msg['view.header.member.promotion']}">
+                            <p:dataTable value="#{memberController.curMember.memberPromotions}" var="objp"
+                                         rowIndexVar="rp"
+                                         rows="10" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                         rowsPerPageTemplate="5,10,15,20,30,50" 
+                                         >
+                                <f:facet name="header">
+                                    <h:outputText value="#{msg['view.header.member.promotion']}"/>
+                                </f:facet>
+                                <p:column headerText="#{msg['datatable.header.stt']}">
+                                    <h:outputText value="#{rp + 1}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.group.pack.name']}">
+                                    <h:outputText value="#{objp.groupPack.groupPackName}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.promotion.desc']}">
+                                    <h:outputText value="#{objp.description}"/>
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.promotion.value']}" styleClass="TexAlRight">
+                                    <h:outputText value="#{objp.value}" />
+                                </p:column>
+                                <p:column headerText="#{msg['datatable.header.promotion.createdate']}" styleClass="TexAlCenter">
+                                    <h:outputText value="#{objp.createDate}">
+                                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                                    </h:outputText>
+                                </p:column>
+                            </p:dataTable>
+                        </p:tab>
+
+                        <ui:include src="info-memberCheckin.xhtml"/>
+
+                        <p:tab title="#{msg['view.header.member.care']}"  rendered="#{memberController.curMember.type!=2}">
+                            <!--.-->
+                        </p:tab>
+                        <ui:include src="info-health.xhtml"/>
+
+                        <!--<p:tab title="#{msg['view.header.member.heath']}">-->
+                            <!--<p:dataTable value="#{memberController.curMember.memberHealths}" var="obj3" widgetVar="tblHealth"-->
+                        <!--rowIndexVar="r2">-->
+                        <!--<f:facet name="header">-->
+                            <!--<h:outputText value="#{msg['view.header.member.heath']}"/>-->
+                        <!--</f:facet>-->
+                        <!--<p:column headerText="#{msg['datatable.header.stt']}">-->
+                            <!--<h:outputText value="#{r2 + 1}"/>-->
+                        <!--</p:column>-->
+                        <!--<p:column headerText="#{msg['datatable.header.health.height']}"  styleClass="TexAlRight" >-->
+                            <!--<h:outputText value="#{obj3.height} "/>-->
+                        <!--</p:column>-->
+                        <!--<p:column headerText="#{msg['datatable.header.health.weight']}" styleClass="TexAlRight">-->
+                            <!--<h:outputText value="#{obj3.weight} "/>-->
+                        <!--</p:column>-->
+                        <!--<p:column headerText="#{msg['datatable.header.health.bloodPressure']}" styleClass="TexAlRight">-->
+                            <!--<h:outputText value="#{obj3.bloodPressure}"/>-->
+                        <!--</p:column>-->
+                        <!--<p:column headerText="#{msg['datatable.header.health.heartbeat']}"  styleClass="TexAlRight">-->
+                            <!--<h:outputText value="#{obj3.heartbeat}"/>-->
+                        <!--</p:column>-->
+                        <!--<p:column headerText="#{msg['datatable.header.health.healthLevel']}"  styleClass="TexAlRight">-->
+                            <!--<h:outputText value="#{obj3.healthLevel}"/>-->
+                        <!--</p:column>-->
+                        <!--<p:column headerText="#{msg['datatable.header.health.dateTime']}">-->
+                            <!--<h:outputText value="#{obj3.dateTime}">-->
+                        <!--<f:convertDateTime pattern="dd/MM/yyyy"/>-->
+                        <!--</h:outputText>-->
+                        <!--</p:column>-->
+
+                        <!--</p:dataTable>-->
+                        <!--</p:tab>-->
+                        <!--</p:tabView>-->
+                    </p:accordionPanel>
+                </div>
+            </div>
+
+        </h:form>
+    </p:dialog>
+
+</ui:composition>

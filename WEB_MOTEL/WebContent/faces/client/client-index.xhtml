@@ -1,0 +1,206 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml" xmlns:datas="http://java.sun.com/jsf/composite/datas">
+
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <p:growl id="growlClient" showDetail="true" showSummary="false" widgetVar="growlClient"/>
+        <h:form id="clientForm">
+            <p:dataTable value="#{clientController.lazyDataModel}" id="tableClientId"
+                         lazy="true" var="obj" rowKey="#{obj.clientId}" filterDelay="1500"
+                         selection="#{clientController.selectedClient}"
+                         rowIndexVar="idx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tableClientWidget"
+                         emptyMessage="#{msg['datatable.empty']}" styleClass="MemTable Container100 NoPadding MarTop10">
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 Responsive50" style="text-align: left;">
+                            <p:tooltip position="right" ></p:tooltip>
+                            <p:commandButton id="addClientBtId" icon="fa fa-plus-circle"
+                                             styleClass="OrangeButton Fs14 White"
+                                             onclick="PF('block').show()"
+                                             oncomplete="PF('warningOffDlg').show();PF('block').hide()"
+                                             update=":insertClientForm"
+                                             actionListener="#{clientController.preAddClient()}"
+                                             title="Thêm khách hàng"
+                                             />
+                            <p:spacer width="2px;" />
+<!--clientInfoDlg-->
+                            <!--<p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5"-->
+                            <!--onclick="PF('block').show()"-->
+                            <!--oncomplete="PF('exportDlg').show();PF('block').hide()"-->
+                            <!--actionListener="# {clientController.preAddMember}"-->
+                            <!--title="#{msg['view.dlg.export.obj']}"-->
+                            <!--/>-->
+                            <!--                            <p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5"
+                                                                         title="#{msg['view.dlg.export.obj']}"
+                                                                         onstart="PF('block').show()"
+                                                                         oncomplete="PF('block').hide()"
+                                                                         actionListener="# {clientController.exportMember}"
+                                                                         update="@widgetVar(growlClient)"
+                                                                         ajax="false"
+                                                                         >
+                                                            <p:fileDownload value="# {clientController.fileExported}"/>
+                                                        </p:commandButton>-->
+                            <p:commandButton icon="fa fa-file-excel-o" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                             actionListener="#{commonUtilsController.attributeListener}">
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.client']}" />
+                                <p:dataExporter type="xls" target="tableClientId" fileName="client" pageOnly="false"
+                                                postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                            </p:commandButton>
+
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.client']}"/>
+                        </div>
+                        <div class="Container20" style="text-align: right;">
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableClientId" trigger="toggler"/>
+                        </div>
+                    </div>
+
+                </f:facet>
+
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"></p:ajax>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"></p:ajax>
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" style="text-align: center">
+                    <h:outputText value="#{idx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['client.cardCode']}" width="20" sortBy="#{obj.cardCode}"
+                          filterBy="#{obj.cardCode}" filterStyle="width:70%" >
+                    <h:outputText value="#{obj.cardCode}"/>
+                </p:column>
+                <p:column headerText="#{msg['client.name']}" width="20" sortBy="#{obj.name}"
+                          filterBy="#{obj.name}" filterStyle="width:70%"
+                          ><h:outputText value="#{obj.name}"/></p:column>
+                <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="20" sortBy="#{obj.phoneNumber}"
+                          filterBy="#{obj.phoneNumber}" filterStyle="width:70%"
+                          ><h:outputText value="#{obj.phoneNumber}"/></p:column>
+                <!--                <p:column headerText="# {msg['client.cmt']}" width="20" sortBy="# {obj.cmt}"
+                                          filterBy="# {obj.cmt}" filterStyle="width:70%"
+                                          ><h:outputText value="# {obj.cmt}"/></p:column>-->
+                <p:column headerText="#{msg['datatable.header.sex']}" width="20" sortBy="#{obj.sex}" visible="false"
+                          ><h:outputText value="#{obj.sex}"/></p:column>
+                <p:column headerText="#{msg['datatable.header.joinDate']}" width="20" sortBy="#{obj.startTime}"
+                          filterBy="#{obj.startTime-BW}"
+                          >
+                    <f:facet name="filter" >
+                        <p:calendar pattern="dd/MM/yyyy" >
+                            <p:ajax event="dateSelect" oncomplete="PF('tableClientWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{obj.startTime}"><f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['client.endTime']}" width="20" sortBy="#{obj.endTime}"   filterBy="#{obj.endTime-BW}"
+                          >
+                    <f:facet name="filter" >
+                        <p:calendar pattern="dd/MM/yyyy" >
+                            <p:ajax event="dateSelect" oncomplete="PF('tableClientWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{obj.endTime}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['client.realEndTime']}" width="20" sortBy="#{obj.realEndTime}"
+                          visible="false"
+                          ><h:outputText value="#{obj.realEndTime}"><f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.status']}" width="20" sortBy="#{obj.statusName}"
+                          filterBy="#{obj.status}" >
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableClientWidget').filter()">
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                            <f:selectItem itemValue="1"
+                                          itemLabel="#{msg['view.label.status1']}"/>
+                            <f:selectItem itemValue="2"
+                                          itemLabel="#{msg['view.label.status2']}"/>
+                            <f:selectItem itemValue="3"
+                                          itemLabel="#{msg['client.status3']}"/>
+
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{obj.statusName}"/></p:column>   
+                <p:column headerText="#{msg['catUser.employee']}" width="20" filterBy="#{obj.employeeId}" visible="true"
+                          filterStyle="width:70%"  >
+                    <f:facet name="filter">
+
+                        <p:selectOneMenu                                   
+                            onchange="PF('tableClientWidget').filter()"
+                            filter="true" filterMatchMode="contains"
+                            >
+                            <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{employeeController.allEmployees}" var="o"
+                                           itemLabel="#{o.employeeCode} - #{o.employeeName}"
+                                           itemValue="#{o.employeeId}">
+                            </f:selectItems>
+
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{obj.employee.employeeName}"/></p:column>
+                <p:column headerText="#{msg['datatable.header.action']}" width="20" exportable="false">
+                    <p:commandButton icon="fa fa-info" actionListener="#{clientController.preEditClient(obj)}"
+                                     onclick="PF('block').show()" styleClass="White" update="@widgetVar(clientInfoDlg)"
+                                     oncomplete="PF('clientInfoDlg').show(), PF('block').hide()"/>
+                    <p:commandButton icon="fa fa-trash" actionListener="#{clientController.onDelete(obj)}"
+                                     onclick="PF('block').show()" oncomplete="PF('block').hide();"
+                                     update=":clientForm " id="deleteId"  rendered="#{sessionUtil.getUrlDisplay('/client.action_delete_client')}"
+                                     title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+        <ui:include src="info-dialog.xhtml"></ui:include>
+        <ui:include src="payment-dialog.xhtml"></ui:include>
+        <ui:include src="liquidate-dialog.xhtml"></ui:include>
+        <ui:include src="clientUsedService-info.xhtml"></ui:include>
+        <ui:include src="clientPaymentFinal-dialog.xhtml"></ui:include>
+        <ui:include src="checkinResult-dialog.xhtml"></ui:include>
+        <ui:include src="confirmImagesLocal.xhtml"/>
+        <ui:include src="warningOff-dialog.xhtml"/>
+
+        <p:dialog widgetVar="capture" width="50%">
+
+            <p:ajax event="close" update="@widgetVar(lighbox)"/>
+            <h:panelGrid columns="3" cellpadding="5">
+                <p:photoCam widgetVar="pc" listener="#{clientController.oncapture}" update="photo"/>
+                <p:commandButton type="button" value="Capture" onclick="PF('pc').capture()"/>
+                <p:outputPanel id="photo">
+                    <p:graphicImage value="#{imageStreamer.image}" cache="false"/>
+                </p:outputPanel>
+            </h:panelGrid>
+
+        </p:dialog>
+        <!--form gia de goi update-->
+        <h:form id="customerCheckoutSearchForm">
+
+        </h:form>
+
+        <style>
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 50px !important;
+                padding: 0 !important;
+            }
+            .ui-column-customfilter .ui-selectonemenu label {
+                padding-left: 0 !important;
+                padding-right: 0 !important;
+                width: 99px !important;
+            }
+        </style>
+
+    </ui:define>
+
+</ui:composition>

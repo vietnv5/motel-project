@@ -1,0 +1,297 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml" xmlns:datas="http://java.sun.com/jsf/composite/datas">
+
+    <ui:define name="content">
+        <h:form id="catFormId">
+            <p:growl id="growlCatPromotion" showDetail="true" showSummary="false"
+                     widgetVar="growlCatPromotionWid"/>
+
+            <p:outputPanel id="panelCatPromotion" style="display: none">
+                <div class="Card">
+                    <p:outputPanel class="Container100 Responsive50" id="panelCatPromotionAdd">
+                        <div class="Container100 Responsive100">
+                            <span class="title-top Container25 MarTop5">
+                                <p:inputText value="#{catPromotionController.catPromotionCurr.catPromotionCode}"
+                                             id="cServiceCode"/>
+                                <label class="title-elem">Mã khuyến mại *</label>
+                                <p:message for="cServiceCode"/>
+                            </span>
+                            <span class="title-top Container25 MarTop5">
+                                <p:inputText value="#{catPromotionController.catPromotionCurr.catPromotionName}"
+                                             id="cServiceName"/>
+                                <label class="title-elem">Tên khuyến mại</label>
+                                <p:message for="cServiceName"/>
+                            </span>
+                            <span class="title-top Container25 MarTop5">
+                                <p:selectOneMenu value="#{catPromotionController.catPromotionCurr.type}">
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="Thêm lượt sử dụng"/>
+                                    <f:selectItem itemValue="2" itemLabel="Giảm tiền %"/>
+                                    <f:selectItem itemValue="3" itemLabel="Giảm tiền mặt"/>
+                                    <f:selectItem itemValue="4" itemLabel="Thêm thời gian"/>
+                                    <p:ajax update="cServicePrice" event="change"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Loại khuyến mại</label>
+                            </span>
+                            <span class="title-top Container25 MarTop5">
+                                <p:inputNumber value="#{catPromotionController.catPromotionCurr.value}"
+                                               decimalPlaces="2"   symbolPosition="suffix" 
+                                               symbol="#{catPromotionController.catPromotionCurr.type eq 2 ? ' %' 
+                                                         : (catPromotionController.catPromotionCurr.type eq 3 ? ' VNĐ'
+                                                         :(catPromotionController.catPromotionCurr.type eq 4 ? ' ngày':'') )}"
+                                               id="cServicePrice"/>
+                                <label class="title-elem">Giá trị</label>
+                                <p:message for="cServicePrice"/>
+                            </span>
+                        </div>
+                        <div class="Container100 Responsive100">
+                            <span class="title-top Container25 MarTop10">
+                                <p:inputText value="#{catPromotionController.catPromotionCurr.description}"
+                                             id="cServiceDes"/>
+                                <label class="title-elem">Mô tả</label>
+                                <p:message for="cServiceDes"/>
+                            </span>
+                            <span class="title-top Container25 MarTop10">
+                                <p:calendar value="#{catPromotionController.catPromotionCurr.startDate}"
+                                            pattern="dd/MM/yyyy"
+                                            required="true"
+                                            requiredMessage="#{msg['common.required'].replace('{0}','Ngày bắt đầu')}"
+                                            id="cStartTime"/>
+                                <label class="title-elem" >Ngày bắt đầu *</label>
+                                <p:message for="cServiceDes"/>
+                            </span>
+                            <span class="title-top Container25 MarTop10">
+                                <p:calendar value="#{catPromotionController.catPromotionCurr.endDate}"
+                                            pattern="dd/MM/yyyy"
+                                            id="cEndTime"/>
+                                <label class="title-elem">Ngày kết thúc</label>
+                                <p:message for="cServiceDes"/>
+                            </span>
+
+                            <span class="title-top Container25 MarTop10">
+                                <p:selectOneMenu value="#{catPromotionController.catPromotionCurr.status}">
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="ENABLE"/>
+                                    <f:selectItem itemValue="2" itemLabel="DISABLE"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Trạng thái</label>
+                            </span>
+
+                        </div>
+                        <div class="Container100 Responsive100">
+                            <span class="title-top Container25 MarTop10">
+                                <p:selectOneMenu value="#{catPromotionController.catPromotionCurr.requireCode}">
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="Có"/>
+                                    <f:selectItem itemValue="2" itemLabel="Không"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Nhập mã khuyến mại</label>
+                            </span>
+                            <span class="title-top Container25 MarTop10">
+
+                                <p:selectOneMenu value="#{catPromotionController.catPromotionCurr.operator}" 
+                                                 title="Điều kiện" id="comparisonOperatorId" style="width: 135px;">
+
+                                    <f:selectItems value="#{catPromotionController.lstComparisonOperator}" var="db" 
+                                                   itemLabel="#{db.name}" itemValue="#{db.value}"></f:selectItems>
+                                    <p:ajax event="change"  update="individualThresholdId" 
+                                            listener="#{catPromotionController.changeComparisonOperator}"/>               
+
+                                </p:selectOneMenu>
+                                <label class="title-elem">Điều kiện áp dụng</label>
+                            </span>
+                            <span class="title-top Container25 MarTop10">
+                                <p:inputText label="Giá trị" maxlength="255" 
+                                             value="#{catPromotionController.catPromotionCurr.valueCompare}"
+                                             converter="trimConverter" id="individualThresholdId">
+                                    <p:tooltip id="tooltipComparsionId" for="individualThresholdId" 
+                                               value="#{catPromotionController.guide}" position="top"
+                                               rendered="#{catPromotionController.guide!=null 
+                                                           and catPromotionController.guide!=''}" />
+                                </p:inputText>
+                                <label class="title-elem">Số lượng</label>
+                            </span>
+
+                        </div>
+                    </p:outputPanel>
+                    <div class="Container100 MarTop20">
+                        <span class="title-top WidMoz" style="float: right;">
+                            <p:commandButton value="#{msg['button.save']}" icon="fa fa-floppy-o"
+                                             styleClass="GreenButton White"
+                                             onclick="PF('block').show()" oncomplete="PF('block').hide();" 
+                                             actionListener="#{catPromotionController.onSaveOrUpdate}"
+                                             update="@widgetVar(tblWidgetId),@widgetVar(growlCatPromotionWid),@form:panelCatPromotion:panelCatPromotionAdd"
+                                             process="@form:panelCatPromotion">
+                            </p:commandButton>
+                            <p:commandButton value="Đóng" icon="fa fa-close" styleClass="GrayButton White"
+                                             process="@this">
+                                <p:effect type="clip" event="click" for="panelCatPromotion" delay="0">
+                                    <f:param name="mode" value="'hide'"/>
+                                </p:effect>
+                            </p:commandButton>
+                        </span>
+                    </div>
+                </div>
+            </p:outputPanel>
+
+            <p:dataTable value="#{catPromotionController.lazyDataModel}" id="tableCatPromotion"
+                         lazy="true" var="catPromotion" rowKey="#{catPromotion.id}" filterDelay="1500"
+                         rowIndexVar="idx" editable="true" editMode="cell"
+                         rows="10" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50" widgetVar="tblWidgetId"
+                         emptyMessage="#{msg['datatable.empty']}" styleClass="MemTable Container100 NoPadding MarTop10">
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 Responsive50" style="text-align: left;">
+                            <p:tooltip position="right"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();"
+                                             actionListener="#{catPromotionController.preAdd}"
+                                             update="@form:panelCatPromotion:panelCatPromotionAdd"
+                                             title="#{msg['button.add']}">
+                                <p:effect type="clip" event="click" for="@form:panelCatPromotion" delay="0">
+                                    <f:param name="mode" value="'show'"/>
+                                </p:effect>
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5">
+                                <p:dataExporter type="xls" target="tableCatPromotion" fileName="catPromotion"
+                                                pageOnly="false"/>
+                            </p:commandButton>
+
+                        </div>
+                        <div class="Container60 Responsive50 TexAlCenter">
+                            <h:outputText styleClass="Fs18" value="#{msg['table.catPromotion.lbl']}"/>
+                        </div>
+                        <div class="Container20" style="text-align: left;">
+                            <p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-sliders"
+                                             styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableCatPromotion" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{catPromotionController.onToggler}"/>
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" style="text-align: center">
+                    <h:outputText value="#{idx +1 }"/>
+                </p:column>
+
+                <p:column width="10" exportable="false"
+                          headerText="#{msg['datatable.header.action']}" style="text-align:center;">
+
+                    <p:tooltip position="left"/>
+                    <p:commandButton icon="fa fa-list-ul" actionListener="#{catPromotionController.preEditPromotionForPack(catPromotion)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('promotionForPackDlg').show()"
+                                     update=":promotionForPackForm" id="updatePromotionForPackId" process="@this"
+                                     title="Gói hưởng khuyễn mại" styleClass="White  Fs14 MarTop5 YellowButton" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton
+                        title="Cập nhật" styleClass="Fs14 White GreenButton"
+                        icon="fa fa-edit" process="@widgetVar(tblWidgetId)"
+                        actionListener="#{catPromotionController.preEdit(catPromotion)}"
+                        style="color:green; font-weight: bold;font-size: 13px "
+                        update="@form:panelCatPromotion:panelCatPromotionAdd">
+                        <p:effect type="clip" event="click" for="@form:panelCatPromotion" delay="0">
+                            <f:param name="mode" value="'show'"/>
+                        </p:effect>
+                    </p:commandButton>
+
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{catPromotionController.onDelete(catPromotion)}"
+                                     onclick="PF('block').show()" oncomplete="PF('block').hide();"
+                                     update="tableCatPromotion "
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.code']}" width="20"
+                          sortBy="#{catPromotion.catPromotionCode}"
+                          filterBy="#{catPromotion.catPromotionCode}" filterStyle="width:70%">
+                    <h:outputText value="#{catPromotion.catPromotionCode}" style="text-align: center;"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.name']}" width="20"
+                          sortBy="#{catPromotion.catPromotionName}"
+                          filterBy="#{catPromotion.catPromotionName}" filterStyle="width:70%">
+                    <h:outputText value="#{catPromotion.catPromotionName}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.type']}" width="20" sortBy="#{catPromotion.type}"
+                          style="text-align: center;"
+                          filterBy="#{catPromotion.type}" filterStyle="width:70%">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tblWidgetId').filter()" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemValue="1" itemLabel="Thêm lượt sử dụng"/>
+                            <f:selectItem itemValue="2" itemLabel="Giảm tiền %"/>
+                            <f:selectItem itemValue="3" itemLabel="Giảm tiền mặt"/>
+                            <f:selectItem itemValue="4" itemLabel="Thêm thời gian"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{catPromotion.typeName}" style="text-align: center;"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.value']}" width="20" sortBy="#{catPromotion.value}"
+                          style="text-align: center;"
+                          filterBy="#{catPromotion.value}" filterStyle="width:70%">
+                    <h:outputText value="#{catPromotion.valueStr}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.des']}" width="20" sortBy="#{catPromotion.description}"
+                          filterBy="#{catPromotion.description}" filterStyle="width:70%">
+                    <h:outputText value="#{catPromotion.description}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.start']}" width="20" sortBy="#{catPromotion.startDate}"
+                          filterBy="#{catPromotion.startDate-BW}" filterStyle="width:70%">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy" widgetVar="widSDate">
+                            <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{catPromotion.startDate}"><f:convertDateTime
+                            pattern="dd/MM/yyyy"/></h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.end']}" width="20" sortBy="#{catPromotion.endDate}"
+                          filterBy="#{catPromotion.endDate-BW}" filterStyle="width:70%">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy" widgetVar="widEDate">
+                            <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{catPromotion.endDate}"><f:convertDateTime
+                            pattern="dd/MM/yyyy"/></h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg['table.catPromotion.status']}" width="20" sortBy="#{catPromotion.status}"
+                          style="text-align: center;"
+                          filterBy="#{catPromotion.status}" filterStyle="width:70%">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tblWidgetId').filter()" filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="ENABLE" itemValue="1"/>
+                            <f:selectItem itemLabel="DISABLE" itemValue="0"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{catPromotion.statusName}"/>
+                </p:column>
+
+            </p:dataTable>
+        </h:form>
+        <ui:include src="promotionForPack-dialog.xhtml"/>
+    </ui:define>
+</ui:composition>

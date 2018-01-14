@@ -1,0 +1,414 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <p:dataTable value="#{alarmMonitoringController.lazyVAlarmMonitoring}" id="tableAMId"
+                         lazy="true" var="vAlarmMonitoring" rowKey="#{vAlarmMonitoring.gscnttAlarmHisId}"
+                         filterDelay="2000"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200" widgetVar="tableAMWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+                         resizableColumns="false"
+                    >
+
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <!--Button-->
+                        <div class="Container20 Responsive50 TexAlLeft">
+                            <!--Add Alarm Config-->
+                            <p:tooltip position="right" for="exportAM"></p:tooltip>
+                            <!--Export Alarm Config-->
+                            <p:commandButton id="exportAM" icon="fa fa-file-excel-o"
+                                             styleClass="GreenButton Fs14 White Marleft5"
+                                             ajax="false"
+                                             title="#{msg['button.export']}"
+                                             onclick="PrimeFaces.monitorDownload(start, stop);">
+                                <p:fileDownload value="#{alarmMonitoringController.onExport()}"/>
+                            </p:commandButton>
+                        </div>
+                        <script type="text/javascript">
+                            function start() {
+                                PF('block').show();
+                            }
+
+                            function stop() {
+                                PF('block').hide();
+                            }
+                        </script>
+                        <!--Header Name-->
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.alarmMonitoring']}"/>
+                        </div>
+                        <!--Column Toggler-->
+                        <div class="Container20" style="text-align: right;">
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableAMId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{alarmMonitoringController.onToggler}"/>
+                            </p:columnToggler>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="2" styleClass="TexAlCenter"
+                          visible="#{alarmMonitoringController.colVisible.get('index')}">
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <!--Checkbox-->
+                <p:column selectionMode="multiple" width="2" exportable="false" styleClass="TexAlCenter"
+                          visible="#{alarmMonitoringController.colVisible.get('selection')}"/>
+                <!--action-->
+                <p:column headerText="#{msg['alarmConfig.action']}" width="10"
+                          styleClass="TexAlLeft combo"
+                          visible="#{alarmMonitoringController.colVisible.get('action')}">
+                    <p:outputPanel style="width: 100%; text-align:center">
+                        <p:commandButton icon="fa fa-history"
+                                         styleClass="White TealButton Fs14"
+                                         update=":form:growl, :form:serverHisDlg"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{serverHisController.showHis(vAlarmMonitoring)}"
+                                         title="#{msg['button.history']}"
+                                         rendered="#{vAlarmMonitoring.monitorType == 'SERVER'}"
+                                />
+                        <p:commandButton icon="fa fa-history"
+                                         styleClass="White TealButton Fs14"
+                                         update=":form:growl, :form:dbHisDlg"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{databaseHisController.showHis(vAlarmMonitoring)}"
+                                         title="#{msg['button.history']}"
+                                         rendered="#{vAlarmMonitoring.monitorType == 'DATABASE'}"
+                                />
+                    </p:outputPanel>
+                </p:column>
+                <!--extraInfor-->
+                <p:column id="colExtraInfor" headerText="#{msg['alarmMonitoring.extraInfor']}" width="20"
+                          filterBy="#{vAlarmMonitoring.extraInfor}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('extraInfor')}">
+                    <p:importConstants type="com.slook.util.Constant"/>
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableAMWidget').filter()">
+                            <f:selectItem itemLabel="#{msg['alarmMonitoring.extraInfor']}" itemValue=""/>
+                            <f:selectItem itemLabel="#{msg['extraInfor.CRITICAL']}"
+                                          itemValue="#{msg['extraInfor.CRITICAL']}"/>
+                            <f:selectItem itemLabel="#{msg['extraInfor.WARNING']}"
+                                          itemValue="#{msg['extraInfor.WARNING']}"/>
+                            <f:selectItem itemLabel="#{msg['extraInfor.CLEARED']}"
+                                          itemValue="#{msg['extraInfor.CLEARED']}"/>
+                        </p:selectOneMenu>
+
+                    </f:facet>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmMonitoring.extraInfor == 'CRITICAL'}">
+                        <h:outputText value="#{vAlarmMonitoring.extraInfor}"
+                                      style="color: red; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmMonitoring.extraInfor == 'WARNING'}">
+                        <h:outputText value="#{vAlarmMonitoring.extraInfor}"
+                                      style="color: greenyellow; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmMonitoring.extraInfor == 'CLEARED'}">
+                        <h:outputText value="#{vAlarmMonitoring.extraInfor}"
+                                      style="color: blue; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+
+                </p:column>
+
+                <!--monitorType-->
+                <p:column id="colMonitorType" headerText="#{msg['alarmConfig.monitorType']}" width="25"
+                          filterBy="#{vAlarmMonitoring.monitorType}" styleClass="TexAlLeft combo"
+                          visible="#{alarmMonitoringController.colVisible.get('monitorType')}">
+                    <p:importConstants type="com.slook.util.Constant"/>
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableAMWidget').filter()"
+                                         value="#{alarmMonitoringController.monitorType}">
+                            <f:selectItem itemLabel="#{msg['alarmConfig.monitorType']}" itemValue=""/>
+                            <f:selectItem itemLabel="#{msg['monitorType.APPLICATION']}"
+                                          itemValue="#{msg['monitorType.APPLICATION']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.DATABASE']}"
+                                          itemValue="#{msg['monitorType.DATABASE']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.SERVER']}"
+                                          itemValue="#{msg['monitorType.SERVER']}"/>
+                            <p:ajax event="change"
+                                    update="form:tableAMId:comboServiceName"
+                                    listener="#{alarmMonitoringController.changeMonitorType}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmMonitoring.monitorType == 'SERVER'}">
+                        <i class="fa  fa-server  Fs18 Blue" style=""></i>
+                        <br/>
+                        <h:outputText value="#{vAlarmMonitoring.monitorType}"
+                                      style="color: #00aaff; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmMonitoring.monitorType == 'DATABASE'}">
+                        <i class="fa  fa-database  Fs18 Green" style=""></i>
+                        <br/>
+                        <h:outputText value="#{vAlarmMonitoring.monitorType}"
+                                      style="color: #05c436; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                </p:column>
+
+                <!--serviceName-->
+                <p:column id="colServiceName" headerText="#{msg['alarmMonitoring.serviceName']}" width="30"
+                          filterBy="#{vAlarmMonitoring.service.serviceName}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('serviceName')}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu id="comboServiceName" onchange="PF('tableAMWidget').filter()"
+                                         filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="#{msg['alarmMonitoring.serviceName']}" itemValue=""
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{alarmMonitoringController.listService}" var="service"
+                                           itemLabel="#{service.serviceName}"
+                                           itemValue="#{service.serviceName}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText id="serviceName" value="#{vAlarmMonitoring.service.serviceName}"
+                                  title="#{msg['alarmMonitoring.serviceName']}"/>
+                    <p:tooltip for="serviceName" value="#{vAlarmMonitoring.service.serviceName}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--ip-->
+                <p:column headerText="#{msg['alarmMonitoring.ip']}" width="30"
+                          filterBy="#{vAlarmMonitoring.ip}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('ip')}">
+                    <h:outputText id="ip" value="#{vAlarmMonitoring.ip}"
+                                  title="#{msg['alarmMonitoring.ip']}"/>
+                </p:column>
+
+                <!--moduleCode-->
+                <p:column headerText="#{msg['alarmMonitoring.moduleCode']}" width="30"
+                          filterBy="#{vAlarmMonitoring.moduleCode}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('moduleCode')}">
+                    <h:outputText id="moduleCode" value="#{vAlarmMonitoring.moduleCode}"
+                                  title="#{msg['alarmMonitoring.moduleCode']}"/>
+                    <p:tooltip for="moduleCode" value="#{vAlarmMonitoring.moduleCode}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--appCode-->
+                <p:column headerText="#{msg['alarmMonitoring.appCode']}" width="30"
+                          filterBy="#{vAlarmMonitoring.appCode}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('appCode')}">
+                    <h:outputText id="appCode" value="#{vAlarmMonitoring.appCode}"
+                                  title="#{msg['alarmMonitoring.appCode']}"/>
+                    <p:tooltip for="appCode" value="#{vAlarmMonitoring.appCode}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--alarmContent-->
+                <p:column headerText="#{msg['alarmMonitoring.alarmContent']}" width="60"
+                          filterBy="#{vAlarmMonitoring.alarmContent}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('alarmContent')}">
+                    <h:outputText id="alarmContent" value="#{vAlarmMonitoring.alarmContent}"
+                                  title="#{msg['alarmMonitoring.alarmContent']}"/>
+                    <p:tooltip for="alarmContent" value="#{vAlarmMonitoring.alarmContent}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--createTime-->
+                <p:column headerText="#{msg['alarmMonitoring.createTime']}" width="20"
+                          filterBy="#{vAlarmMonitoring.createTime-BW}" styleClass="TexAlCenter"
+                          visible="#{alarmMonitoringController.colVisible.get('createTime')}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
+                            <p:ajax event="dateSelect" oncomplete="PF('tableAMWidget').filter()"/>
+                            <p:ajax event="change" execute="@this" oncomplete="PF('tableAMWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+
+                    <h:outputText id="createTime" value="#{vAlarmMonitoring.createTime}"
+                                  title="#{msg['alarmMonitoring.createTime']}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+
+                <!--nowDate-->
+                <p:column headerText="#{msg['alarmMonitoring.nowDate']}" width="20"
+                          filterBy="#{vAlarmMonitoring.nowDate-BW-DEFAULT}" styleClass="TexAlCenter"
+                          visible="#{alarmMonitoringController.colVisible.get('nowDate')}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy" value="#{now}">
+                            <p:ajax event="dateSelect" oncomplete="PF('tableAMWidget').filter()"/>
+                            <p:ajax event="change" execute="@this" oncomplete="PF('tableAMWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+
+                    <h:outputText id="nowDate" value="#{vAlarmMonitoring.nowDate}"
+                                  title="#{msg['alarmMonitoring.nowDate']}">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
+                </p:column>
+
+                <!--currentValue-->
+                <p:column headerText="#{msg['alarmMonitoring.currentValue']}" width="15"
+                          filterBy="#{vAlarmMonitoring.currentValue}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('currentValue')}">
+                    <h:outputText id="currentValue" value="#{vAlarmMonitoring.currentValue}"
+                                  title="#{msg['alarmMonitoring.currentValue']}"/>
+                    <p:tooltip for="currentValue" value="#{vAlarmMonitoring.currentValue}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--counterCritical-->
+                <p:column headerText="#{msg['alarmMonitoring.counterCritical']}" width="15"
+                          filterBy="#{vAlarmMonitoring.counterCritical}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('counterCritical')}">
+                    <h:outputText id="counterCritical" value="#{vAlarmMonitoring.counterCritical}"
+                                  title="#{msg['alarmMonitoring.counterCritical']}"/>
+                </p:column>
+
+                <!--counterWarning-->
+                <p:column headerText="#{msg['alarmMonitoring.counterWarning']}" width="15"
+                          filterBy="#{vAlarmMonitoring.counterWarning}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('counterWarning')}">
+                    <h:outputText id="counterWarning" value="#{vAlarmMonitoring.counterWarning}"
+                                  title="#{msg['alarmMonitoring.counterWarning']}"/>
+                </p:column>
+
+                <!--reason-->
+                <p:column headerText="#{msg['alarmMonitoring.reason']}" width="60"
+                          filterBy="#{vAlarmMonitoring.reason}" styleClass="TexAlLeft"
+                          visible="#{alarmMonitoringController.colVisible.get('reason')}">
+                    <h:outputText id="reason" value="#{vAlarmMonitoring.reasonHtml}"
+                                  title="#{msg['alarmMonitoring.reason']}" escape="false"
+                                  rendered="#{!(vAlarmMonitoring.reason.length() > 80)}"/>
+
+                    <p:outputPanel id="reasonPnl" rendered="#{vAlarmMonitoring.reason.length() > 80}">
+                        <h:outputText id="reason1" value="#{fn:substring(vAlarmMonitoring.reason,0,80)}"
+                                      title="#{msg['alarmMonitoring.reason']}" escape="false"/>
+                        <p:commandLink
+                                update=":form:growl, :form:reasonDlg"
+                                onclick="PF('block').show()"
+                                oncomplete="PF('block').hide()"
+                                actionListener="#{alarmMonitoringController.showReason(vAlarmMonitoring)}">
+                            <h:outputText value=" ..."/>
+                        </p:commandLink>
+                    </p:outputPanel>
+                    <p:tooltip for="reason" value="#{vAlarmMonitoring.reasonHtml}"
+                               trackMouse="true" showEffect="clip" escape="false"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <!--Loading dialog-->
+            <p:dialog modal="true" class="transparent-dialog" showHeader="false"
+                      widgetVar="block" draggable="false" closable="false" resizable="false">
+        	<span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;">
+        		<i class="fa fa-fire fa-stack-1x" style="bottom: 40px; color: #FAFAFA; font-size: 0.8em"></i>
+			  	<i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-stack-2x" style="color: #00AAFF; font-size: 3em;"></i>
+			  	<i class="fa fa-coffee fa-stack-1x" style="color: #975524; bottom: 20px;font-size: 1.2em"></i>
+			</span>
+            </p:dialog>
+
+            <!--Export Dialog-->
+            <p:dialog widgetVar="exportAlarmDlg" width="60%"
+                      height="50%" modal="true" showEffect="size" hideEffect="scale">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.export']}"/>
+                </f:facet>
+
+                <div class="Container100 NoPadding">
+                </div>
+            </p:dialog>
+
+            <!--Server History Dialog-->
+            <p:dialog id="serverHisDlg" widgetVar="serverHisDlg" width="95%"
+                      height="95%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.history']}"/>
+                </f:facet>
+                <ui:include src="server_his.xhtml"/>
+                <p:ajax event="close" update="growl" listener="#{serverHisController.handleClose}"/>
+            </p:dialog>
+
+            <!--Database History Dialog-->
+            <p:dialog id="dbHisDlg" widgetVar="dbHisDlg" width="95%"
+                      height="95%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.history']}"/>
+                </f:facet>
+                <ui:include src="db_his.xhtml"/>
+                <p:ajax event="close" update="growl" listener="#{databaseHisController.handleClose}"/>
+            </p:dialog>
+
+            <!--Detail Dialog-->
+            <p:dialog id="reasonDlg" widgetVar="reasonDlg" width="50%"
+                      height="50%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['alarmMonitoring.reason']}"/>
+                </f:facet>
+                <h:outputText styleClass="TexAlCenter" escape="false"
+                              value="#{alarmMonitoringController.vAlarmMonitoring.reasonHtml}"/>
+            </p:dialog>
+        </h:form>
+        <!--Style-->
+        <style type="text/css">
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-column-customfilter .hasDatepicker {
+                width: 76% !important;
+            }
+
+            #form\:tableAMId\:colExtraInfor .ui-column-customfilter,
+            #form\:tableAMId\:colMonitorType .ui-column-customfilter,
+            #form\:tableAMId\:colServiceName .ui-column-customfilter {
+                margin-bottom: -2px !important;
+            }
+
+            /*block*/
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+</ui:composition>

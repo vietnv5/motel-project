@@ -1,0 +1,557 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <p:dataTable value="#{alarmConfigController.lazyVAlarmConfig}" id="tableConfigAlarmId"
+                         lazy="true" var="vAlarmConfig" rowKey="#{vAlarmConfig.alarmConfigId}" filterDelay="2000"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         selection="#{alarmConfigController.listSelectVAlarmConfig}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableConfigAlarmWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+            resizableColumns="true"
+            >
+
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <!--Header Name-->
+                        <div class="Container95 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.alarmConfig']}"/>
+                        </div>
+                        <!--Column Toggler-->
+                        <div class="Container5 TexAlRight">
+                            <p:commandButton id="toggler" type="button"
+                                             icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableConfigAlarmId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{alarmConfigController.onToggler}"/>
+                            </p:columnToggler>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          visible="#{alarmConfigController.colVisible.get('index')}">
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <!--Checkbox-->
+                <p:column selectionMode="multiple" width="5" exportable="false" styleClass="TexAlCenter"
+                          visible="#{alarmConfigController.colVisible.get('selection')}"/>
+                <!--status-->
+                <p:column id="colStatus" headerText="#{msg['alarmConfig.status']}" width="10"
+                          filterBy="#{vAlarmConfig.status}" styleClass="TexAlLeft combo"
+                          visible="#{alarmConfigController.colVisible.get('status')}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableConfigAlarmWidget').filter()">
+                            <f:selectItem itemLabel="#{msg['alarmConfig.status']}" itemValue=""/>
+                            <f:selectItems value="#{alarmConfigController.mapStatus.entrySet()}" var="entry"
+                                           itemLabel="#{entry.value}"
+                                           itemValue="#{entry.key}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmConfig.status == 0}">
+                        <p:commandButton icon="fa fa-lock"
+                                         styleClass="Black TealButton Fs14"
+                                         update=":form:growl,:form:tableConfigAlarmId"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{alarmConfigController.unlockAlarmConfig(vAlarmConfig)}"
+                                         title="#{msg['button.unlock']}"
+                                />
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmConfig.status == 1}">
+                        <p:commandButton icon="fa fa-unlock-alt"
+                                         styleClass="White TealButton Fs14"
+                                         update=":form:growl,:form:tableConfigAlarmId"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{alarmConfigController.lockAlarmConfig(vAlarmConfig)}"
+                                         title="#{msg['button.lock']}"
+                                />
+                    </p:outputPanel>
+                </p:column>
+                <!--alarmConfigId-->
+                <p:column headerText="#{msg['alarmConfig.alarmConfigId']}" width="60"
+                          filterBy="#{vAlarmConfig.alarmConfigId}" styleClass="TexAlLeft"
+                          visible="#{alarmConfigController.colVisible.get('alarmConfigId')}">
+                    <h:outputText id="alarmConfigId" value="#{vAlarmConfig.alarmConfigId}"
+                                  title="#{msg['alarmConfig.alarmConfigId']}"/>
+                </p:column>
+                <!--monitorType-->
+                <p:column id="colMonitorType" headerText="#{msg['alarmConfig.monitorType']}" width="25"
+                          filterBy="#{vAlarmConfig.monitorType}" styleClass="TexAlLeft combo"
+                          visible="#{alarmConfigController.colVisible.get('monitorType')}">
+                    <p:importConstants type="com.slook.util.Constant"/>
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableConfigAlarmWidget').filter()"
+                                         value="#{alarmConfigController.monitorType}">
+                            <f:selectItem itemLabel="#{msg['alarmConfig.monitorType']}" itemValue=""/>
+                            <f:selectItem itemLabel="#{msg['monitorType.APPLICATION']}"
+                                          itemValue="#{msg['monitorType.APPLICATION']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.DATABASE_ORACLE_ALAM']}"
+                                          itemValue="#{msg['monitorType.DATABASE_ORACLE_ALAM']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.DATABASE_MYSQL_ALAM']}"
+                                          itemValue="#{msg['monitorType.DATABASE_MYSQL_ALAM']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.DATABASE_MSSQL_ALAM']}"
+                                          itemValue="#{msg['monitorType.DATABASE_MSSQL_ALAM']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.SERVER']}"
+                                          itemValue="#{msg['monitorType.SERVER']}"/>
+                            <p:ajax event="change"
+                                    update="form:tableConfigAlarmId:comboServiceName"
+                                    listener="#{alarmConfigController.changeMonitorType}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmConfig.monitorType == 'SERVER'}">
+                        <i class="fa  fa-server  Fs18 Blue" style=""></i>
+                        <br/>
+                        <h:outputText value="#{vAlarmConfig.monitorType}"
+                                      style="color: #00aaff; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vAlarmConfig.monitorType == 'DATABASE_ORACLE_ALAM'
+                                   || vAlarmConfig.monitorType == 'DATABASE_MYSQL_ALAM'
+                                   || vAlarmConfig.monitorType == 'DATABASE_MSSQL_ALAM'}">
+                        <i class="fa  fa-database  Fs18 Green" style=""></i>
+                        <br/>
+                        <h:outputText value="#{vAlarmConfig.monitorType}"
+                                      style="color: #05c436; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                </p:column>
+
+                <!--monitorCode-->
+                <p:column headerText="#{msg['alarmConfig.monitorCode']}" width="60"
+                          filterBy="#{vAlarmConfig.monitorCode}" styleClass="TexAlLeft"
+                          visible="#{alarmConfigController.colVisible.get('monitorCode')}">
+                    <h:outputText id="monitorCode" value="#{vAlarmConfig.monitorCode}"
+                                  title="#{msg['alarmConfig.monitorCode']}"/>
+                    <p:tooltip for="monitorCode" value="#{vAlarmConfig.monitorCode}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--monitorName-->
+                <p:column headerText="#{msg['alarmConfig.monitorName']}" width="60"
+                          filterBy="#{vAlarmConfig.monitorName}" styleClass="TexAlLeft"
+                          visible="#{alarmConfigController.colVisible.get('monitorName')}">
+                    <h:outputText id="monitorName" value="#{vAlarmConfig.monitorName}"
+                                  title="#{msg['alarmConfig.monitorName']}"/>
+                    <p:tooltip for="monitorName" value="#{vAlarmConfig.monitorName}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--serviceName-->
+                <p:column id="colServiceName" headerText="#{msg['alarmConfig.serviceName']}" width="60"
+                          filterBy="#{vAlarmConfig.serviceName}" styleClass="TexAlLeft combo"
+                          visible="#{alarmConfigController.colVisible.get('serviceName')}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu id="comboServiceName" onchange="PF('tableConfigAlarmWidget').filter()"
+                                         filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="#{msg['alarmConfig.serviceName']}" itemValue=""
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{alarmConfigController.listService}" var="service"
+                                           itemLabel="#{service.serviceName}"
+                                           itemValue="#{service.serviceName}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText id="serviceName" value="#{vAlarmConfig.serviceName}"
+                                  title="#{msg['alarmConfig.serviceName']}"/>
+                    <p:tooltip for="serviceName" value="#{vAlarmConfig.serviceName}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--advance-->
+                <p:column headerText="#{msg['alarmConfig.advance']}" width="20"
+                          filterBy="#{vAlarmConfig.advance}" styleClass="TexAlLeft"
+                          visible="#{alarmConfigController.colVisible.get('advance')}">
+                    <h:outputText id="advance" value="#{vAlarmConfig.advance}"
+                                  title="#{msg['alarmConfig.advance']}"/>
+                    <p:tooltip for="advance" value="#{vAlarmConfig.advance}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--exclude-->
+                <p:column headerText="#{msg['alarmConfig.exclude']}" width="20"
+                          filterBy="#{vAlarmConfig.exclude}" styleClass="TexAlLeft"
+                          visible="#{alarmConfigController.colVisible.get('exclude')}">
+                    <h:outputText id="exclude" value="#{vAlarmConfig.exclude}"
+                                  title="#{msg['alarmConfig.exclude']}"/>
+                    <p:tooltip for="exclude" value="#{vAlarmConfig.exclude}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--interval-->
+                <p:column headerText="#{msg['alarmConfig.interval']}" width="20"
+                          filterBy="#{vAlarmConfig.interval}" styleClass="TexAlLeft"
+                          visible="#{alarmConfigController.colVisible.get('interval')}">
+                    <h:outputText id="interval" value="#{vAlarmConfig.interval}"
+                                  title="#{msg['alarmConfig.interval']}"/>
+                    <p:tooltip for="exclude" value="#{vAlarmConfig.interval}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--timeMonitor-->
+                <p:column headerText="#{msg['alarmConfig.timeMonitor']}" width="200"
+                          filterBy="#{vAlarmConfig.timeMonitor}"
+                          visible="#{alarmConfigController.colVisible.get('timeMonitor')}">
+
+                    <p:dataTable value="#{vAlarmConfig.listConfigObj}" id="tableConfigObjId"
+                                 var="configObj" filterDelay="2000"
+                                 rowIndexVar="configObjIdx" editable="true" editMode="cell"
+                                 paginator="false"
+                                 styleClass="Container100 NoPadding MarTop10"
+                                 resizableColumns="true"
+                            >
+                        <!--day-->
+                        <p:column headerText="#{msg['configObj.day']}" width="20">
+                            <h:outputText id="day" value="#{configObj.day}"
+                                          title="#{msg['configObj.day']}"/>
+                            <p:tooltip for="day" value="#{configObj.day}"
+                                       trackMouse="true" showEffect="clip"/>
+                        </p:column>
+                        <!--hour-->
+                        <p:column headerText="#{msg['configObj.hour']}" width="20">
+                            <h:outputText id="hour" value="#{configObj.hour}"
+                                          title="#{msg['configObj.hour']}"/>
+                            <p:tooltip for="hour" value="#{configObj.hour}"
+                                       trackMouse="true" showEffect="clip"/>
+                        </p:column>
+                        <!--warning-->
+                        <p:column headerText="#{msg['configObj.warning']}" width="2">
+                            <h:outputText id="warning" value="#{configObj.warning}"
+                                          title="#{msg['configObj.warning']}"/>
+                        </p:column>
+                        <!--critical-->
+                        <p:column headerText="#{msg['configObj.critical']}" width="2">
+                            <h:outputText id="critical" value="#{configObj.critical}"
+                                          title="#{msg['configObj.critical']}"/>
+                        </p:column>
+                    </p:dataTable>
+                </p:column>
+            </p:dataTable>
+
+            <!--Output Panel-->
+            <p:outputPanel id="actionPanel" style="position: fixed;right: 54px; bottom: 30px;width: 45px;">
+                <p:tooltip position="top"/>
+                <p:commandButton id="editConfigObj" icon="fa fa-edit"
+                                 styleClass="BlueButton Fs14 White"
+                                 update=":form:growl,:form:editConfigObjDlg"
+                                 actionListener="#{alarmConfigController.preEditConfigObj}"
+                                 title="#{msg['button.edit']}"
+                        />
+            </p:outputPanel>
+
+            <!--Loading dialog-->
+            <p:dialog modal="true" class="transparent-dialog" showHeader="false"
+                      widgetVar="block" draggable="false" closable="false" resizable="false">
+        	<span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;">
+        		<i class="fa fa-fire fa-stack-1x" style="bottom: 40px; color: #FAFAFA; font-size: 0.8em"></i>
+			  	<i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-stack-2x" style="color: #00AAFF; font-size: 3em;"></i>
+			  	<i class="fa fa-coffee fa-stack-1x" style="color: #975524; bottom: 20px;font-size: 1.2em"></i>
+			</span>
+            </p:dialog>
+
+            <!--Add Alarm Config Dialog-->
+            <p:dialog widgetVar="addAlarmConfigDlg" width="60%"
+                      height="50%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.add']}"/>
+                </f:facet>
+
+                <div class="Container100 NoPadding">
+                </div>
+            </p:dialog>
+
+            <!--Export Alarm Config Dialog-->
+            <p:dialog widgetVar="exportAlarmConfigDlg" width="60%"
+                      height="50%" modal="true" showEffect="size" hideEffect="scale">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.export']}"/>
+                </f:facet>
+
+                <div class="Container100 NoPadding">
+                </div>
+            </p:dialog>
+
+            <!--Edit Alarm Config Dialog-->
+            <p:dialog id="editConfigObjDlg" widgetVar="editConfigObjDlg" width="80%"
+                      height="90%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.edit']}"/>
+                </f:facet>
+
+                <div class="Container100 NoPadding">
+
+                    <!--advance-->
+                    <h:panelGroup layout="block" rendered="#{alarmConfigController.listAdvance != null}"
+                                  class="Container30 Responsive50">
+                        <ui:repeat value="#{alarmConfigController.advanceList}" var="advance">
+                            <p:outputLabel for="advanceValue" class="responsive30" value="#{advance.name}"/>
+                            <p:inputTextarea id="advanceValue" class="responsive70" value="#{advance.value}"/>
+                            <p:spacer width="100%" height="1px"></p:spacer>
+                        </ui:repeat>
+                    </h:panelGroup>
+
+                    <!--exclude-->
+                    <h:panelGroup layout="block" rendered="#{alarmConfigController.isExclude == 1}"
+                                  class="Container30 Responsive50">
+                        <h:outputText class="responsive30" value="#{msg['alarmConfig.excludeNotify']}"
+                                      rendered="#{alarmConfigController.isExclude == 1}"/>
+                        <p:inputTextarea class="responsive70" maxlength="4000"
+                                         rendered="#{alarmConfigController.isExclude == 1}"
+                                         value="#{alarmConfigController.exclude }"/>
+                    </h:panelGroup>
+
+                    <!--interval-->
+                    <h:panelGroup layout="block" class="Container30 Responsive50">
+                        <h:outputText class="responsive30" value="#{msg['alarmConfig.interval']}"/>
+                        <p:inputText class="responsive70" value="#{alarmConfigController.interval}"/>
+                    </h:panelGroup>
+
+                    <!--</div>-->
+                    <div class="Container5 TexAlRight MarBot10">
+                        <!--<p:commandButton id="addConfigObj" icon="fa fa-plus-circle"-->
+                        <!--styleClass="GreenButton Fs14 White "-->
+                        <!--rendered="#{sessionUtil.createAlarmConfig}"-->
+                        <!--onclick="PF('block').show()"-->
+                        <!--oncomplete="PF('block').hide()"-->
+                        <!--update=":form:growl,:form:tableEditConfigObjId"-->
+                        <!--actionListener=""-->
+                        <!--title="#{msg['button.add']}"-->
+                        <!--/>-->
+
+                        <p:commandButton id="saveConfigObj" icon="fa fa-floppy-o"
+                                         styleClass="GreenButton Fs14 White "
+                                         rendered="#{sessionUtil.createAlarmConfig}"
+                                         onclick="PF('block').show()"
+                                         update=":form:growl,:form:tableConfigAlarmId"
+                                         actionListener="#{alarmConfigController.updateAlarmConfig}"
+                                         title="#{msg['button.edit']}"
+                                />
+                    </div>
+                    <div class="Container100 Responsive50" style="padding-top: 5px">
+                        <p:dataTable value="#{alarmConfigController.listConfigObj}"
+                                     id="tableEditConfigObjId" rowIndexVar="idx" var="configObj"
+                                     rowKey="#{idx}" styleClass="configObject"
+                                     editable="true" editMode="cell"
+                                     scrollable="true" scrollHeight="200"
+                                     resizableColumns="false">
+
+                            <!--STT-->
+                            <p:column headerText="#{msg['datatable.header.stt']}" width="1"
+                                      styleClass="TexAlCenter">
+                                <h:outputText value="#{idx +1 }"/>
+                            </p:column>
+
+                            <!--day-->
+                            <p:column headerText="#{msg['configObj.day']}" width="60" styleClass="configObject">
+                                <p:selectManyCheckbox value="#{configObj.selectedDays}"
+                                                      layout="grid" columns="4"
+                                                      collectionType="java.util.ArrayList"
+                                                      disabled="#{configObj.disabled}">
+                                    <f:attribute name="collectionType" value="java.util.ArrayList"/>
+                                    <f:selectItems value="#{configObj.days}"
+                                                   var="day"
+                                                   itemLabel="#{day}"
+                                                   itemValue="#{day}"
+                                            />
+                                </p:selectManyCheckbox>
+                            </p:column>
+
+                            <!--hour-->
+                            <p:column headerText="#{msg['configObj.hour']}" width="100" styleClass="configObject">
+                                <!--<p:selectManyCheckbox value="#{configObj.selectedHours}"-->
+                                <!--layout="grid" columns="6"-->
+                                <!--collectionType="java.util.ArrayList">-->
+                                <!--<f:attribute name="collectionType" value="java.util.ArrayList"/>-->
+                                <!--<f:selectItems value="#{configObj.hours}"-->
+                                <!--var="hour"-->
+                                <!--itemLabel="#{hour}"-->
+                                <!--itemValue="#{hour}"-->
+                                <!--/>-->
+                                <!--</p:selectManyCheckbox>-->
+                                <h:outputLabel for="fromHour" value="#{msg['configObj.fromHour']}: "/>
+                                <p:spinner id="fromHour" value="#{configObj.fromHour}" min="0" max="23" size="10"
+                                           disabled="#{configObj.disabled}"/>
+                                <h:outputLabel for="toHour" value="#{msg['configObj.toHour']}: "/>
+                                <p:spinner id="toHour" value="#{configObj.toHour}" min="0" max="23" size="10"
+                                           disabled="#{configObj.disabled}"/>
+                                <!--<p:selectManyMenu id="selectHour" value="#{configObj.selectedHours}">-->
+                                <!--<f:attribute name="collectionType" value="java.util.ArrayList"/>-->
+                                <!--<f:selectItems value="#{configObj.hours}"-->
+                                <!--var="hour"-->
+                                <!--itemLabel="#{hour}"-->
+                                <!--itemValue="#{hour}"-->
+                                <!--/>-->
+                                <!--</p:selectManyMenu>-->
+                            </p:column>
+                            <!--warning-->
+                            <p:column headerText="#{msg['configObj.warning']}" width="6">
+                                <!--<p:cellEditor>-->
+                                    <!--<f:facet name="output">-->
+                                        <!--<h:outputText value="#{configObj.warning}"-->
+                                                      <!--title="#{msg['configObj.warning']}"/>-->
+                                    <!--</f:facet>-->
+                                    <!--<f:facet name="input">-->
+                                        <p:inputText value="#{configObj.warning}"
+                                                     title="#{msg['configObj.warning']}"
+                                                     style="width: 54% !important;"
+                                                />
+                                    <!--</f:facet>-->
+                                <!--</p:cellEditor>-->
+                            </p:column>
+                            <!--critical-->
+                            <p:column headerText="#{msg['configObj.critical']}" width="6">
+                                <!--<p:cellEditor>-->
+                                    <!--<f:facet name="output">-->
+                                        <!--<h:outputText value="#{configObj.critical}"-->
+                                                      <!--title="#{msg['configObj.day']}"/>-->
+                                    <!--</f:facet>-->
+                                    <!--<f:facet name="input">-->
+                                        <p:inputText value="#{configObj.critical}"
+                                                     title="#{msg['configObj.critical']}"
+                                                     style="width: 54% !important;"
+                                                />
+                                    <!--</f:facet>-->
+                                <!--</p:cellEditor>-->
+                            </p:column>
+                            <!--unitType-->
+                            <p:column headerText="#{msg['configObj.unitType']}" width="6">
+                                <h:outputText value="#{configObj.unitType}"
+                                              title="#{msg['configObj.unitType']}"/>
+                            </p:column>
+                            <!--button-->
+                            <p:column headerText="#{msg['configObj.action']}" width="30" styleClass="TexAlCenter">
+                                <p:commandButton id="deleteConfigObj" icon="fa fa-remove"
+                                                 styleClass="GreenButton Fs14 White"
+                                                 rendered="#{sessionUtil.createAlarmConfig}"
+                                                 onclick="PF('block').show()"
+                                                 oncomplete="PF('block').hide()"
+                                                 update=":form:growl,:form:tableEditConfigObjId"
+                                                 actionListener="#{alarmConfigController.deleteConfigObj(configObj)}"
+                                                 title="#{msg['button.delete']}"
+                                                 style="margin: 0 3px;"
+                                        />
+                                <p:commandButton id="confirmConfigObj" icon="fa fa-check"
+                                                 styleClass="BlueButton Fs14 White "
+                                                 rendered="#{sessionUtil.createAlarmConfig}"
+                                                 onclick="PF('block').show()"
+                                                 oncomplete="PF('block').hide()"
+                                                 update=":form:growl,:form:tableEditConfigObjId"
+                                                 actionListener="#{alarmConfigController.autoGenConfigObj(idx)}"
+                                                 title="#{msg['button.confirm']}"
+                                                 style="margin: 0 3px;"
+                                        />
+                                <!--<p:commandButton id="checkAll" icon="fa fa-check"-->
+                                <!--styleClass="GreenButton Fs14 White"-->
+                                <!--rendered="#{sessionUtil.createAlarmConfig}"-->
+                                <!--update=":form:tableEditConfigObjId"-->
+                                <!--actionListener=""-->
+                                <!--title="#{msg['button.check']}"-->
+                                <!--style="margin: 0 3px;"-->
+                                <!--/>-->
+                            </p:column>
+                        </p:dataTable>
+                    </div>
+
+                </div>
+            </p:dialog>
+        </h:form>
+        <!--Style-->
+        <style type="text/css">
+            .configObject {
+                padding: 2px !important;
+            }
+
+            .configObject tbody tr td {
+                padding: 0 4px !important;
+            }
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+                height: 66px !important;
+            }
+
+            #form\:tableEditConfigObjId {
+                height: 250px;
+            }
+
+            .responsive125 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 12.5%;
+            }
+
+            .responsive875 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 87.5%;
+            }
+
+            .responsive30 {
+                box-sizing: border-box;
+                float: left;
+                width: 30%;
+            }
+
+            .responsive70 {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

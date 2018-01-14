@@ -1,0 +1,138 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                >
+
+    <div class="Card">
+        <h:form id="groupPackEditForm" >
+            
+        <ui:include src="catGroupPack-editPanel.xhtml"/>
+        </h:form>
+
+
+        <p:panel  header="#{msg['common.search.info']}" style="text-align: left" styleClass="" toggleable="true"  >
+            <h:form id="groupPackSearchForm">
+
+                <h:panelGrid columns="6" cellpadding="5" width="100%" id="panelSearchGroupPack">
+
+                    <h:outputText value="#{msg['datatable.header.group.pack.name']}"/>
+                    <p:inputText value="#{catGroupPackController.searchForm.groupPackName}">
+                    </p:inputText>
+                    <h:outputText value="#{msg['datatable.header.group.pack.status']}"/>
+                    <p:selectOneMenu value="#{catGroupPackController.searchForm.status}">
+                        <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="-1"/>
+                        <f:selectItem itemLabel="#{msg['datatable.header.pack.status0']}" itemValue="0"/>
+                        <f:selectItem itemLabel="#{msg['datatable.header.pack.status1']}" itemValue="1"/>
+                        <f:selectItem itemLabel="#{msg['datatable.header.pack.status2']}" itemValue="2"/>
+                        <f:selectItem itemLabel="#{msg['datatable.header.pack.status3']}" itemValue="3"/>
+
+                    </p:selectOneMenu>
+                    <p:commandButton id="search" onclick="PF('blockDlg').show()"   
+                                     oncomplete="PF('blockDlg').hide();"
+                                     update="@widgetVar(growl),@widgetVar(tableGroupPackWidget)"
+                                     process="panelSearchGroupPack"
+                                     actionListener="#{catGroupPackController.searchCatGroupPack()}" value="Search"
+                                     icon="fa fa-search"/>
+                </h:panelGrid>
+            </h:form>
+
+        </p:panel>
+        <h:form id="tableGroupPackForm">
+
+
+            <p:dataTable value="#{catGroupPackController.catGroupPacks}"
+                         lazy="false" var="groupPack" rowKey="#{groupPack.groupPackId}"
+                         rowIndexVar="cusIdx"  id="tableGroupPackId"
+                         rows="5" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableGroupPackWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 TexAlLeft">
+                            <p:commandButton icon="fa fa-plus" actionListener="#{catGroupPackController.preAddCatGroupPack}"
+                                             styleClass="White BlueButton" update=":groupPackEditForm:panelAddGroupPack:@child(0)" process="@this"
+                                             value="#{msg['view.button.add.group.pack']}">
+                                <p:effect type="clip" event="click" for=":groupPackEditForm:panelAddGroupPack" delay="1">
+                                    <f:param name="mode" value="'show'"/>
+                                </p:effect>
+                            </p:commandButton>
+
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.group.pack']}"/>
+                        </div>
+
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          >
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="50"
+                          >
+                    <h:outputText value="#{groupPack.groupPackName}"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.group.pack.price']}" width="50"
+                          style="text-align: right;" >
+                    <h:outputText value="#{groupPack.price}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.group.pack.among']}" width="50"
+                          >
+                    <h:outputText value="#{groupPack.among} (ngày)"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.pack.name']}" width="100"
+                          >
+                    <p:dataList value="#{groupPack.packs}" var="pack">
+                        #{pack.packName} - #{pack.numberOfTime}
+                    </p:dataList>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.group.pack.status']}" width="50"
+                          >
+
+                    <h:outputText value="#{groupPack.statusName}"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.action']}" width="20" styleClass="TexAlCenter"
+                          >
+                    <p:commandButton icon="fa fa-edit" actionListener="#{catGroupPackController.preEditCatGroupPackById(groupPack.groupPackId)}" process="@widgetVar(tableGroupPackWidget)"
+                                     styleClass="White BlueButton" onclick="PF('block').show()" oncomplete="PF('block').hide()" update=":groupPackEditForm:panelAddGroupPack:@child(0)"
+                                     title="#{msg['view.button.edit.pack']}">
+                        <p:effect type="clip" event="click" for=":groupPackEditForm:panelAddGroupPack"  delay="1">
+                            <f:param name="mode" value="'show'"/>
+                        </p:effect>
+                    </p:commandButton>
+                    <p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" oncomplete="PF('deleteGroupPackPanel-#{cusIdx}').show('#{component.clientId}')">
+
+                    </p:commandButton>
+                    <p:overlayPanel modal="true" widgetVar="deleteGroupPackPanel-#{cusIdx}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                                    style="" dismissable="true" showCloseIcon="true" my="right top">
+
+                        <p:commandButton value="Xóa #{groupPack.groupPackName}?" icon="fa fa-trash" onstart="PF('block').show()"
+                                         oncomplete="PF('block').hide(),PF('deleteGroupPackPanel-#{cusIdx}').hide();
+                                         document.getElementById('groupPackSearchForm:search').click()" process="@this"
+                                         styleClass="RedButton White Fs14" actionListener="#{catGroupPackController.deleteCatGroupPack(groupPack)}"
+                                         update="@widgetVar(tableGroupPackWidget),@widgetVar(growl)">
+
+                        </p:commandButton>
+                    </p:overlayPanel>
+                </p:column>
+
+
+            </p:dataTable>
+        </h:form>
+    </div>
+</ui:composition>
