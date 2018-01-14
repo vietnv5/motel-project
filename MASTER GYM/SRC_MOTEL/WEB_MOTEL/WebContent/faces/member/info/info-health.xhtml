@@ -1,0 +1,193 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:tab title="#{msg['view.header.member.heath']}"  rendered="#{memberController.curMember.type!=2}" >
+        <div class="Container100 TexAlCenter">
+            <p:commandButton icon="fa fa-plus" actionListener="#{memberController.preAddMemberHealth}"
+                             styleClass="White BlueButton" update="panelAddHealth" process="@this"
+                             value="#{msg['health.add']}">
+                <p:effect type="clip" event="click" for="panelAddHealth0" delay="1">
+                    <f:param name="mode" value="'show'"/>
+                </p:effect>
+            </p:commandButton>
+        </div>
+
+        <p:outputPanel id="panelAddHealth0" style="display: none">
+            <div class="Card">
+
+
+                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth" >
+
+                    <div class="Container100 Responsive50" style="margin-top: 10px">
+                        <div class="Container25 Responsive50" >
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{memberController.curMember.newMemberHealth.height}"
+                                         id="memberHeight"
+                                         title="#{msg['datatable.header.health.height']}" decimalPlaces="0"
+                            >
+                            </p:inputNumber>
+
+                            <label>#{msg['datatable.header.health.height']} </label>
+                        </span>
+                            <p:message for="memberHeight"></p:message>
+                        </div>
+
+
+                        <div class="Container25 Responsive50">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{memberController.curMember.newMemberHealth.weight}"
+                                         id="memberweight"
+                                         title="#{msg['datatable.header.health.weight']}"
+                            >
+                            </p:inputNumber>
+                            <label>#{msg['datatable.header.health.weight']} </label>
+                        </span>
+                            <p:message for="memberweight"></p:message>
+                        </div>
+
+                        <div class="Container25 Responsive50">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{memberController.curMember.newMemberHealth.bloodPressure}"
+                                         id="memberBloodPressure" decimalPlaces="0"
+                                         title="#{msg['datatable.header.health.bloodPressure']}"
+                            >
+                            </p:inputNumber>
+                            <label>#{msg['datatable.header.health.bloodPressure']} </label>
+                        </span>
+                            <p:message for="memberBloodPressure"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{memberController.curMember.newMemberHealth.heartbeat}"
+                                         id="memberHeartbeat" decimalPlaces="0"
+                                         title="#{msg['datatable.header.health.heartbeat']}"
+                            >
+                            </p:inputNumber>
+                            <label>#{msg['datatable.header.health.heartbeat']} </label>
+                        </span>
+                            <p:message for="memberHeartbeat"></p:message>
+                        </div>
+                    </div>
+                    <div class="Container100 Responsive50 "  style="margin-top: 10px">
+
+                        <div class="Container25 Responsive50">
+                        <span class="title-top">
+                            <p:selectOneMenu id="healthLevelId"
+                                             value="#{memberController.curMember.newMemberHealth.healthLevel}"
+                                             required="false"
+                                             title="#{msg['datatable.header.health.healthLevel']}"
+                                             style=""
+                            >
+                                <!--<f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>-->
+                                <f:selectItems value="#{memberController.lstHealthLevel}" var="c"
+                                               itemValue="#{c.value}" itemLabel="#{c.name}"/>
+                            </p:selectOneMenu>
+                            <label class="title-elem">#{msg['datatable.header.health.healthLevel']} </label>
+                        </span>
+                            <p:message for="healthLevelId"/>
+
+                        </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:calendar value="#{memberController.curMember.newMemberHealth.dateTime}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="dateTimeId"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            title="#{msg['datatable.header.health.dateTime']}"
+                                            showOn="both"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['datatable.header.health.dateTime']} </label>
+                            </span>
+                            <p:message for="dateTimeId"></p:message>
+                        </div>
+                    </div>
+
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlRight">
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
+                                     update="@widgetVar(tblHealth),@widgetVar(growl)"
+                                     actionListener="#{memberController.saveOrUpdateMemberHealth}"
+                                     process="panelAddHealth0">
+                        <p:effect type="clip" event="click" for="panelAddHealth0" delay="1">
+                            <f:param name="mode" value="'hide'"/>
+                        </p:effect>
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this">
+                        <p:effect type="clip" event="click" for="panelAddHealth0" delay="1">
+                            <f:param name="mode" value="'hide'"/>
+                        </p:effect>
+                    </p:commandButton>
+                </p:outputPanel>
+            </div>
+        </p:outputPanel>
+
+        <p:dataTable value="#{memberController.curMember.memberHealths}" var="obj3" widgetVar="tblHealth"
+                     rowIndexVar="r2"
+                     rows="10" paginator="true" paginatorPosition="bottom"
+                                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                         rowsPerPageTemplate="5,10,15,20,30,50" 
+                     >
+            <f:facet name="header">
+                <h:outputText value="#{msg['view.header.member.heath']}"/>
+            </f:facet>
+            <p:column headerText="#{msg['datatable.header.stt']}" width="20">
+                <h:outputText value="#{r2 + 1}"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.health.height']}" styleClass="TexAlRight">
+                <h:outputText value="#{obj3.height} "/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.health.weight']}" styleClass="TexAlRight">
+                <h:outputText value="#{obj3.weight} "/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.health.bloodPressure']}" styleClass="TexAlRight">
+                <h:outputText value="#{obj3.bloodPressure}"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.health.heartbeat']}" styleClass="TexAlRight">
+                <h:outputText value="#{obj3.heartbeat}"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.health.healthLevel']}" styleClass="TexAlRight">
+                <h:outputText value="#{memberController.getNameHealthLevel(obj3.healthLevel)}"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.health.dateTime']}">
+                <h:outputText value="#{obj3.dateTime}">
+                    <f:convertDateTime pattern="dd/MM/yyyy"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.action']}" styleClass="TexAlCenter" >
+
+
+                <p:commandButton icon="fa fa-edit Fs14" actionListener="#{memberController.preEditMemberHealth(obj3)}"
+                                 styleClass="White BlueButton" update="@parent:@parent:@parent:@parent:panelAddHealth" process="@this"
+                                 title="#{msg['health.edit']}">
+                        <p:effect type="clip" event="click" for="@parent:@parent:@parent:@parent:panelAddHealth0" delay="0">
+                        <f:param name="mode" value="'show'"/>
+                    </p:effect>
+                </p:commandButton>
+
+                <p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" process="@this"
+                                 oncomplete="PF('deleteMemberHealthPanel-#{r2}').show('#{component.clientId}')">
+
+                </p:commandButton>
+                <p:overlayPanel modal="true" widgetVar="deleteMemberHealthPanel-#{r2}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                                style="" dismissable="true" showCloseIcon="true" my="right top">
+
+                    <p:commandButton value="Xóa thông tin ngày #{obj3.dateTime}?" icon="fa fa-trash" oncomplete="PF('deleteMemberHealthPanel-#{r2}').hide(),PF('block').hide()"
+                                     update="@widgetVar(tblHealth),@widgetVar(growl)" onclick="PF('block').show()" process="@this"
+                                     styleClass="RedButton White Fs14" actionListener="#{memberController.deleteMemberHealth(obj3)}">
+
+                    </p:commandButton>
+                </p:overlayPanel>
+            </p:column>
+
+        </p:dataTable>
+    </p:tab>
+</ui:composition>

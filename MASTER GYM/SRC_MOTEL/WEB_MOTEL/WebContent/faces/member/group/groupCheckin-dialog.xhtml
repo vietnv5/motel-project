@@ -1,0 +1,69 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+
+    <p:dialog modal="true" header="#{msg['customer.checkin']}" widgetVar="groupCheckinDlg" width="30%" id="groupCheckinDlgId" height="500px">
+
+
+        <h:form id="groupCheckinForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelGroupCheckin" >
+                    <c:forEach var="customerCheckin" items="#{groupMemberController.lstCustomerCheckins}">
+                        <div class=" Container50 MarTop20">
+
+                            <span class="md-inputfield">
+                                <span class="md-inputfield">
+                                    <p:inputText value="#{customerCheckin.customerName}"
+                                                 title="#{msg['member.groupMember.member']}"
+                                                 readonly="true"
+                                                 >
+                                    </p:inputText>
+
+                                    <label>#{msg['member.groupMember.member']} </label>
+                                </span>
+                            </span>
+                        </div>
+                        <div class=" Container50 MarTop20">
+                            <span class="title-top">
+                                <p:inputText value="#{customerCheckin.cardCode}"
+                                             title="Nhập mã khóa đeo tay nếu sử dụng"
+                                             placeholder="Nhập mã khóa đeo tay nếu sử dụng" 
+                                             >
+                                </p:inputText>
+
+                                <label class="title-elem">#{msg['client.cardCode']} </label>
+                            </span>
+                        </div>
+                    </c:forEach>
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlRight" >
+
+                    <p:commandButton value="#{msg['customer.checkin']}" styleClass="GreenButton White" update="@widgetVar(growl),:insertForm,:groupCheckinForm"
+                                     actionListener="#{groupMemberController.checkin()}" process=":groupCheckinForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();"
+                                     >
+                        <p:confirm icon="ui-icon-alert" header="#{msg['customer.checkin']}"
+                                   message="#{msg['title.confirm.checkin']}" >
+                        </p:confirm>
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('groupCheckinDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+</ui:composition>

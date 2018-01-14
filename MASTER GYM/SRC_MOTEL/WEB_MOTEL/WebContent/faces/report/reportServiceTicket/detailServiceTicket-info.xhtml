@@ -1,0 +1,150 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:panel id="detailServiceTicketPanel" style="display: block;padding: 0px;margin: 0px;"
+             >
+        <p:dataTable value="#{reportPaymentController.lazyServiceTicket}"
+                     lazy="true" var="serviceTicket" rowKey="#{serviceTicket.serviceTicketId}"
+                     rowIndexVar="cusIdx" id="tableServiceTicketId" rendered="#{reportPaymentController.showDetailTable}"
+                     rows="20" paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                     rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableServiceTicketWidget"
+                     emptyMessage="#{msg['datatable.empty']}"
+                     styleClass="Container100 NoPadding MarTop10"
+
+                     >
+            <!--Header-->
+            <f:facet name="header">
+                <div class="Card NoPadding" style="background: transparent;">
+                    <div class="Container20 TexAlLeft">
+                        <p:commandButton styleClass="RedButton Fs14 White" icon="fa fa-times" style="float: left"
+                                         actionListener="#{reportPaymentController.closeDetailTable()}"
+                                         update="@form:detailServiceTicketPanel">
+                        </p:commandButton>
+                    </div>
+                    <div class="Container60 Responsive50">
+                        <h:outputText styleClass="Fs20" value="#{msg['datatable.header.serviceTicket']}"/>
+                    </div>
+                    <div class="Container20 TexAlRight">
+                        <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                         actionListener="#{commonUtilsController.attributeListener}">
+                            <f:attribute name="headerExport" value="#{msg['datatable.header.serviceTicket']}" />
+                            <p:dataExporter type="xls" target="tableServiceTicketId" fileName="serviceTicket" pageOnly="false"
+                                            postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                        </p:commandButton>
+                        <p:commandButton id="toggler" type="button"
+                                         style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                        <p:columnToggler datasource="tableServiceTicketId" trigger="toggler">
+                            <p:ajax event="toggle" listener="#{serviceTicketController.onToggler}" />
+                        </p:columnToggler>
+                    </div>
+
+                </div>
+            </f:facet>
+            <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+            <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+            <!--STT-->
+            <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                      visible="#{serviceTicketController.columnVisibale[0]}" >
+                <h:outputText value="#{cusIdx +1 }"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.action']}" width="25"
+                      visible="#{serviceTicketController.columnVisibale[1]}" styleClass="TexAlCenter">
+                <p:tooltip position="top" for="employeeServiceId" value="Cập nhật nhân viên phục vụ" ></p:tooltip>
+                <p:commandButton icon="fa icon-user7" actionListener="#{serviceTicketController.preCheckin(serviceTicket)}"
+
+                                 onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('employeeServiceDlg').show()"
+                                 update=":employeeServiceForm" id="employeeServiceId"
+                                 title="Cập nhật nhân viên phục vụ" styleClass="White  Fs14 MarTop5 OrangeButton" >
+                </p:commandButton>
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.serviceTicketCode']}" width="40"
+                      visible="#{serviceTicketController.columnVisibale[2]}"
+                      filterBy="#{serviceTicket.serviceTicketCode}" sortBy="#{serviceTicket.serviceTicketCode}" >
+                <h:outputText value="#{serviceTicket.serviceTicketCode}"/>
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.groupPackName']}" width="70"
+                      visible="#{serviceTicketController.columnVisibale[3]}"
+                      filterBy="#{serviceTicket.groupPackName}" sortBy="#{serviceTicket.groupPackName}" >
+                <h:outputText value="#{serviceTicket.groupPackName}"/>
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.memberName']}" width="70"
+                      visible="#{serviceTicketController.columnVisibale[4]}"
+                      filterBy="#{serviceTicket.memberName}" sortBy="#{serviceTicket.memberName}" >
+                <h:outputText value="#{serviceTicket.memberName}"/>
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.cardCode']}" width="70" 
+                      visible="#{serviceTicketController.columnVisibale[5]}"
+                      filterBy="#{serviceTicket.cardCode}" sortBy="#{serviceTicket.roomName}">
+                <h:outputText value="#{serviceTicket.cardCode}"/>
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.createTime']}" width="60" 
+                      visible="#{serviceTicketController.columnVisibale[6]}"
+                      filterBy="#{serviceTicket.createTime-BW}" >
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" >
+                        <p:ajax event="dateSelect" oncomplete="PF('tableServiceTicketWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{serviceTicket.createTime}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+
+            <p:column headerText="#{msg['serviceTicket.usedTime']}" width="60"  
+                      visible="#{serviceTicketController.columnVisibale[7]}"
+                      filterBy="#{serviceTicket.usedTime-BW}" >
+                <f:facet name="filter" >
+                    <p:calendar pattern="dd/MM/yyyy" >
+                        <p:ajax event="dateSelect" oncomplete="PF('tableServiceTicketWidget').filter()"/>
+                    </p:calendar>
+                </f:facet>
+                <h:outputText value="#{serviceTicket.usedTime}"><f:convertDateTime
+                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.statusName']}" width="40"
+                      visible="#{serviceTicketController.columnVisibale[8]}"
+                      filterBy="#{serviceTicket.status}" sortBy="#{serviceTicket.status}">
+                <f:facet name="filter">
+                    <p:selectOneMenu onchange="PF('tableServiceTicketWidget').filter()">
+                        <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                        <f:selectItem itemValue="1"
+                                      itemLabel="Chưa sử dụng"/>
+                        <f:selectItem itemValue="2"
+                                      itemLabel="Đã sử dụng"/>
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{serviceTicket.statusName}" />
+            </p:column>
+            <p:column headerText="#{msg['serviceTicket.employeeName']}" width="50" filterBy="#{serviceTicket.employeeId}" 
+                      visible="#{serviceTicketController.columnVisibale[9]}"
+                      filterStyle="width:70%"  >
+                <f:facet name="filter">
+                    <p:selectOneMenu                                   
+                        onchange="PF('tableServiceTicketWidget').filter()"
+                        filter="true" filterMatchMode="contains"
+                        >
+                        <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                      noSelectionOption="true"/>
+                        <f:selectItems value="#{employeeController.allEmployees}" var="o"
+                                       itemLabel="#{o.employeeCode} - #{o.employeeName}"
+                                       itemValue="#{o.employeeId}">
+                        </f:selectItems>
+
+                    </p:selectOneMenu>
+                </f:facet>
+                <h:outputText value="#{serviceTicket.employeeName}"/></p:column>
+
+            <p:column headerText="#{msg['serviceTicket.branchName']}" width="70" 
+                      visible="#{serviceTicketController.columnVisibale[10]}"
+                      filterBy="#{serviceTicket.branch.branchName}">
+                <h:outputText value="#{serviceTicket.branch.branchName}"/>
+            </p:column>
+
+        </p:dataTable>
+    </p:panel>                
+
+</ui:composition>
+

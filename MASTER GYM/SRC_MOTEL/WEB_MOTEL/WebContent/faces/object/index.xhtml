@@ -1,0 +1,242 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <p:dataTable value="#{objectMonitorController.lazyVObjectMonitor}" id="tableOMId"
+                         lazy="true" var="vObjectMonitor" rowKey="#{vObjectMonitor.monitorId}"
+                         filterDelay="2000"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200" widgetVar="tableOMWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+                    >
+
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <!--Button-->
+                        <div class="Container20 Responsive50 TexAlLeft">
+                            <!--Add Alarm Config-->
+                            <p:tooltip position="right" for="exportAM"></p:tooltip>
+                            <!--Export Alarm Config-->
+                            <p:commandButton id="exportAM" icon="fa fa-file-excel-o"
+                                             styleClass="GreenButton Fs14 White Marleft5"
+                                             ajax="false"
+                                             title="#{msg['button.export']}">
+                                <p:fileDownload value="#{objectMonitorController.onExport()}"/>
+                            </p:commandButton>
+                        </div>
+                        <!--Header Name-->
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.objectMonitor']}"/>
+                        </div>
+                        <!--Column Toggler-->
+                        <div class="Container20" style="text-align: right;">
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableOMId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{objectMonitorController.onToggler}"/>
+                            </p:columnToggler>
+                        </div>
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="2" styleClass="TexAlCenter"
+                          visible="#{objectMonitorController.colVisible.get('index')}">
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <!--Checkbox-->
+                <p:column selectionMode="multiple" width="2" exportable="false" styleClass="TexAlCenter"
+                          visible="#{objectMonitorController.colVisible.get('selection')}"/>
+
+                <!--monitorId-->
+                <p:column headerText="#{msg['objectMonitor.monitorId']}" width="30"
+                          filterBy="#{vObjectMonitor.objectMonitorId}"
+                          visible="#{objectMonitorController.colVisible.get('monitorId')}">
+                    <h:outputText id="monitorId" value="#{vObjectMonitor.monitorId}"
+                                  title="#{msg['objectMonitor.objectMonitorId']}"/>
+                </p:column>
+
+                <!--status-->
+                <p:column id="colStatus" headerText="#{msg['objectMonitor.status']}" width="10"
+                          filterBy="#{vObjectMonitor.status}" styleClass="TexAlLeft combo"
+                          visible="#{objectMonitorController.colVisible.get('status')}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableConfigAlarmWidget').filter()">
+                            <f:selectItem itemLabel="#{msg['objectMonitor.status']}" itemValue=""/>
+                            <f:selectItems value="#{objectMonitorController.mapStatus.entrySet()}" var="entry"
+                                           itemLabel="#{entry.value}"
+                                           itemValue="#{entry.key}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vObjectMonitor.status == 0}">
+                        <p:commandButton icon="fa fa-lock"
+                                         styleClass="Black TealButton Fs14"
+                                         update=":form:growl,:form:tableOMId"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{objectMonitorController.unlockObject(vObjectMonitor)}"
+                                         title="#{msg['button.unlock']}"
+                                />
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vObjectMonitor.status == 1}">
+                        <p:commandButton icon="fa fa-unlock-alt"
+                                         styleClass="White TealButton Fs14"
+                                         update=":form:growl,:form:tableOMId"
+                                         onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()"
+                                         actionListener="#{objectMonitorController.lockObject(vObjectMonitor)}"
+                                         title="#{msg['button.lock']}"
+                                />
+                    </p:outputPanel>
+                </p:column>
+
+                <!--monitorType-->
+                <p:column id="monitorType" headerText="#{msg['objectMonitor.monitorType']}" width="20"
+                          filterBy="#{vObjectMonitor.monitorType}" styleClass="TexAlLeft combo"
+                          visible="#{objectMonitorController.colVisible.get('monitorType')}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableOMWidget').filter()">
+                            <f:selectItem itemLabel="#{msg['objectMonitor.monitorType']}" itemValue=""/>
+                            <f:selectItem itemLabel="#{msg['monitorType.SERVER']}"
+                                          itemValue="#{msg['monitorType.SERVER']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.MOUNT_POINT']}"
+                                          itemValue="#{msg['monitorType.MOUNT_POINT']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.DATABASE']}"
+                                          itemValue="#{msg['monitorType.DATABASE']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.DATABASE_INSTANCE']}"
+                                          itemValue="#{msg['monitorType.DATABASE_INSTANCE']}"/>
+                            <f:selectItem itemLabel="#{msg['monitorType.APPLICATION']}"
+                                          itemValue="#{msg['monitorType.APPLICATION']}"/>
+                        </p:selectOneMenu>
+
+                    </f:facet>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vObjectMonitor.monitorType == 'SERVER'
+                                   || vObjectMonitor.monitorType == 'MOUNT_POINT'}">
+                        <i class="fa  fa-server  Fs18 Blue" style=""></i>
+                        <br/>
+                        <h:outputText value="#{vObjectMonitor.monitorType}"
+                                      style="color: #00aaff; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+                    <p:outputPanel style="width: 100%; text-align:center"
+                                   rendered="#{vObjectMonitor.monitorType == 'DATABASE'
+                                   || vObjectMonitor.monitorType == 'DATABASE_INSTANCE'}">
+                        <i class="fa  fa-database  Fs18 Green" style=""></i>
+                        <br/>
+                        <h:outputText value="#{vObjectMonitor.monitorType}"
+                                      style="color: #05c436; text-shadow: 0px 0px 4px #fff;font-weight: bold;"/>
+                    </p:outputPanel>
+
+                </p:column>
+
+                <!--monitorCode-->
+                <p:column headerText="#{msg['objectMonitor.monitorCode']}" width="30"
+                          filterBy="#{vObjectMonitor.monitorCode}" styleClass="TexAlLeft"
+                          visible="#{objectMonitorController.colVisible.get('monitorCode')}">
+                    <h:outputText id="monitorCode" value="#{vObjectMonitor.monitorCode}"
+                                  title="#{msg['objectMonitor.monitorCode']}"/>
+                    <p:tooltip for="monitorCode" value="#{vObjectMonitor.monitorCode}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--monitorName-->
+                <p:column headerText="#{msg['objectMonitor.monitorName']}" width="30"
+                          filterBy="#{vObjectMonitor.monitorName}" styleClass="TexAlLeft"
+                          visible="#{objectMonitorController.colVisible.get('monitorName')}">
+                    <h:outputText id="monitorName" value="#{vObjectMonitor.monitorName}"
+                                  title="#{msg['objectMonitor.monitorName']}"/>
+                    <p:tooltip for="monitorName" value="#{vObjectMonitor.monitorName}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+            </p:dataTable>
+
+            <!--Output Panel-->
+            <!--<p:outputPanel id="actionPanel" style="position: fixed;right: 25px; bottom: 30px;width: 45px;">-->
+                <!--<p:tooltip position="top"/>-->
+            <!--</p:outputPanel>-->
+
+            <!--Loading dialog-->
+            <p:dialog modal="true" class="transparent-dialog" showHeader="false"
+                      widgetVar="block" draggable="false" closable="false" resizable="false">
+        	<span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;">
+        		<i class="fa fa-fire fa-stack-1x" style="bottom: 40px; color: #FAFAFA; font-size: 0.8em"></i>
+			  	<i class="fa fa-spinner fa-pulse fa-3x fa-fw fa-stack-2x" style="color: #00AAFF; font-size: 3em;"></i>
+			  	<i class="fa fa-coffee fa-stack-1x" style="color: #975524; bottom: 20px;font-size: 1.2em"></i>
+			</span>
+            </p:dialog>
+
+            <!--Export Alarm Config Dialog-->
+            <p:dialog widgetVar="exportAlarmConfigDlg" width="60%"
+                      height="50%" modal="true" showEffect="size" hideEffect="scale">
+                <f:facet name="header">
+                    <h:outputText value="#{msg['label.export']}"/>
+                </f:facet>
+
+                <div class="Container100 NoPadding">
+                </div>
+            </p:dialog>
+
+        </h:form>
+        <!--Style-->
+        <style type="text/css">
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableOMId\:monitorType .ui-column-customfilter {
+                margin-bottom: -2px !important;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+        </style>
+    </ui:define>
+</ui:composition>

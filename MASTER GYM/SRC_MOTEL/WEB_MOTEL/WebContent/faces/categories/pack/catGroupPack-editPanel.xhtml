@@ -1,0 +1,344 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                >
+
+    <p:outputPanel id="panelAddGroupPack" style="display: none">
+
+        <p:outputPanel styleClass="Card" style="width: 100% !important; margin-left: 0%" >
+            <p:outputPanel class="Container100 TexAlLeft" >
+
+                <div class="Container100">
+                    <div class=" Container25">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{catGroupPackController.currGroupPack.groupPackCode}"
+                                         id="grouppackcode" readonly="true" disabled="true"
+                                         title="#{msg['datatable.header.group.pack.code']}"
+                                         required="false"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.code'])}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['datatable.header.group.pack.code']} *</label>
+                        </span>
+                        <p:message for="grouppackcode"/>
+                    </div>
+                    <div class="Container25">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{catGroupPackController.currGroupPack.groupPackName}"
+                                         id="grouppackname"
+                                         title="#{msg['datatable.header.group.pack.name']}"
+                                         required="true"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.name'])}"
+                                         >
+                                <p:ajax event="keyup" update="grouppackcode" listener="#{catGroupPackController.currGroupPack.setGroupPackCode(util.createCode(catGroupPackController.currGroupPack.groupPackName))}" />
+                                <p:ajax event="blur" update="grouppackcode" listener="#{catGroupPackController.currGroupPack.setGroupPackCode(util.createCode(catGroupPackController.currGroupPack.groupPackName))}" />
+                            </p:inputText>
+
+                            <label>#{msg['datatable.header.group.pack.name']} *</label>
+                        </span>
+                        <p:message for="grouppackname"/>
+                    </div>
+                    <div class="Container25">
+                        <span class="title-top">
+                            <p:calendar value="#{catGroupPackController.currGroupPack.dateStartProvide}"
+                                        locale="#{language.localeCode}"
+                                        mindate="#{currentDate}" styleClass="CalendarSearch"
+                                        id="dateStartProvide"
+                                        showButtonPanel="true" style="width: calc(100% - 15px)"
+                                        title="#{msg['datatable.header.group.pack.dateStartProvide']}"
+                                        showOn="both" required="true" requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.dateStartProvide'])}"
+                                        pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                        showOtherMonths="true" selectOtherMonths="true"
+                                        mask="true">
+                                <p:ajax event="dateSelect" update="among,dateEndProvide" listener="#{catGroupPackController.currGroupPack.computingDay}"/>
+                            </p:calendar>
+
+                            <label class="title-elem">#{msg['datatable.header.group.pack.dateStartProvide']} *</label>
+                        </span>
+                        <p:message for="dateStartProvide"/>
+                    </div>
+                    <div class="Container25">
+                        <span class="title-top">
+                            <p:calendar value="#{catGroupPackController.currGroupPack.dateEndProvide}"
+                                        locale="#{language.localeCode}"
+                                        mindate="#{catGroupPackController.currGroupPack.dateStartProvide}" styleClass="CalendarSearch"
+                                        id="dateEndProvide"
+                                        showButtonPanel="true" style="width: calc(100% - 15px)"
+                                        title="#{msg['datatable.header.group.pack.dateEndProvide']}"
+                                        showOn="both" required="true" requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.dateEndProvide'])}"
+                                        pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                        showOtherMonths="true" selectOtherMonths="true"
+                                        mask="true">
+                                <p:ajax event="dateSelect" update="among,dateEndProvide" listener="#{catGroupPackController.currGroupPack.computingDay}" />
+                            </p:calendar>
+
+                            <label class="title-elem">#{msg['datatable.header.group.pack.dateEndProvide']} *</label>
+                        </span>
+                        <p:message for="dateEndProvide"/>
+                    </div>
+                    <!--</div>-->
+                    <!--<div class="Container25">-->
+
+                    <div class="Container25 MarTop30">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{catGroupPackController.currGroupPack.among}"
+                                           id="among" disabled="false" symbolPosition="suffix" symbol=" ngày"
+                                           title="#{msg['datatable.header.group.pack.among']}"
+                                           required="true" decimalPlaces="0"
+                                           requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.among'])}"
+                                           >
+                            </p:inputNumber>
+
+                            <label>#{msg['datatable.header.group.pack.among']}*</label>
+                        </span>
+                        <p:message for="among"/>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="md-inputfield">
+                            <p:inputNumber value="#{catGroupPackController.currGroupPack.period}"
+                                           id="period" disabled="false" symbolPosition="suffix" symbol=" phút"
+                                           title="#{msg['datatable.header.group.pack.period']}"
+                                           required="true" decimalPlaces="0"
+                                           requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.period'])}"
+                                           >
+                            </p:inputNumber>
+
+                            <label>#{msg['datatable.header.group.pack.period']}*</label>
+                        </span>
+                        <p:message for="period"/>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{catGroupPackController.currGroupPack.tag}"
+                                         id="tag"
+                                         title="#{msg['datatable.header.group.pack.tag']}"
+                                         required="false"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.tag'])}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['datatable.header.group.pack.tag']}</label>
+                        </span>
+                        <p:message for="tag"/>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="title-top">
+                            <p:selectOneMenu id="status" value="#{catGroupPackController.currGroupPack.status}"
+                                             required="true" 
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.status'])}"
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption=""/>
+                                <f:selectItem itemLabel="#{msg['datatable.header.pack.status0']}" itemValue="0" />
+                                <f:selectItem itemLabel="#{msg['datatable.header.pack.status1']}" itemValue="1" />
+                                <f:selectItem itemLabel="#{msg['datatable.header.pack.status2']}" itemValue="2" />
+                                <f:selectItem itemLabel="#{msg['datatable.header.pack.status3']}" itemValue="3" />
+
+                            </p:selectOneMenu>
+
+                            <label class="title-elem">#{msg['datatable.header.pack.status']} *</label>
+                        </span>
+                        <p:message for="status"/>
+                    </div>
+
+                </div>
+
+                <div class="Container100">
+                    <div class="Container50 Responsive50">
+                        <div class="Container100">
+                            <span class="title-top">
+                                <p:selectManyMenu id="packlist" value="#{catGroupPackController.currGroupPack.pack2s}" showCheckbox="true" filter="true" filterMatchMode="contains"
+                                                  required="true" style="width: 90%" converter="catPackConverter" scrollHeight="120" var="t"
+                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.name'])}"
+                                                  >
+                                    <f:selectItems value="#{catGroupPackController.catPacks}" var="p" itemLabel="#{p.packName} (#{p.price})" itemValue="#{p}"/>
+
+                                    <p:column headerText="#{msg['datatable.header.pack.name']}">
+                                        <h:outputText value="#{t.packName}" />
+                                    </p:column>
+                                    <p:column headerText="#{msg['datatable.header.pack.price']}">
+                                        <h:outputText value="#{t.price} VNĐ" />
+                                    </p:column>
+                                    <p:column  headerText="Số lần" >
+                                        <h:outputText value="#{t.numberOfTime} #{(t.numberOfTime!=null and t.numberOfTime!='' ? ' Lần':'' ) }" />
+                                    </p:column>
+                                    <p:column  headerText="#{msg['datatable.header.pack.status']}" >
+                                        <h:outputText value="#{t.statusName}" />
+                                    </p:column>
+                                    <p:ajax event="change" listener="#{catGroupPackController.currGroupPack.computingPrice()}"
+                                            update="price,@widgetVar(groupHasPack)" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                                </p:selectManyMenu>
+
+                                <label class="title-elem">#{msg['datatable.header.pack.name']} *</label>
+                            </span>
+                            <p:message for="packlist"/>
+                        </div>
+
+                    </div>
+                    <div class="Container50 Responsive50">
+                        <div class="Container100">
+                            <span class="title-top">
+                                <p:selectManyMenu id="roomlist" value="#{catGroupPackController.currGroupPack.room2s}" showCheckbox="true" filter="true" filterMatchMode="contains"
+                                                  required="true" style="width: 90%" converter="catRoomConverter" scrollHeight="120" var="t"
+                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
+                                                  >
+                                    <f:selectItems value="#{roomController.rooms}" var="r" itemLabel="#{r.roomName} - #{r.branch.branchName}" itemValue="#{r}"/>
+                                    <p:column>
+                                        <h:outputText value="#{t.roomName}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{t.branch.branchName}" />
+                                    </p:column>
+                                    <p:column>
+                                        <h:outputText value="#{t.statusName}" />
+                                    </p:column>
+                                </p:selectManyMenu>
+
+                                <label class="title-elem">#{msg['datatable.header.room.name']} *</label>
+                            </span>
+                            <p:message for="roomlist" />
+                        </div>
+
+                    </div>
+                    <div class="Container25 MarTop30">
+
+                        <div class="Container60 TexAlLeft">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{catGroupPackController.currGroupPack.price}"
+                                               id="price" symbol=" VNĐ" symbolPosition="suffix" disabled="#{!catGroupPackController.currGroupPack.editPrice}"
+                                               title="#{msg['datatable.header.group.pack.price']}"
+                                               required="false"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.price'])}"
+                                               >
+                                </p:inputNumber>
+
+                                <label>#{msg['datatable.header.group.pack.price']} *</label>
+                            </span>
+                            <p:message for="price"/>
+                        </div>
+                        <div class="Container20 TexAlLeft">
+                            <span class="title-top">
+                                <p:selectBooleanCheckbox value="#{catGroupPackController.currGroupPack.editPrice}" style="margin-top: 3px" >
+                                    <p:ajax update="price" />
+                                </p:selectBooleanCheckbox>
+                                <label>Sửa</label>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="title-top">
+                            <p:selectOneMenu id="typeId" value="#{catGroupPackController.currGroupPack.type}"
+                                             required="true" 
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['catGroupPack.type'])}"
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="0" noSelectionOption=""/>
+                                <f:selectItem itemLabel="#{msg['catGroupPack.type1']}" itemValue="1" />
+                                <f:selectItem itemLabel="#{msg['catGroupPack.type2']}" itemValue="2" />
+                                <f:selectItem itemLabel="#{msg['catGroupPack.type3']}" itemValue="3" />
+                                <f:selectItem itemLabel="#{msg['catGroupPack.type4']}" itemValue="4" />
+
+                            </p:selectOneMenu>
+
+                            <label class="title-elem">#{msg['catGroupPack.type']}</label>
+                        </span>
+                        <p:message for="typeId"/>
+                    </div>
+                    <div class="Container25 MarTop30">
+                        <span class="title-top">
+                            <p:selectOneMenu id="requireTrainerId" value="#{catGroupPackController.currGroupPack.requireTrainer}"
+                                             >
+                                <f:selectItem itemLabel="Không" itemValue="0" noSelectionOption=""/>
+                                <f:selectItem itemLabel="Có" itemValue="1" />
+                            </p:selectOneMenu>
+
+                            <label class="title-elem">#{msg['catGroupPack.requireTrainer']}</label>
+                        </span>
+                        <p:message for="requireTrainerId"/>
+                    </div>
+                    <!--                                
+                                                    <div class="Container100">
+                                                        <p:fieldset legend="Giảm giá" widgetVar="groupHasPack">
+                                                            <c:forEach var="gp" items="# {catGroupPackController.currGroupPack.groupHasPack2s}">
+                                                                <div class="Container100 MarTop20">
+                    
+                                                                    <div class="Container50">
+                                                                        <span class="md-inputfield">
+                                                                            <p:inputNumber value="# {gp.sale}" style="width: 90%" placeholder="Nhập giá trị" disabled="# {gp.promotionPack2}">
+                                                                                <p:ajax update="@this,price" listener="# {catGroupPackController.currGroupPack.computingPrice2}" />
+                                                                            </p:inputNumber>
+                                                                            <label># {gp.pack.packName}</label>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="Container30">
+                                                                        <span class="title-top">
+                                                                            <p:selectOneRadio value="# {gp.saleType}" disabled="# {gp.promotionPack2}" >
+                                                                                <f:selectItem itemValue="1" itemLabel="(%)"/>
+                                                                                <f:selectItem itemValue="2" itemLabel="Giá trị"/>
+                                                                                <p:ajax event="change" update="@this,price" listener="# {catGroupPackController.currGroupPack.computingPrice2}" />
+                                                                            </p:selectOneRadio>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div class="Container20 TexAlRight">
+                                                                        <p:selectBooleanCheckbox value="# {gp.promotionPack2}" style="margin-top: 3px" label="Gói khuyến mãi" title="Gói khuyến mãi">
+                                                                            <p:ajax update="@widgetVar(groupHasPack)" listener="# {catGroupPackController.currGroupPack.computingPrice2}" />
+                                                                        </p:selectBooleanCheckbox>
+                    
+                                                                    </div>
+                                                                </div>
+                                                            </c:forEach>
+                                                        </p:fieldset>
+                                                    </div>
+                                                    <div class="Container100">
+                                                        <p:fieldset legend="Khuyến mãi">
+                                                            <div class="Container50 MarTop30">
+                                                                <span class="md-inputfield">
+                                                                    <p:inputNumber value="# {catGroupPackController.currGroupPack.bonusDay}"
+                                                                                   symbol=" ngày" symbolPosition="suffix"
+                                                                                   title="# {msg['datatable.header.group.pack.bonus.day']}"
+                                                                                   required="true" decimalPlaces="0"
+                                                                                   requiredMessage="# {msg['common.required'].replace('{0}',msg['datatable.header.group.pack.bonus.day'])}"
+                                                                                   >
+                                                                    </p:inputNumber>
+                    
+                                                                    <label># {msg['datatable.header.group.pack.bonus.day']}</label>
+                                                                </span>
+                    
+                                                            </div>
+                                                            <div class="Container50 MarTop30">
+                                                                <span class="md-inputfield">
+                                                                    <p:inputNumber value="# {catGroupPackController.currGroupPack.sale}"
+                                                                                   symbol=" VNĐ" symbolPosition="suffix"
+                                                                                   title="# {msg['datatable.header.group.pack.sale']}"
+                                                                                   decimalPlaces="0"
+                                                                                   requiredMessage="# {msg['common.required'].replace('{0}',msg['datatable.header.group.pack.sale'])}"
+                                                                                   >
+                                                                    </p:inputNumber>
+                    
+                                                                    <label># {msg['datatable.header.group.pack.sale']}</label>
+                                                                </span>
+                    
+                                                            </div>
+                                                        </p:fieldset>
+                                                    </div>-->
+                </div>
+
+
+
+            </p:outputPanel>
+            <p:outputPanel class="Container100 TexAlRight" >
+
+                <p:commandButton value="#{msg['button.save']}" icon="fa fa-save" styleClass="GreenButton White" process="panelAddGroupPack"
+                                 actionListener="#{catGroupPackController.saveCatGroupPack}" update="panelAddGroupPack:@child(0),@widgetVar(growl),@widgetVar(tableGroupPackWidget)" >
+                </p:commandButton>
+                <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton Black" process="@this"  >
+                    <p:effect type="clip" event="click" for="panelAddGroupPack" delay="1">
+                        <f:param name="mode" value="'hide'"/>
+                    </p:effect>
+                </p:commandButton>
+
+            </p:outputPanel>
+        </p:outputPanel>
+    </p:outputPanel>
+</ui:composition>

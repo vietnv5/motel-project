@@ -1,0 +1,503 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <div class="Card">
+                <p:panel id="panelAddRoom" style="display: none">
+
+                    <p:outputPanel styleClass="Card" style="width: 90% !important; margin-left: 5%">
+                        <p:outputPanel class="Container100 TexAlLeft">
+
+                            <div class="Container100">
+                                <div class="Container25 ">
+                                    <span class="title-top">
+                                        <p:selectOneMenu id="roomtype" value="#{roomController.currRoom.type}"
+                                                         required="true" style="width: 71%" scrollHeight="100"
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.type'])}"
+                                                         >
+                                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
+                                                          noSelectionOption="true"/>
+                                            <f:selectItem itemValue="1"
+                                                          itemLabel="#{msg['datatable.header.room.type1']}"/>
+                                            <f:selectItem itemValue="2"
+                                                          itemLabel="#{msg['datatable.header.room.type2']}"/>
+                                            <f:selectItem itemValue="3"
+                                                          itemLabel="#{msg['datatable.header.room.type3']}"/>
+                                            <f:selectItem itemValue="4"
+                                                          itemLabel="#{msg['datatable.header.room.type4']}"/>
+                                            <p:ajax event="change" update="roomCode"
+                                                    onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                                    listener="#{roomController.currRoom.createRoomCode}"/>
+                                        </p:selectOneMenu>
+
+                                        <label class="title-elem">#{msg['datatable.header.room.type']} *</label>
+                                    </span>
+                                    <p:message for="roomtype"/>
+
+
+                                </div>
+                                <div class="Container25">
+                                    <span class="md-inputfield">
+                                        <p:inputText value="#{roomController.currRoom.roomCode}"
+                                                     id="roomCode" readonly="true"
+                                                     title="#{msg['datatable.header.room.code']}"
+                                                     required="true" style="width: 80%"
+                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.code'])}"
+                                                     >
+                                        </p:inputText>
+
+                                        <label>#{msg['datatable.header.room.code']}</label>
+                                    </span>
+                                    <p:message for="roomCode"/>
+                                </div>
+                                <div class="Container25">
+                                    <span class="md-inputfield">
+                                        <p:inputText value="#{roomController.currRoom.roomName}"
+                                                     id="roomName" style="width: 80%"
+                                                     title="#{msg['datatable.header.room.name']}"
+                                                     required="true"
+                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
+                                                     >
+                                        </p:inputText>
+
+                                        <label>#{msg['datatable.header.room.name']} *</label>
+                                    </span>
+                                    <p:message for="roomName"/>
+                                </div>
+                                <div class="Container25">
+                                    <span class="title-top">
+                                        <p:autoComplete value="#{roomController.currRoom.commune}"
+                                                        completeMethod="#{roomController.completeAddress}"
+                                                        id="address" inputStyle="width: 100%" style="width: 80%"
+                                                        title="#{msg['datatable.header.room.address']}"
+                                                        required="true" converter="catCommuneConverter"
+                                                        queryDelay="1000"
+                                                        requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.address'])}"
+                                                        var="com" itemValue="#{com}" scrollHeight="100"
+                                                        itemLabel="#{com.communeName.concat(', ').concat(com.district.districtName).concat(', ').concat(com.district.province.provinceName)} "
+                                                        >
+                                            <p:ajax event="query" onstart="PF('block').show()"
+                                                    oncomplete="PF('block').hide()"/>
+                                        </p:autoComplete>
+
+                                        <label class="title-elem">#{msg['datatable.header.room.address']} *</label>
+                                    </span>
+                                    <p:message for="address"/>
+                                </div>
+
+
+                            </div>
+                            <div class="Container100">
+                                <div class="Container25 MarTop30">
+                                    <span class="title-top">
+                                        <p:selectOneMenu id="branchId" value="#{roomController.currRoom.branchId}"
+                                                         filter="true"
+                                                         filterMatchMode="contains"
+                                                         required="true" style="width: 71%" height="100"
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branch.name'])}"
+                                                         >
+                                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
+                                                          />
+                                            <f:selectItems value="#{branchController.branchs}" var="p"
+                                                           itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
+
+                                            <p:ajax event="change" update="machineId" process="@this"
+                                                    listener="#{roomController.onChangeBranch}"/>
+                                        </p:selectOneMenu>
+
+                                        <label class="title-elem">#{msg['datatable.header.branch.name']} *</label>
+                                    </span>
+                                    <p:message for="branchId"/>
+
+                                </div>
+                                <div class="Container25 MarTop30">
+                                    <span class="md-inputfield">
+                                        <p:inputTextarea value="#{roomController.currRoom.description}"
+                                                         id="description" rows="1" style="width:80%" cols="40"
+                                                         title="#{msg['datatable.header.description']}"
+                                                         required="true"
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.description'])}"
+                                                         >
+                                        </p:inputTextarea>
+
+                                        <label>#{msg['datatable.header.description']}</label>
+                                    </span>
+                                    <p:message for="description"/>
+                                </div>
+                                <div class="Container25 MarTop30">
+                                    <span class="md-inputfield">
+                                        <p:inputNumber value="#{roomController.currRoom.totalSeat}"
+                                                       id="totalSeat" style="width: 80%"
+                                                       title="#{msg['datatable.header.room.totalSeat']}"
+                                                       symbolPosition="suffix" decimalPlaces="0"
+                                                       required="true"
+
+                                                       requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.totalSeat'])}"
+                                                       >
+                                        </p:inputNumber>
+
+                                        <label>#{msg['datatable.header.room.totalSeat']} *</label>
+                                    </span>
+                                    <p:message for="totalSeat"/>
+                                </div>
+                                <div class="Container25 MarTop30 ">
+                                    <span class="title-top">
+                                        <h:outputText value="Có máy vào/ra: "/>
+                                        <p:selectBooleanCheckbox
+                                            value="#{roomController.currRoom.boolExistMachineInOut}">
+                                            <p:ajax event="change" update="machineDiv"/>
+
+                                        </p:selectBooleanCheckbox>
+                                    </span>
+                                </div>
+                                </div>
+                            <div class="Container100">
+
+                                
+                                <div class="Container50 MarTop30">
+                                    <h:panelGrid id="machineDiv">
+                                        <h:panelGrid id="machinePane"
+                                                     rendered="#{roomController.currRoom.boolExistMachineInOut}">
+
+                                            <span class="title-top" >
+                                                <label class="title-elem"
+                                                       style="color: #027FAC">#{msg['room.ipMachine']} *</label>
+
+                                                <p:selectOneMenu id="machineId" value="#{roomController.currRoom.catMachine}"
+                                                                 filter="true" converter="catMachineConverter"
+                                                                 filterMatchMode="contains" var="t"
+                                                                 required="#{roomController.currRoom.boolExistMachineInOut}"
+                                                                 height="100" style="width: 80%"
+                                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['room.ipMachine'])}"
+                                                                 >
+                                                    <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
+                                                                  noSelectionOption="true"/>
+                                                    <f:selectItems value="#{roomController.lstMachines}" var="m"
+                                                                   itemLabel="#{m.ip}:#{m.port}" itemValue="#{m}"/>
+                                                    <p:column>
+                                                        <h:outputText value="#{t.machineName}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{t.ip}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <h:outputText value="#{t.port}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <h:outputText value="#{t.statusName}"/>
+                                                    </p:column>
+
+                                                </p:selectOneMenu>
+
+                                            </span>
+                                            <span class="title-top MarTop30">
+                                                <label class="title-elem"
+                                                       style="color: #027FAC">#{msg['room.ipMachineOut']} </label>
+
+                                                <p:selectOneMenu id="machineOutId" value="#{roomController.currRoom.catMachineOut}"
+                                                                 filter="true" converter="catMachineConverter"
+                                                                 filterMatchMode="contains" var="t"
+                                                                 height="100" style="width: 80%"
+                                                                 >
+                                                    <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
+                                                                  noSelectionOption="true"/>
+                                                    <f:selectItems value="#{roomController.lstMachines}" var="m"
+                                                                   itemLabel="#{m.ip}:#{m.port}" itemValue="#{m}"/>
+                                                    <p:column>
+                                                        <h:outputText value="#{t.machineName}"/>
+                                                    </p:column>
+
+                                                    <p:column>
+                                                        <h:outputText value="#{t.ip}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <h:outputText value="#{t.port}"/>
+                                                    </p:column>
+                                                    <p:column>
+                                                        <h:outputText value="#{t.statusName}"/>
+                                                    </p:column>
+
+                                                </p:selectOneMenu>
+
+                                            </span>
+                                        </h:panelGrid>
+                                        <p:message for="machineOutId"/>
+                                    </h:panelGrid>
+
+                                </div>
+                            </div>
+
+                        </p:outputPanel>
+                        <p:outputPanel class="Container100 TexAlRight">
+
+                            <p:commandButton value="#{msg['button.save']}" icon="fa fa-save"
+                                             styleClass="GreenButton White" process="panelAddRoom"
+                                             actionListener="#{roomController.saveOrUpdate}"
+                                             update="panelAddRoom:@child(0),@widgetVar(growl),@widgetVar(tableRoomWidget)">
+
+                            </p:commandButton>
+                            <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close"
+                                             styleClass="GrayButton Black" process="@this">
+                                <p:effect type="clip" event="click" for="panelAddRoom" delay="1">
+                                    <f:param name="mode" value="'hide'"/>
+                                </p:effect>
+                            </p:commandButton>
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+                </p:panel>
+                <p:dataTable value="#{roomController.lazyRoom}"
+                             lazy="true" var="room" rowKey="#{room.roomId}"
+                             rowIndexVar="cusIdx"
+                             rows="20" paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                             rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableRoomWidget"
+                             emptyMessage="#{msg['datatable.empty']}"
+                             styleClass="Container100 NoPadding MarTop10"
+
+                             >
+                    <!--Header-->
+                    <f:facet name="header">
+                        <div class="Card NoPadding" style="background: transparent;">
+                            <div class="Container20 TexAlLeft">
+                                <p:commandButton icon="fa fa-plus" actionListener="#{roomController.preAdd}"
+                                                 styleClass="White BlueButton" update=":form:panelAddRoom:@child(0)"
+                                                 process="@this"
+                                                 value="#{msg['view.button.add.room']}">
+                                    <p:effect type="clip" event="click" for=":form:panelAddRoom" delay="1">
+                                        <f:param name="mode" value="'show'"/>
+                                    </p:effect>
+                                </p:commandButton>
+
+                            </div>
+                            <div class="Container60 Responsive50">
+                                <h:outputText styleClass="Fs20" value="#{msg['datatable.header.room.title']}"/>
+                            </div>
+
+                        </div>
+                    </f:facet>
+                    <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                    <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                    <!--STT-->
+                    <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                              >
+                        <h:outputText value="#{cusIdx +1 }"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['datatable.header.room.code']}" width="25"
+                              filterBy="#{room.roomCode}">
+                        <h:outputText value="#{room.roomCode}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.room.name']}" width="50"
+                              filterBy="#{room.roomName}">
+                        <h:outputText value="#{room.roomName}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.room.type']}" width="25"
+                              filterBy="#{room.type}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('tableRoomWidget').filter()">
+                                <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                <f:selectItem itemValue="1" itemLabel="#{msg['datatable.header.room.type1']}"/>
+                                <f:selectItem itemValue="2" itemLabel="#{msg['datatable.header.room.type2']}"/>
+                                <f:selectItem itemValue="3" itemLabel="#{msg['datatable.header.room.type3']}"/>
+                                <f:selectItem itemValue="4" itemLabel="#{msg['datatable.header.room.type4']}"/>
+
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{msg['datatable.header.room.type1']}" rendered="#{room.type==1}"/>
+                        <h:outputText value="#{msg['datatable.header.room.type2']}" rendered="#{room.type==2}"/>
+                        <h:outputText value="#{msg['datatable.header.room.type3']}" rendered="#{room.type==3}"/>
+                        <h:outputText value="#{msg['datatable.header.room.type4']}" rendered="#{room.type==4}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['datatable.header.branch.name']}" width="50"
+                              filterBy="#{room.branchId}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('tableRoomWidget').filter()">
+                                <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}"
+                                               itemValue="#{p.branchId}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{room.branch.branchName}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.description']}" width="70"
+                              >
+                        <h:outputText value="#{room.description}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.room.totalSeat']}" width="15" style="text-align: right">
+                        <h:outputText value="#{room.totalSeat}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.room.useSeat']}" width="15"  style="text-align: right">
+                        <h:outputText value="#{roomController.getUseSeat(room.roomId)}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['catUser.status']}" width="15"
+                              filterBy="#{room.status}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('tableRoomWidget').filter()">
+                                <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                <f:selectItem itemValue="2"
+                                              itemLabel="#{msg['common.PAUSE']}"/>
+                                <f:selectItem itemValue="1"
+                                              itemLabel="#{msg['common.ACTIVE']}"/>
+                                <f:selectItem itemValue="0"
+                                              itemLabel="#{msg['common.INACTIVE']}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{room.statusName}" />
+                    </p:column>
+
+                    <p:column headerText="#{msg['datatable.header.action']}" width="30" styleClass="TexAlCenter">
+                        <p:commandButton icon="fa fa-edit" actionListener="#{roomController.preEdit(room)}"
+                                         process="@widgetVar(tableRoomWidget)"
+                                         styleClass="White BlueButton" onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()" update="@form:panelAddRoom:@child(0)"
+                                         title="#{msg['button.edit']}">
+                            <p:effect type="clip" event="click" for="@form:panelAddRoom" delay="1">
+                                <f:param name="mode" value="'show'"/>
+                            </p:effect>
+                        </p:commandButton>
+                        <!--<p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14"-->
+                                         <!--oncomplete="PF('deleteRoomPanel-#{cusIdx}').show('#{component.clientId}')">-->
+
+                        <!--</p:commandButton>-->
+                        <p:overlayPanel modal="true" widgetVar="deleteRoomPanel-#{cusIdx}" showEffect="scale"
+                                        hideEffect="fade" appendToBody="true"
+                                        style="" dismissable="true" showCloseIcon="true" my="right top">
+
+                            <p:commandButton value="Xóa #{room.roomName}?" icon="fa fa-trash"
+                                             oncomplete="PF('deleteRoomPanel-#{cusIdx}').hide()" process="@this"
+                                             styleClass="RedButton White Fs14"
+                                             actionListener="#{roomController.delete(room)}"
+                                             update="@widgetVar(tableRoomWidget),@widgetVar(growl)">
+
+                            </p:commandButton>
+                        </p:overlayPanel>
+                        <p:tooltip position="left" ></p:tooltip>
+                        <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
+                        <p:menuButton value="" styleClass="GreenButton Fs14 White"  id="menuButtonId">
+
+                            <p:menuitem icon="fa fa-pause" actionListener="#{roomController.updateStatus(room,2)}"
+                                        process="@widgetVar(tableRoomWidget)"
+                                        onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                        update="@widgetVar(tableRoomWidget)" value="#{msg['common.PAUSE']}">
+                            </p:menuitem>
+                            <p:menuitem icon="fa fa-pause" actionListener="#{roomController.updateStatus(room,0)}"
+                                        process="@widgetVar(tableRoomWidget)"
+                                        onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                        update="@widgetVar(tableRoomWidget)" value="#{msg['common.INACTIVE']}">
+                            </p:menuitem>
+
+                            <p:menuitem icon="fa fa-pause" actionListener="#{roomController.updateStatus(room,1)}"
+                                        process="@widgetVar(tableRoomWidget)" disabled="#{room.status!=2}"
+                                        onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                        update="@widgetVar(tableRoomWidget)" value="#{msg['common.restore']}">
+                            </p:menuitem>
+                            <p:menuitem icon="fa fa-trash"
+                                        oncomplete="PF('deleteRoomPanel-#{cusIdx}').show('#{component.clientId}')"
+                                        value="Xóa">
+
+                            </p:menuitem>
+
+                        </p:menuButton>
+                    </p:column>
+
+
+                </p:dataTable>
+            </div>
+
+        </h:form>
+
+        <!--Style-->
+        <style type="text/css">
+            .configObject {
+                padding: 2px !important;
+            }
+
+            .configObject tbody tr td {
+                padding: 0 4px !important;
+            }
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+                height: 66px !important;
+            }
+
+            #form\:tableEditConfigObjId {
+                height: 250px;
+            }
+
+            .responsive125 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 12.5%;
+            }
+
+            .responsive875 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 87.5%;
+            }
+
+            .responsive30 {
+                box-sizing: border-box;
+                float: left;
+                width: 30%;
+            }
+
+            .responsive70 {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

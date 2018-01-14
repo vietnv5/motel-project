@@ -1,0 +1,99 @@
+<ui:composition
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:p="http://primefaces.org/ui"
+        xmlns:pe="http://primefaces.org/ui/extensions"
+        template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="insertEditForm">
+            <p:growl id="designGrowl" showDetail="false"/>
+
+            <div class="messagebox tc">
+                <p:growl id="mainMessage" life="5000" showDetail="true"
+                         autoUpdate="true" globalOnly="true" for="mainMessage"
+                         widgetVar="aGrowl"/>
+            </div>
+
+            <pe:blockUI target=":form:objectTable" content="blockUIContent"
+                        widgetVar="blockUiSearch"/>
+
+            <h:panelGrid id="blockUIContent" columns="2" style="display:none;"
+                         styleClass="blockUi">
+                <h:graphicImage library="olympos-layout/images" name="ajax-loader.gif"
+                                style="margin-right: 12px; vertical-align: middle;"/>
+                <h:outputText value="Đang xử lý ......" style="white-space: nowrap;"/>
+            </h:panelGrid>
+        </h:form>
+
+        <h:form id="search">
+            <p:panel id="panel" header="Tìm kiếm" toggleable="true">
+                <h:panelGrid columns="2" cellpadding="5" width="100%">
+                    <h:panelGrid columns="15" style="height: 20px;margin-bottom:10px"
+                                 cellpadding="5">
+                        <h:outputText value="Mã"/>
+                        <p:inputText id="searchCode"
+                                     value="#{exampleController.searchCode}" style="with:30%"/>
+                        <p:watermark for="searchCode" value="code"/>
+
+                        <h:outputText value="Tên"/>
+                        <p:inputText id="searchName"
+                                     value="#{exampleController.searchName}" style="with:30%"/>
+                        <p:watermark for="searchName" value="name"/>
+
+
+                        <p:commandButton id="search1" type="submit"
+                                         update=":form:objectTable" process="panel"
+                                         actionListener="#{exampleController.search}" value="Search"
+                                         style="width: 120px; height: 25px;font-size: 12px"
+                                         onstart="PF('blockUiSearch').block()"
+                                         oncomplete="PF('blockUiSearch').unblock()"/>
+                    </h:panelGrid>
+
+                </h:panelGrid>
+            </p:panel>
+
+        </h:form>
+
+        <div class="cl h6"></div>
+        <h:form id="form">
+            <p:dataTable var="obj" value="#{exampleController.lazyDataModel}"
+                         paginator="true" rows="25" filterEvent="keyup" rowKey="#{obj.id}"
+                         rowIndexVar="rowIndex" paginatorPosition="bottom" id="objectTable"
+                         widgetVar="objectTable" rowsPerPageTemplate="25, 50, 100"
+                         lazy="true" editable="false" emptyMessage="Không tìm thấy dữ liệu">
+
+                <p:ajax event="page" onstart="PF('blockUiSearch').block()"
+                        oncomplete="PF('blockUiSearch').unblock()"/>
+
+                <p:ajax event="sort" onstart="PF('blockUiSearch').block()"
+                        oncomplete="PF('blockUiSearch').unblock()"/>
+
+                <p:column style="width: 3%; text-align: center;" headerText="STT">
+                    <h:outputText value="#{rowIndex+ 1}"/>
+                </p:column>
+
+                <p:column id="code" style="width: 10%; text-align: center;"
+                          sortBy="#{obj.code}" headerText="Mã">
+                    <h:outputText value="#{obj.code}"/>
+                </p:column>
+
+                <p:column id="name" style="width: 10%; text-align: center;"
+                          sortBy="#{obj.name}" headerText="Tên">
+                    <h:outputText value="#{obj.name}"/>
+                </p:column>
+            </p:dataTable>
+
+
+        </h:form>
+        <script type="text/javascript">
+
+        </script>
+        <style>
+            .blockUi tbody td {
+                border-color: white !important;
+            }
+        </style>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<p:dialog widgetVar="addDlg" width="60%"
+          height="50%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+    <f:facet name="header">
+        <h:outputText value="#{workDayController.isUpdate() ? msg['label.edit'] : msg['label.add']}"/>
+    </f:facet>
+    <h:form id="addForm">
+        <div class="Container100 NoPadding">
+            <p:panelGrid id="panelGrid" columns="4" styleClass="Wid100 noBorders">
+                <p:outputLabel value="#{msg['employee.empCode']}" for="empCode"/>
+                <p:inputText id="empCode" value="#{workDayController.empWorkDay.employee.empCode}"/>
+
+                <p:outputLabel value="#{msg['workDay.workType']}" />
+                <p:selectOneMenu onchange="" valueChangeListener="#{workDayController.handleChangeWorkTypes}">>
+                                <f:selectItem itemLabel="#{workDayController.empWorkDay.workType}"
+                                              itemValue="#{workDayController.empWorkDay.workType}"/>
+                                <f:selectItem itemLabel="X8"
+                                              itemValue="X8"/>
+                                <f:selectItem itemLabel="OFF"
+                                              itemValue="OFF"/>
+                                <f:selectItem itemLabel="OM"
+                                              itemValue="OM"/>
+                                <f:selectItem itemLabel="TS"
+                                              itemValue="TS"/>
+                                <f:selectItem itemLabel="R"
+                                              itemValue="R"/>
+                                <f:selectItem itemLabel="Ro"
+                                              itemValue="Ro"/>
+                                <f:selectItem itemLabel="P"
+                                              itemValue="P"/>
+                                <f:selectItem itemLabel="CT"
+                                              itemValue="CT"/>
+                                <f:selectItem itemLabel="NL"
+                                              itemValue="NL"/>
+                                <f:selectItem itemLabel="V"
+                                              itemValue="V"/>
+                                <f:selectItem itemLabel="Vo"
+                                              itemValue="Vo"/>
+                                <f:selectItem itemLabel="OT"
+                                              itemValue="OT"/>
+                                <f:selectItem itemLabel="ERR"
+                                              itemValue="ERR"/>
+                            </p:selectOneMenu>
+                
+
+                <p:outputLabel value="#{msg['workDay.value']}" for="value"/>
+                <p:inputText id="value" value="#{workDayController.empWorkDay.value}"/>
+
+                <p:outputLabel value="#{msg['workDay.workDate']}" for="workDate"/>
+                <p:calendar id="workDate" pattern="dd/MM/yyyy"
+                            value="#{workDayController.empWorkDay.workDate}"/>
+            </p:panelGrid>
+
+        </div>
+        <div class="Container100 TexAlCenter">
+            <p:tooltip position="top"/>
+            <p:commandButton id="edit" icon="#{workDayController.isUpdate() ? 'fa fa-floppy-o' : 'fa fa-plus-circle'}"
+                             styleClass="GreenButton Fs14 White"
+                             onclick="PF('block').show()"
+                             update=":form:growl,:form:tblId, :addForm"
+                             actionListener="#{workDayController.save}"
+                             title="#{workDayController.isUpdate() ? msg['label.edit'] : msg['label.add']}"
+                    />
+        </div>
+    </h:form>
+</p:dialog>
+</html>

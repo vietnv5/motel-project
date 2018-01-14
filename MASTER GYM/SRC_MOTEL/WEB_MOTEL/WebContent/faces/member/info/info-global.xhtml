@@ -1,0 +1,320 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:tab title="#{msg['view.header.member.global']}" rendered="#{memberController.curMember.type!=2}">
+        <p:fieldset legend="#{msg['view.header.member.contact']}">
+            <div class="Card">
+                <div class="Container100 ">
+                    <!--<div class="Container75">-->
+                        <div class="Container100 Responsive50">
+
+                            <div class="Container25 Responsive50">
+                                <span class="md-inputfield">
+                                    <p:inputText value="#{memberController.curMember.memberCode}"
+                                                 id="memberCode"
+                                                 title="#{msg['datatable.header.memberCode']}"
+                                                 required="false" disabled="true"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberCode'])}"
+                                                 >
+                                    </p:inputText>
+
+                                    <label>#{msg['datatable.header.memberCode']} *</label>
+                                </span>
+                                <p:message for="memberCode"></p:message>
+                            </div>
+                            <div class="Container25 Responsive50">
+                                <span class="md-inputfield">
+                                    <p:inputText value="#{memberController.curMember.memberName}"
+                                                 id="memberName"  converter="trimConverter"
+                                                 title="#{msg['datatable.header.memberName']}"
+                                                 required="true"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberName'])}"
+                                                 >
+                                    </p:inputText>
+
+                                    <label>#{msg['datatable.header.memberName']} *</label>
+                                </span>
+                                <p:message for="memberName"></p:message>
+                            </div>
+                            <div class="Container25 Responsive50" style="display: none">
+                                <span class="md-inputfield">
+                                    <p:inputText value="#{memberController.curMember.cardCode}"
+                                                 id="cardCode"
+                                                 title="#{msg['datatable.header.cardCode']}"
+                                                 required="false"  onkeypress="if (event.keyCode == 13) {
+                                                             return false;
+                                                         }" disabled="true"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.cardCode'])}"
+                                                 >
+                                    </p:inputText>
+
+                                    <label>#{msg['datatable.header.cardCode']} </label>
+                                </span>
+                                <p:message for="cardCode"></p:message>
+                            </div>
+                            <div class="Container25 Responsive50">
+                                <span class="md-inputfield">
+                                    <p:inputMask value="#{memberController.curMember.phoneNumber}"
+                                                 id="phoneNumber"
+                                                 title="#{msg['datatable.header.phoneNumber']}"
+                                                 required="true"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.phoneNumber'])}"
+                                                 mask="9999999999?9">
+                                    </p:inputMask>
+                                    <p:message for="phoneNumber"></p:message>
+                                    <label>#{msg['datatable.header.phoneNumber']} *</label>
+                                </span>
+                            </div>
+
+                       
+
+                             </div>
+                        <div class="Container100 Responsive50 MarTop20">
+                            <div class="Container25 Responsive50">
+                                <span class="md-inputfield">
+                                    <p:inputText value="#{memberController.curMember.email}" id="email"
+                                                 title="#{msg['datatable.header.email']}"
+                                                 required="false"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
+                                                 >
+                                    </p:inputText>
+
+                                    <label>#{msg['datatable.header.email']} </label>
+                                </span>
+                                <p:message for="email"></p:message>
+                            </div>
+
+
+                            <div class="Container25 Responsive50">
+                                <span class="md-inputfield">
+                                    <p:inputText value="#{memberController.curMember.address}"
+                                                 id="address"
+                                                 title="#{msg['datatable.header.memberName']}"
+                                                 required="true"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.address'])}"
+                                                 >
+                                    </p:inputText>
+
+                                    <label>#{msg['datatable.header.address']} *</label>
+                                </span>
+                                <p:message for="address"></p:message>
+                            </div>
+                            <div class="Container25 Responsive50">
+
+                                <span class="title-top">
+                                    <p:selectOneRadio id="sex"
+                                                      value="#{memberController.curMember.sex}"
+                                                      required="true" style=""
+                                                      >
+                                        <f:selectItem itemLabel="#{msg['view.label.sexMale']}"
+                                                      itemValue="#{msg['view.label.sexMale']}"/>
+                                        <f:selectItem itemLabel="#{msg['view.label.sexFemale']}"
+                                                      itemValue="#{msg['view.label.sexFemale']}"/>
+                                        <p:ajax event="change" update="@widgetVar(lighbox)"/>
+                                    </p:selectOneRadio>
+                                    <label class="title-elem">#{msg['datatable.header.sex']} *</label>
+                                </span>
+
+
+                                <p:message for="sex"></p:message>
+                            </div>
+                       
+                            <div class="Container25 Responsive50">
+                                <span class="title-top">
+                                    <p:calendar value="#{memberController.curMember.birthDay}"
+                                                locale="#{language.localeCode}"
+                                                maxdate="#{currentDate}" styleClass="CalendarSearch"
+                                                id="birthDay"
+                                                showButtonPanel="true" style="width: calc(100% - 15px)"
+                                                title="#{msg['datatable.header.birthDay']}"
+                                                showOn="both"
+                                                pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                                showOtherMonths="true" selectOtherMonths="true"
+                                                mask="true">
+                                        <!--<p:ajax event="dateSelect" update="@widgetVar(calEnd)" />-->
+                                    </p:calendar>
+
+                                    <label class="title-elem">#{msg['datatable.header.birthDay']} *</label>
+                                </span>
+                                <p:message for="birthDay"></p:message>
+                            </div>
+                             </div>
+                        <div class="Container100 Responsive50 MarTop20">
+
+                        </div>
+
+                    </div>
+                    
+                <!--</div>-->
+            </div> 
+        </p:fieldset>
+        <p:fieldset legend="#{msg['view.header.member.add.detail']}">
+            <div class="Card">
+                <div class="Container100 Responsive50 MarTop20">
+
+                    <div class="Container25 Responsive50">
+                        <span class="title-top">
+                            <p:calendar value="#{memberController.curMember.joinDate}"
+                                        locale="#{language.localeCode}"
+                                        maxdate="#{currentDate}" styleClass="CalendarSearch"
+                                        id="joinDate"
+                                        showButtonPanel="true" style="width: calc(100% - 15px)"
+                                        title="#{msg['datatable.header.joinDate']}"
+                                        showOn="both"
+                                        pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                        showOtherMonths="true" selectOtherMonths="true"
+                                        mask="true"
+                                        required="true"
+                                        requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.joinDate'])}"
+                                        >
+                            </p:calendar>
+                            <label class="title-elem">#{msg['datatable.header.joinDate']} </label>
+                        </span>
+                        <p:message for="joinDate"></p:message>
+                    </div>
+
+                    <div class="Container25 Responsive50">
+                        <span class="title-top">
+                            <p:calendar value="#{memberController.curMember.endDate}"
+                                        locale="#{language.localeCode}"
+                                        mindate="#{currentDate}" styleClass="CalendarSearch"
+                                        id="endDate"
+                                        showButtonPanel="true" style="width: calc(100% - 15px)"
+                                        title="#{msg['datatable.header.endDate']}"
+                                        showOn="both"
+                                        pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                        showOtherMonths="true" selectOtherMonths="true"
+                                        mask="true">
+                            </p:calendar>
+
+                            <label class="title-elem">#{msg['datatable.header.endDate']} </label>
+                        </span>
+                        <p:message for="endDate"></p:message>
+                    </div>
+                    <div class="Container25 Responsive50">
+                        <span class="title-top">
+                            <p:selectOneMenu id="status"
+                                             value="#{memberController.curMember.status}"
+                                             required="true"
+                                             title="#{msg['datatable.header.status']}"
+                                             style="width: 43%"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.status'])}"
+
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}"
+                                              noSelectionOption="true"/>
+                                <f:selectItem itemLabel="#{msg['member.status.NEW']}"
+                                              itemValue="0"/>
+                                <f:selectItem itemLabel="#{msg['member.status.ACTIVE']}"
+                                              itemValue="1"/>
+                                <f:selectItem itemLabel="#{msg['member.status.PAUSE']}"
+                                              itemValue="2"/>
+                                <f:selectItem itemLabel="#{msg['member.status.STOP']}"
+                                              itemValue="4"/>
+
+                            </p:selectOneMenu>
+                            <label class="title-elem">#{msg['datatable.header.status']} *</label>
+                        </span>
+                        <p:message for="status"></p:message>
+                    </div>
+                    <div class="Container25 Responsive50">
+                        <span class="title-top">
+                            <p:inputMask value="#{memberController.curMember.point}" id="point"
+                                         title="#{msg['datatable.header.point']}"
+                                         required="true"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.point'])}"
+                                         mask="9?9999999999">
+                            </p:inputMask>
+
+                            <label class="title-elem">#{msg['datatable.header.point']} *</label>
+                        </span>
+                        <p:message for="point"></p:message>
+                    </div>
+                </div>
+                <div class="Container100 Responsive50 MarTop20">
+                    <div class="Container25 Responsive50">
+
+                        <span class="title-top">
+                            <p:selectOneMenu id="memberType"
+                                             value="#{memberController.curMember.memberType}"
+                                             required="false"
+                                             title="#{msg['datatable.header.memberType']}"
+                                             style=""
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberType'])}"
+
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}"
+                                              noSelectionOption="true"/>
+                                <f:selectItem itemLabel="#{msg['view.label.memberType.copper']}"
+                                              itemValue="COPPER"/>
+                                <f:selectItem itemLabel="#{msg['view.label.memberType.silver']}"
+                                              itemValue="SILVER"/>
+                                <f:selectItem itemLabel="#{msg['view.label.memberType.gold']}"
+                                              itemValue="GOLD"/>
+                                <f:selectItem
+                                    itemLabel="#{msg['view.label.memberType.diamond']}"
+                                    itemValue="DIAMOND"/>
+
+                            </p:selectOneMenu>
+                            <label class="title-elem">#{msg['datatable.header.memberType']} *</label>
+                        </span>
+                        <p:message for="memberType"/>
+                    </div>
+                    <div class="Container25 Responsive50">
+
+                        <span class="title-top">
+                            <p:selectOneMenu id="branchId"
+                                             value="#{memberController.curMember.branchId}"
+                                             required="true"
+                                             title="#{msg['datatable.header.branchId']}"
+                                             style=""
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branchId'])}"
+
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}"
+                                              noSelectionOption="true"/>
+                                <f:selectItems value="#{branchController.branchs}" var="o"
+                                               itemLabel="#{o.branchName}"
+                                               itemValue="#{o.branchId}">
+
+                                </f:selectItems>
+
+                            </p:selectOneMenu>
+                            <label class="title-elem">#{msg['datatable.header.branchId']} *</label>
+                        </span>
+                        <p:message for="branchId"/>
+                    </div>
+                    <div class="Container25 Responsive50">
+                        <span class="title-top">
+                            <p:autoComplete id="employeeId" value="#{memberController.curMember.employee}" completeMethod="#{employeeController.completeEmployee}"
+                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter" dropdown="true"  scrollHeight="200"
+                                            var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                                <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
+                                <p:column width="50"><h:outputText value="#{emp.employeeName}"/></p:column>
+                                <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
+                                <p:column><h:outputText value="#{emp.telephone}"/></p:column>
+
+                            </p:autoComplete>  
+                            <label class="title-elem">#{msg['catUser.employee']}</label> 
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </p:fieldset>
+        <div class="Card">
+            <div class="Container100 Responsive50 TexAlRight">
+                <p:commandButton value="#{msg['button.saveAndRegisterFingerprint']}" onclick="PF('block').show()"
+                                 oncomplete="PF('block').hide()"  styleClass="White Fs14" 
+                                  icon="fa fa-hand-pointer-o" 
+                                 rendered="#{(memberController.isEdit==false and memberController.IS_LOCAL==true) }"
+                                 actionListener="#{memberController.saveOrUpdateWithFingerprint()}" update="tabViewMain:form,@widgetVar(growl)"/>
+                <p:spacer width="5px"/>
+                <p:commandButton value="#{msg['button.save']}" onclick="PF('block').show()"
+                                 oncomplete="PF('block').hide()"
+                                 actionListener="#{memberController.saveOrUpdate}" update="tabViewMain:form,@widgetVar(growl)"/>
+            </div>
+        </div>
+    </p:tab>
+</ui:composition>

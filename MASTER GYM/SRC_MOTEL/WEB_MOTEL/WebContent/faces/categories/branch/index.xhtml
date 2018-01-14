@@ -1,0 +1,294 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <div class="Card">
+                <p:panel id="panelAddBranch" style="display: none">
+
+                    <p:outputPanel styleClass="Card" style="width: 80% !important; margin-left: 10%">
+                        <p:outputPanel class="Container100 TexAlLeft">
+
+                            <div class="Container100">
+                                <div class="Container33">
+                                        <span class="md-inputfield">
+                                            <p:inputText value="#{branchController.currBranch.branchCode}"
+                                                         id="branchCode"
+                                                         title="#{msg['datatable.header.branch.code']}"
+                                                         required="true"
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branch.code'])}"
+                                            >
+                                            </p:inputText>
+
+                                            <label>#{msg['datatable.header.branch.code']} *</label>
+                                        </span>
+                                    <p:message for="branchCode"></p:message>
+                                </div>
+                                <div class="Container33 ">
+                                        <span class="md-inputfield">
+                                            <p:inputText value="#{branchController.currBranch.branchName}"
+                                                         id="branchName"
+                                                         title="#{msg['datatable.header.branch.name']}"
+                                                         required="true"
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branch.name'])}"
+                                            >
+                                            </p:inputText>
+
+                                            <label>#{msg['datatable.header.branch.name']} *</label>
+                                        </span>
+                                    <p:message for="branchName"></p:message>
+                                </div>
+                                <div class="Container33 ">
+                                        <span class="md-inputfield">
+                                            <p:inputText value="#{branchController.currBranch.description}"
+                                                         id="description"
+                                                         title="#{msg['datatable.header.description']}"
+                                                         required="true"
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.description'])}"
+                                            >
+                                            </p:inputText>
+
+                                            <label>#{msg['datatable.header.description']}</label>
+                                        </span>
+                                    <p:message for="description"></p:message>
+                                </div>
+                            </div>
+
+                        </p:outputPanel>
+                        <p:outputPanel class="Container100 TexAlRight">
+
+                            <p:commandButton value="#{msg['button.save']}" icon="fa fa-save"
+                                             styleClass="GreenButton White" process="panelAddBranch"
+                                             actionListener="#{branchController.saveOrUpdate}"
+                                             update="panelAddBranch:@child(0),@widgetVar(growl),@widgetVar(tableBranchWidget)"
+                                             oncomplete="PF('tableBranchWidget').filter();">
+                            </p:commandButton>
+                            <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close"
+                                             styleClass="GrayButton Black" process="@this">
+                                <p:effect type="clip" event="click" for="panelAddBranch" delay="1">
+                                    <f:param name="mode" value="'hide'"/>
+                                </p:effect>
+                            </p:commandButton>
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+                </p:panel>
+                <p:dataTable value="#{branchController.lazyBranch}"
+                             lazy="true" var="branch" rowKey="#{branch.branchId}"
+                             rowIndexVar="cusIdx" id="tableBranchId"
+                             rows="20" paginator="true" paginatorPosition="bottom"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                             rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableBranchWidget"
+                             emptyMessage="#{msg['datatable.empty']}"
+                             styleClass="Container100 NoPadding MarTop10"
+
+                >
+                    <!--Header-->
+                    <f:facet name="header">
+                        <div class="Card NoPadding" style="background: transparent;">
+                            <div class="Container20 TexAlLeft">
+                                <p:commandButton icon="fa fa-plus" actionListener="#{branchController.preAddBranch}"
+                                                 styleClass="White BlueButton" update=":form:panelAddBranch:@child(0)"
+                                                 process="@this"
+                                                 value="#{msg['view.button.add.branch']}">
+                                    <p:effect type="clip" event="click" for=":form:panelAddBranch" delay="1">
+                                        <f:param name="mode" value="'show'"/>
+                                    </p:effect>
+                                </p:commandButton>
+
+                            </div>
+                            <div class="Container60 Responsive50">
+                                <h:outputText styleClass="Fs20" value="#{msg['datatable.header.branch.title']}"/>
+                            </div>
+
+                        </div>
+                    </f:facet>
+                    <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                    <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                    <!--STT-->
+                    <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                    >
+                        <h:outputText value="#{cusIdx +1 }"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['datatable.header.branch.code']}" width="50"
+                    >
+                        <h:outputText value="#{branch.branchCode}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.branch.name']}" width="50">
+                        <h:outputText value="#{branch.branchName}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.description']}" width="80"
+                    >
+                        <h:outputText value="#{branch.description}"/>
+                    </p:column>
+                    <p:column headerText="#{msg['catUser.status']}" width="10"
+                              filterBy="#{branch.status}">
+                        <f:facet name="filter">
+                            <p:selectOneMenu onchange="PF('tableBranchWidget').filter()">
+                                <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                <f:selectItem itemValue="2"
+                                              itemLabel="#{msg['common.PAUSE']}"/>
+                                <f:selectItem itemValue="1"
+                                              itemLabel="#{msg['common.ACTIVE']}"/>
+                                <f:selectItem itemValue="0"
+                                              itemLabel="#{msg['common.INACTIVE']}"/>
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{branch.statusName}" />
+                    </p:column>
+                    <p:column headerText="#{msg['datatable.header.action']}" width="20" styleClass="TexAlRight">
+
+
+                        <p:commandButton icon="fa fa-edit" actionListener="#{branchController.preEdit(branch)}"
+                                         process="@widgetVar(tableBranchWidget)"
+                                         styleClass="White BlueButton" onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()" update="@form:panelAddBranch:@child(0)"
+                                         title="#{msg['button.edit']}">
+                            <p:effect type="clip" event="click" for="@form:panelAddBranch" delay="1">
+                                <f:param name="mode" value="'show'"/>
+                            </p:effect>
+                        </p:commandButton>
+                        <!--<p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" oncomplete="PF('deleteBranchPanel-#{cusIdx}').show('#{component.clientId}')">-->
+
+                        <!--</p:commandButton>-->
+                        <p:overlayPanel modal="true" widgetVar="deleteBranchPanel-#{cusIdx}" showEffect="scale"
+                                        hideEffect="fade" appendToBody="true"
+                                        style="" dismissable="true" showCloseIcon="true" my="right top">
+
+
+
+                            <p:commandButton value="Xóa #{branch.branchName}?" icon="fa fa-trash"
+                                             oncomplete="PF('deleteBranchPanel-#{cusIdx}').hide()" process="@this"
+                                             styleClass="RedButton White Fs14"
+                                             actionListener="#{branchController.delete(branch)}"
+                                             update="@widgetVar(tableBranchWidget),:form">
+
+                            </p:commandButton>
+                        </p:overlayPanel>
+                        <p:tooltip position="left" ></p:tooltip>
+                        <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
+                        <p:menuButton value="" styleClass="GreenButton Fs14 White"  title="Lựa chọn" id="menuButtonId">
+
+                            <p:menuitem icon="fa fa-pause" actionListener="#{branchController.updateStatus(branch,2)}"
+                                        process="@widgetVar(tableBranchWidget)"
+                                        onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                        update="@widgetVar(tableBranchWidget)" value="#{msg['common.PAUSE']}">
+                            </p:menuitem>
+                            <p:menuitem icon="fa fa-pause" actionListener="#{branchController.updateStatus(branch,0)}"
+                                        process="@widgetVar(tableBranchWidget)"
+                                        onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                        update="@widgetVar(tableBranchWidget)" value="#{msg['common.INACTIVE']}">
+                            </p:menuitem>
+
+                            <p:menuitem icon="fa fa-pause" actionListener="#{branchController.updateStatus(branch,1)}"
+                                        process="@widgetVar(tableBranchWidget)" disabled="#{branch.status!=2}"
+                                        onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                        update="@widgetVar(tableBranchWidget)" value="#{msg['common.restore']}">
+                            </p:menuitem>
+                            <p:menuitem icon="fa fa-trash"
+                                        oncomplete="PF('deleteBranchPanel-#{cusIdx}').show('#{component.clientId}')"
+                                        value="Xóa">
+
+                            </p:menuitem>
+
+                        </p:menuButton>
+                    </p:column>
+
+
+                </p:dataTable>
+            </div>
+
+        </h:form>
+
+        <!--Style-->
+        <style type="text/css">
+            .configObject {
+                padding: 2px !important;
+            }
+
+            .configObject tbody tr td {
+                padding: 0 4px !important;
+            }
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+                height: 66px !important;
+            }
+
+            #form\:tableEditConfigObjId {
+                height: 250px;
+            }
+
+            .responsive125 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 12.5%;
+            }
+
+            .responsive875 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 87.5%;
+            }
+
+            .responsive30 {
+                box-sizing: border-box;
+                float: left;
+                width: 30%;
+            }
+
+            .responsive70 {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

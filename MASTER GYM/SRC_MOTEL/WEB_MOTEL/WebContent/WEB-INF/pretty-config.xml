@@ -1,0 +1,156 @@
+<pretty-config xmlns="http://ocpsoft.org/schema/rewrite-config-prettyfaces"
+               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+               xsi:schemaLocation="http://ocpsoft.org/schema/rewrite-config-prettyfaces
+                      http://ocpsoft.org/xml/ns/prettyfaces/rewrite-config-prettyfaces.xsd">
+
+    <url-mapping id="home">
+        <pattern value="/home"/>
+        <view-id value="/faces/home/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="error">
+        <pattern value="/error"/>
+        <view-id value="/error.xhtml"/>
+    </url-mapping>
+    <url-mapping id="access-denied">
+        <pattern value="/access-denied"/>
+        <view-id value="/access-denied.xhtml"/>
+    </url-mapping>
+    <url-mapping id="index">
+        <pattern value="/"/>
+        <view-id value="/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="dashboard">
+        <pattern value="/dashboard"/>
+        <view-id value="/faces/dashboard/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="login">
+        <pattern value="/login"/>
+        <view-id value="/faces/login/index.xhtml"/>
+    </url-mapping>
+
+    <url-mapping id="member">
+        <pattern value="/member"/>
+        <!--<view-id value="/faces/member/info/table.xhtml"/>-->
+        <view-id value="/faces/member/member-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="pack">
+        <pattern value="/pack"/>
+        <view-id value="/faces/categories/pack/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="schedule">
+        <pattern value="/schedule"/>
+        <view-id value="/faces/categories/schedule/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="jobtitle">
+        <pattern value="/jobtitle"/>
+        <view-id value="/faces/categories/jobtitle/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="department">
+        <pattern value="/department"/>
+        <view-id value="/faces/categories/department/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="room">
+        <pattern value="/room"/>
+        <view-id value="/faces/categories/room/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="staff">
+        <pattern value="/staff"/>
+        <view-id value="/faces/schedule/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="employee">
+        <pattern value="/employee"/>
+        <view-id value="/faces/employee/index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="branch">
+        <pattern value="/branch"/>
+        <view-id value="/faces/categories/branch/index.xhtml"/>
+    </url-mapping>
+
+    <url-mapping id="member_care">
+        <pattern value="/member_care"/>
+        <view-id value="/faces/member_care/index.xhtml"/>
+    </url-mapping>
+
+    <url-mapping id="catItem">
+        <pattern value="/catItem"/>
+        <view-id value="/faces/categories/catItem/catItem-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="catUser">
+        <pattern value="/catUser"/>
+        <view-id value="/faces/catUser/catUser-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="logAction">
+        <pattern value="/logAction"/>
+        <view-id value="/faces/logAction/logAction-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="document">
+        <pattern value="/document"/>
+        <view-id value="/faces/document/document-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="client">
+        <pattern value="/client"/>
+        <view-id value="/faces/client/client-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="custom_checkin">
+        <pattern value="/custom_checkin"/>
+        <view-id value="/faces/custom_checkin/custom-checkin-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="catService">
+        <pattern value="/catService"/>
+        <view-id value="/faces/cat_service/cat-service-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="customer_checkout">
+        <pattern value="/customer_checkout"/>
+        <view-id value="/faces/customer_checkout/customerCheckout-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="catPromotion">
+        <pattern value="/catPromotion"/>
+        <view-id value="/faces/cat_promotion/cat-promotion-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="catMachine">
+        <pattern value="/catMachine"/>
+        <view-id value="/faces/categories/catMachine/catMachine-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="customerAccessStatus">
+        <pattern value="/customerAccessStatus"/>
+        <view-id value="/faces/customerAccessStatus/customerAccessStatus-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="customerSchedule">
+        <pattern value="/customerSchedule"/>
+        <view-id value="/faces/customerSchedule/customerSchedule-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="customer_checkin_his">
+        <pattern value="/customer_checkin_his"/>
+        <view-id value="/faces/customer_checkin_his/customer_checkin_his-index.xhtml"/>
+    </url-mapping>
+    <!--report-->
+    <url-mapping id="reportPaymentGroupPack">
+        <pattern value="/reportPaymentGroupPack"/>
+        <view-id value="/faces/report/reportPaymentGroupPack/reportPaymentGroupPack-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="reportEmployeePayment">
+        <pattern value="/reportEmployeePayment"/>
+        <view-id value="/faces/report/reportEmployeePayment/reportEmployeePayment-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="reportUseGroupPack">
+        <pattern value="/reportUseGroupPack"/>
+        <view-id value="/faces/report/reportUseGroupPack/reportUseGroupPack-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="reportCustomerPayment">
+        <pattern value="/reportCustomerPayment"/>
+        <view-id value="/faces/report/reportCustomerPayment/reportCustomerPayment-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="checkinServiceTicket">
+        <pattern value="/checkinServiceTicket"/>
+        <view-id value="/faces/checkinServiceTicket/checkinServiceTicket-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="reportServiceTicket">
+        <pattern value="/reportServiceTicket"/>
+        <view-id value="/faces/report/reportServiceTicket/reportServiceTicket-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="catRole">
+        <pattern value="/catRole"/>
+        <view-id value="/faces/catRole/catRole-index.xhtml"/>
+    </url-mapping>
+    <!-- Phần config của tab config -->
+</pretty-config>

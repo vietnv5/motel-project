@@ -1,0 +1,381 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <p:dataTable value="#{rpEmpController.lazyEmpSalary}" id="tableSalary"
+                         lazy="true" var="salary" rowKey="#{salary.rpEmpSalId}" filterDelay="2000"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         selection="#{rpEmpController.listSelectSalary}"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tblWidgetId"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+                         >
+
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <!--Column Toggler-->
+                        <div class="Container20 Responsive50" style="text-align: left;">
+                            <p:commandButton icon="fa fa-money"
+                                             styleClass="BlueButton Fs14 White"
+                                             onclick="PF('block').show()"
+                                             update=':form'
+                                             oncomplete="PF('block').hide()"
+                                             actionListener="#{rpEmpController.calculateSalary()}"
+                                             title="#{msg['button.calculateSalary']}"
+
+                                             />
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.salary']}"/>
+                        </div>
+
+
+                        <div class="Container20 TexAlRight">
+                             <p:commandButton icon="fa fa-download" styleClass="BlueButton Fs14 White"
+                                         title="#{msg['button.exportSalary']}"
+                                         ajax="false">
+                            <p:fileDownload value="#{rpEmpController.exportEmployee()}"/>
+                        </p:commandButton>
+                            <p:commandButton id="toggler" type="button"
+                                             icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableSalary" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{rpEmpController.onToggler}"/>
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="1" styleClass="TexAlCenter"
+                          visible="#{rpEmpController.colVisible.get('index')}">
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+                <p:column  styleClass="TexAlCenter" width="3" exportable="false">
+                    <p:commandButton icon="fa fa-info-circle"
+                                     styleClass="GreenButton Fs14 White"
+                                     onclick="PF('block').show()"
+                                     update=':dialog'
+                                     oncomplete="PF('addDlg').show();PF('block').hide()"
+                                     actionListener="#{rpEmpController.preView(salary)}"
+                                     title="#{msg['button.view']}"
+
+                                     />
+
+                </p:column>
+                <!--empCode-->
+                <p:column headerText="#{msg['employee.empCode']}" width="30"
+                          filterBy="#{salary.employee.empCode}" styleClass="TexAlLeft"
+                          visible="#{rpEmpController.colVisible.get('empCode')}">
+                    <h:outputText id="empCode" value="#{salary.employee.empCode}"
+                                  title="#{msg['employee.empCode']}"/>
+                </p:column>
+
+                <!--fullName-->
+                <p:column headerText="#{msg['employee.fullName']}" width="50"
+                          filterBy="#{salary.employee.fullName}" styleClass="TexAlLeft"
+                          visible="#{rpEmpController.colVisible.get('fullName')}">
+                    <h:outputText id="fullName" value="#{salary.employee.fullName}"
+                                  title="#{msg['employee.fullName']}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['employee.catDepartment.deptId']}" width="50"
+                          filterBy="#{salary.employee.catDepartment.deptName}" styleClass="TexAlLeft"
+                          visible="#{rpEmpController.colVisible.get('deptName')}">
+                    <h:outputText  value="#{salary.employee.catDepartment.deptName}"
+                                   title="#{msg['employee.catDepartment.deptId']}"/>
+                </p:column>
+
+                <!--position-->
+                <p:column headerText="#{msg['employee.catPosition.positionId']}" width="50"
+                          filterBy="#{salary.employee.catPosition.positionName}" styleClass="TexAlLeft"
+                          visible="#{rpEmpController.colVisible.get('position')}">
+                    <h:outputText  value="#{salary.employee.catPosition.positionName}"
+                                   title="#{msg['employee.catPosition.positionId']}"/>
+                </p:column>
+
+                <!--position-->
+                <p:column headerText="#{msg['salary.salaryTotal']}" width="50"
+                          filterBy="#{salary.salaryTotal}" styleClass="TexAlLeft"
+                          visible="#{rpEmpController.colVisible.get('position')}">
+                    <h:outputText  value="#{salary.salaryTotal}"
+                                   title="#{msg['salary.salaryTotal']}"/>
+                </p:column>
+
+
+
+
+            </p:dataTable>
+
+        </h:form>
+
+        <p:dialog id="dialog" widgetVar="addDlg" width="90%"
+                  height="90%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+            <f:facet name="header">
+                <h:outputText value="#{msg['rpEmpController.salaryInfo']}"/>
+            </f:facet>
+            <h:form id="editForm">
+                <!--Tab thong tin co ban-->
+                <p:tabView id="editTab">
+                    <p:tab title="#{msg['employee.basicInfo']}">
+                        <p:panelGrid columns="8" styleClass="Wid100">
+                            <p:outputLabel value="#{msg['employee.empCode']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.employee.empCode}"/>
+
+                            <p:outputLabel value="#{msg['employee.fullName']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.employee.fullName}"/>
+
+                            <p:outputLabel value="#{msg['employee.catDepartment.deptId']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.employee.catDepartment.deptName}"/>
+
+                            <p:outputLabel value="#{msg['employee.catPosition.positionId']}" />
+                            <p:inputText value="#{rpEmpController.selectSalary.employee.catPosition.positionName}"/>
+
+                            <p:outputLabel value="#{msg['salary.basicTrainingSalary1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.basicTrainingSalary1}"/>
+
+                            <p:outputLabel value="#{msg['salary.basicTrainingSalary2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.basicTrainingSalary2}"/>
+
+                            <p:outputLabel value="#{msg['salary.basicOfficialSalary']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.basicOfficialSalary}"/>
+
+                            <p:outputLabel value="#{msg['salary.diligenceBonusTraning']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.diligenceBonusTraning}"/>
+
+                            <p:outputLabel value="#{msg['salary.diligenceBonusActual']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.diligenceBonusActual}"/>
+
+                            <p:outputLabel value="#{msg['salary.travelingTraning']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.travelingTraning}"/>
+
+                            <p:outputLabel value="#{msg['salary.travelingActual']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.travelingActual}"/>
+
+                            <p:outputLabel value="#{msg['salary.supportTraning1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.supportTraning1}"/>
+
+                            <p:outputLabel value="#{msg['salary.supportTraning2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.supportTraning2}"/>
+
+                            <p:outputLabel value="#{msg['salary.supportTraning3']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.supportTraning3}"/>
+
+                            <p:outputLabel value="#{msg['salary.supportActual']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.supportActual}"/>
+
+                            <p:outputLabel value="#{msg['salary.tradeUnionPaid']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.tradeUnionPaid}"/>
+
+                            <p:outputLabel value="#{msg['salary.diligenceDay']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.diligenceDay}"/>
+
+                            <p:outputLabel value="#{msg['salary.totalIncome']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.totalIncome}"/>
+
+                            <p:outputLabel value="#{msg['salary.salaryTotal']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.salaryTotal}"/>
+
+                        </p:panelGrid>
+
+                    </p:tab>
+
+
+                    <p:tab title="#{msg['salary.label.workinginfo']}">
+                        <p:panelGrid columns="8" styleClass="Wid100">
+                            <p:outputLabel value="#{msg['salary.workingTraining1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.workingTraining1}"/>
+
+                            <p:outputLabel value="#{msg['salary.workingTraining2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.workingTraining2}"/>
+
+                            <p:outputLabel value="#{msg['salary.workingOfficial']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.workingOfficial}"/>
+
+                            <p:outputLabel value="#{msg['salary.absenceTraining1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.absenceTraining1}"/>
+
+                            <p:outputLabel value="#{msg['salary.absenceTraining2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.absenceTraining2}"/>
+
+                            <p:outputLabel value="#{msg['salary.absenceOfficial']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.absenceOfficial}"/>
+
+                            <p:outputLabel value="#{msg['salary.holidayTraining1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.holidayTraining1}"/>
+
+                            <p:outputLabel value="#{msg['salary.holidayTraining2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.holidayTraining2}"/>
+
+                            <p:outputLabel value="#{msg['salary.holidayOfficial']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.holidayOfficial}"/>
+
+                            <p:outputLabel value="#{msg['salary.businessTraining1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.businessTraining1}"/>
+
+                            <p:outputLabel value="#{msg['salary.businessTraining2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.businessTraining2}"/>
+
+                            <p:outputLabel value="#{msg['salary.businessOfficial']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.businessOfficial}"/>
+
+                        </p:panelGrid>
+                    </p:tab>
+
+                    <!--Tab bao hiem-->
+                    <p:tab title="#{msg['salary.label.otherinfo']}">
+                        <p:panelGrid columns="8" styleClass="Wid100">
+                            <p:outputLabel value="#{msg['salary.wageTraining1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.wageTraining1}"/>
+
+                            <p:outputLabel value="#{msg['salary.wageTraining2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.wageTraining2}"/>
+
+                            <p:outputLabel value="#{msg['salary.wageOfficial']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.wageOfficial}"/>
+
+                            <p:outputLabel value="#{msg['salary.otTraining1']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.otTraining1}"/>
+
+                            <p:outputLabel value="#{msg['salary.otTraining2']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.otTraining2}"/>
+
+                            <p:outputLabel value="#{msg['salary.otOfficial']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.otOfficial}"/>
+
+                            <p:outputLabel value="#{msg['salary.otSalary']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.otSalary}"/>
+
+                            <p:outputLabel value="#{msg['salary.bonus']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.bonus}"/>
+
+                            <p:outputLabel value="#{msg['salary.otherCompensation']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.otherCompensation}"/>
+
+                            <p:outputLabel value="#{msg['salary.otherDeduction']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.otherDeduction}"/>
+
+                            <p:outputLabel value="#{msg['salary.deductPit']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.deductPit}"/>
+
+                            <p:outputLabel value="#{msg['salary.incomePayTax']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.incomePayTax}"/>
+
+                            <p:outputLabel value="#{msg['salary.incomeBeforeTax']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.incomeBeforeTax}"/>
+
+                            <p:outputLabel value="#{msg['salary.incomeTax']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.incomeTax}"/>
+
+                            <p:outputLabel value="#{msg['salary.insuranceSi']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.insuranceSi}"/>
+
+                            <p:outputLabel value="#{msg['salary.insuranceHi']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.insuranceHi}"/>
+
+                            <p:outputLabel value="#{msg['salary.insuranceUi']}"/>
+                            <p:inputText value="#{rpEmpController.selectSalary.insuranceUi}"/>
+
+                        </p:panelGrid>
+                    </p:tab>
+                </p:tabView>
+
+            </h:form>
+        </p:dialog>
+
+        <!--Style-->
+        <style type="text/css">
+            .configObject {
+                padding: 2px !important;
+            }
+
+            .configObject tbody tr td {
+                padding: 0 4px !important;
+            }
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+                height: 66px !important;
+            }
+
+            #form\:tableEditConfigObjId {
+                height: 250px;
+            }
+
+            .responsive125 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 12.5%;
+            }
+
+            .responsive875 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 87.5%;
+            }
+
+            .responsive30 {
+                box-sizing: border-box;
+                float: left;
+                width: 30%;
+            }
+
+            .responsive70 {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

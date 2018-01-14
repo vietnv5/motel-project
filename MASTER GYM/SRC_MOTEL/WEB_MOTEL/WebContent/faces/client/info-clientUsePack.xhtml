@@ -1,0 +1,229 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:tab title="#{msg['view.header.member.membership.detail']}" disabled="#{!clientController.isEdit}" id="tabClientUsePackId">
+        <div class="Container100 TexAlCenter">
+            <p:commandButton icon="fa fa-plus" actionListener="#{clientController.preAddClientUsePack}"
+                             styleClass="White BlueButton" update="panelAddMembership2" process="@this"
+                             value="#{msg['view.button.add.membership']}">
+                <!--                <p:effect type="clip" event="click" for="panelAddMembership" delay="1">
+                                    <f:param name="mode" value="'show'"/>
+                                </p:effect>-->
+            </p:commandButton>
+            <p:spacer width="5px" />
+            <p:commandButton icon="fa fa-eye"  update=":clientUsedServiceDlgId"
+                             onclick="PF('blockDlg').show();" 
+                             oncomplete="PF('clientUsedServiceDlg').show();PF('blockDlg').hide();PF('tblClientUsedService').clearFilters();"
+                             styleClass="White BlueButton"
+                             value="Xem chi tiết dịch vụ">
+
+            </p:commandButton>
+        </div>
+        <p:growl id="growl123" showDetail="true" showSummary="false" widgetVar="growl123"/>
+
+        <p:outputPanel id="panelAddMembership" style="display: block">
+            <div class="Card">
+                <p:outputPanel class="Container100 MarTop20 " id="panelAddMembership2">
+                    <div class="Container25">
+                        <span class="title-top">
+                            <p:selectOneMenu id="newClientUsePack"
+                                             value="#{clientController.curClient.newClientUsePack.groupPackId}"
+                                             required="false" valueChangeListener="#{clientController.updateDate}"
+                                             title="#{msg['datatable.header.group.pack.name']}"
+                                             style=""
+                                             >
+                                <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                <f:selectItems value="#{catGroupPackController.listCatGroupPackByCustomer(2)}" var="c"
+                                               itemValue="#{c.groupPackId}" itemLabel="#{c.groupPackName}"/>
+                                <p:ajax event="itemSelect" update="joinDateMembership,endDateMembership" />
+                            </p:selectOneMenu>
+                            <label class="title-elem">#{msg['datatable.header.group.pack.name']} *</label>
+                        </span>
+                        <p:message for="newClientUsePack"/>
+
+                    </div>
+                    <div class="Container25">
+                        <span class="title-top">
+                            <p:calendar value="#{clientController.curClient.newClientUsePack.joinDate}"
+                                        locale="#{language.localeCode}"
+                                        styleClass="CalendarSearch"
+                                        id="joinDateMembership"
+                                        disabled="#{clientController.curClient.newClientUsePack.groupPackId==null}"
+                                        showButtonPanel="true" style="width: calc(100% - 15px)"
+                                        title="#{msg['datatable.header.joinDate']}"
+                                        showOn="both"
+                                        pattern="dd/MM/yyyy  HH:mm:ss" pages="1" effect="slideDown"
+                                        showOtherMonths="true" selectOtherMonths="true"
+                                        mask="true">
+                                <p:ajax event="dateSelect" process="panelAddMembership" listener="#{clientController.updateEndDate}" update="endDateMembership"/>
+                            </p:calendar>
+                            <label class="title-elem">#{msg['datatable.header.joinDate']} </label>
+                        </span>
+                        <p:message for="joinDateMembership"></p:message>
+                    </div>
+                    <div class="Container25">
+                        <span class="title-top">
+                            <p:calendar value="#{clientController.curClient.newClientUsePack.endDate}"
+                                        locale="#{language.localeCode}" disabled="true"
+                                        styleClass="CalendarSearch"
+                                        id="endDateMembership"
+                                        showButtonPanel="true" style="width: calc(100% - 15px)"
+                                        title="#{msg['datatable.header.endDate']}"
+                                        showOn="both"
+                                        pattern="dd/MM/yyyy HH:mm:ss" pages="1" effect="slideDown"
+                                        showOtherMonths="true" selectOtherMonths="true"
+                                        mask="true">
+                            </p:calendar>
+                            <label class="title-elem">#{msg['datatable.header.endDate']} </label>
+                        </span>
+                        <p:message for="endDateMembership"></p:message>
+                    </div>
+                    <div class="Container25">
+                        <span class="title-top">
+                           
+                            <p:spinner 
+                                id="minMax" value="#{clientController.curClient.newClientUsePack.numberPack}" min="1" max="100" />
+                            <label class="title-elem">#{msg['datatable.numberPack']} </label>
+                        </span>
+                    </div>
+                </p:outputPanel>
+                <p:outputPanel class="Container100 " id="panelAddMembership3">
+
+
+                </p:outputPanel>
+
+                <p:outputPanel class="Container100 TexAlRight" >
+
+                    <!--                    <p:commandButton value="# {msg['button.save']}" styleClass="GreenButton White" update="@widgetVar(tblClientUserPack),@widgetVar(growl)"
+                                                         actionListener="# {clientController.saveOrUpdateMembership}" process="panelAddMembership" >
+                                            <p:effect type="clip" event="click" for="panelAddMembership" delay="1">
+                                                <f:param name="mode" value="'hide'"/>
+                                            </p:effect>
+                                        </p:commandButton>-->
+                    <p:commandButton  value="Đặt cọc" styleClass="GreenButton White" rendered="#{!clientController.isAddUsePack}"
+                                      onclick="PF('blockDlg').show()" actionListener="#{clientController.computingPrice}"
+                                      process="@this,panelAddMembership2"
+                                      oncomplete="PF('blockDlg').hide();" update=":clientPaymentDlgId,:insertClientForm:clientTabViewId:growl123"
+                                      title="#{msg['button.add']}"
+                                      disabled="#{clientController.curClient.status==2}"
+                                      />
+                    <p:commandButton  value="Thêm dịch vụ" styleClass="GreenButton White" rendered="#{clientController.isAddUsePack}"
+                                      onclick="PF('blockDlg').show()" actionListener="#{clientController.preAddUsePack}"
+                                      process="@this,panelAddMembership2"
+                                      oncomplete="PF('blockDlg').hide();" update=":clientPaymentDlgId,:insertClientForm:clientTabViewId:growl123"
+                                      title="#{msg['button.add']}"
+                                      disabled="#{clientController.curClient.status==2}"
+                                      />
+                    <p:commandButton value="#{msg['button.clearForm']}" icon="fa fa-close" styleClass="GrayButton White" process="@this" 
+                                     actionListener="#{clientController.preAddClientUsePack}"
+                                     update="panelAddMembership2"  >
+                        <!--                        <p:effect type="clip" event="click" for="panelAddMembership" delay="1">
+                                                    <f:param name="mode" value="'hide'"/>
+                                                </p:effect>-->
+                    </p:commandButton>
+                </p:outputPanel>
+            </div>
+        </p:outputPanel>
+
+        <p:dataTable value="#{clientController.curClient.clientUsePacks}" var="obj" widgetVar="tblClientUserPack"
+                     rowIndexVar="r"
+                     rows="5" paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                     rowsPerPageTemplate="5,10,15,20,30,50" 
+                     >
+            <f:facet name="header">
+                <h:outputText value="#{msg['datatable.header.current.membership']}"/>
+            </f:facet>
+            <p:column headerText="#{msg['datatable.header.stt']}" width="20">
+                <h:outputText value="#{r + 1}"/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="200">
+                <h:outputText value="#{obj.groupPack.groupPackName} ("/>
+
+                <p:repeat value="#{obj.groupPack.groupHasPacks}" var="p" varStatus="v" >
+                    <h:outputText value="#{p.pack.packName}"/>
+                    <h:outputText value=", " rendered="#{!v.last}"/>
+                </p:repeat>
+
+                <h:outputText value=")"/>
+
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.joinDate']}" sortBy="#{obj.joinDate}" width="100"> 
+                <h:outputText value="#{obj.joinDate}">
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.endDate']}" sortBy="#{obj.endDate}" width="100">
+                <h:outputText value="#{obj.endDate}">
+                    <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['datatable.numberPack']}" sortBy="#{obj.numberPack}" width="50">
+                <h:outputText value="#{obj.numberPack}">
+                </h:outputText>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.status']}" width="50">
+                <h:outputText value="Hoạt động" rendered="#{obj.status==1}"/>
+                <h:outputText value="Ngừng hoạt động" rendered="#{obj.status==2}"/>
+                <p:commandLink rendered="#{obj.status==3}" oncomplete="PF('Assign-#{r}').show('#{component.clientId}')" >
+                    <h:outputText value="Đã chuyển nhượng" rendered="#{obj.status==3}" />
+                </p:commandLink>
+                <p:overlayPanel modal="true" widgetVar="Assign-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true" rendered="#{obj.status==3}"
+                                style="" dismissable="true" showCloseIcon="true" my="right top">
+                    #{clientController.clientService.findById(obj.memberAssignId).memberCode} -
+                    #{clientController.clientService.findById(obj.memberAssignId).memberName} -
+                    #{clientController.clientService.findById(obj.memberAssignId).cardCode} -
+                    #{clientController.clientService.findById(obj.memberAssignId).phoneNumber} -
+                    #{clientController.clientService.findById(obj.memberAssignId).email}
+
+                </p:overlayPanel>
+
+                <p:commandLink  rendered="#{obj.status==4}" oncomplete="PF('Grantor-#{r}').show('#{component.clientId}')"  >
+                    <h:outputText value="Được chuyển nhượng" rendered="#{obj.status==4}"  />
+                </p:commandLink>
+                <p:overlayPanel modal="true" widgetVar="Grantor-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true" rendered="#{obj.status==4}"
+                                style="" dismissable="true" showCloseIcon="true" my="right top">
+                    #{clientController.clientService.findById(obj.memberGrantorId).memberCode} -
+                    #{clientController.clientService.findById(obj.memberGrantorId).memberName} -
+                    #{clientController.clientService.findById(obj.memberGrantorId).cardCode} -
+                    #{clientController.clientService.findById(obj.memberGrantorId).phoneNumber} -
+                    #{clientController.clientService.findById(obj.memberGrantorId).email}
+
+                </p:overlayPanel>
+                <h:outputText value="#{msg['customerSchedule.statusSchedule']}" rendered="#{obj.status==5}"/>
+            </p:column>
+
+            <p:column headerText="#{msg['datatable.header.action']}" styleClass="TexAlCenter" width="50" >
+                <!--<h:outputText value="# {msg['customerSchedule.statusSchedule']} # {obj.status}"/>-->
+                <p:commandButton 
+                    styleClass="White BlueButton" update="insertClientForm:clientTabViewId:panelAddMembership" process="@this"
+                    value="Kích hoạt "  rendered="#{obj.status==5}"  
+                    actionListener="#{clientController.preActiveClientUsePack(obj)}">
+                    <!--                    <p:effect type="clip" event="click" for="insertClientForm:clientTabViewId:panelAddMembership" delay="1">
+                                            <f:param name="mode" value="'show'"/>
+                                        </p:effect>-->
+                </p:commandButton>
+
+                <p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" process="@this"
+                                 oncomplete="PF('deleteClientUseServicePanel-#{r}').show('#{component.clientId}')"
+                                 disabled="#{clientController.curClient.status==2}"
+                                 >
+
+                </p:commandButton>
+                <p:overlayPanel modal="true" widgetVar="deleteClientUseServicePanel-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                                style="" dismissable="true" showCloseIcon="true" my="right top">
+
+                    <p:commandButton value="Xóa #{obj.groupPack.groupPackName}?" icon="fa fa-trash" oncomplete="PF('deleteClientUseServicePanel-#{r}').hide(),PF('block').hide()"
+                                     update="@widgetVar(tblClientUserPack),@widgetVar(growl)" onclick="PF('block').show()" process="@this"
+                                     styleClass="RedButton White Fs14" actionListener="#{clientController.deleteClientUsePack(obj)}">
+
+                    </p:commandButton>
+                </p:overlayPanel>
+            </p:column>
+
+        </p:dataTable>
+    </p:tab>
+</ui:composition>

@@ -1,0 +1,83 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+                    
+
+    <p:dialog modal="true" widgetVar="catRoleDlg" width="60%" id="catRoleDlgId">
+        <f:facet name="header">
+            <h:outputText value="#{msg['button.add']}" rendered="#{!roleController.isEdit }"/>
+            <h:outputText value="#{msg['button.edit']}" rendered="#{roleController.isEdit}"/>
+        </f:facet>
+
+        <h:form id="catRoleForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                    <div class=" Container33">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{roleController.currRole.roleCode}"
+                                         id="roleCodeId"  converter="trimConverter" maxlength="100"
+                                         title="#{msg['catRole.roleCode']}"
+                                         required="true"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['catRole.roleCode'])}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['catRole.roleCode']} *</label>
+                        </span>
+                        <p:message for="roleCodeId"/>
+                    </div>
+                    <div class=" Container33">
+                        <span class="md-inputfield">
+                            <p:inputText value="#{roleController.currRole.roleName}"
+                                         id="roleNameId"  converter="trimConverter" maxlength="200"
+                                         title="#{msg['catRole.roleName']}"
+                                         required="true"
+                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['catRole.roleName'])}"
+                                         >
+                            </p:inputText>
+
+                            <label>#{msg['catRole.roleName']} *</label>
+                        </span>
+                        <p:message for="roleNameId"/>
+                    </div>
+                    <div class=" Container33">
+                        <span class="title-top">
+                            <p:selectOneMenu value="#{roleController.currRole.status}" required="true"
+                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['catRole.status'])}" >
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="ENABLE"/>
+                                    <f:selectItem itemValue="2" itemLabel="DISABLE"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Trạng thái *</label>
+                        </span>
+                        <p:message for="roleNameId"/>
+                    </div>
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlRight" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                                     update="@widgetVar(growl),:catRoleTableForm,:catRoleForm"
+                                     actionListener="#{roleController.onSaveOrUpdate()}" process=":catRoleForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('catRoleDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+</ui:composition>

@@ -1,0 +1,338 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+    <ui:define name="content">
+        <p:growl id="mainMessage" showDetail="true" showSummary="false" widgetVar="mainMessage"/>
+        <h:panelGroup rendered="#{memberCareController.userLogged.role.roleCode eq 'ADMIN'}">
+            <h:form id="form">
+                <div class="Card">
+                    <p:dialog id="selectEmploye" widgetVar="selectEmploye" modal="true" header="Giao việc cho nhân viên" width="60%">
+                        <p:outputLabel value="Tìm kiếm nhân viên:" for="empSearch" />
+                        <p:autoComplete id="empSearch" value="#{memberCareController.employee}" completeMethod="#{employeeController.completeEmployee}"
+                                        var="emp" itemLabel="#{emp.employeeCode}" itemValue="#{emp}"  dropdown="true" 
+                                        converter="employeeConverter" forceSelection="true" required="true" requiredMessage="Chọn nhân viên">
+                            <p:column>
+                                <h:outputText value="#{emp.employeeCode}" />
+                            </p:column>
+
+                            <p:column>
+                                <h:outputText value="#{emp.employeeName}" />
+                            </p:column>
+                             <p:column><h:outputText value="#{emp.telephone}"/></p:column>
+                        </p:autoComplete>
+
+                        <p:outputLabel for="startDate" value="Ngày bắt đầu:" />
+                        <p:calendar id="startDate"  pattern="dd-MM-yyyy" mask="true" value="#{memberCareController.startDate}" required="true" requiredMessage="Chọn ngày bắt đầu"/>
+
+                        <p:outputLabel for="endDate" value="Ngày kết thúc:" />
+                        <p:calendar id="endDate" pattern="dd-MM-yyyy" mask="true" value="#{memberCareController.endDate}" required="true" requiredMessage="Chọn ngày kết thúc"/>
+
+                        <p:commandButton actionListener="#{memberCareController.updateMemberCare}"
+                                         onstart="PF('block').show()" styleClass="White" update="@widgetVar(tableMemberCare) @widgetVar(mainMessage)"
+                                         oncomplete="PF('block').hide();PF('selectEmploye').hide()" value="Chọn">
+                        </p:commandButton>
+
+                    </p:dialog>
+
+                    <p:dataTable value="#{memberCareController.memberModel}"
+                                 selection="#{memberCareController.selectedMembers}"
+                                 var="mem" rowKey="#{mem.memberId}"
+                                 rowIndexVar="cusIdx"
+                                 rows="20" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                 rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableMemberCare"
+                                 emptyMessage="#{msg['datatable.empty']}"
+                                 styleClass="Container100 NoPadding MarTop10" style="margin-left: 0%"
+
+                    >
+                        <!--Header-->
+                        <f:facet name="header">
+                            <div class="Card NoPadding" style="background: transparent;">
+                                <div class="Container20" style="text-align: left;">
+                                    <p:commandButton icon="fa fa-plus" styleClass="White BlueButton"
+                                        onclick="PF('selectEmploye').show()" value="Giao việc cho nhân viên">
+                                    </p:commandButton>
+                                    <p:commandButton icon="fa fa-plus" styleClass="White RedButton"
+                                                     onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                                     action="#{memberCareController.adminCheckStatus}" value="Phê duyệt"
+                                                     process="@widgetVar(tableMemberCare) @this"
+                                                     update="@widgetVar(tableMemberCare) @widgetVar(mainMessage)">
+                                    </p:commandButton>
+                                </div>
+                                <div class="Container60 Responsive50">
+                                    <h:outputText styleClass="Fs20" value="Danh sách thành viên"/>
+                                </div>
+                            </div>
+                        </f:facet>
+                        <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()" update="@widgetVar(cbbType) @widgetVar(tableMemberCare)"/>
+                        <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()" update="@widgetVar(cbbType) @widgetVar(tableMemberCare)"/>
+                        <!--STT-->
+                        <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                        >
+                            <h:outputText value="#{cusIdx +1 }"/>
+                        </p:column>
+
+                        <p:column selectionMode="multiple" width="5" style="text-align:center" />
+
+                        <p:column headerText="Trạng thái" width="40">
+                            <f:facet name="header">
+                                <p:selectOneMenu value="#{memberCareController.type}" widgetVar="cbbType">
+                                    <f:selectItem itemLabel="Sắp tới sinh nhật" itemValue="#{memberCareController.CARE_BIRTH_DAY}" />
+                                    <f:selectItem itemLabel="Sắp hết hạn" itemValue="#{memberCareController.CARE_EXPIRE}" />
+                                    <f:selectItem itemLabel="Lâu không tập" itemValue="#{memberCareController.CARE_GIVE_UP}" />
+                                    <p:ajax listener="#{memberCareController.onFilterChange('tableMemberCare')}" update="@widgetVar(tableMemberCare) @widgetVar(mainMessage)"
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{memberCareController.typeToString(memberCareController.type)}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.memberCode']}" width="30" filterBy="#{mem.memberId}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{mem.memberId}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.memberName']}" width="30" filterBy="#{mem.memberName}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{mem.memberName}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="30" filterBy="#{mem.phoneNumber}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{mem.phoneNumber}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.birthDay']}" width="30" filterBy="#{mem.birthDay}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{mem.birthDay}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.endDate']}" width="30" filterBy="#{mem.endDate}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{mem.endDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Nhân viên thực hiện" width="30"
+                        >
+                            <h:outputText value="#{memberCareController.findEmployeeName(mem)}"/>
+                        </p:column>
+
+                        <p:column headerText="Kết quả thực hiện" width="40"
+                        >
+                            <h:outputText value="#{memberCareController.findStatus(mem.memberId, memberCareController.type).result}"/>
+                        </p:column>
+
+                        <p:column headerText="Trạng thái" width="30"
+                        >
+                            <h:outputText value="#{memberCareController.findStatus(mem.memberId, memberCareController.type).status.name}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </h:panelGroup>
+        <h:panelGroup rendered="#{memberCareController.userLogged.role.roleCode eq 'EMPLOYEE'}">
+            <h:form >
+                <div class="Card">
+                    <p:dialog  widgetVar="submitResultDialog" modal="true" header="Cập nhật" width="60%">
+                        <p:panel id="panel" style="margin-bottom:10px;">
+                            <h:panelGrid columns="2" cellpadding="5">
+                                <p:outputLabel for="submitStatus" value="Trạng thái:" />
+                                <p:selectOneMenu id="submitStatus" style="width:125px" value="#{memberCareController.selectStatus}">
+                                    <f:selectItems value="${memberCareStatusController.findStatusList(memberCareController.userLogged.role.roleCode)}"
+                                                   var="ss" itemLabel="#{ss.name}" itemValue="#{ss.statusId}"/>
+                                </p:selectOneMenu>
+
+                                <p:outputLabel for="status-result" value="Kết quả:" />
+                                <p:inputTextarea id="status-result" rows="6" cols="33" value="#{memberCareController.result}" required="true" requiredMessage="Nhập kết quả"/>
+                            </h:panelGrid>
+                        </p:panel>
+                        <p:commandButton actionListener="#{memberCareController.updateStatus}"
+                                         onclick="PF('block').show()" styleClass="White" update="@widgetVar(tableMemberCareEmployee) @widgetVar(mainMessage)"
+                                         oncomplete="PF('block').hide(); PF('submitResultDialog').hide()" value="Cập nhật"/>
+                    </p:dialog>
+                    <p:dataTable value="#{memberCareController.getListCare(memberCareController.type)}"
+                                 id="memberCareControllerTable"
+                                 selection="#{memberCareController.selectedMemberCare}"
+                                 var="memcare" rowKey="#{memcare.memberCareId}"
+                                 rowIndexVar="cusIdx"
+                                 rows="20" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                 rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableMemberCareEmployee"
+                                 emptyMessage="#{msg['datatable.empty']}"
+                                 styleClass="Container100 NoPadding MarTop10" style="margin-left: 0%"
+
+                    >
+                        <!--Header-->
+                        <f:facet name="header">
+                            <div class="Card NoPadding" style="background: transparent;">
+                                <div class="Container20">
+                                    <p:commandButton styleClass="White BlueButton"  value="Cập nhật trạng thái" onclick="PF('submitResultDialog').show()">
+                                    </p:commandButton>
+                                </div>
+                                <div class="Container60 Responsive50">
+                                    <h:outputText styleClass="Fs20" value="#{msg['datatable.header.job.title']}"/>
+                                </div>
+                            </div>
+                        </f:facet>
+                        <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                        <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                        <!--STT-->
+                        <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                        >
+                            <h:outputText value="#{cusIdx +1 }"/>
+                        </p:column>
+
+                        <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
+
+                        <p:column headerText="Trạng thái" width="40">
+                            <f:facet name="header">
+                                <p:selectOneMenu value="#{memberCareController.type}">
+                                    <f:selectItem itemLabel="Sắp tới sinh nhật" itemValue="#{memberCareController.CARE_BIRTH_DAY}" />
+                                    <f:selectItem itemLabel="Sắp hết hạn" itemValue="#{memberCareController.CARE_EXPIRE}" />
+                                    <f:selectItem itemLabel="Lâu không tập" itemValue="#{memberCareController.CARE_GIVE_UP}" />
+                                    <p:ajax listener="#{memberCareController.onFilterChange('tableMemberCareEmployee')}" update="@widgetVar(tableMemberCareEmployee) @widgetVar(mainMessage)"
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{memberCareController.typeToString(memberCareController.type)}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.memberCode']}" width="20" filterBy="${memcare.member.memberCode}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{memcare.member.memberCode}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.memberName']}" width="40" filterBy="#{memcare.member.memberName}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{memcare.member.memberName}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="40" filterBy="#{memcare.member.phoneNumber}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{memcare.member.phoneNumber}"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.birthDay']}" width="40" filterBy="#{memcare.member.birthDay}" filterMatchMode="contains"
+                        >
+                            <h:outputText value="#{memcare.member.birthDay}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Thời hạn hoàn thành" width="40"
+                        >
+                            <h:outputText value="#{memcare.endDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+
+                        <p:column headerText="Trạng thái" width="40" filterBy="#{memcare.status.name}" filterMatchMode="exact"
+                        >
+                            <f:facet name="filter">
+                                <p:selectOneMenu onchange="PF('tableMemberCareEmployee').filter()" >
+                                    <f:selectItem itemLabel="Trạng thái" itemValue="#{null}" noSelectionOption="true" />
+                                    <f:selectItems value="#{memberCareStatusController.findStatusList(memberCareController.userLogged.role.roleCode)}" var="cbbStatus" itemLabel="#{cbbStatus.name}" itemValue="#{cbbStatus.name}"/>
+                                </p:selectOneMenu>
+                            </f:facet>
+                            <h:outputText value="#{memcare.status.name}"></h:outputText>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </h:form>
+        </h:panelGroup>
+    </ui:define>
+
+    <!--Style-->
+    <style type="text/css">
+        .configObject {
+            padding: 2px !important;
+        }
+
+        .configObject tbody tr td {
+            padding: 0 4px !important;
+        }
+
+        .ui-datatable .ui-column-filter {
+            width: 95% !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+
+        .ui-filter-column {
+            vertical-align: bottom;
+        }
+
+        .ui-column-customfilter .ui-selectonemenu {
+            min-width: 95% !important;
+            padding: 0px !important;
+        }
+
+        .ui-column-customfilter .ui-selectonemenu label {
+            width: 100% !important;
+            padding-left: 0px !important;
+            padding-right: 0px !important;
+        }
+
+        .combo .ui-column-customfilter {
+            margin-bottom: -3px !important;
+        }
+
+        #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+            height: 66px !important;
+        }
+
+        #form\:tableEditConfigObjId {
+            height: 250px;
+        }
+
+        .responsive125 {
+            box-sizing: border-box;
+            float: left;
+            padding: 0.5em;
+            width: 12.5%;
+        }
+
+        .responsive875 {
+            box-sizing: border-box;
+            float: left;
+            padding: 0.5em;
+            width: 87.5%;
+        }
+
+        .responsive30 {
+            box-sizing: border-box;
+            float: left;
+            width: 30%;
+        }
+
+        .responsive70 {
+            box-sizing: border-box;
+            float: left;
+            width: 70%;
+        }
+
+        .transparent-dialog {
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+
+        .transparent-dialog .ui-dialog-content {
+            padding: 0;
+        }
+
+        .transparent-dialog .ui-widget-content {
+            padding: 0;
+        }
+
+    </style>
+</ui:composition>

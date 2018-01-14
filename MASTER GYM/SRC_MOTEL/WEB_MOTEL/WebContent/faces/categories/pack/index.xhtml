@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core"
+                template="/layout/olympos/template.xhtml">
+
+    <ui:define name="content">
+        <!--<h:form id="form">-->
+            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+            <ui:include src="catGroupPack.xhtml"/>
+            <ui:include src="catPack.xhtml"/>
+
+        <!--</h:form>-->
+
+        <!--Style-->
+        <style type="text/css">
+            .configObject {
+                padding: 2px !important;
+            }
+
+            .configObject tbody tr td {
+                padding: 0 4px !important;
+            }
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+                height: 66px !important;
+            }
+
+            #form\:tableEditConfigObjId {
+                height: 250px;
+            }
+
+            .responsive125 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 12.5%;
+            }
+
+            .responsive875 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 87.5%;
+            }
+
+            .responsive30 {
+                box-sizing: border-box;
+                float: left;
+                width: 30%;
+            }
+
+            .responsive70 {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

@@ -1,0 +1,692 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+    <ui:define name="content">
+        <h:form id="form">
+            <p:growl id="mainMessage" showDetail="true" showSummary="false" widgetVar="mainMessage"/>
+            <p:dataTable value="#{employeeController.lazyEmployee}" id="tableEmployeeId"
+                         lazy="true" var="employee" rowKey="#{employee.employeeId}"
+                         rowIndexVar="cusIdx" editable="true" editMode="cell"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tbEmployee"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <!--Column Toggler-->
+                        <div class="Container20 Responsive50" style="text-align: left;">
+                            <p:commandButton icon="fa fa-user-plus" styleClass="BlueButton Fs14 White"
+                                             actionListener="#{employeeController.preInsert}"
+                                             onstart="PF('block').show()"
+                                             oncomplete="PF('block').hide();PF('dialogEmployee').show()"
+                                             update="@widgetVar(dialogEmployee)"
+                                             title="Thêm mới nhân viên">
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White"
+                                             title="#{msg['button.export']}"
+                                             onstart="PF('block').show()"
+                                             oncomplete="PF('block').hide()"
+                                             actionListener="#{employeeController.exportEmployee}"
+                                             update="@widgetVar(mainMessage)"
+                                             ajax="false">
+
+                                <p:fileDownload value="#{employeeController.fileExported}"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.employee']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+
+                            <p:commandButton id="toggler" type="button"
+                                             icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableEmployeeId" trigger="toggler">
+                            </p:columnToggler>
+                        </div>
+                    </div>
+
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="1" styleClass="TexAlCenter">
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+                <!--update-->
+                <p:column headerText="#{msg['employee.action']}" styleClass="TexAlCenter" width="20" exportable="false">
+                    <p:commandButton update="@widgetVar(dialogEmployee)" styleClass="BlueButton Fs14 White"
+                                     actionListener="#{employeeController.onSelectedEmployee(employee, true)}"
+                                     onstart="PF('block').show()"
+                                     oncomplete="PF('block').hide(); PF('dialogEmployee').show()"
+                                     icon="fa fa-edit" title="Sửa">
+                    </p:commandButton>
+                    <p:commandButton update="@widgetVar(dialogEmployee)" styleClass="GreenButton Fs14 White"
+                                     actionListener="#{employeeController.onSelectedEmployee(employee, false)}"
+                                     onstart="PF('block').show()"
+                                     oncomplete="PF('block').hide(); PF('dialogEmployee').show()"
+                                     icon="fa fa-info" title="Xem thông tin">
+                    </p:commandButton>
+                    <p:spacer width="2px;" />
+                    <p:commandButton icon="fa fa-trash" actionListener="#{employeeController.onDelete(employee)}"
+                                     onclick="PF('block').show()" oncomplete="PF('block').hide();"
+                                     update=":form " id="deleteId" rendered="#{sessionUtil.getUrlDisplay('/employee.action_delete_employee')}"
+                                     title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5" >
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}" >
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+                <!--empCode-->
+                <p:column headerText="#{msg['employee.empCode']}" width="30"
+                          filterBy="#{employee.employeeCode}" styleClass="TexAlLeft">
+                    <h:outputText value="#{employee.employeeCode}" title="#{employee.employeeCode}"/>
+                </p:column>
+
+                <!--fullName-->
+                <p:column headerText="#{msg['employee.fullName']}" width="30"
+                          filterBy="#{employee.employeeName}" styleClass="TexAlLeft">
+                    <h:outputText value="#{employee.employeeName}" title="#{employee.employeeName}"/>
+                </p:column>
+                <!--deptId-->
+                <p:column id="colDeptName" headerText="#{msg['employee.catDepartment.deptId']}" width="30"
+                          filterBy="#{employee.department.departmentId}" styleClass="TexAlLeft combo">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tbEmployee').filter()"
+                                         filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="#{msg['employee.catDepartment.deptId']}" itemValue=""
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{employeeController.departments}" var="department"
+                                           itemValue="#{department.departmentId}"
+                                           itemLabel="#{department.departmentName}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText id="deptId" value="#{employee.department.departmentName}"
+                                  />
+                    <p:tooltip for="deptId" value="#{employee.department.departmentName}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+                <!--listCatPositions-->
+                <p:column id="colPositinName" headerText="#{msg['employee.catPosition.positionId']}" width="40"
+                          filterBy="#{employee.jobTitle.jobTitleId}" styleClass="TexAlLeft combo">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tbEmployee').filter()"
+                                         filter="true" filterMatchMode="contains">
+                            <f:selectItem itemLabel="#{msg['employee.catPosition.positionId']}" itemValue=""
+                                          noSelectionOption="true"/>
+                            <f:selectItems value="#{jobTitleController.jobTitles}" var="jobTitle"
+                                           itemLabel="#{jobTitle.jobTitleName}"
+                                           itemValue="#{jobTitle.jobTitleId}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText id="positionId" value="#{employee.jobTitle.jobTitleName}"
+                                  />
+                    <p:tooltip for="positionId" value="#{employee.jobTitle.jobTitleName}"
+                               trackMouse="true" showEffect="clip"/>
+                </p:column>
+
+
+                <!--sex-->
+                <p:column headerText="#{msg['employee.sex']}" width="20"
+                          filterBy="#{employee.sex}" styleClass="TexAlLeft">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tbEmployee').filter()">
+                            <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                          noSelectionOption="true"/>
+                            <f:selectItem itemLabel="Nữ" itemValue="0"/>
+                            <f:selectItem itemLabel="Nam" itemValue="1"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="Nữ" rendered="#{employee.sex == 0}"/>
+                    <h:outputText value="Nam" rendered="#{employee.sex == 1}"/>
+                </p:column>
+
+                <!--birthPlace-->
+                <p:column headerText="#{msg['employee.birthPlace']}" width="40"
+                          filterBy="#{employee.birthPlace}" styleClass="TexAlLeft">
+                    <h:outputText value="#{employee.birthPlace}"/>
+                </p:column>
+
+
+            </p:dataTable>
+
+        </h:form>
+        <p:dialog widgetVar="findAddress" modal="true" header="Địa chỉ">
+            <h:form id="formAddress">
+                <p:panelGrid columns="2" style="width: auto">
+                    <p:outputLabel value="Tỉnh/Thành phố:" for="city"/>
+                    <p:autoComplete id="city" dropdown="true" value="#{employeeController.city}"
+                                    completeMethod="#{employeeController.listAddressCities}"
+                                    converter="addressCityConverter"
+                                    size="50"
+                                    var="c" itemLabel="#{c.cityName}" itemValue="#{c}">
+                        <p:ajax event="itemSelect" listener="#{employeeController.onCitySelected}"
+                                update=":formAddress"/>
+                    </p:autoComplete>
+
+                    <p:outputLabel value="Quận/Huyện:" for="district"/>
+                    <p:autoComplete id="district" dropdown="true" value="#{employeeController.district}"
+                                    completeMethod="#{employeeController.listAddressDistrict}"
+                                    converter="addressDistrictConverter"
+                                    size="50"
+                                    disabled="#{employeeController.disableDistrict}"
+                                    var="c" itemLabel="#{c.districtName}" itemValue="#{c}">
+                        <p:ajax event="itemSelect" listener="#{employeeController.onDistrictSelected}"
+                                update=":formAddress"/>
+                    </p:autoComplete>
+
+                    <p:outputLabel value="Xã/Phường:" for="street"/>
+                    <p:autoComplete id="street" dropdown="true" value="#{employeeController.street}"
+                                    completeMethod="#{employeeController.listAddressStreet}"
+                                    converter="addressStreetConverter"
+                                    size="50"
+                                    disabled="#{employeeController.disableStreet}"
+                                    var="c" itemLabel="#{c.streetName}" itemValue="#{c}">
+                    </p:autoComplete>
+
+                    <p:outputLabel value="Số nhà/Đường:" for="addressNo"/>
+                    <p:inputTextarea id="addressNo" rows="6" cols="33" value="#{employeeController.addressNo}"/>
+
+                </p:panelGrid>
+                <p:commandButton actionListener="#{employeeController.findAddress}" update=":dialogInfo"
+                                 icon="fa fa-check"
+                                 onstart="PF('block').show()"
+                                 oncomplete="PF('block').hide(); PF('findAddress').hide()"/>
+            </h:form>
+        </p:dialog>
+        <p:dialog widgetVar="dialogEmployee" modal="true" width="70%" header="Thông tin nhân viên"
+                  styleClass="responsiveDialogEmployee" height="500" showEffect="size" hideEffect="scale">
+            <h:form id="dialogInfo">
+                <p:fieldset legend="Thông tin nhân viên">
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.employeeCode}"
+                                             id="empCode" disabled="true"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.empCode']}</label>
+                            </span>
+                            <p:message for="empCode"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.employeeName}"
+                                             id="empName"  converter="trimConverter"
+                                             required="true"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['employee.fullName'])}"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.fullName']} *</label>
+                            </span>
+                            <p:message for="empName"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+
+
+                                <p:inputText value="#{employeeController.currentEmployee.telephone}"
+                                             id="empTelephone"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.telephone']}</label>
+                            </span>
+                            <p:message for="empTelephone"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.idNum}"
+                                             id="empIdNum"  converter="trimConverter"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.idNum']}</label>
+                            </span>
+                            <p:message for="empIdNum"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.checkInCode}"
+                                             id="empCheckInCode" disabled="true"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.checkin.code']}</label>
+                            </span>
+                            <p:message for="empCheckInCode"></p:message>
+                        </div>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.contractNo}"
+                                             id="empContractNo"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employeeContract.contractNo']}</label>
+                            </span>
+                            <p:message for="empContractNo"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+
+                                <p:selectOneMenu value="#{employeeController.currentEmployee.contractType}"
+                                                 id="empContractType">
+                                    <f:selectItems value="#{employeeController.lstContractType}" var="s"
+                                                   itemLabel="#{s.name}"
+                                                   itemValue="#{s.itemId}">
+
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['employeeContract.contractType']}</label>
+
+                            </span>
+                            <p:message for="empContractType"></p:message>
+                        </div>
+                        <!--<div class="Container20 Responsive50">-->
+                        <!--<span class="title-top">-->
+                        <!--<p:calendar value="#{employeeController.currentEmployee.beginContract}"-->
+                        <!--locale="#{language.localeCode}"-->
+                        <!--styleClass="CalendarSearch"-->
+                        <!--id="empBeginContract"-->
+                        <!--showButtonPanel="true" style="width: calc(100% - 15px)"-->
+                        <!--showOn="both"-->
+                        <!--pattern="dd/MM/yyyy" pages="1" effect="slideDown"-->
+                        <!--showOtherMonths="true"-->
+                        <!--mask="true">-->
+                        <!--&lt;!&ndash;<p:ajax event="dateSelect" update="@widgetVar(calEnd)" />&ndash;&gt;-->
+                        <!--</p:calendar>-->
+                        <!--<label class="title-elem">#{msg['employeeContract.startDate']}</label>-->
+                        <!--</span>-->
+                        <!--<p:message for="empBeginContract"></p:message>-->
+                        <!--</div>-->
+                        <!--<div class="Container20 Responsive50">-->
+                        <!--<span class="title-top">-->
+                        <!--<p:calendar value="#{employeeController.currentEmployee.endContract}"-->
+                        <!--locale="#{language.localeCode}"-->
+                        <!--styleClass="CalendarSearch"-->
+                        <!--id="empEndContract"-->
+                        <!--showButtonPanel="true" style="width: calc(100% - 15px)"-->
+                        <!--showOn="both"-->
+                        <!--pattern="dd/MM/yyyy" pages="1" effect="slideDown"-->
+                        <!--showOtherMonths="true" selectOtherMonths="true"-->
+                        <!--mask="true">-->
+                        <!--&lt;!&ndash;<p:ajax event="dateSelect" update="@widgetVar(calEnd)" />&ndash;&gt;-->
+                        <!--</p:calendar>-->
+                        <!--<label class="title-elem">#{msg['employeeContract.endDate']}</label>-->
+                        <!--</span>-->
+                        <!--<p:message for="empEndContract"></p:message>-->
+                        <!--</div>-->
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{employeeController.currentEmployee.statusId}"
+                                                 id="empStatus">
+                                    <f:selectItems value="#{employeeController.statuses}" var="s"
+                                                   itemLabel="#{s.statusName}"
+                                                   itemValue="#{s.statusId}">
+
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['employee.status']}</label>
+                            </span>
+                            <p:message for="empStatus"></p:message>
+                        </div>
+
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+
+                                <p:calendar value="#{employeeController.currentEmployee.joinDate}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="empJoinDate"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            showOn="both"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['employee.joinDate']}</label>
+                            </span>
+                            <p:message for="empJoinDate"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:calendar value="#{employeeController.currentEmployee.leftDate}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="empLeftDate"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            showOn="both"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['employee.leftDate']}</label>
+                            </span>
+                            <p:message for="empLeftDate"></p:message>
+                        </div>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu id="empJobtitleId"
+                                                 value="#{employeeController.currentEmployee.jobTitleId}">
+
+                                    <f:selectItems value="#{jobTitleController.jobTitles}" var="j"
+                                                   itemLabel="#{j.jobTitleName}"
+                                                   itemValue="#{j.jobTitleId}">
+
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['datatable.header.job.title.name']}</label>
+                            </span>
+                            <p:message for="empJobtitleId"></p:message>
+
+
+                        </div>
+
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu id="empDeptName"
+                                                 value="#{employeeController.currentEmployee.departmentId}">
+
+                                    <f:selectItems value="#{employeeController.departments}" var="d"
+                                                   itemLabel="#{d.departmentName}"
+                                                   itemValue="#{d.departmentId}">
+
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['employee.catDepartment.deptName']}</label>
+                            </span>
+                            <p:message for="empDeptName"></p:message>
+                        </div>
+
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu id="empBranchId" value="#{employeeController.currentEmployee.branchId}"
+                                                 style="max-width:130px">
+
+                                    <f:selectItems value="#{branchController.branchs}" var="b"
+                                                   itemLabel="#{b.branchName}"
+                                                   itemValue="#{b.branchId}">
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Chi nhánh</label>
+                            </span>
+                            <p:message for="empBranchId"></p:message>
+                        </div>
+
+                    </div>
+                </p:fieldset>
+                <p:fieldset legend="Thông tin cá nhân">
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.personId}"
+                                             id="empPersionID"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.personId']}</label>
+                            </span>
+                            <p:message for="empPersionID"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:calendar value="#{employeeController.currentEmployee.issuedDate}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="empIssuedDate"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            showOn="both"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['employee.issuedDate']}</label>
+                            </span>
+                            <p:message for="empIssuedDate"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+
+                                <p:inputText value="#{employeeController.currentEmployee.personPlace}"
+                                             id="empPersionPlace"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.personPlace']}</label>
+                            </span>
+                            <p:message for="empPersionPlace"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:calendar value="#{employeeController.currentEmployee.birthDate}"
+                                            locale="#{language.localeCode}"
+                                            maxdate="#{currentDate}" styleClass="CalendarSearch"
+                                            id="empBirthDate"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            showOn="both"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['employee.birthDate']}</label>
+                            </span>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.birthPlace}"
+                                             id="empBirthPlace"
+
+                                             >
+                                    <p:ajax event="keyup" listener="#{employeeController.addressField('birthPlace')}"
+                                            oncomplete="PF('findAddress').show()"/>
+                                </p:inputText>
+                                <label>#{msg['employee.birthPlace']}</label>
+                                <p:commandButton icon="fa fa-search"
+                                                 actionListener="#{employeeController.addressField('birthPlace')}"
+                                                 oncomplete="PF('findAddress').show()"/>
+                            </span>
+                            <p:message for="empBirthPlace"></p:message>
+                        </div>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+
+                                <p:inputText value="#{employeeController.currentEmployee.ethenic}"
+                                             id="empEthenic"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.ethenic']}</label>
+                            </span>
+                            <p:message for="empEthenic"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{employeeController.currentEmployee.education}"
+                                             id="empEducation"
+                                             >
+                                </p:inputText>
+                                <label>#{msg['employee.education']} *</label>
+                            </span>
+                            <p:message for="empEducation"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+
+                                <p:selectOneMenu
+                                    value="#{employeeController.currentEmployee.marriedStatus}"
+                                    id="empMarriedStatus">
+                                    <f:selectItems value="#{employeeController.lstMarriedStatus}" var="s"
+                                                   itemLabel="#{s.name}"
+                                                   itemValue="#{s.value}">
+
+                                    </f:selectItems>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['employee.marriedStatus']}</label>
+                            </span>
+                            <p:message for="empMarriedStatus"></p:message>
+                        </div>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText id="emppermanentAddress"
+                                             widgetVar="emppermanentAddress"
+                                             value="#{employeeController.currentEmployee.permanentAddress}">
+                                    <p:ajax event="keyup"
+                                            listener="#{employeeController.addressField('permanentAddress')}"
+                                            oncomplete="PF('findAddress').show()"/>
+                                </p:inputText>
+                                <label>#{msg['employee.permanentAddress']}</label>
+                                <p:commandButton icon="fa fa-search"
+                                                 actionListener="#{employeeController.addressField('permanentAddress')}"
+                                                 oncomplete="PF('findAddress').show()"/>
+                            </span>
+                            <p:message for="emppermanentAddress"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText id="empPresentAddress"
+                                             widgetVar="empPresentAddress"
+                                             value="#{employeeController.currentEmployee.presentAddress}">
+                                    <p:ajax event="keyup"
+                                            listener="#{employeeController.addressField('PresentAddress')}"
+                                            oncomplete="PF('findAddress').show()"/>
+                                </p:inputText>
+                                <label>#{msg['employee.presentAddress']}</label>
+                                <p:commandButton icon="fa fa-search"
+                                                 actionListener="#{employeeController.addressField('PresentAddress')}"
+                                                 oncomplete="PF('findAddress').show()"/>
+                            </span>
+                            <p:message for="empPresentAddress"></p:message>
+                        </div>
+                        <div class="Container20 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu id="empSex" value="#{employeeController.currentEmployee.sex}"
+                                                 style="width:125px">
+                                    <f:selectItem itemLabel="#{msg['sex.female']}" itemValue="0"/>
+                                    <f:selectItem itemLabel="#{msg['sex.male']}" itemValue="1"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['employee.sex']}</label>
+                            </span>
+                            <p:message for="empSex"></p:message>
+                        </div>
+                    </div>
+                </p:fieldset>
+                <div class="Container100 Responsive50 MarTop20">
+                    <p:commandButton
+                        disabled="${employeeController.disableEdit}"
+                        icon="fa fa-save" styleClass="BlueButton Fs14 White"
+                        onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                        value="Lưu" actionListener="#{employeeController.save}"
+                        update="@widgetVar(tbEmployee) @widgetVar(dialogEmployee) @widgetVar(mainMessage)"/>
+                    <p:commandButton icon="fa fa-remove" styleClass="RedButton Fs14 White"
+                                     value="Đóng"
+                                     actionListener="#{employeeController.preInsert}"
+                                     oncomplete="PF('dialogEmployee').hide()"
+                                     update="@widgetVar(tbEmployee) @widgetVar(dialogEmployee)"/>
+                </div>
+            </h:form>
+        </p:dialog>
+        <!--Style-->
+        <style type="text/css">
+            .enable-scroll-dialog {
+                height: 500px !important;
+            }
+
+            .configObject {
+                padding: 2px !important;
+            }
+
+            .configObject tbody tr td {
+                padding: 0 4px !important;
+            }
+
+            .ui-datatable .ui-column-filter {
+                width: 95% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .ui-filter-column {
+                vertical-align: bottom;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu {
+                min-width: 95% !important;
+                padding: 0px !important;
+            }
+
+            .ui-column-customfilter .ui-selectonemenu label {
+                width: 100% !important;
+                padding-left: 0px !important;
+                padding-right: 0px !important;
+            }
+
+            .combo .ui-column-customfilter {
+                margin-bottom: -3px !important;
+            }
+
+            #form\:tableEditConfigObjId_data .ui-selectlistbox-listcontainer {
+                height: 66px !important;
+            }
+
+            #form\:tableEditConfigObjId {
+                height: 250px;
+            }
+
+            .responsive125 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 12.5%;
+            }
+
+            .responsive875 {
+                box-sizing: border-box;
+                float: left;
+                padding: 0.5em;
+                width: 87.5%;
+            }
+
+            .responsive30 {
+                box-sizing: border-box;
+                float: left;
+                width: 30%;
+            }
+
+            .responsiveDialogEmployee {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+                /*height: 400px !important;*/
+            }
+
+            .responsive70 {
+                box-sizing: border-box;
+                float: left;
+                width: 70%;
+            }
+
+            .transparent-dialog {
+                background: transparent !important;
+                box-shadow: none !important;
+            }
+
+            .transparent-dialog .ui-dialog-content {
+                padding: 0;
+            }
+
+            .transparent-dialog .ui-widget-content {
+                padding: 0;
+            }
+
+        </style>
+    </ui:define>
+</ui:composition>

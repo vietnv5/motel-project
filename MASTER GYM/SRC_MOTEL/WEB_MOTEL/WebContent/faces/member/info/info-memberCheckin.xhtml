@@ -1,0 +1,50 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <p:tab title="#{msg['view.header.member.checkin.history']}"  rendered="#{memberController.curMember.type!=2}" >
+        <p:dataTable value="#{memberController.curMember.memberCheckins}" var="obj" widgetVar="tblCheckin"
+                     rowKey="#{obj.checkinId}"
+                     rowIndexVar="r"
+                     rows="10" paginator="true" paginatorPosition="bottom"
+                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                     rowsPerPageTemplate="5,10,15,20,30,50" 
+                     >
+            <f:facet name="header" >
+                <h:outputText value="#{msg['view.header.member.checkin.history']}"/>
+            </f:facet>
+            <p:column headerText="#{msg['datatable.header.stt']}" width="5">
+                <h:outputText value="#{r + 1}"/>
+            </p:column>
+            <p:column headerText="#{msg['memberCheckin.cardCode']}" width="50">
+                <h:outputText value="#{obj.cardCode} "/>
+            </p:column>
+            <p:column headerText="#{msg['memberCheckin.verifyMode']}" width="50">
+                <h:outputText value="#{obj.verifyModeName} "/>
+            </p:column>
+            <p:column headerText="#{msg['memberCheckin.ip']}" width="50">
+                <h:outputText value="#{obj.machine.ip} "/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.machine.name']}" width="100">
+                <h:outputText value="#{obj.machine.machineName} "/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.machine.type']}" width="50">
+                <h:outputText value="#{obj.machine.machineTypeBO.name} "/>
+            </p:column>
+            <p:column headerText="#{msg['datatable.header.checkInDate']}" width="100">
+                <h:outputText value="#{obj.checkInDate}"/>
+            </p:column>
+
+        </p:dataTable>
+        <div class="Container100 NoIndent" style="margin-top: 5px !important;">
+            <p:outputPanel id="chartMemberPanel" class="Card">
+                <p:commandButton value="Show biểu đồ" style="display: none" 
+                                 oncomplete="drawHighChart(xhr, status, args);" process="@this"
+                                 action="#{dashBoardController.loadChartLineDataMemberCheckin(memberController.curMember.memberId)}" id="chartvalue_btn2" update="@parent" />
+                <div id="containerMemberCheckin" style="width: 100%; height: 200px"></div>
+            </p:outputPanel>
+        </div>
+    </p:tab>
+</ui:composition>
