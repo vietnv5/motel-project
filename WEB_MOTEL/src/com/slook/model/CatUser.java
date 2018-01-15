@@ -51,6 +51,7 @@ public class CatUser {
 //    public void setEmployee(Employee employee) {
 //        this.employee = employee;
 //    }
+
     @Transient
     public Employee getEmployee() {
         return employee;
@@ -60,9 +61,10 @@ public class CatUser {
         this.employee = employee;
     }
 
-    @SequenceGenerator(name = "generator", sequenceName = "CAT_USER_SEQ", allocationSize = 1)
+//    @SequenceGenerator(name = "generator", sequenceName = "CAT_USER_SEQ", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+//    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "USER_ID", nullable = false, precision = 0)
     public Long getUserId() {
         return userId;

@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 import static javax.persistence.GenerationType.SEQUENCE;
 import javax.persistence.Transient;
@@ -39,10 +40,10 @@ public class FunctionPath {
     private String typeName;
 
 //    private List<FunctionPath> lstChildren;
-    
-    @SequenceGenerator(name = "generator", sequenceName = "FUNCTION_PATH_SEQ", allocationSize = 1)
+//    @SequenceGenerator(name = "generator", sequenceName = "FUNCTION_PATH_SEQ", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+//    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "FUNCTION_PATH_ID", unique = true, nullable = false, precision = 22, scale = 0)
     public Long getFunctionPathId() {
         return functionPathId;
@@ -179,6 +180,7 @@ public class FunctionPath {
         this.name = name;
         this.type = type;
     }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);

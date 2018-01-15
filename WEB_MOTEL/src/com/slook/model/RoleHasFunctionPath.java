@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 import static javax.persistence.GenerationType.SEQUENCE;
 import javax.persistence.JoinColumn;
@@ -62,9 +63,10 @@ public class RoleHasFunctionPath {
         this.roleId = roleId;
     }
 
-    @SequenceGenerator(name = "generator", sequenceName = "ROLE_HAS_FUNCTION_PATH_SEQ", allocationSize = 1)
+//    @SequenceGenerator(name = "generator", sequenceName = "ROLE_HAS_FUNCTION_PATH_SEQ", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
     public Long getId() {
         return id;
@@ -92,12 +94,12 @@ public class RoleHasFunctionPath {
         this.functionPath = functionPath;
     }
 
-    public RoleHasFunctionPath(Long functionPathId, Long roleId, Long id,FunctionPath functionPath) {
+    public RoleHasFunctionPath(Long functionPathId, Long roleId, Long id, FunctionPath functionPath) {
         this.functionPathId = functionPathId;
         this.status = Constant.STATUS.ACTIVE;
         this.roleId = roleId;
         this.id = id;
-        this.functionPath=functionPath;
+        this.functionPath = functionPath;
     }
 
     @Override
