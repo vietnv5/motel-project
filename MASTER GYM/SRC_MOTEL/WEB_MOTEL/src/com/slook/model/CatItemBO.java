@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 import static javax.persistence.GenerationType.SEQUENCE;
 import javax.persistence.Temporal;
@@ -29,6 +30,7 @@ public class CatItemBO implements Serializable {
     private String value;
     private String name;
     private String itemIdStr;
+    private static final long serialVersionUID = 1L;
 
     @Column(name = "CODE", length = 30)
     public String getCode() {
@@ -76,10 +78,10 @@ public class CatItemBO implements Serializable {
         this.updateTime = updateTime;
     }
 
-
-    @SequenceGenerator(name = "generator", sequenceName = "CAT_ITEM_SEQ", allocationSize = 1)
+//    @SequenceGenerator(name = "generator", sequenceName = "CAT_ITEM_SEQ", allocationSize = 1)
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+//    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "ITEM_ID", unique = true, nullable = false, precision = 22, scale = 0)
     public Long getItemId() {
         return itemId;
@@ -129,6 +131,7 @@ public class CatItemBO implements Serializable {
         this.value = value;
         this.name = name;
     }
+
     @Override
     public String toString() {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);

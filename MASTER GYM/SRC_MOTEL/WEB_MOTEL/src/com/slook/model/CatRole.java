@@ -34,8 +34,9 @@ public class CatRole {
 
     @Id
     @Column(name = "ROLE_ID", nullable = false, precision = 0)
-    @SequenceGenerator(name = "generator", sequenceName = "CAT_ROLE_SEQ", allocationSize = 1)
-    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+//    @SequenceGenerator(name = "generator", sequenceName = "CAT_ROLE_SEQ", allocationSize = 1)
+//    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long getRoleId() {
         return roleId;
     }
