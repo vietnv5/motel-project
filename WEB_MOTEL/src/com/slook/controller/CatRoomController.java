@@ -30,7 +30,7 @@ import java.util.*;
  */
 @ManagedBean
 @ViewScoped
-public class RoomController implements Serializable {
+public class CatRoomController implements Serializable {
 
     List<CatRoom> rooms;
     GenericDaoServiceNewV2 roomService;

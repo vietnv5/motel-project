@@ -30,6 +30,7 @@ public class CatUser {
     //change password
     private String oldPassword;
     private String newPassword;
+    private Integer groupId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
@@ -181,6 +182,15 @@ public class CatUser {
 
     public void setNewPassword(String newPassword) {
         this.newPassword = newPassword;
+    }
+
+    @Column(name = "GROUP_ID")
+    public Integer getGroupId() {
+        return groupId;
+    }
+
+    public void setGroupId(Integer groupId) {
+        this.groupId = groupId;
     }
 
 }

@@ -31,7 +31,7 @@
                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
                                      >
                         <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
-                        <f:selectItems value="#{roomController.getRoomsInBranch(scheduleController.event.data.room.branchId)}" var="p" itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                        <f:selectItems value="#{catRoomController.getRoomsInBranch(scheduleController.event.data.room.branchId)}" var="p" itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
                     </p:selectOneMenu>
                     <p:outputLabel for="pack" value="#{msg['datatable.header.pack.name']}" />
                     <p:selectOneMenu id="pack" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.packId}" filter="true"
