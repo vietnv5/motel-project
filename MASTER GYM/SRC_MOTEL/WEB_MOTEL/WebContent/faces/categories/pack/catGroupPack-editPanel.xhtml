@@ -184,7 +184,7 @@
                                                   required="true" style="width: 90%" converter="catRoomConverter" scrollHeight="120" var="t"
                                                   requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
                                                   >
-                                    <f:selectItems value="#{roomController.rooms}" var="r" itemLabel="#{r.roomName} - #{r.branch.branchName}" itemValue="#{r}"/>
+                                    <f:selectItems value="#{catRoomController.rooms}" var="r" itemLabel="#{r.roomName} - #{r.branch.branchName}" itemValue="#{r}"/>
                                     <p:column>
                                         <h:outputText value="#{t.roomName}" />
                                     </p:column>

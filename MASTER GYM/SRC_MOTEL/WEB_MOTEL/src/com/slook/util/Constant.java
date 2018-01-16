@@ -597,4 +597,13 @@ public interface Constant {
         Long TYPE_ACTION = 3L;
 
     }
+
+    interface ROOM_STATUS {
+
+        Long DELETE = -1l;
+        Long FREE = 1L;
+        Long USE = 2L;
+        Long STOP = 3L;
+
+    }
 }

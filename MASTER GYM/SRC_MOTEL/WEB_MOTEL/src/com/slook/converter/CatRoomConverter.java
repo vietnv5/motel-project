@@ -1,7 +1,7 @@
 package com.slook.converter;
 
 import com.slook.controller.CatGroupPackController;
-import com.slook.controller.RoomController;
+import com.slook.controller.CatRoomController;
 import com.slook.model.CatPack;
 import com.slook.model.CatRoom;
 import com.slook.persistence.GenericDaoImplNewV2;
