@@ -44,15 +44,15 @@ public class Home implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "HOME_ID")
-    private Integer homeId;
+    private Long homeId;
     @Column(name = "HOME_NAME")
     private String homeName;
     @Column(name = "ADDRESS")
     private String address;
     @Column(name = "STATUS")
-    private Integer status;
+    private Long status;
     @Column(name = "GROUP_USER_ID")
-    private Integer groupUserId;
+    private Long groupUserId;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "HOME_CODE")
@@ -65,15 +65,15 @@ public class Home implements Serializable {
     public Home() {
     }
 
-    public Home(Integer homeId) {
+    public Home(Long homeId) {
         this.homeId = homeId;
     }
 
-    public Integer getHomeId() {
+    public Long getHomeId() {
         return homeId;
     }
 
-    public void setHomeId(Integer homeId) {
+    public void setHomeId(Long homeId) {
         this.homeId = homeId;
     }
 
@@ -93,19 +93,19 @@ public class Home implements Serializable {
         this.address = address;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
-    public Integer getGroupUserId() {
+    public Long getGroupUserId() {
         return groupUserId;
     }
 
-    public void setGroupUserId(Integer groupUserId) {
+    public void setGroupUserId(Long groupUserId) {
         this.groupUserId = groupUserId;
     }
 

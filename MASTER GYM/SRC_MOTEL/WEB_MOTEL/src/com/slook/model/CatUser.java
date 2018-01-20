@@ -30,7 +30,7 @@ public class CatUser {
     //change password
     private String oldPassword;
     private String newPassword;
-    private Integer groupId;
+    private Long groupId;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
@@ -185,11 +185,11 @@ public class CatUser {
     }
 
     @Column(name = "GROUP_ID")
-    public Integer getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 

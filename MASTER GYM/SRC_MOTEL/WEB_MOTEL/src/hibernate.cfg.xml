@@ -100,7 +100,7 @@
         <mapping class="com.slook.model.V_CustomerCheckin"/>-->
         <mapping class="com.slook.model.FunctionPath"/>
         <mapping class="com.slook.model.RoleHasFunctionPath"/>
-<!--        <mapping class="com.slook.model.V_CustomerAccessStatus"/>
+        <!--        <mapping class="com.slook.model.V_CustomerAccessStatus"/>
         <mapping class="com.slook.model.DoorAccessStatus"/>
         <mapping class="com.slook.model.CustomerSchedule"/>
         <mapping class="com.slook.model.CustomerSchedulePack"/>
@@ -113,6 +113,20 @@
         <mapping class="com.slook.model.V_CustomerPayment"/>
         <mapping class="com.slook.model.V_CatRoomUse"/>
         <mapping class="com.slook.model.PackHasPromotion"/>-->
+        
+        
+        <mapping class="com.motel.model.Bill"/>
+        <mapping class="com.motel.model.BillService"/>
+        <mapping class="com.motel.model.Contract"/>
+        <mapping class="com.motel.model.ContractService"/>
+        <mapping class="com.motel.model.Customer"/>
+        <mapping class="com.motel.model.CustomerRoom"/>
+        <mapping class="com.motel.model.ElectricWater"/>
+        <mapping class="com.motel.model.GroupUser"/>
+        <mapping class="com.motel.model.Home"/>
+        <mapping class="com.motel.model.Room"/>
+        <mapping class="com.motel.model.Service"/>
+
     </session-factory>
 
 </hibernate-configuration>
