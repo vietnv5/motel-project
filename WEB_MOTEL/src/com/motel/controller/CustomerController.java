@@ -5,15 +5,16 @@
  */
 package com.motel.controller;
 
+import static com.motel.controller.RoomController.logger;
+import com.motel.model.Customer;
 import com.motel.model.Home;
-import com.motel.model.Room;
+import com.motel.model.Customer;
 import com.slook.controller.LogActionController;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatUser;
-import com.slook.persistence.RoomServiceImpl;
-import com.slook.persistence.FunctionPathServiceImpl;
+import com.slook.persistence.CustomerServiceImpl;
 import com.slook.persistence.HomeServiceImpl;
-import com.slook.persistence.RoomServiceImpl;
+import com.slook.persistence.CustomerServiceImpl;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
 import java.util.ArrayList;
@@ -35,21 +36,20 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author VietNV Jan 17, 2018
+ * @author VietNV Jan 19, 2018
  */
 @ManagedBean
 @ViewScoped
-public class RoomController {
+public class CustomerController {
 
-    protected static final Logger logger = LoggerFactory.getLogger(RoomController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
 
-    LazyDataModel<Room> lazyDataModel;
-    Room currRoom = new Room();
+    LazyDataModel<Customer> lazyDataModel;
+    Customer currCustomer = new Customer();
     private String oldObjectStr = null;
-
+    private Long groupUserId;
     private List<Boolean> columnVisibale = new ArrayList<>();
     private boolean isEdit = false;
-    List<Home> lstHome;
 
     public void onToggler(ToggleEvent e) {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
@@ -60,67 +60,64 @@ public class RoomController {
 
         try {
             CatUser catUser = null;
-            Long groupUserId = null;
+            groupUserId = null;
             if (getRequest().getSession().getAttribute("user") != null) {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
                 groupUserId = catUser.getGroupId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
-            order.put("home.homeName", Constant.ORDER.ASC);
-            order.put("roomName", Constant.ORDER.ASC);
+            order.put("customerName", Constant.ORDER.ASC);
             Map<String, Object> filter = new HashMap<>();
             filter.put("status-NEQ", Constant.STATUS.DELETE);
             if (groupUserId != null && groupUserId > 0) {//phan quyen
-                filter.put("home.groupUserId", groupUserId);
+                filter.put("groupUserId", groupUserId);
             }
-            lazyDataModel = new LazyDataModelBase<Room, Long>(RoomServiceImpl.getInstance(), filter, order);
+            lazyDataModel = new LazyDataModelBase<Customer, Long>(CustomerServiceImpl.getInstance(), filter, order);
 
-            Map<String, Object> filtersHome = new HashMap<>();
-            filtersHome.put("status-NEQ", Constant.STATUS.DELETE);
-            if (groupUserId != null && groupUserId > 0) {//phan quyen
-                filtersHome.put("groupUserId", groupUserId);
-            }
-            LinkedHashMap<String, String> orderHome = new LinkedHashMap<>();
-            orderHome.put("homeName", Constant.ORDER.ASC);
-            lstHome = HomeServiceImpl.getInstance().findList(filtersHome, orderHome);
         } catch (Exception e) {
             e.printStackTrace();
         }
         columnVisibale = Arrays.asList(true, true, true, true, true,
-                true, true, true, true, true
+                false,false,false, true, false, false, false
         );
     }
 
     public void preAdd() {
-        this.currRoom = new Room();
+        this.currCustomer = new Customer();
+        if (groupUserId != null && groupUserId > 0) {
+            currCustomer.setGroupUserId(groupUserId);
+        }
         isEdit = false;
     }
 
-    public void preEdit(Room role) {
+    public void preEdit(Customer customer) {
         try {
-            currRoom = RoomServiceImpl.getInstance().findById(role.getRoomId());
+            currCustomer = CustomerServiceImpl.getInstance().findById(customer.getCustomerId());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         isEdit = true;
-        oldObjectStr = currRoom.toString();
+        oldObjectStr = currCustomer.toString();
     }
 
     public void onSaveOrUpdate() {
         try {
-            RoomServiceImpl.getInstance().saveOrUpdate(currRoom);
+            if (currCustomer.getStatus() == null) {
+                currCustomer.setStatus(Constant.STATUS.ACTIVE);
+            }
+            CustomerServiceImpl.getInstance().saveOrUpdate(currCustomer);
 
             //ghi log
             if (oldObjectStr != null) {
-                LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currRoom.toString(),
+                LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currCustomer.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             } else {
-                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currRoom.toString(),
+                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currCustomer.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
-            RequestContext.getCurrentInstance().execute("PF('roomDlg').hide();");
+            RequestContext.getCurrentInstance().execute("PF('customerDlg').hide();");
 
         } catch (Exception e) {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
@@ -128,9 +125,9 @@ public class RoomController {
         }
     }
 
-    public void onDelete(Room catRole) {
+    public void onDelete(Customer catRole) {
         try {
-            RoomServiceImpl.getInstance().delete(catRole);
+            CustomerServiceImpl.getInstance().delete(catRole);
             MessageUtil.setInfoMessageFromRes("common.message.success");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -138,20 +135,20 @@ public class RoomController {
         }
     }
 
-    public LazyDataModel<Room> getLazyDataModel() {
+    public LazyDataModel<Customer> getLazyDataModel() {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<Room> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<Customer> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public Room getCurrRoom() {
-        return currRoom;
+    public Customer getCurrCustomer() {
+        return currCustomer;
     }
 
-    public void setCurrRoom(Room currRoom) {
-        this.currRoom = currRoom;
+    public void setCurrCustomer(Customer currCustomer) {
+        this.currCustomer = currCustomer;
     }
 
     public List<Boolean> getColumnVisibale() {
@@ -168,14 +165,6 @@ public class RoomController {
 
     public void setIsEdit(boolean isEdit) {
         this.isEdit = isEdit;
-    }
-
-    public List<Home> getLstHome() {
-        return lstHome;
-    }
-
-    public void setLstHome(List<Home> lstHome) {
-        this.lstHome = lstHome;
     }
 
 }

@@ -53,11 +53,13 @@ public class Room implements Serializable {
     private Long price;
     @Column(name = "STATUS")
     private Long status;
+    @Column(name = "HOME_ID")
+    private Long homeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
     private List<CustomerRoom> customerRoomList;
-    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID")
+    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID",insertable = false,updatable = false)
     @ManyToOne(optional = false)
-    private Home homeId;
+    private Home home;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
     private List<ElectricWater> electricWaterList;
 
@@ -112,13 +114,23 @@ public class Room implements Serializable {
         this.customerRoomList = customerRoomList;
     }
 
-    public Home getHomeId() {
+    public Long getHomeId() {
         return homeId;
     }
 
-    public void setHomeId(Home homeId) {
+    public void setHomeId(Long homeId) {
         this.homeId = homeId;
     }
+
+    public Home getHome() {
+        return home;
+    }
+
+    public void setHome(Home home) {
+        this.home = home;
+    }
+
+   
 
     public String getStatusName() {
          if (Constant.ROOM_STATUS.FREE.equals(status)) {

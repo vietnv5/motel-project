@@ -153,4 +153,12 @@
         <view-id value="/faces/catRole/catRole-index.xhtml"/>
     </url-mapping>
     <!-- Phần config của tab config -->
+    <url-mapping id="roomMotel">
+        <pattern value="/roomMotel"/>
+        <view-id value="/faces/motel/room/room-index.xhtml"/>
+    </url-mapping>
+    <url-mapping id="customerMotel">
+        <pattern value="/customerMotel"/>
+        <view-id value="/faces/motel/customer/customer-index.xhtml"/>
+    </url-mapping>
 </pretty-config>

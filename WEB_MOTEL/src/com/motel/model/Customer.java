@@ -5,6 +5,7 @@
  */
 package com.motel.model;
 
+import com.slook.util.MessageUtil;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -21,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -54,11 +56,11 @@ public class Customer implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "CUSTOMER_ID")
-    private Integer customerId;
+    private Long customerId;
     @Column(name = "CUSTOMER_NAME")
     private String customerName;
     @Column(name = "SEX")
-    private Integer sex;
+    private Long sex;
     @Column(name = "BIRTH_DATE")
     @Temporal(TemporalType.DATE)
     private Date birthDate;
@@ -67,7 +69,7 @@ public class Customer implements Serializable {
     @Column(name = "PHONE")
     private String phone;
     @Column(name = "STATUS")
-    private Integer status;
+    private Long status;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "EMAIL")
@@ -83,24 +85,28 @@ public class Customer implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date updateTime;
     @Column(name = "GROUP_USER_ID")
-    private Integer groupUserId;
+    private Long groupUserId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
     private List<CustomerRoom> customerRoomList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customerId")
     private List<Contract> contractList;
+    @Column(name = "home_town")
+    private String homeTown;
+    @Transient
+    private String sexName;
 
     public Customer() {
     }
 
-    public Customer(Integer customerId) {
+    public Customer(Long customerId) {
         this.customerId = customerId;
     }
 
-    public Integer getCustomerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Integer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
@@ -112,11 +118,11 @@ public class Customer implements Serializable {
         this.customerName = customerName;
     }
 
-    public Integer getSex() {
+    public Long getSex() {
         return sex;
     }
 
-    public void setSex(Integer sex) {
+    public void setSex(Long sex) {
         this.sex = sex;
     }
 
@@ -144,11 +150,11 @@ public class Customer implements Serializable {
         this.phone = phone;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -200,11 +206,11 @@ public class Customer implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Integer getGroupUserId() {
+    public Long getGroupUserId() {
         return groupUserId;
     }
 
-    public void setGroupUserId(Integer groupUserId) {
+    public void setGroupUserId(Long groupUserId) {
         this.groupUserId = groupUserId;
     }
 
@@ -224,6 +230,14 @@ public class Customer implements Serializable {
 
     public void setContractList(List<Contract> contractList) {
         this.contractList = contractList;
+    }
+
+    public String getHomeTown() {
+        return homeTown;
+    }
+
+    public void setHomeTown(String homeTown) {
+        this.homeTown = homeTown;
     }
 
     @Override
@@ -250,5 +264,15 @@ public class Customer implements Serializable {
     public String toString() {
         return "model.Customer[ customerId=" + customerId + " ]";
     }
-    
+
+    public String getSexName() {
+        if(sex!=null && sex.equals(1L))sexName=MessageUtil.getResourceBundleMessage("view.label.sexMale");
+        else if(sex!=null && sex.equals(2L))sexName=MessageUtil.getResourceBundleMessage("view.label.sexFemale");
+        return sexName;
+    }
+
+    public void setSexName(String sexName) {
+        this.sexName = sexName;
+    }
+
 }

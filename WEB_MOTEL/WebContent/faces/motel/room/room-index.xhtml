@@ -26,12 +26,6 @@
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
                         <div class="Container20 TexAlLeft">
-
-                        </div>
-                        <div class="Container60 Responsive50">
-                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.room']}"/>
-                        </div>
-                        <div class="Container20 TexAlRight">
                             <p:tooltip position="left"></p:tooltip>
                             <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
                                              onclick="PF('block').show()" process="@this"
@@ -46,6 +40,12 @@
                                 <p:dataExporter type="xls" target="tableRoomId" fileName="room" pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.room']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableRoomId" trigger="toggler">
@@ -63,19 +63,50 @@
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
+                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                          visible="#{roomController.columnVisibale[1]}" styleClass="TexAlCenter">
+                    <p:tooltip position="top" ></p:tooltip>
+
+                    <p:commandButton icon="fa fa-edit" actionListener="#{roomController.preEdit(room)}"
+
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('roomDlg').show()"
+                                     update=":roomForm,roomDlgId" id="updateRoomId"
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{roomController.onDelete(room)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableRoomId "  disabled="#{room.status==2}"
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+
                 <p:column headerText="#{msg['home.homeName']}" width="40"
-                          visible="#{roomController.columnVisibale[1]}"
-                          filterBy="#{room.homeId.homeName}" >
-                    <h:outputText value="#{room.homeId.homeName}"/>
+                          visible="#{roomController.columnVisibale[2]}"
+                          filterBy="#{room.home.homeName}" >
+                    <h:outputText value="#{room.home.homeName}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['room.roomName']}" width="40"
-                          visible="#{roomController.columnVisibale[2]}"
+                          visible="#{roomController.columnVisibale[3]}"
                           filterBy="#{room.roomName}" sortBy="#{room.roomName}" >
                     <h:outputText value="#{room.roomName}"/>
                 </p:column>
+                <p:column headerText="#{msg['room.price']}" width="40"
+                          visible="#{roomController.columnVisibale[4]}" style="text-align: right;" 
+                          filterBy="#{room.price-LIKE}" sortBy="#{room.price}" >
+                     <h:outputText value="#{room.price}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
                 <p:column headerText="#{msg['room.status']}" width="40"
-                          visible="#{roomController.columnVisibale[3]}" 
+                          visible="#{roomController.columnVisibale[5]}" 
                           filterBy="#{room.status}" sortBy="#{room.status}">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tableRoomWidget').filter()">
@@ -90,29 +121,6 @@
                     </f:facet>
                     <h:outputText value="#{room.statusName}"/>
                 </p:column>
-
-                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
-                          visible="#{roomController.columnVisibale[4]}" styleClass="TexAlCenter">
-                    <p:tooltip position="top" ></p:tooltip>
-
-                    <p:commandButton icon="fa fa-edit" actionListener="#{roomController.preEdit(room)}"
-
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('roomDlg').show()"
-                                     update=":roomForm,roomDlgId" id="updateRoomId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
-                    </p:commandButton>
-                    <p:spacer width="2px;"/>
-                    <p:commandButton icon="fa fa-trash"
-                                     actionListener="#{roomController.onDelete(room)}"
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableRoomId "  disabled="#{room.status==1}"
-                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
-                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
-                                   message="#{msg['title.confirm.delete']}">
-                        </p:confirm>
-                    </p:commandButton>
-                </p:column>
-
 
 
             </p:dataTable>
