@@ -1,0 +1,167 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <h:form id="contractTableForm">
+            <p:growl id="growlForm" showDetail="true" showSummary="false" widgetVar="growlForm"/>
+            <!--<div class="Card">-->
+            <p:dataTable value="#{contractController.lazyDataModel}"
+                         lazy="true" var="contract" rowKey="#{contract.contractId}"
+                         rowIndexVar="cusIdx" id="tableContractId"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableContractWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 TexAlLeft">
+                            <p:tooltip position="left"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();PF('contractDlg').show()"
+                                             actionListener="#{contractController.preAdd}"
+                                             update=":contractForm,contractDlgId"
+                                             title="#{msg['button.add']}">
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                             actionListener="#{commonUtilsController.attributeListener}">
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.contract']}" />
+                                <p:dataExporter type="xls" target="tableContractId" fileName="contract" pageOnly="false"
+                                                postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.contract']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableContractId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{contractController.onToggler}" />
+                            </p:columnToggler>
+                        </div>
+
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          visible="#{contractController.columnVisibale[0]}" >
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                          visible="#{contractController.columnVisibale[1]}" styleClass="TexAlCenter">
+                    <p:tooltip position="top" ></p:tooltip>
+
+                    <p:commandButton icon="fa fa-edit" actionListener="#{contractController.preEdit(contract)}"
+
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('contractDlg').show()"
+                                     update=":contractForm,contractDlgId" id="updateRoomId"
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{contractController.onDelete(contract)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableContractId "  
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+
+                <p:column headerText="#{msg['contract.contractCode']}" width="40"
+                          visible="#{contractController.columnVisibale[2]}"
+                          filterBy="#{contract.contractCode}" >
+                    <h:outputText value="#{contract.contractCode}"/>
+                </p:column>
+                <p:column headerText="#{msg['contract.customerName']}" width="50" 
+                          visible="#{contractController.columnVisibale[3]}"
+                          filterBy="#{contract.customer.customerName}" filterStyle="width:70%"
+                          ><h:outputText value="#{contract.customer.customerName}"/></p:column>
+
+                <p:column headerText="#{msg['contract.roomName']}" width="50" 
+                          visible="#{contractController.columnVisibale[4]}"
+                          filterBy="#{contract.room.roomName}" filterStyle="width:70%"
+                          ><h:outputText value="#{contract.room.roomName}"/></p:column>
+
+                <p:column headerText="#{msg['contract.deposit']}" width="40"
+                          visible="#{contractController.columnVisibale[5]}" style="text-align: right;" 
+                          filterBy="#{contract.deposit-LIKE}" sortBy="#{contract.deposit}" >
+                    <h:outputText value="#{contract.deposit}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+
+                <p:column headerText="#{msg['contract.startTime']}" width="50" sortBy="#{contract.startTime}" 
+                          visible="#{contractController.columnVisibale[6]}"
+                          filterBy="#{contract.startTime-BW}" >
+                    <f:facet name="filter" >
+                        <p:calendar pattern="dd/MM/yyyy" >
+                            <p:ajax event="dateSelect" oncomplete="PF('tableContractWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{contract.startTime}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['contract.endTime']}" width="50" sortBy="#{contract.endTime}" 
+                          visible="#{contractController.columnVisibale[7]}"
+                          filterBy="#{contract.endTime-BW}" >
+                    <f:facet name="filter" >
+                        <p:calendar pattern="dd/MM/yyyy" >
+                            <p:ajax event="dateSelect" oncomplete="PF('tableContractWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{contract.endTime}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="#{msg['contract.homeName']}" width="40"
+                          visible="#{contractController.columnVisibale[8]}"
+                          filterBy="#{contract.home.homeName}" sortBy="#{contract.home.homeName}" >
+                    <h:outputText value="#{contract.home.homeName}"/>
+                </p:column>
+                <p:column headerText="#{msg['contract.status']}" width="50"
+                          visible="#{contractController.columnVisibale[8]}"
+                          filterBy="#{contract.status}" filterStyle="width:70%" >
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableContractWidget').filter()"  filter="true" value="1"
+                                         filterMatchMode="contains">
+                            <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
+                            <f:selectItem itemLabel="#{msg['contract.status.STATUS_ACTIVE']}"
+                                          itemValue="1"/>
+                            <f:selectItem itemLabel="#{msg['contract.status.STATUS_END']}"
+                                          itemValue="2"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+
+                    <h:outputText value="#{contract.statusName}"/></p:column>
+
+
+            </p:dataTable>
+        </h:form>
+        <!--</div>-->
+
+
+        <ui:include src="contract-dialog.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>

@@ -606,4 +606,17 @@ public interface Constant {
         Long STOP = 3L;
 
     }
+    interface CONTRACT_SERVICE{
+        Long DEFAULT_STATUS_ON=1L;
+        Long DEFAULT_STATUS_OFF=0L;
+    }
+    interface CONTRACT{
+        Long STATUS_ACTIVE=1L;
+        Long STATUS_END=2L;
+    }
+    interface CUSTOMER_ROOM{
+        Long TYPE_PRIMARY=1L;
+        Long TYPE_EXTRA=2L;
+    }
+    
 }

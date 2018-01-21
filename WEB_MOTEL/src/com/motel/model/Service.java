@@ -43,74 +43,78 @@ public class Service implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "SERVICE_ID")
-    private Integer serviceId;
+    private Long serviceId;
+    @Column(name = "SERVICE_CODE")
+    private String serviceCode;
     @Column(name = "SERVICE_NAME")
-    private Integer serviceName;
+    private String serviceName;
     @Column(name = "PRICE")
-    private Integer price;
+    private Long price;
     @Column(name = "UNIT")
-    private Integer unit;
+    private Long unit;
     @Column(name = "GROUP_USER_ID")
-    private Integer groupUserId;
+    private Long groupUserId;
     @Column(name = "DEFAULT_STATUS")
-    private Integer defaultStatus;
+    private Long defaultStatus;
     @OneToMany(mappedBy = "serviceId")
     private List<BillService> billServiceList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "serviceId")
     private List<ContractService> contractServiceList;
+    @Column(name = "STATUS")
+    private Long status;
 
     public Service() {
     }
 
-    public Service(Integer serviceId) {
+    public Service(Long serviceId) {
         this.serviceId = serviceId;
     }
 
-    public Integer getServiceId() {
+    public Long getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(Integer serviceId) {
+    public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
     }
 
-    public Integer getServiceName() {
+    public String getServiceName() {
         return serviceName;
     }
 
-    public void setServiceName(Integer serviceName) {
+    public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
 
-    public Integer getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public Integer getUnit() {
+    public Long getUnit() {
         return unit;
     }
 
-    public void setUnit(Integer unit) {
+    public void setUnit(Long unit) {
         this.unit = unit;
     }
 
-    public Integer getGroupUserId() {
+    public Long getGroupUserId() {
         return groupUserId;
     }
 
-    public void setGroupUserId(Integer groupUserId) {
+    public void setGroupUserId(Long groupUserId) {
         this.groupUserId = groupUserId;
     }
 
-    public Integer getDefaultStatus() {
+    public Long getDefaultStatus() {
         return defaultStatus;
     }
 
-    public void setDefaultStatus(Integer defaultStatus) {
+    public void setDefaultStatus(Long defaultStatus) {
         this.defaultStatus = defaultStatus;
     }
 
@@ -130,6 +134,22 @@ public class Service implements Serializable {
 
     public void setContractServiceList(List<ContractService> contractServiceList) {
         this.contractServiceList = contractServiceList;
+    }
+
+    public String getServiceCode() {
+        return serviceCode;
+    }
+
+    public void setServiceCode(String serviceCode) {
+        this.serviceCode = serviceCode;
+    }
+
+    public Long getStatus() {
+        return status;
+    }
+
+    public void setStatus(Long status) {
+        this.status = status;
     }
 
     @Override

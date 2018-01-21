@@ -161,4 +161,8 @@
         <pattern value="/customerMotel"/>
         <view-id value="/faces/motel/customer/customer-index.xhtml"/>
     </url-mapping>
+    <url-mapping id="contractMotel">
+        <pattern value="/contractMotel"/>
+        <view-id value="/faces/motel/contract/contract-index.xhtml"/>
+    </url-mapping>
 </pretty-config>

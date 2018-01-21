@@ -7,9 +7,12 @@ package com.motel.model;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -18,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -36,30 +40,36 @@ public class ContractService implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "CONTRACT_SERVICE_ID")
-    private Integer contractServiceId;
+    private Long contractServiceId;
     @Column(name = "INSERT_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertTime;
-    @JoinColumn(name = "CONTRACT_ID", referencedColumnName = "CONTRACT_ID")
+    @JoinColumn(name = "CONTRACT_ID", referencedColumnName = "CONTRACT_ID",insertable = false,updatable = false)
     @ManyToOne(optional = false)
-    private Contract contractId;
-    @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID")
+    private Contract contract;
+    @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID",insertable = false,updatable = false)
     @ManyToOne(optional = false)
-    private Service serviceId;
-
+    private Service service;
+    @Column(name = "SERVICE_ID")
+    private Long serviceId;
+    @Column(name = "CONTRACT_ID")
+    private Long contractId;
+        
+    
     public ContractService() {
     }
 
-    public ContractService(Integer contractServiceId) {
+    public ContractService(Long contractServiceId) {
         this.contractServiceId = contractServiceId;
     }
 
-    public Integer getContractServiceId() {
+    public Long getContractServiceId() {
         return contractServiceId;
     }
 
-    public void setContractServiceId(Integer contractServiceId) {
+    public void setContractServiceId(Long contractServiceId) {
         this.contractServiceId = contractServiceId;
     }
 
@@ -71,45 +81,77 @@ public class ContractService implements Serializable {
         this.insertTime = insertTime;
     }
 
-    public Contract getContractId() {
-        return contractId;
+    public Contract getContract() {
+        return contract;
     }
 
-    public void setContractId(Contract contractId) {
-        this.contractId = contractId;
+    public void setContract(Contract contract) {
+        this.contract = contract;
     }
 
-    public Service getServiceId() {
+    public Service getService() {
+        return service;
+    }
+
+    public void setService(Service service) {
+        this.service = service;
+    }
+
+    public Long getServiceId() {
         return serviceId;
     }
 
-    public void setServiceId(Service serviceId) {
+    public void setServiceId(Long serviceId) {
         this.serviceId = serviceId;
+    }
+
+    public Long getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Long contractId) {
+        this.contractId = contractId;
     }
 
     @Override
     public int hashCode() {
-        int hash = 0;
-        hash += (contractServiceId != null ? contractServiceId.hashCode() : 0);
+        int hash = 3;
+        hash = 53 * hash + Objects.hashCode(this.serviceId);
+        hash = 53 * hash + Objects.hashCode(this.contractId);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ContractService)) {
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
             return false;
         }
-        ContractService other = (ContractService) object;
-        if ((this.contractServiceId == null && other.contractServiceId != null) || (this.contractServiceId != null && !this.contractServiceId.equals(other.contractServiceId))) {
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final ContractService other = (ContractService) obj;
+        if (!Objects.equals(this.serviceId, other.serviceId)) {
+            return false;
+        }
+        if (!Objects.equals(this.contractId, other.contractId)) {
             return false;
         }
         return true;
     }
 
+    
     @Override
     public String toString() {
         return "model.ContractService[ contractServiceId=" + contractServiceId + " ]";
+    }
+
+    public ContractService(Long serviceId, Long contractId) {
+        this.serviceId = serviceId;
+        this.contractId = contractId;
+        this.insertTime=new Date();
     }
     
 }

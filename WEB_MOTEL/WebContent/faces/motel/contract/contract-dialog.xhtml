@@ -1,0 +1,174 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+
+    <p:dialog modal="true" widgetVar="contractDlg" width="70%" id="contractDlgId" >
+        <f:facet name="header">
+            <h:outputText value="#{msg['button.add']}" rendered="#{!contractController.isEdit }"/>
+            <h:outputText value="#{msg['button.edit']}" rendered="#{contractController.isEdit}"/>
+        </f:facet>
+
+        <h:form id="contractForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                    <div class="Container100 Responsive50">
+                        <div class="Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{contractController.currContract.contractCode}"
+                                             id="contractCode"  converter="trimConverter"
+                                             title="#{msg['contract.contractCode']}"
+                                             required="true" maxlength="150"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.contractCode'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['contract.contractCode']} *</label>
+                            </span>
+                            <p:message for="contractCode"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{contractController.currContract.homeId}" required="true"
+                                                 id="homeId" style="width: 40%"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}" >
+                                    <f:selectItems value="#{contractController.lstHome}" var="p"
+                                                   itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
+                                    <p:ajax event="change" listener="#{contractController.onChangeHome()}"
+                                             process="@this" 
+                                            update="roomId"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['home.homeName']} *</label>
+                            </span>
+                            <p:message for="homeId"/>
+                        </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{contractController.currContract.roomId}" required="true"
+                                                 id="roomId" style="width: 40%"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.roomName'])}" >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{contractController.lstRoom}" var="p"
+                                                   itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['contract.roomName']} *</label>
+                            </span>
+                            <p:message for="roomId"/>
+                        </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{contractController.currContract.customerId}" required="true"
+                                                 id="customerId" style="width: 40%"  filter="true" filterMatchMode="contains" 
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.customerName'])}" >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{contractController.lstCustomers}" var="p"
+                                                   itemLabel="#{p.customerInfo}" itemValue="#{p.customerId}"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['contract.customerName']} *</label>
+                            </span>
+                            <p:message for="customerId"/>
+                        </div>
+
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <span class="title-top">
+                            <p:selectManyCheckbox id="lstServiceId" value="#{contractController.currContract.lstServiceId}" layout="grid" columns="5">
+                                <f:selectItems value="#{contractController.lstService}" var="city" itemLabel="#{city.serviceName}"
+                                               itemValue="#{city.serviceId}" />
+                            </p:selectManyCheckbox>
+                            <label class="title-elem">#{msg['contract.service']} </label>
+                        </span>
+                        <p:message for="lstServiceId"/>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:calendar value="#{contractController.currContract.startTime}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="startTime"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            title="#{msg['contract.startTime']}"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['contract.startTime']} </label>
+                            </span>
+                            <p:message for="startTime"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:calendar value="#{contractController.currContract.endTime}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="endTime"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            title="#{msg['contract.endTime']}"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['contract.endTime']} </label>
+                            </span>
+                            <p:message for="endTime"></p:message>
+                        </div>
+                        <div class=" Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{contractController.currContract.deposit}"
+                                               id="depositId" symbol=" VNĐ" symbolPosition="suffix"
+                                               required="false" decimalPlaces="0"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.deposit'])}"
+                                               title="#{msg['contract.deposit']}"
+                                               >
+                                </p:inputNumber>
+
+                                <label>#{msg['contract.deposit']} </label>
+                            </span>
+                            <p:message for="depositId"/>
+                        </div>
+                        <div class=" Container100 Responsive50 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{contractController.currContract.description}" style="width: 70%"
+                                             id="descriptionId"  converter="trimConverter" maxlength="200"
+                                             title="#{msg['contract.description']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['contract.description']} </label>
+                            </span>
+                            <p:message for="descriptionId"/>
+                        </div>
+                    </div>
+
+
+                </p:outputPanel>
+ 
+                <p:outputPanel class="Container100 TexAlCenter" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                                     update="@widgetVar(growl),:contractTableForm,:contractForm"
+                                     actionListener="#{contractController.onSaveOrUpdate()}" process=":contractForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('contractDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+</ui:composition>
