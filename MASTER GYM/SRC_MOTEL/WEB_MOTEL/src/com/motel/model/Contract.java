@@ -5,6 +5,10 @@
  */
 package com.motel.model;
 
+import com.slook.model.CatPack;
+import com.slook.persistence.GenericDaoImplNewV2;
+import com.slook.util.Constant;
+import com.slook.util.MessageUtil;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +27,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -52,15 +57,15 @@ public class Contract implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "CONTRACT_ID")
-    private Integer contractId;
+    private Long contractId;
     @Column(name = "CONTRACT_CODE")
     private String contractCode;
     @Basic(optional = false)
     @Column(name = "HOME_ID")
-    private int homeId;
+    private Long homeId;
     @Basic(optional = false)
     @Column(name = "ROOM_ID")
-    private int roomId;
+    private Long roomId;
     @Column(name = "START_TIME")
     @Temporal(TemporalType.DATE)
     private Date startTime;
@@ -68,38 +73,51 @@ public class Contract implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endTime;
     @Column(name = "DEPOSIT")
-    private Integer deposit;
+    private Long deposit;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "STATUS")
-    private Integer status;
+    private Long status;
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
+    @Basic(optional = false)
+    @Column(name = "CUSTOMER_ID")
+    private Long customerId;
+    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Customer customerId;
+    private Customer customer;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "contractId")
     private List<ContractService> contractServiceList;
+    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Home home;
+    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false)
+    private Room room;
+    @Transient
+    private List<Long> lstServiceId;
+    @Transient
+    private String statusName;
 
     public Contract() {
     }
 
-    public Contract(Integer contractId) {
+    public Contract(Long contractId) {
         this.contractId = contractId;
     }
 
-    public Contract(Integer contractId, int homeId, int roomId) {
+    public Contract(Long contractId, Long homeId, Long roomId) {
         this.contractId = contractId;
         this.homeId = homeId;
         this.roomId = roomId;
     }
 
-    public Integer getContractId() {
+    public Long getContractId() {
         return contractId;
     }
 
-    public void setContractId(Integer contractId) {
+    public void setContractId(Long contractId) {
         this.contractId = contractId;
     }
 
@@ -111,19 +129,19 @@ public class Contract implements Serializable {
         this.contractCode = contractCode;
     }
 
-    public int getHomeId() {
+    public Long getHomeId() {
         return homeId;
     }
 
-    public void setHomeId(int homeId) {
+    public void setHomeId(Long homeId) {
         this.homeId = homeId;
     }
 
-    public int getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(int roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
@@ -143,11 +161,11 @@ public class Contract implements Serializable {
         this.endTime = endTime;
     }
 
-    public Integer getDeposit() {
+    public Long getDeposit() {
         return deposit;
     }
 
-    public void setDeposit(Integer deposit) {
+    public void setDeposit(Long deposit) {
         this.deposit = deposit;
     }
 
@@ -159,11 +177,11 @@ public class Contract implements Serializable {
         this.description = description;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -175,12 +193,12 @@ public class Contract implements Serializable {
         this.createTime = createTime;
     }
 
-    public Customer getCustomerId() {
-        return customerId;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public void setCustomerId(Customer customerId) {
-        this.customerId = customerId;
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
     }
 
     @XmlTransient
@@ -192,29 +210,80 @@ public class Contract implements Serializable {
         this.contractServiceList = contractServiceList;
     }
 
-    @Override
-    public int hashCode() {
-        int hash = 0;
-        hash += (contractId != null ? contractId.hashCode() : 0);
-        return hash;
+    public Home getHome() {
+        return home;
     }
 
-    @Override
-    public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Contract)) {
-            return false;
-        }
-        Contract other = (Contract) object;
-        if ((this.contractId == null && other.contractId != null) || (this.contractId != null && !this.contractId.equals(other.contractId))) {
-            return false;
-        }
-        return true;
+    public void setHome(Home home) {
+        this.home = home;
+    }
+
+    public List<Long> getLstServiceId() {
+        return lstServiceId;
+    }
+
+    public void setLstServiceId(List<Long> lstServiceId) {
+        this.lstServiceId = lstServiceId;
+    }
+
+    public Long getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(Long customerId) {
+        this.customerId = customerId;
     }
 
     @Override
     public String toString() {
         return "model.Contract[ contractId=" + contractId + " ]";
     }
-    
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public String getStatusName() {
+        if (Constant.CONTRACT.STATUS_ACTIVE.equals(status)) {
+            statusName = MessageUtil.getResourceBundleMessage("contract.status.STATUS_ACTIVE");
+        } else if (Constant.CONTRACT.STATUS_END.equals(status)) {
+            statusName = MessageUtil.getResourceBundleMessage("contract.status.STATUS_END");
+        }
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
+    public void createContractCode(Long groupUseId) {
+
+//        String hqlCheckCode = "select count(*) from MemberPayment where paymentCode like ?||'%'";
+        String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,-5),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
+        String code = "HD-";
+        String barch = "000";
+        if (groupUseId != null) {
+            if (groupUseId.toString().length() < 3) {
+                barch = barch + groupUseId.toString();
+                code += barch.substring(barch.length() - 3);
+            } else {
+                code += groupUseId.toString();
+            }
+        }
+
+        List<?> counts = new GenericDaoImplNewV2<Contract, Long>() {
+        }.findListSQLAll(hqlCheckCode, code);
+        String numberStr = "00000";
+        if (counts.size() > 0 && counts.get(0) != null) {
+            Long number = (Long.valueOf(counts.get(0).toString()) + 1);
+            numberStr += number;
+            numberStr = numberStr.substring(numberStr.length() - 5);
+        }
+        contractCode = code + "-" + numberStr;
+    }
+
 }

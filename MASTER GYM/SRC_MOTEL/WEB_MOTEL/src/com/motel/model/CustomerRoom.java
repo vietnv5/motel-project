@@ -44,7 +44,7 @@ public class CustomerRoom implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "CUSTOMER_ROOM_ID")
-    private Integer customerRoomId;
+    private Long customerRoomId;
     @Column(name = "START_TIME")
     @Temporal(TemporalType.DATE)
     private Date startTime;
@@ -52,31 +52,38 @@ public class CustomerRoom implements Serializable {
     @Temporal(TemporalType.DATE)
     private Date endTime;
     @Column(name = "STATUS")
-    private Integer status;
+    private Long status;
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
     @Column(name = "TYPE")
-    private Integer type;
-    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID")
+    private Long type;
+    @JoinColumn(name = "CUSTOMER_ID", referencedColumnName = "CUSTOMER_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Customer customerId;
-    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID")
+    private Customer customer;
+    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Room roomId;
+    private Room room;
+    @Basic(optional = false)
+    @Column(name = "CUSTOMER_ID")
+    private Long customerId;
+    @Basic(optional = false)
+    @Column(name = "ROOM_ID")
+    private Long roomId;
+    
 
     public CustomerRoom() {
     }
 
-    public CustomerRoom(Integer customerRoomId) {
+    public CustomerRoom(Long customerRoomId) {
         this.customerRoomId = customerRoomId;
     }
 
-    public Integer getCustomerRoomId() {
+    public Long getCustomerRoomId() {
         return customerRoomId;
     }
 
-    public void setCustomerRoomId(Integer customerRoomId) {
+    public void setCustomerRoomId(Long customerRoomId) {
         this.customerRoomId = customerRoomId;
     }
 
@@ -96,11 +103,11 @@ public class CustomerRoom implements Serializable {
         this.endTime = endTime;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -112,27 +119,43 @@ public class CustomerRoom implements Serializable {
         this.createTime = createTime;
     }
 
-    public Integer getType() {
+    public Long getType() {
         return type;
     }
 
-    public void setType(Integer type) {
+    public void setType(Long type) {
         this.type = type;
     }
 
-    public Customer getCustomerId() {
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Long getCustomerId() {
         return customerId;
     }
 
-    public void setCustomerId(Customer customerId) {
+    public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
 
-    public Room getRoomId() {
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Room roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
     }
 
@@ -160,5 +183,5 @@ public class CustomerRoom implements Serializable {
     public String toString() {
         return "model.CustomerRoom[ customerRoomId=" + customerRoomId + " ]";
     }
-    
+
 }

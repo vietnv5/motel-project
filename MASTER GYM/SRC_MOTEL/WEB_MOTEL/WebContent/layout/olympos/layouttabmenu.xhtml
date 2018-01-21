@@ -95,6 +95,11 @@
                        href="#{facesContext.externalContext.request.contextPath}/customerMotel"><i
                             class="fa fa-building"></i><span>Khách hàng</span></a>
                 </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/contractMotel')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/contractMotel"><i
+                            class="fa fa-building"></i><span>Hợp đồng</span></a>
+                </li>
 <!--                <li id="" role="menuitem" style="display: # {sessionUtil.getUrlDisplay('/branch')? '':'none'}">
                     <a class="menulink"
                        href="# {facesContext.externalContext.request.contextPath}/branch"><i

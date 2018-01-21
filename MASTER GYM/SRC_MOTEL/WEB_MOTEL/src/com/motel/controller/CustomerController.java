@@ -105,6 +105,7 @@ public class CustomerController {
             if (currCustomer.getStatus() == null) {
                 currCustomer.setStatus(Constant.STATUS.ACTIVE);
             }
+            if(groupUserId!=null && groupUserId>0)currCustomer.setGroupUserId(groupUserId);
             CustomerServiceImpl.getInstance().saveOrUpdate(currCustomer);
 
             //ghi log

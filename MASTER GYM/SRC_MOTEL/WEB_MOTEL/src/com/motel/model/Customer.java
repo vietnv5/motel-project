@@ -94,6 +94,8 @@ public class Customer implements Serializable {
     private String homeTown;
     @Transient
     private String sexName;
+    @Transient
+    private String customerInfo;
 
     public Customer() {
     }
@@ -266,13 +268,33 @@ public class Customer implements Serializable {
     }
 
     public String getSexName() {
-        if(sex!=null && sex.equals(1L))sexName=MessageUtil.getResourceBundleMessage("view.label.sexMale");
-        else if(sex!=null && sex.equals(2L))sexName=MessageUtil.getResourceBundleMessage("view.label.sexFemale");
+        if (sex != null && sex.equals(1L)) {
+            sexName = MessageUtil.getResourceBundleMessage("view.label.sexMale");
+        } else if (sex != null && sex.equals(2L)) {
+            sexName = MessageUtil.getResourceBundleMessage("view.label.sexFemale");
+        }
         return sexName;
     }
 
     public void setSexName(String sexName) {
         this.sexName = sexName;
+    }
+
+    public String getCustomerInfo() {
+        customerInfo = "";
+        if (customerName != null) {
+            customerInfo += customerName;
+        }
+        customerInfo += " - ";
+        if (phone != null) {
+            customerInfo += phone;
+        }
+
+        return customerInfo;
+    }
+
+    public void setCustomerInfo(String customerInfo) {
+        this.customerInfo = customerInfo;
     }
 
 }
