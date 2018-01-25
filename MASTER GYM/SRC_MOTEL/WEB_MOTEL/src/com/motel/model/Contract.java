@@ -263,8 +263,9 @@ public class Contract implements Serializable {
     public void createContractCode(Long groupUseId) {
 
 //        String hqlCheckCode = "select count(*) from MemberPayment where paymentCode like ?||'%'";
-        String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,-5),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
-        String code = "HD-";
+//        String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,-5),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
+        String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,INSTR(CONTRACT_CODE, '-')+1),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
+        String code = "HD";
         String barch = "000";
         if (groupUseId != null) {
             if (groupUseId.toString().length() < 3) {
@@ -273,7 +274,7 @@ public class Contract implements Serializable {
             } else {
                 code += groupUseId.toString();
             }
-        }
+        }else code+=barch;
 
         List<?> counts = new GenericDaoImplNewV2<Contract, Long>() {
         }.findListSQLAll(hqlCheckCode, code);
@@ -282,7 +283,7 @@ public class Contract implements Serializable {
             Long number = (Long.valueOf(counts.get(0).toString()) + 1);
             numberStr += number;
             numberStr = numberStr.substring(numberStr.length() - 5);
-        }
+        }else numberStr = "00001";
         contractCode = code + "-" + numberStr;
     }
 
