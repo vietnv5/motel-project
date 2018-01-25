@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 21, 2018 lúc 07:43 PM
+-- Thời gian đã tạo: Th1 25, 2018 lúc 04:08 PM
 -- Phiên bản máy phục vụ: 5.7.18-log
 -- Phiên bản PHP: 7.2.0
 
@@ -176,8 +176,8 @@ CREATE TABLE `contract` (
 --
 
 INSERT INTO `contract` (`CONTRACT_ID`, `CONTRACT_CODE`, `HOME_ID`, `ROOM_ID`, `CUSTOMER_ID`, `START_TIME`, `END_TIME`, `DEPOSIT`, `DESCRIPTION`, `STATUS`, `CREATE_TIME`) VALUES
-(1, 'HD-001-00000', 1, 1, 1, '2018-01-22', NULL, 5000000, 'ok', 1, NULL),
-(2, 'HD-001-00001', 1, 2, 1, '2018-01-22', '2018-02-04', NULL, '', 1, NULL);
+(1, 'HD001-00002', 1, 1, 1, '2018-01-22', NULL, 540600000, 'ok', 1, NULL),
+(2, 'HD001-00001', 1, 2, 1, '2018-01-22', '2018-02-04', 5000000, '', 1, NULL);
 
 -- --------------------------------------------------------
 
@@ -197,12 +197,12 @@ CREATE TABLE `contract_service` (
 --
 
 INSERT INTO `contract_service` (`CONTRACT_ID`, `SERVICE_ID`, `CONTRACT_SERVICE_ID`, `INSERT_TIME`) VALUES
-(1, 1, 1, '2018-01-22 01:26:01'),
-(1, 2, 2, '2018-01-22 01:26:01'),
-(2, 1, 3, '2018-01-22 01:40:13'),
-(2, 4, 4, '2018-01-22 01:40:13'),
-(2, 2, 5, '2018-01-22 01:40:13'),
-(2, 3, 6, '2018-01-22 01:40:13');
+(1, 1, 1, '2018-01-24 22:58:54'),
+(1, 2, 2, '2018-01-24 22:58:54'),
+(2, 1, 3, '2018-01-24 22:58:04'),
+(2, 4, 4, '2018-01-24 22:58:04'),
+(2, 2, 5, '2018-01-24 22:58:04'),
+(2, 3, 6, '2018-01-24 22:58:04');
 
 -- --------------------------------------------------------
 
@@ -274,11 +274,20 @@ CREATE TABLE `electric_water` (
   `WATER_OLD` double DEFAULT NULL,
   `ELECTRIC_NEW` double DEFAULT NULL,
   `WATER_NEW` double DEFAULT NULL,
-  `CREATE_TIME` date DEFAULT NULL,
-  `TIME_LINE` date DEFAULT NULL,
-  `STATUS` int(11) DEFAULT NULL,
-  `MONTH` date DEFAULT NULL
+  `CREATE_TIME` date DEFAULT NULL COMMENT 'Thời gian tạo',
+  `TIME_LINE` date DEFAULT NULL COMMENT 'Ngày chốt số(số ngày chốt sau không được nhỏ hơn số chốt lần trước)',
+  `STATUS` int(11) NOT NULL DEFAULT '1',
+  `MONTH` date DEFAULT NULL COMMENT 'Tháng lập hóa đơn'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `electric_water`
+--
+
+INSERT INTO `electric_water` (`electric_water_id`, `ROOM_ID`, `ELECTRIC_OLD`, `WATER_OLD`, `ELECTRIC_NEW`, `WATER_NEW`, `CREATE_TIME`, `TIME_LINE`, `STATUS`, `MONTH`) VALUES
+(1, 1, 1, 2, NULL, NULL, '2018-01-25', '2018-01-25', 1, '2018-02-01'),
+(2, 2, 5, 2, 10, 7, '2018-01-25', '2018-01-24', 1, '2018-03-01'),
+(5, 2, 55, 16, NULL, NULL, '2018-01-25', '2018-01-25', 1, '2018-02-01');
 
 -- --------------------------------------------------------
 
@@ -367,7 +376,15 @@ CREATE TABLE `log_action` (
 
 INSERT INTO `log_action` (`LOG_ACTION_ID`, `CLIENT_IP`, `USER_NAME`, `EVENT_TIME`, `ACTION_TYPE`, `FUNCTION`, `CLASS_NAME`, `OBJECT_CODE`, `OLD_VALUE`, `NEW_VALUE`, `NOTE`) VALUES
 (1, '0:0:0:0:0:0:0:1', 'admin', '2018-01-21 17:00:00', 2, 'onSaveOrUpdate', 'ContractController', NULL, 'model.Contract[ contractId=1 ]', 'model.Contract[ contractId=1 ]', NULL),
-(2, '0:0:0:0:0:0:0:1', 'admin', '2018-01-21 17:00:00', 1, 'onSaveOrUpdate', 'ContractController', NULL, NULL, 'model.Contract[ contractId=2 ]', NULL);
+(2, '0:0:0:0:0:0:0:1', 'admin', '2018-01-21 17:00:00', 1, 'onSaveOrUpdate', 'ContractController', NULL, NULL, 'model.Contract[ contractId=2 ]', NULL),
+(3, '0:0:0:0:0:0:0:1', 'admin', '2018-01-21 17:00:00', 2, 'onSaveOrUpdate', 'ContractController', NULL, 'model.Contract[ contractId=1 ]', 'model.Contract[ contractId=1 ]', NULL),
+(4, '0:0:0:0:0:0:0:1', 'admin', '2018-01-23 17:00:00', 2, 'onSaveOrUpdate', 'ContractController', NULL, 'model.Contract[ contractId=2 ]', 'model.Contract[ contractId=2 ]', NULL),
+(5, '0:0:0:0:0:0:0:1', 'admin', '2018-01-23 17:00:00', 2, 'onSaveOrUpdate', 'ContractController', NULL, 'model.Contract[ contractId=1 ]', 'model.Contract[ contractId=1 ]', NULL),
+(6, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=1 ]', NULL),
+(7, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=2 ]', NULL),
+(8, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=3 ]', NULL),
+(9, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=4 ]', NULL),
+(10, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 2, 'onSaveOrUpdate', 'ElectricWaterController', NULL, 'model.ElectricWater[ electricWaterId=4 ]', 'model.ElectricWater[ electricWaterId=5 ]', NULL);
 
 -- --------------------------------------------------------
 
@@ -641,7 +658,7 @@ ALTER TABLE `customer_room`
 -- AUTO_INCREMENT cho bảng `electric_water`
 --
 ALTER TABLE `electric_water`
-  MODIFY `electric_water_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `electric_water_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `group_user`
@@ -659,7 +676,7 @@ ALTER TABLE `home`
 -- AUTO_INCREMENT cho bảng `log_action`
 --
 ALTER TABLE `log_action`
-  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT cho bảng `role_has_function_path`
