@@ -20,6 +20,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -47,7 +48,7 @@ public class ElectricWater implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "electric_water_id")
-    private Integer electricWaterId;
+    private Long electricWaterId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "ELECTRIC_OLD")
     private Double electricOld;
@@ -57,33 +58,37 @@ public class ElectricWater implements Serializable {
     private Double electricNew;
     @Column(name = "WATER_NEW")
     private Double waterNew;
-    @Column(name = "CREATE_TIME")
+    @Column(name = "CREATE_TIME")//thoi gian tao
     @Temporal(TemporalType.DATE)
     private Date createTime;
-    @Column(name = "TIME_LINE")
+    @Column(name = "TIME_LINE")//thoi gian chot dien
     @Temporal(TemporalType.DATE)
     private Date timeLine;
     @Column(name = "STATUS")
-    private Integer status;
+    private Long status;
     @Column(name = "MONTH")
     @Temporal(TemporalType.DATE)
     private Date month;
-    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID")
+    @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Room roomId;
+    private Room room;
+    @Column(name = "ROOM_ID")
+    private Long roomId;
+    @Transient
+    private Long homeId;
 
     public ElectricWater() {
     }
 
-    public ElectricWater(Integer electricWaterId) {
+    public ElectricWater(Long electricWaterId) {
         this.electricWaterId = electricWaterId;
     }
 
-    public Integer getElectricWaterId() {
+    public Long getElectricWaterId() {
         return electricWaterId;
     }
 
-    public void setElectricWaterId(Integer electricWaterId) {
+    public void setElectricWaterId(Long electricWaterId) {
         this.electricWaterId = electricWaterId;
     }
 
@@ -135,11 +140,11 @@ public class ElectricWater implements Serializable {
         this.timeLine = timeLine;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -151,12 +156,28 @@ public class ElectricWater implements Serializable {
         this.month = month;
     }
 
-    public Room getRoomId() {
+    public Room getRoom() {
+        return room;
+    }
+
+    public void setRoom(Room room) {
+        this.room = room;
+    }
+
+    public Long getRoomId() {
         return roomId;
     }
 
-    public void setRoomId(Room roomId) {
+    public void setRoomId(Long roomId) {
         this.roomId = roomId;
+    }
+
+    public Long getHomeId() {
+        return homeId;
+    }
+
+    public void setHomeId(Long homeId) {
+        this.homeId = homeId;
     }
 
     @Override

@@ -47,8 +47,8 @@ public class catUserController implements Serializable {
         currCatUser = new CatUser();
         catRoleService = new GenericDaoImplNewV2<CatRole, Long>() {
         };
-        employeeService = new GenericDaoImplNewV2<Employee, Long>() {
-        };
+//        employeeService = new GenericDaoImplNewV2<Employee, Long>() {
+//        };
         try {
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("userName", "ASC");
@@ -59,7 +59,7 @@ public class catUserController implements Serializable {
             filterEmp.put("statusId", Constant.EMPLOYEE_STATUS.ACTIVE);
             LinkedHashMap<String, String> orderEmp = new LinkedHashMap<>();
             orderEmp.put("employeeName", "ASC");
-            lstEmployees = employeeService.findList(filterEmp, orderEmp);
+//            lstEmployees = employeeService.findList(filterEmp, orderEmp);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -1196,7 +1196,8 @@ public abstract class GenericDaoImplNewV2<T, PK extends Serializable>
                             break;
                         case LIKE:
                             if (fieldValue != null) {
-                                String sql = "(lower(" + DataUtil.getColumnNameSQL(fieldName) + ") like '%'|| ? ||'%')";
+//                                String sql = "(lower(" + DataUtil.getColumnNameSQL(fieldName) + ") like '%'|| ? ||'%')";
+                                String sql = "(lower(" + DataUtil.getColumnNameSQL(fieldName) + ") like  CONCAT('%',CONCAT(?,'%')) )";
                                 criteria.add(Restrictions.sqlRestriction(sql, (fieldValue.toString()).toLowerCase(), StandardBasicTypes.TEXT));
                             }
 
