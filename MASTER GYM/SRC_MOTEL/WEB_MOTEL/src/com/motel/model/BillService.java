@@ -7,6 +7,7 @@ package com.motel.model;
 
 import java.io.Serializable;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +18,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -40,35 +42,46 @@ public class BillService implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "BILL_SERVICE_ID")
-    private Integer billServiceId;
+    private Long billServiceId;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Column(name = "AMOUNT")
     private Double amount;
     @Column(name = "PRICE")
-    private Integer price;
+    private Long price;
     @Column(name = "TOTAL_PRICE")
-    private Integer totalPrice;
+    private Long totalPrice;
     @Column(name = "STATUS")
-    private Integer status;
-    @JoinColumn(name = "BILL_ID", referencedColumnName = "BILL_ID")
+    private Long status;
+    @JoinColumn(name = "BILL_ID", referencedColumnName = "BILL_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Bill billId;
-    @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID")
-    @ManyToOne
-    private Service serviceId;
+    private Bill bill;
+    
+    @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID", insertable = false, updatable = false)
+    @ManyToOne(optional = false,cascade = {CascadeType.ALL})
+    private Service service;
 
+    @Column(name = "BILL_ID")
+    private Long billId;
+    @Column(name = "SERVICE_ID")
+    private Long serviceId;
+    @Column(name = "index_old")
+    private Double indexOld;
+    @Column(name = "index_new")
+    private Double indexNew;
+    @Transient
+    private String rowKey;
     public BillService() {
     }
 
-    public BillService(Integer billServiceId) {
+    public BillService(Long billServiceId) {
         this.billServiceId = billServiceId;
     }
 
-    public Integer getBillServiceId() {
+    public Long getBillServiceId() {
         return billServiceId;
     }
 
-    public void setBillServiceId(Integer billServiceId) {
+    public void setBillServiceId(Long billServiceId) {
         this.billServiceId = billServiceId;
     }
 
@@ -80,44 +93,44 @@ public class BillService implements Serializable {
         this.amount = amount;
     }
 
-    public Integer getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public Integer getTotalPrice() {
+    public Long getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(Integer totalPrice) {
+    public void setTotalPrice(Long totalPrice) {
         this.totalPrice = totalPrice;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
-    public Bill getBillId() {
-        return billId;
+    public Bill getBill() {
+        return bill;
     }
 
-    public void setBillId(Bill billId) {
-        this.billId = billId;
+    public void setBill(Bill bill) {
+        this.bill = bill;
     }
 
-    public Service getServiceId() {
-        return serviceId;
+    public Service getService() {
+        return service;
     }
 
-    public void setServiceId(Service serviceId) {
-        this.serviceId = serviceId;
+    public void setService(Service service) {
+        this.service = service;
     }
 
     @Override
@@ -144,5 +157,50 @@ public class BillService implements Serializable {
     public String toString() {
         return "model.BillService[ billServiceId=" + billServiceId + " ]";
     }
-    
+
+    public Long getBillId() {
+        return billId;
+    }
+
+    public void setBillId(Long billId) {
+        this.billId = billId;
+    }
+
+    public Long getServiceId() {
+        return serviceId;
+    }
+
+    public void setServiceId(Long serviceId) {
+        this.serviceId = serviceId;
+    }
+
+    public Double getIndexOld() {
+        return indexOld;
+    }
+
+    public void setIndexOld(Double indexOld) {
+        this.indexOld = indexOld;
+    }
+
+    public Double getIndexNew() {
+        return indexNew;
+    }
+
+    public void setIndexNew(Double indexNew) {
+        this.indexNew = indexNew;
+    }
+
+    public String getRowKey() {
+        rowKey="";
+        if(billId!=null)rowKey+=billId;
+        rowKey+="_";
+        if(serviceId!=null)rowKey+=serviceId;
+        
+        return rowKey;
+    }
+
+    public void setRowKey(String rowKey) {
+        this.rowKey = rowKey;
+    }
+
 }

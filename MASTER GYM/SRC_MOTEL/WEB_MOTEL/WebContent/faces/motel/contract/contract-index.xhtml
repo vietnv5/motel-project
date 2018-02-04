@@ -83,6 +83,15 @@
                                    message="#{msg['title.confirm.delete']}">
                         </p:confirm>
                     </p:commandButton>
+                    <p:commandButton icon="fa fa-close"
+                                     actionListener="#{contractController.onOffContract(contract)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableContractId "  
+                                     title="Huỷ hợp đồng" styleClass="White OrangeButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="Hủy hợp đồng"
+                                   message="Bạn chắc chắn muốn hủy hợp đồng #{contract.room.roomName} ?">
+                        </p:confirm>
+                    </p:commandButton>
                 </p:column>
 
 

@@ -6,17 +6,11 @@
 package com.motel.controller;
 
 import com.motel.model.ElectricWater;
-import com.motel.model.ContractService;
-import com.motel.model.Customer;
-import com.motel.model.CustomerRoom;
 import com.motel.model.Home;
 import com.motel.model.Room;
-import com.motel.model.Service;
 import com.slook.controller.LogActionController;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatUser;
-import com.slook.persistence.CustomerRoomServiceImpl;
-import com.slook.persistence.CustomerServiceImpl;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.HomeServiceImpl;
 import com.slook.persistence.RoomServiceImpl;
@@ -166,9 +160,6 @@ public class ElectricWaterController {
     public void preAdd() {
         this.currElectricWater = new ElectricWater();
         isEdit = false;
-        if (lstHome != null && !lstHome.isEmpty()) {
-            currElectricWater.setHomeId(lstHome.get(0).getHomeId());
-        }
 
         currElectricWater.setTimeLine(new Date());
         //xu ly round month

@@ -5,6 +5,7 @@
  */
 package com.motel.model;
 
+import com.slook.model.CatItemBO;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,6 +19,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
@@ -63,6 +65,9 @@ public class Service implements Serializable {
     @Column(name = "STATUS")
     private Long status;
 
+    @Transient
+    private CatItemBO unitBO;
+    
     public Service() {
     }
 
@@ -175,6 +180,14 @@ public class Service implements Serializable {
     @Override
     public String toString() {
         return "model.Service[ serviceId=" + serviceId + " ]";
+    }
+
+    public CatItemBO getUnitBO() {
+        return unitBO;
+    }
+
+    public void setUnitBO(CatItemBO unitBO) {
+        this.unitBO = unitBO;
     }
     
 }

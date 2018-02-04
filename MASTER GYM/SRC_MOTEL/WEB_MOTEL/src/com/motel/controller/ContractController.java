@@ -313,6 +313,21 @@ public class ContractController {
         }
     }
 
+    public void onOffContract(Contract contract) {
+        try {
+            Long oldStatus = contract.getStatus();
+            if (Constant.CONTRACT.STATUS_ACTIVE.equals(oldStatus)) {
+                processCustomerRoomOffContract(contract);
+            }
+            contract.setStatus(Constant.CONTRACT.STATUS_END);
+            contractService.saveOrUpdate(contract);
+            MessageUtil.setInfoMessageFromRes("common.message.success");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            MessageUtil.setErrorMessageFromRes("common.message.fail");
+        }
+    }
+
     public LazyDataModel<Contract> getLazyDataModel() {
         return lazyDataModel;
     }

@@ -169,4 +169,8 @@
         <pattern value="/electricWater"/>
         <view-id value="/faces/motel/electricWater/electricWater-index.xhtml"/>
     </url-mapping>
+    <url-mapping id="bill">
+        <pattern value="/bill"/>
+        <view-id value="/faces/motel/bill/bill-index.xhtml"/>
+    </url-mapping>
 </pretty-config>
