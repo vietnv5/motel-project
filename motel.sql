@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 04, 2018 lúc 07:54 PM
+-- Thời gian đã tạo: Th2 04, 2018 lúc 08:41 PM
 -- Phiên bản máy phục vụ: 5.7.18-log
 -- Phiên bản PHP: 7.2.0
 
@@ -157,7 +157,8 @@ CREATE TABLE `cat_role` (
 --
 
 INSERT INTO `cat_role` (`ROLE_ID`, `ROLE_NAME`, `ROLE_CODE`, `STATUS`) VALUES
-(1, 'admin', 'admin', 1);
+(1, 'admin', 'admin', 1),
+(2, 'Khách', 'KHACH', 1);
 
 -- --------------------------------------------------------
 
@@ -330,11 +331,29 @@ INSERT INTO `electric_water` (`electric_water_id`, `ROOM_ID`, `ELECTRIC_OLD`, `W
 CREATE TABLE `function_path` (
   `FUNCTION_PATH_ID` int(11) NOT NULL,
   `URL` varchar(250) DEFAULT NULL,
-  `NAME` varchar(250) DEFAULT NULL,
+  `NAME` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `STATUS` int(11) DEFAULT NULL,
   `TYPE` int(11) DEFAULT NULL,
   `PARENT_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `function_path`
+--
+
+INSERT INTO `function_path` (`FUNCTION_PATH_ID`, `URL`, `NAME`, `STATUS`, `TYPE`, `PARENT_ID`) VALUES
+(1, '/', 'Quản lý chung', 1, 1, NULL),
+(2, '/', 'Danh mục', 1, 1, NULL),
+(3, '/', 'Quản trị', 1, 1, NULL),
+(4, '/bill', 'Hóa đơn', 1, 2, 1),
+(5, '/customerMotel', 'Khách hàng', 1, 2, 1),
+(6, '/contractMotel', 'Hợp đồng', 1, 2, 1),
+(7, '/electricWater', 'Ghi điện, nước', 1, 2, 1),
+(8, '/roomMotel', 'Phòng trọ', 1, 2, 2),
+(9, '/catUser', 'Acount', 1, 2, 3),
+(10, '/catRole', 'Phân quyền', 1, 2, 3),
+(11, '/logAction', 'Lịch sử tác động', 1, 2, 3),
+(12, '/document', 'Hướng dẫn', 1, 2, 3);
 
 -- --------------------------------------------------------
 
@@ -432,7 +451,8 @@ INSERT INTO `log_action` (`LOG_ACTION_ID`, `CLIENT_IP`, `USER_NAME`, `EVENT_TIME
 (23, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=1 ]', 'model.Bill[ billId=1 ]', NULL),
 (24, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=10 ]', 'model.Bill[ billId=11 ]', NULL),
 (25, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=11 ]', 'model.Bill[ billId=11 ]', NULL),
-(26, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=12 ]', NULL);
+(26, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=12 ]', NULL),
+(27, '0:0:0:0:0:0:0:1', 'admin', '2018-02-04 17:00:00', 1, 'onSaveOrUpdate', 'RoleController', NULL, NULL, 'com.slook.model.CatRole@590042b6[\r\n  roleId=2\r\n  roleName=Khách\r\n  roleCode=KHACH\r\n  functionPaths=[]\r\n  roleHasFunctionPaths=<null>\r\n  status=1\r\n  statusName=<null>\r\n]', NULL);
 
 -- --------------------------------------------------------
 
@@ -446,6 +466,24 @@ CREATE TABLE `role_has_function_path` (
   `FUNCTION_PATH_ID` int(11) NOT NULL,
   `STATUS` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `role_has_function_path`
+--
+
+INSERT INTO `role_has_function_path` (`ID`, `ROLE_ID`, `FUNCTION_PATH_ID`, `STATUS`) VALUES
+(1, 1, 2, 1),
+(2, 1, 8, 1),
+(3, 1, 1, 1),
+(4, 1, 7, 1),
+(5, 1, 4, 1),
+(6, 1, 6, 1),
+(7, 1, 5, 1),
+(8, 1, 3, 1),
+(9, 1, 10, 1),
+(10, 1, 9, 1),
+(11, 1, 12, 1),
+(12, 1, 11, 1);
 
 -- --------------------------------------------------------
 
@@ -674,7 +712,7 @@ ALTER TABLE `cat_item`
 -- AUTO_INCREMENT cho bảng `cat_role`
 --
 ALTER TABLE `cat_role`
-  MODIFY `ROLE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ROLE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT cho bảng `cat_user`
@@ -713,6 +751,12 @@ ALTER TABLE `electric_water`
   MODIFY `electric_water_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
+-- AUTO_INCREMENT cho bảng `function_path`
+--
+ALTER TABLE `function_path`
+  MODIFY `FUNCTION_PATH_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+
+--
 -- AUTO_INCREMENT cho bảng `group_user`
 --
 ALTER TABLE `group_user`
@@ -728,13 +772,13 @@ ALTER TABLE `home`
 -- AUTO_INCREMENT cho bảng `log_action`
 --
 ALTER TABLE `log_action`
-  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT cho bảng `role_has_function_path`
 --
 ALTER TABLE `role_has_function_path`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `room`
