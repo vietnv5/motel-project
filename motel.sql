@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th1 25, 2018 lúc 04:08 PM
+-- Thời gian đã tạo: Th2 04, 2018 lúc 07:54 PM
 -- Phiên bản máy phục vụ: 5.7.18-log
 -- Phiên bản PHP: 7.2.0
 
@@ -36,8 +36,19 @@ CREATE TABLE `bill` (
   `CREATE_TIME` datetime DEFAULT NULL,
   `DESCRIPTION` varchar(500) DEFAULT NULL,
   `PAYMENT_DATE` date DEFAULT NULL,
-  `TOTAL_PRICE` int(11) DEFAULT NULL
+  `TOTAL_PRICE` int(11) DEFAULT NULL,
+  `MONTH` date DEFAULT NULL COMMENT 'Hóa đơn tháng',
+  `CONTRACT_ID` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `bill`
+--
+
+INSERT INTO `bill` (`BILL_ID`, `BILL_CODE`, `HOME_ID`, `ROOM_ID`, `CREATE_TIME`, `DESCRIPTION`, `PAYMENT_DATE`, `TOTAL_PRICE`, `MONTH`, `CONTRACT_ID`) VALUES
+(10, 'SP001-00010', 1, 1, '2018-02-03 23:49:16', '', '2018-02-03', 1920000, NULL, NULL),
+(11, 'SP001-00011', 1, 2, '2018-02-04 00:18:24', '', '2018-02-04', 2672610, NULL, NULL),
+(12, 'SP001-00012', 1, 2, '2018-02-04 17:44:55', 'TEST PRINT', '2018-02-04', 372610, NULL, 2);
 
 -- --------------------------------------------------------
 
@@ -52,8 +63,29 @@ CREATE TABLE `bill_service` (
   `PRICE` int(11) DEFAULT NULL,
   `TOTAL_PRICE` int(11) DEFAULT NULL,
   `STATUS` int(11) DEFAULT NULL,
-  `BILL_ID` int(11) NOT NULL
+  `BILL_ID` int(11) NOT NULL,
+  `index_old` double DEFAULT NULL COMMENT 'chỉ số cũ',
+  `index_new` double DEFAULT NULL COMMENT 'chỉ số mới'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Đang đổ dữ liệu cho bảng `bill_service`
+--
+
+INSERT INTO `bill_service` (`BILL_SERVICE_ID`, `SERVICE_ID`, `AMOUNT`, `PRICE`, `TOTAL_PRICE`, `STATUS`, `BILL_ID`, `index_old`, `index_new`) VALUES
+(26, 5, 1, 1500000, 1500000, NULL, 10, NULL, NULL),
+(27, 1, 120, 3500, 420000, NULL, 10, 1, NULL),
+(28, 2, 0, 30000, 0, NULL, 10, 2, NULL),
+(29, 5, 1, 2500000, 2500000, NULL, 11, NULL, NULL),
+(30, 1, 15, 3500, 52500, NULL, 11, 55, 70),
+(31, 4, 1, 100, 100, NULL, 11, NULL, NULL),
+(32, 2, 4, 30000, 120000, NULL, 11, 16, 20),
+(33, 3, 1, 10, 10, NULL, 11, NULL, NULL),
+(34, 5, 1, 200000, 200000, NULL, 12, NULL, NULL),
+(35, 1, 15, 3500, 52500, NULL, 12, 55, 70),
+(36, 4, 1, 100, 100, NULL, 12, NULL, NULL),
+(37, 2, 4, 30000, 120000, NULL, 12, 16, 20),
+(38, 3, 1, 10, 10, NULL, 12, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -167,7 +199,7 @@ CREATE TABLE `contract` (
   `END_TIME` date DEFAULT NULL,
   `DEPOSIT` int(11) DEFAULT NULL,
   `DESCRIPTION` varchar(500) DEFAULT NULL,
-  `STATUS` int(11) DEFAULT NULL,
+  `STATUS` int(11) DEFAULT NULL COMMENT '1: hoạt động, 2: hết hạn',
   `CREATE_TIME` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -287,7 +319,7 @@ CREATE TABLE `electric_water` (
 INSERT INTO `electric_water` (`electric_water_id`, `ROOM_ID`, `ELECTRIC_OLD`, `WATER_OLD`, `ELECTRIC_NEW`, `WATER_NEW`, `CREATE_TIME`, `TIME_LINE`, `STATUS`, `MONTH`) VALUES
 (1, 1, 1, 2, NULL, NULL, '2018-01-25', '2018-01-25', 1, '2018-02-01'),
 (2, 2, 5, 2, 10, 7, '2018-01-25', '2018-01-24', 1, '2018-03-01'),
-(5, 2, 55, 16, NULL, NULL, '2018-01-25', '2018-01-25', 1, '2018-02-01');
+(5, 2, 55, 16, 70, 20, '2018-01-25', '2018-01-25', 1, '2018-02-01');
 
 -- --------------------------------------------------------
 
@@ -384,7 +416,23 @@ INSERT INTO `log_action` (`LOG_ACTION_ID`, `CLIENT_IP`, `USER_NAME`, `EVENT_TIME
 (7, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=2 ]', NULL),
 (8, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=3 ]', NULL),
 (9, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 1, 'onSaveOrUpdate', 'ElectricWaterController', NULL, NULL, 'model.ElectricWater[ electricWaterId=4 ]', NULL),
-(10, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 2, 'onSaveOrUpdate', 'ElectricWaterController', NULL, 'model.ElectricWater[ electricWaterId=4 ]', 'model.ElectricWater[ electricWaterId=5 ]', NULL);
+(10, '0:0:0:0:0:0:0:1', 'admin', '2018-01-24 17:00:00', 2, 'onSaveOrUpdate', 'ElectricWaterController', NULL, 'model.ElectricWater[ electricWaterId=4 ]', 'model.ElectricWater[ electricWaterId=5 ]', NULL),
+(11, '0:0:0:0:0:0:0:1', 'admin', '2018-02-02 17:00:00', 2, 'onSaveOrUpdate', 'ElectricWaterController', NULL, 'model.ElectricWater[ electricWaterId=5 ]', 'model.ElectricWater[ electricWaterId=5 ]', NULL),
+(12, '0:0:0:0:0:0:0:1', 'admin', '2018-02-02 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=10 ]', NULL),
+(13, '0:0:0:0:0:0:0:1', 'admin', '2018-02-02 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=3 ]', 'model.Bill[ billId=3 ]', NULL),
+(14, '0:0:0:0:0:0:0:1', 'admin', '2018-02-02 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=6 ]', 'model.Bill[ billId=3 ]', NULL),
+(15, '0:0:0:0:0:0:0:1', 'admin', '2018-02-02 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=2 ]', 'model.Bill[ billId=3 ]', NULL),
+(16, '0:0:0:0:0:0:0:1', 'admin', '2018-02-02 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=5 ]', 'model.Bill[ billId=3 ]', NULL),
+(17, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=10 ]', 'model.Bill[ billId=10 ]', NULL),
+(18, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=8 ]', 'model.Bill[ billId=8 ]', NULL),
+(19, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=9 ]', 'model.Bill[ billId=8 ]', NULL),
+(20, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=4 ]', 'model.Bill[ billId=8 ]', NULL),
+(21, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=7 ]', 'model.Bill[ billId=null ]', NULL),
+(22, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=1 ]', 'model.Bill[ billId=1 ]', NULL),
+(23, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 3, 'onDelete', 'BillController', NULL, 'model.Bill[ billId=1 ]', 'model.Bill[ billId=1 ]', NULL),
+(24, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=10 ]', 'model.Bill[ billId=11 ]', NULL),
+(25, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=11 ]', 'model.Bill[ billId=11 ]', NULL),
+(26, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=12 ]', NULL);
 
 -- --------------------------------------------------------
 
@@ -446,7 +494,11 @@ INSERT INTO `service` (`SERVICE_ID`, `SERVICE_CODE`, `SERVICE_NAME`, `PRICE`, `U
 (1, 'ELECTRIC', 'Điện', 3500, 3, 1, 1, 1),
 (2, 'WATER', 'Nước', 30000, 4, 1, 1, 1),
 (3, 'RAC', 'Rác', 10, 2, 1, 1, 2),
-(4, 'Internet', 'Internet(mạng)', 100, 2, 1, 0, 2);
+(4, 'Internet', 'Internet(mạng)', 100, 2, 1, 0, 2),
+(5, 'PRICE_ROOM', 'Giá thuê phòng', NULL, 2, NULL, 0, 1),
+(6, NULL, 'Phòng 101', NULL, NULL, NULL, NULL, NULL),
+(7, NULL, 'Phòng 102', NULL, NULL, NULL, NULL, NULL),
+(8, NULL, 'Phòng 102', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -483,15 +535,15 @@ CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW 
 --
 ALTER TABLE `bill`
   ADD PRIMARY KEY (`BILL_ID`),
-  ADD KEY `HOME_ID` (`HOME_ID`);
+  ADD KEY `HOME_ID` (`HOME_ID`),
+  ADD KEY `ROOM_ID` (`ROOM_ID`);
 
 --
 -- Chỉ mục cho bảng `bill_service`
 --
 ALTER TABLE `bill_service`
   ADD PRIMARY KEY (`BILL_SERVICE_ID`),
-  ADD KEY `BILL_ID` (`BILL_ID`),
-  ADD KEY `bill_service_ibfk_2` (`SERVICE_ID`);
+  ADD KEY `bill_service_ibfk_1` (`BILL_ID`);
 
 --
 -- Chỉ mục cho bảng `cat_dictionary`
@@ -604,13 +656,13 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `BILL_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `BILL_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT cho bảng `bill_service`
 --
 ALTER TABLE `bill_service`
-  MODIFY `BILL_SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `BILL_SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT cho bảng `cat_item`
@@ -676,7 +728,7 @@ ALTER TABLE `home`
 -- AUTO_INCREMENT cho bảng `log_action`
 --
 ALTER TABLE `log_action`
-  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT cho bảng `role_has_function_path`
@@ -694,7 +746,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT cho bảng `service`
 --
 ALTER TABLE `service`
-  MODIFY `SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
@@ -704,14 +756,14 @@ ALTER TABLE `service`
 -- Các ràng buộc cho bảng `bill`
 --
 ALTER TABLE `bill`
-  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`HOME_ID`) REFERENCES `home` (`HOME_ID`);
+  ADD CONSTRAINT `bill_ibfk_1` FOREIGN KEY (`HOME_ID`) REFERENCES `home` (`HOME_ID`),
+  ADD CONSTRAINT `bill_ibfk_2` FOREIGN KEY (`ROOM_ID`) REFERENCES `room` (`ROOM_ID`) ON DELETE SET NULL;
 
 --
 -- Các ràng buộc cho bảng `bill_service`
 --
 ALTER TABLE `bill_service`
-  ADD CONSTRAINT `bill_service_ibfk_1` FOREIGN KEY (`BILL_ID`) REFERENCES `bill` (`BILL_ID`),
-  ADD CONSTRAINT `bill_service_ibfk_2` FOREIGN KEY (`SERVICE_ID`) REFERENCES `service` (`SERVICE_ID`) ON DELETE SET NULL;
+  ADD CONSTRAINT `bill_service_ibfk_1` FOREIGN KEY (`BILL_ID`) REFERENCES `bill` (`BILL_ID`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Các ràng buộc cho bảng `contract`
