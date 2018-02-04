@@ -3,6 +3,7 @@ package com.slook.controller;
 import com.slook.model.CatUser;
 import com.slook.persistence.CatUserServiceImpl;
 import com.slook.util.Constant;
+import com.slook.util.DataConfig;
 import com.slook.util.MessageUtil;
 import com.slook.util.StringUtil;
 import java.io.Serializable;
@@ -28,7 +29,8 @@ import static org.omnifaces.util.Faces.getRequest;
  */
 @ViewScoped
 @ManagedBean
-public class AuthenticationController implements Constant,Serializable {
+public class AuthenticationController implements Constant, Serializable {
+
     private static final Logger logger = getLogger(AuthenticationController.class);
 
     private String userName;
@@ -42,7 +44,6 @@ public class AuthenticationController implements Constant,Serializable {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Map sessionMap = context.getSessionMap();
 
-
             Map<String, Object> filters = new HashMap<>();
             filters.put("userName-EXAC_IGNORE_CASE", userName);
             filters.put("password-EXAC", password);
@@ -52,7 +53,8 @@ public class AuthenticationController implements Constant,Serializable {
                 sessionMap.put("user", user);
                 sessionMap.put("authenticated", true);
                 return true;
-            }if("admin".equals(userName) && "admin".equals(password)){
+            }
+            if ("admin".equals(userName) && "admin".equals(password)) {
                 user.setUserName(userName);
                 user.setPassword(password);
                 sessionMap.put("user", user);
@@ -70,7 +72,10 @@ public class AuthenticationController implements Constant,Serializable {
             if (authenticated()) {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-                fc.getExternalContext().redirect(req.getContextPath() + PAGE._DEFAULT_URL);
+//                fc.getExternalContext().redirect(req.getContextPath() + PAGE._DEFAULT_URL);
+                String defaultUrl = DataConfig.getConfigByKey("DEFAULT_URL") != null
+                        ? DataConfig.getConfigByKey("DEFAULT_URL") : PAGE._DEFAULT_URL;
+                fc.getExternalContext().redirect(req.getContextPath() + defaultUrl);
             } else {
                 MessageUtil.setErrorMessage("Username or Password is not correct");
             }
@@ -111,7 +116,7 @@ public class AuthenticationController implements Constant,Serializable {
 
     public CatUser getUser() {
 
-        return  (CatUser)  getRequest().getSession().getAttribute("user");
+        return (CatUser) getRequest().getSession().getAttribute("user");
     }
 
     public void setUser(CatUser user) {

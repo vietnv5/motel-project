@@ -5,95 +5,24 @@
 
     <ul id="layout-tab-menu">
         <li><a href="#" class="active" rel="layout-hr"> <i class="icon-male238"></i> <span
-                    class="layout-tab-menu-link-text"><span></span> Nhân sự</span> </a></li>
+                    class="layout-tab-menu-link-text"><span></span> Quản lý chung</span> </a></li>
         <li><a href="#" rel="layout-category"> <i class="fa fa-list"></i> <span
                     class="layout-tab-menu-link-text"><span></span> Danh mục</span> </a></li>
         <li><a href="#" rel="layout-admin"> <i class="icon-settings47"></i> <span
                     class="layout-tab-menu-link-text"><span></span> Quản trị</span> </a></li>
-        <li><a href="#" rel="layout-report"> <i class="fa fa-file-excel-o"></i> <span
-                    class="layout-tab-menu-link-text"><span></span> Báo cáo</span> </a></li>
+<!--        <li><a href="#" rel="layout-report"> <i class="fa fa-file-excel-o"></i> <span
+                    class="layout-tab-menu-link-text"><span></span> Báo cáo</span> </a></li>-->
     </ul>
 
     <ul class="layout-tab-submenu active" id="layout-hr">
         <li id="menuform:om_dashboards" role="menuitem">
-            <a href="#" class="menulink"> <span> BÁN HÀNG</span></a>
-            <ul role="menu">
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customerSchedule')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/customerSchedule"><i
-                            class="fa fa-calendar"></i><span>Đặt lịch</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/checkinServiceTicket')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/checkinServiceTicket"><i
-                            class="fa fa-sign-in"></i><span>Checkin dịch vụ</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/member')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/member"><i
-                            class="icon-user7"></i><span>Hội viên/Nhóm</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/client')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/client"><i
-                            class="icon-user7"></i><span>Khách lẻ</span></a>
-                </li>
-                <li role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/custom_checkin')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/custom_checkin"><i
-                            class="fa fa-cart-plus"></i><span>Thêm dịch vụ</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customer_checkout')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/customer_checkout"><i
-                            class="fa fa-credit-card"></i><span>Ngừng sử dụng</span></a>
-                </li>
-            </ul>
+
             <a href="#" class="menulink"> <span> QUẢN LÝ</span></a>
-            <ul role="menu">
-
-                <li role="menuitem" style="display: #{(sessionUtil.getUrlDisplay('/customerAccessStatus') and sessionUtil.getConfigByKeyEQ('IS_LOCAL','1'))? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/customerAccessStatus"><i
-                            class="fa fa-user-secret "></i><span>Quản lý hoạt động vòng khóa</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customer_checkin_his')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/customer_checkin_his"><i
-                            class="fa fa-list"></i><span>Lịch sử kích hoạt</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/employee')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/employee"><i
-                            class="fa fa-user-secret "></i><span>HLV/Nhân viên</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/member_care')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/member_care"><i
-                            class="fa fa-smile-o "></i><span>Chăm sóc khách hàng</span></a>
-                </li>
-                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/')? '':'none'}">
-                    <a class="menulink"
-                       href="#"><i
-                            class="fa fa-file "></i><span> Báo cáo</span></a>
-                </li>
-            </ul>
-
-        </li>
-    </ul>
-    <ul class="layout-tab-submenu" id="layout-category">
-        <li id="" role="menuitem">
-            <a href="#" class="menulink"><span> DANH MỤC</span></a>
             <ul role="menu">
                 <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/bill')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/bill"><i
                             class="fa fa-building"></i><span>Hóa đơn</span></a>
-                </li>
-                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/roomMotel')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/roomMotel"><i
-                            class="fa fa-building"></i><span>Phòng trọ</span></a>
                 </li>
                 <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/customerMotel')? '':'none'}">
                     <a class="menulink"
@@ -110,6 +39,21 @@
                        href="#{facesContext.externalContext.request.contextPath}/electricWater"><i
                             class="fa fa-building"></i><span>Ghi điện, nước</span></a>
                 </li>
+            </ul>
+
+        </li>
+    </ul>
+    <ul class="layout-tab-submenu" id="layout-category">
+        <li id="" role="menuitem">
+            <a href="#" class="menulink"><span> DANH MỤC</span></a>
+            <ul role="menu">
+                
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/roomMotel')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/roomMotel"><i
+                            class="fa fa-building"></i><span>Phòng trọ</span></a>
+                </li>
+                
 <!--                <li id="" role="menuitem" style="display: # {sessionUtil.getUrlDisplay('/branch')? '':'none'}">
                     <a class="menulink"
                        href="# {facesContext.externalContext.request.contextPath}/branch"><i
@@ -173,7 +117,7 @@
                        href="#{facesContext.externalContext.request.contextPath}/catUser"><i
                             class="fa fa-user"></i><span>Acount</span></a>
                 </li>
-                <li id="" role="menuitem">
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catRole')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/catRole"><i
                             class="fa fa-user"></i><span>Phân quyền</span></a>
@@ -205,21 +149,13 @@
                        href="#{facesContext.externalContext.request.contextPath}/reportEmployeePayment"><i
                             class="fa fa-user"></i><span>Doanh thu theo nhân viên</span></a>
                 </li>
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportEmployeePayment')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/reportUseGroupPack"><i
-                            class="fa fa-user"></i><span>Tỉ lệ sử dụng dịch vụ</span></a>
-                </li>
+
                 <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportCustomerPayment')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/reportCustomerPayment"><i
                             class="fa fa-user"></i><span>Doanh thu khách hàng</span></a>
                 </li>
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportServiceTicket')? '':'none'}">
-                    <a class="menulink"
-                       href="#{facesContext.externalContext.request.contextPath}/reportServiceTicket"><i
-                            class="fa fa-user"></i><span>Thống kê công kỹ thuật viên</span></a>
-                </li>
+     
 
             </ul>
         </li>
