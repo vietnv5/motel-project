@@ -21,6 +21,8 @@ import com.itextpdf.text.pdf.PdfDestination;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
+import com.motel.model.Bill;
+import com.motel.model.BillService;
 import com.slook.model.Member;
 import com.slook.model.MemberPayment;
 import com.slook.model.Membership;
@@ -35,6 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -417,7 +420,7 @@ public class PdfUtil {
 
             float width = 252f;
             float height = 362f;
-            
+
             float scaler = ((width - 4f) / img.getWidth()) * 100 * 0.5f;
 //            float scaler = ((document.getPageSize().getWidth() - document.leftMargin()
 //                    - document.rightMargin()) / img.getWidth()) * 100*0.5f;
@@ -629,10 +632,9 @@ public class PdfUtil {
             pPhone.setAlignment(Element.ALIGN_CENTER);
             pPhone.add(new Phrase("Hotline: 02373943888", new Font(bf, 11)));
 
-            
             // create documet
-            float tblHeight=table.getTotalHeight();
-            Rectangle envelope = new Rectangle(width, height+tblHeight);
+            float tblHeight = table.getTotalHeight();
+            Rectangle envelope = new Rectangle(width, height + tblHeight);
 
             Document document = new Document(envelope);
             document.setMargins(2f, 2f, 0.1f, 2f);
@@ -642,8 +644,6 @@ public class PdfUtil {
 
             document.open();
 
-            
-            
             document.add(paragraph);
             document.add(p1);
             document.add(pPhone);
@@ -662,6 +662,324 @@ public class PdfUtil {
             document.add(pLine);
 //            document.add(pLine);
             document.add(pThank);
+
+            document.close();
+            return resPath;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public static String createBillPdf(Bill bill) {
+        String resPath = "";
+
+        try {
+            String centerName = "PHIẾU THANH TOÁN";
+            String tile = "HÓA ĐƠN THANH TOÁN";
+            String tilePayCode = "Mã hóa đơn: ";
+            String tileTime = "Ngày tạo: ";
+            String tileContract = "Hợp đồng: ";
+            String tileDescription = "Ghi chú: ";
+//            String tileCustomer = "Khách hàng: ";
+//            String tileKtv = "Kỹ thuật viên: ";
+
+            //tao file pdf
+            String resultPath = Constant.OUT_FOLDER;
+            CommonUtil.makeDirectory(Util.getRealPath(resultPath));
+
+            String desFileNamePdf = bill.getBillCode() + "_" + DateTimeUtils.format(new Date(), "yyyyMMddHHmmss") + ".pdf";
+            String des = resultPath + desFileNamePdf;
+            resPath = Util.getRealPath(des);
+
+//            String impTempPath = Util.getRealPath("templates" + File.separator + "logoHoasen.jpg");
+//            Image img = Image.getInstance(impTempPath);
+//            img.setAlignment(Image.ALIGN_CENTER);
+            BaseFont bf = BaseFont.createFont(Util.getRealPath(Constant.FONT_TIMES), BaseFont.IDENTITY_H, BaseFont.EMBEDDED);
+
+            Font boldFontCenter = new Font(bf, 14, Font.BOLD);
+            Font boldFont = new Font(bf, 13, Font.BOLD);
+            Font normalFont = new Font(bf, 12);
+            Font headerboldFont = new Font(bf, 11, Font.BOLD);
+            Font contentboldFont = new Font(bf, 11f, Font.BOLD);
+            Font contentFont = new Font(bf, 12f);
+
+//            float width = 252f;
+            float height = 362f;
+            String roomName=(bill.getRoom()!=null&&  bill.getRoom().getRoomName()!=null )? bill.getRoom().getRoomName():"";
+            Phrase firstLine = new Phrase(centerName +" "+roomName.toUpperCase(), boldFontCenter);
+            Phrase sLine4 = new Phrase(tile, boldFont);
+            Paragraph p1 = new Paragraph();
+            p1.setAlignment(Element.ALIGN_CENTER);
+
+            Paragraph p4 = new Paragraph();
+            p4.setAlignment(Element.ALIGN_CENTER);
+            Paragraph pLine = new Paragraph();
+            pLine.add(new Phrase(" "));
+
+            p1.add(firstLine);
+            p4.add(sLine4);
+
+            Paragraph paragraphInfo = new Paragraph();
+            paragraphInfo.setAlignment(Element.ALIGN_LEFT);
+            Phrase pPayCode = new Phrase(tilePayCode + bill.getBillCode(), normalFont);
+            Phrase pPayTime = new Phrase(tileTime + DateTimeUtils.formatDateCommon(bill.getPaymentDate()), normalFont);
+            Phrase pContractCode = new Phrase(tileContract + bill.getContractCode(), normalFont);
+            Phrase pDesc = new Phrase(tileDescription +(bill.getDescription()!=null?bill.getDescription():""), normalFont);
+//            Phrase pRoom = new Phrase(bill.getRoom()!=null ? bill.getRoom().getRoomName():"", normalFont);
+
+            paragraphInfo.add(new Paragraph(pPayCode));
+            paragraphInfo.add(new Paragraph(pPayTime));
+            paragraphInfo.add(new Paragraph(pContractCode));
+            paragraphInfo.add(new Paragraph(pDesc));
+
+            PdfPCell pdfSp = new PdfPCell();
+            pdfSp.setPadding(0);
+            pdfSp.setBorder(0);
+            pdfSp.rectangle(0, 0);
+            pdfSp.addElement(new Phrase(" "));
+            float[] columnWidths = {5f, 3f, 2.5f, 2.5f, 2.5f, 3f, 4f};
+            PdfPTable table = new PdfPTable(columnWidths);
+//            table.setWidthPercentage(99);
+            table.setTotalWidth(PageSize.A5.getHeight() * 0.93f);
+            table.setLockedWidth(true);
+            List<String> lstTileCol = Arrays.asList(
+                    MessageUtil.getResourceBundleMessage("contract.service"),
+                    MessageUtil.getResourceBundleMessage("billService.unit"),
+                    MessageUtil.getResourceBundleMessage("billService.indexOld"),
+                    MessageUtil.getResourceBundleMessage("billService.indexNew"),
+                    MessageUtil.getResourceBundleMessage("billService.amount"),
+                    MessageUtil.getResourceBundleMessage("billService.price"),
+                    MessageUtil.getResourceBundleMessage("billService.totalPrice"));
+            List<PdfPCell> lstTileCell = new ArrayList<>();
+            for (String tileStr : lstTileCol) {
+                PdfPCell tileCell1 = new PdfPCell();
+                tileCell1.setPadding(5);
+                tileCell1.setBorderWidth(1);
+                Paragraph c1 = new Paragraph();
+                c1.setAlignment(Element.ALIGN_CENTER);
+                c1.add(new Phrase(tileStr, headerboldFont));
+                tileCell1.addElement(c1);
+                lstTileCell.add(tileCell1);
+                table.addCell(tileCell1);
+
+            }
+            if (bill.getBillServiceList() != null && bill.getBillServiceList().size() > 0) {
+                for (BillService bo : bill.getBillServiceList()) {
+                    PdfPCell cel1 = new PdfPCell();
+                    cel1.setPadding(2);
+                    cel1.setBorderWidth(1);
+                    PdfPCell cel2 = new PdfPCell();
+                    cel2.setPadding(2);
+                    cel2.setBorderWidth(1);
+                    PdfPCell cel3 = new PdfPCell();
+                    cel3.setPadding(2);
+                    cel3.setBorderWidth(1);
+                    PdfPCell cel4 = new PdfPCell();
+                    cel4.setPadding(2);
+                    cel4.setBorderWidth(1);
+                    PdfPCell cel5 = new PdfPCell();
+                    cel5.setPadding(2);
+                    cel5.setBorderWidth(1);
+                    PdfPCell cel6 = new PdfPCell();
+                    cel6.setPadding(2);
+                    cel6.setBorderWidth(1);
+                    PdfPCell cel7 = new PdfPCell();
+                    cel7.setPadding(2);
+                    cel7.setBorderWidth(1);
+
+                    String groupPackName = (bo.getService() != null && bo.getService().getServiceName() != null) ? bo.getService().getServiceName() : "";
+                    Paragraph c1 = new Paragraph();
+                    c1.setAlignment(Element.ALIGN_LEFT);
+                    c1.add(new Phrase(groupPackName, contentboldFont));
+                    cel1.addElement(c1);
+
+                    String unitName = (bo.getService() != null && bo.getService().getUnitBO() != null
+                            && bo.getService().getUnitBO().getName() != null)
+                            ? bo.getService().getUnitBO().getName() : "";
+                    Paragraph c2 = new Paragraph();
+                    c2.setAlignment(Element.ALIGN_RIGHT);
+                    c2.add(new Phrase(String.valueOf(unitName), contentFont));
+                    cel2.addElement(c2);
+
+                    Paragraph c3 = new Paragraph();
+                    c3.setAlignment(Element.ALIGN_RIGHT);
+                    c3.add(new Phrase(DataUtil.getStringNumber(bo.getIndexOld()), contentFont));
+                    cel3.addElement(c3);
+
+                    Paragraph c4 = new Paragraph();
+                    c4.setAlignment(Element.ALIGN_RIGHT);
+                    c4.add(new Phrase(DataUtil.getStringNumber(bo.getIndexNew()), contentFont));
+                    cel4.addElement(c4);
+
+                    Paragraph c5 = new Paragraph();
+                    c5.setAlignment(Element.ALIGN_RIGHT);
+                    c5.add(new Phrase((DataUtil.getStringNumber(bo.getAmount())), contentFont));
+                    cel5.addElement(c5);
+
+                    Paragraph c6 = new Paragraph();
+                    c6.setAlignment(Element.ALIGN_RIGHT);
+                    c6.add(new Phrase((DataUtil.getStringNumber(bo.getPrice()) ), contentFont));
+                    cel6.addElement(c6);
+
+                    Paragraph c7 = new Paragraph();
+                    c7.setAlignment(Element.ALIGN_RIGHT);
+                    c7.add(new Phrase((DataUtil.getStringNumber(bo.getTotalPrice()) ), contentFont));
+                    cel7.addElement(c7);
+
+                    table.addCell(cel1);
+                    table.addCell(cel2);
+                    table.addCell(cel3);
+                    table.addCell(cel4);
+                    table.addCell(cel5);
+                    table.addCell(cel6);
+                    table.addCell(cel7);
+                }
+            } else {
+                PdfPCell cel1 = new PdfPCell();
+                cel1.setPadding(2);
+                cel1.setBorderWidth(1);
+                cel1.addElement(new Phrase(" "));
+                table.addCell(cel1);
+                table.addCell(cel1);
+                table.addCell(cel1);
+                table.addCell(cel1);
+                table.addCell(cel1);
+            }
+// tong hop
+            PdfPCell cel1 = new PdfPCell();
+            cel1.setPadding(2);
+            cel1.setBorderWidth(1);
+            PdfPCell cel2 = new PdfPCell();
+            cel2.setPadding(2);
+            cel2.setBorderWidth(1);
+            PdfPCell cel3 = new PdfPCell();
+            cel3.setPadding(2);
+            cel3.setBorderWidth(1);
+            PdfPCell cel4 = new PdfPCell();
+            cel4.setPadding(2);
+            cel4.setBorderWidth(1);
+            PdfPCell cel5 = new PdfPCell();
+            cel5.setPadding(2);
+            cel5.setBorderWidth(1);
+            PdfPCell cel6 = new PdfPCell();
+            cel6.setPadding(2);
+            cel6.setBorderWidth(1);
+            
+            PdfPCell cel7 = new PdfPCell();
+            cel7.setPadding(2);
+            cel7.setBorderWidth(1);
+
+            Paragraph c1 = new Paragraph();
+            c1.setAlignment(Element.ALIGN_LEFT);
+            c1.add(new Phrase(MessageUtil.getResourceBundleMessage("bill.totalPrice"), boldFont));
+            cel1.addElement(c1);
+
+            // total price service
+//            Long totalPriceService = bill.getTotalPrice() != null ? bill.getTotalPrice() : 0l;
+            Paragraph c3 = new Paragraph();
+            c3.setAlignment(Element.ALIGN_RIGHT);
+            c3.add(new Phrase((""), contentFont));
+//            c3.add(new Phrase((!totalPriceService.equals(0l) ? DataUtil.getStringNumber(totalPriceService) : ""), contentFont));
+            cel3.addElement(c3);
+
+            Paragraph c4 = new Paragraph();
+            c4.setAlignment(Element.ALIGN_RIGHT);
+//            c4.add(new Phrase((!discount.equals(0l) ? DataUtil.getStringNumber(discount) : ""), contentFont));
+            c4.add(new Phrase((""), contentFont));
+            cel4.addElement(c4);
+            Paragraph c5 = new Paragraph();
+            c5.setAlignment(Element.ALIGN_RIGHT);
+            c5.add(new Phrase((""), contentFont));
+            cel5.addElement(c5);
+            Paragraph c6 = new Paragraph();
+            c6.setAlignment(Element.ALIGN_RIGHT);
+            c6.add(new Phrase((""), contentFont));
+            cel6.addElement(c6);
+            Paragraph c7 = new Paragraph();
+            c7.setAlignment(Element.ALIGN_RIGHT);
+            c7.add(new Phrase(DataUtil.getStringNumber(bill.getTotalPrice()) + " VNĐ", boldFont));
+            cel7.addElement(c7);
+
+            table.addCell(cel1);
+//            table.addCell(cel2);
+//            table.addCell(cel3);
+//            table.addCell(cel4);
+//            table.addCell(cel5);
+//            table.addCell(cel6);
+            cel7.setColspan(6);
+            table.addCell(cel7);
+            
+            //them cell gia de khong bi mat du lieu
+            table.addCell(pdfSp);
+
+            // chu ky
+            float[] columnWidths2 = {2f, 2f};
+            PdfPTable table2 = new PdfPTable(columnWidths2);
+            PdfPCell sigCel = new PdfPCell();
+            sigCel.setPadding(0);
+            sigCel.setBorder(0);
+            sigCel.rectangle(0, 0);
+            sigCel.addElement(new Phrase(" "));
+
+            Phrase sig1 = new Phrase("Người thu", boldFont);
+            Phrase sig2 = new Phrase("(Ký, ghi rõ họ tên)", normalFont);
+            Paragraph pSig1 = new Paragraph();
+            pSig1.setAlignment(Element.ALIGN_CENTER);
+            pSig1.add(sig1);
+            Paragraph pSig2 = new Paragraph();
+            pSig2.setAlignment(Element.ALIGN_CENTER);
+            pSig2.add(sig2);
+
+            sigCel.addElement(pSig1);
+            sigCel.addElement(pSig2);
+            table2.addCell(pdfSp);
+            table2.addCell(sigCel);
+
+            //fix mat cel
+            table2.addCell(pdfSp);
+
+            //cam on
+/*            Phrase thanks = new Phrase("Cảm ơn Quý khách, hẹn gặp lại!", normalFont);
+            Paragraph pThank = new Paragraph();
+            pThank.setAlignment(Element.ALIGN_CENTER);
+            pThank.add(thanks);
+
+            Paragraph pPhone = new Paragraph();
+            pPhone.setAlignment(Element.ALIGN_CENTER);
+            pPhone.add(new Phrase("Hotline: 02373943888", new Font(bf, 11)));
+*/
+            // create documet
+            float tblHeight = table.getTotalHeight();
+//            Rectangle envelope = new Rectangle(width, height + tblHeight);
+
+//            Document document = new Document(envelope);
+            Document document = new Document(PageSize.A5.rotate());
+            document.setMargins(20f, 20f, 10f, 2f);
+//        String outPath = Util.getRealPath(resultPath) + "Template_serviceTicket_" + DateTimeUtils.format(new Date(), "yyyyMMddHHmmss") + ".pdf";
+//        String outPath = resultPath + "Template_serviceTicket_" + DateTimeUtils.format(new Date(), "yyyyMMddHHmmss") + ".pdf";
+            PdfWriter.getInstance(document, new FileOutputStream(resPath));
+
+            document.open();
+
+//            document.add(paragraph);
+            document.add(p1);
+//            document.add(pPhone);
+//            document.add(p2);
+//            document.add(p3);
+            document.add(pLine);
+//            document.add(p4);
+//            document.add(pLine);
+            document.add(paragraphInfo);
+            document.add(pLine);
+            document.add(table);
+//            document.add(pLine);
+            document.add(table2);
+            document.add(pLine);
+//            document.add(pLine);
+//            document.add(pLine);
+//            document.add(pLine);
+//            document.add(pThank);
 
             document.close();
             return resPath;

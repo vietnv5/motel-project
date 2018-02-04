@@ -1,0 +1,100 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+    <p:dialog modal="true" widgetVar="billServiceDlg" width="70%" id="billServiceDlgId" >
+        <f:facet name="header">
+            <h:outputText value="#{msg['button.edit']}"/>
+        </f:facet>
+        <h:form id="billServiceForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                    <div class="Container100 Responsive50">
+                        <div class="Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{billController.currBillService.service.serviceName}"
+                                             id="serviceName"  converter="trimConverter" readonly="true"
+                                             title="#{msg['billService.serviceName']}"
+                                             required="true" maxlength="150"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['billService.serviceName'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['billService.serviceName']} </label>
+                            </span>
+                            <p:message for="serviceName"></p:message>
+                        </div>
+
+                        <div class=" Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{billController.currBillService.amount}"
+                                               id="amount" 
+                                               required="true" decimalPlaces="2"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['billService.amount'])}"
+                                               title="#{msg['billService.amount']}"
+                                               >
+                                    <p:ajax update="totalPrice"  process="@this" 
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                            listener="#{billController.onChangeBillServicePrice()}" />  
+                                </p:inputNumber>
+
+                                <label>#{msg['billService.amount']}* </label>
+                            </span>
+                            <p:message for="amount"/>
+                        </div>
+                        <div class=" Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{billController.currBillService.price}"
+                                               id="priceId" symbol=" VNĐ" symbolPosition="suffix"
+                                               required="true" decimalPlaces="0"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['billService.price'])}"
+                                               title="#{msg['billService.price']}"
+                                               >
+                                    <p:ajax update="totalPrice"  process="@this" 
+                                            onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                                            listener="#{billController.onChangeBillServicePrice()}" />  
+                                </p:inputNumber>
+
+                                <label>#{msg['billService.price']} </label>
+                            </span>
+                            <p:message for="priceId"/>
+                        </div>
+                        <div class=" Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{billController.currBillService.totalPrice}"
+                                               id="totalPrice" symbol=" VNĐ" symbolPosition="suffix"
+                                               required="false" decimalPlaces="0" readonly="true"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['billService.totalPrice'])}"
+                                               title="#{msg['billService.totalPrice']}"
+                                               >
+                                </p:inputNumber>
+
+                                <label>#{msg['billService.totalPrice']} </label>
+                            </span>
+                            <p:message for="totalPrice"/>
+                        </div>
+                    </div>
+                </p:outputPanel>
+
+                <p:outputPanel class="Container100 TexAlCenter" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                                     update="@widgetVar(growl),:billForm,:billServiceForm"
+                                     actionListener="#{billController.onSaveBillServiceInList()}" process=":billServiceForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('billServiceDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+</ui:composition>

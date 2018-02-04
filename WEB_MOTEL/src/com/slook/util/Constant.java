@@ -134,52 +134,12 @@ public interface Constant {
         String CLEARED = "CLEARED";
     }
 
-    interface SERVICE_ID {
+    interface SERVICE {
 
-        //queue folder
-        Long QUEUE_FOLDER_OVER_THRESH = 15L;
-        Long QUEUE_FOLDER_EXIST_OVER_TIME = 16L;
-        Long QUEUE_FOLDER_NOT_UPDATE = 17L;
-        //server alarm
-        Long SERVER_DOWN_UP = 1L;
-        Long SERVER_HDD = 2L;
-        Long SERVER_CPU = 3L;
-        Long SERVER_RAM = 4L;
-        Long SERVER_SWAP = 5L;
-        Long SERVER_INODE = 6L;
-        Long SERVER_MAX_OPEN_FILE = 7L;
-        Long SERVER_IO = 8L;
-        Long SERVER_MAX_PROCESS = 9L;
-        Long SERVER_LOST = 56L;
-        Long SERVER_READONLY_FILESYSTEM = 57L;
-        //website alarm
-        Long WEBSITE_DOWN_UP = 10L;
-        //billing gateway
-        Long BILLING_GATEWAY_FILE_QUEUE = 42L;
-        Long BILLING_GATEWAY_FILE_SLOW = 43L;
-        Long BILLING_GATEWAY_CONNECTION = 44L;
-        Long BILLING_GATEWAY_FILE_EXIST_OVER = 45L;
-
-        //database
-        Long DATABASE_CONNECTION = 25L;
-        Long DATABASE_TABLESPACE_SIZE = 27L;
-        Long DATABASE_INDEX_STATUS = 34L;
-        Long DATABASE_DATA_GUARD = 36L;
-        Long DATABASE_CHECK_PATITION = 39L;
-        Long DATABASE_ASM_DISGROUP_SIZE = 41L;
-        //instance
-        // Long DATABASE_CONNECTION = 25L;
-        Long DATABASE_SYNC_SLOW_TIME = 26L;
-        Long DATABASE_SESSION_ACTIVE = 29L;
-        Long DATABASE_SESSION_INACTIVE = 30L;
-        Long DATABASE_SESSION_TOTAL = 31L;
-        Long DATABASE_REDO_INACTIVE = 32L;
-        Long DATABASE_ARCHIVE_LOG_SIZE = 33L;
-        Long DATABASE_ERROR_BACKUP_LOG = 35L;
-        Long DATABASE_ALERT_SLOW_LOG = 37L;
-        Long DATABASE_SESSION_BLOCKED = 38L;
-        Long DATABASE_CHECK_DISK_MOUNT = 40L;
-        Long DATABASE_ASM_LOG_SIZE = 52L;
+        Long PRICE_ROOM_ID = 5L;
+        String ELECTRIC="ELECTRIC";//dv dien de tinh tien dien
+        String WATER="WATER";//dv nuoc de tinh tien nuoc
+        
     }
 
 //    interface STATUS {
@@ -333,6 +293,9 @@ public interface Constant {
         String REASON_DEBT = "REASON_DEBT";
         String MACHINE_TYPE = "MACHINE_TYPE";
         String COMPARISON_OPERATOR = "COMPARISON_OPERATOR";
+
+        String UNIT = "UNIT";
+
     }
 
     interface STATUS {
@@ -503,6 +466,13 @@ public interface Constant {
 
             String USING_SERVICE = "USING_SERVICE";
         }
+
+        interface UNIT {
+
+            Long ROOM_PER_MONTH_ID = 2L;
+
+        }
+
     }
 
     interface CONFIG {
@@ -606,17 +576,23 @@ public interface Constant {
         Long STOP = 3L;
 
     }
-    interface CONTRACT_SERVICE{
-        Long DEFAULT_STATUS_ON=1L;
-        Long DEFAULT_STATUS_OFF=0L;
+
+    interface CONTRACT_SERVICE {
+
+        Long DEFAULT_STATUS_ON = 1L;
+        Long DEFAULT_STATUS_OFF = 0L;
     }
-    interface CONTRACT{
-        Long STATUS_ACTIVE=1L;
-        Long STATUS_END=2L;
+
+    interface CONTRACT {
+
+        Long STATUS_ACTIVE = 1L;
+        Long STATUS_END = 2L;
     }
-    interface CUSTOMER_ROOM{
-        Long TYPE_PRIMARY=1L;
-        Long TYPE_EXTRA=2L;
+
+    interface CUSTOMER_ROOM {
+
+        Long TYPE_PRIMARY = 1L;
+        Long TYPE_EXTRA = 2L;
     }
-    
+
 }
