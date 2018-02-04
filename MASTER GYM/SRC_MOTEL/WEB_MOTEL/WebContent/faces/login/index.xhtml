@@ -37,7 +37,7 @@
     <script type="text/javascript">if (window.PrimeFaces) {
         PrimeFaces.settings.locale = 'en_US';
     }</script>
-    <title>HOA SEN SPA CENTER</title>
+    <title>#{msg['page.title']}</title>
 </h:head>
 <h:body class="AquaBack" >
     <h:form>
@@ -58,7 +58,7 @@
                     <div class="EmptyBox100 ShowOnDesktop"></div>
                     <div class="EmptyBox20 ShowOnMobile"></div>
 
-                    <div class="Wid100 FontLatoRegular White Fs18" style="display: none">Hoa Sen spa Center!</div>
+                    <div class="Wid100 FontLatoRegular White Fs18" style="display: block">#{msg['page.title']}</div>
                     <div class="EmptyBox30"></div>
                     <div class="Card ui-fluid ShadowEffect">
                         <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
@@ -108,7 +108,7 @@
                     <div class="EmptyBox20"></div>
                     <div class="Wid100 FontLatoRegular Fs12 TransparentWhite"><i
                             class="fa fa-copyright DispInlBlock"></i> Copyright 2017.
-                        <br/> All Rights Reserved by Slook.
+                        <br/> All Rights Reserved by Motel.
                     </div>
                     <div class="EmptyBox30"></div>
                 </div>
@@ -122,14 +122,14 @@
         }
 
         body{
-            background-image: url(#{facesContext.externalContext.request.contextPath}/javax.faces.resource/images/backgroud-db.jpg.xhtml?ln=olympos-layout) !important;
+            background-image: url(#{facesContext.externalContext.request.contextPath}/javax.faces.resource/images/backgroud-motel.jpg.xhtml?ln=olympos-layout) !important;
             background-repeat: inherit;
             background-position: center;
             background-size: 100%;
         }
 
         body form{
-            padding-top: 13%;
+            padding-top: 3%;
 
         }
     </style>

@@ -435,8 +435,16 @@ public class RoleController {
     //pre edit for tree
     public List<TreeNode> getListTreeNodeSelect(TreeNode node, List<Long> lstFunctionPathIdSelect) {
         List<TreeNode> lst = new ArrayList<>();
-        if (node == null || lstFunctionPathIdSelect == null || lstFunctionPathIdSelect.size() == 0) {
+        if (node == null) {
             return lst;
+        } else if (lstFunctionPathIdSelect == null || lstFunctionPathIdSelect.size() == 0) {// unable selected
+            node.setSelected(false);
+            node.setExpanded(false);
+            if (node.getChildCount() > 0) {
+                for (TreeNode nodeChildren : node.getChildren()) {
+                    lst.addAll(getListTreeNodeSelect(nodeChildren, lstFunctionPathIdSelect));
+                }
+            }
         }
         if (lstFunctionPathIdSelect.contains(((FunctionPath) node.getData()).getFunctionPathId())) {
             lst.add(node);
@@ -573,7 +581,7 @@ public class RoleController {
             List<RoleHasFunctionPath> roleHasActionCurr = new ArrayList<>();
             if (roleHasFunctionPathCurr != null) {
                 for (RoleHasFunctionPath bo : roleHasFunctionPathCurr) {
-                    if (bo.getFunctionPath()!=null && Constant.FUNCTION_PATH.TYPE_ACTION.equals(bo.getFunctionPath().getType())) {
+                    if (bo.getFunctionPath() != null && Constant.FUNCTION_PATH.TYPE_ACTION.equals(bo.getFunctionPath().getType())) {
                         roleHasActionCurr.add(bo);
                     }
                 }
