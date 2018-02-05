@@ -21,10 +21,7 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.format_sql">true</property>
 
-<!--
-        <property name="hibernate.connection.url">tsU/wPufDdr4q7DnpvnHElIVEVF2fCHhHkXwB39PXiCGEs/Dp+lUCGBYvIradkAi</property>
-        <property name="hibernate.connection.username">zM4TyqwEUo42WDs1gbXi+g==</property>
-        <property name="hibernate.connection.password">oNH+qlWBSGCL9wQLqcRkpw==</property>-->
+
         <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/motel</property>
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">123456a@</property>

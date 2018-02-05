@@ -112,8 +112,8 @@ public class PasswordEncoder {
 	}
 
 	public static void main(String[] args) {
-		System.out.println(decrypt("tsU/wPufDdr4q7DnpvnHElIVEVF2fCHhHkXwB39PXiCGEs/Dp+lUCGBYvIradkAi<"));
-		System.out.println(decrypt("zM4TyqwEUo42WDs1gbXi+g=="));
-		System.out.println(decrypt("oNH+qlWBSGCL9wQLqcRkpw=="));
+		System.out.println(decrypt("tsU/ /Dp+lUCGBYvIradkAi<"));
+		System.out.println(decrypt(" +g=="));
+		System.out.println(decrypt("oNH+ =="));
 	}
 }
