@@ -117,6 +117,8 @@ public class ContractController {
         columnVisibale = Arrays.asList(true, true, true, true, true,
                 false, false, true, true, true, false, false, false
         );
+        RequestContext.getCurrentInstance().execute("PF('tableContractWidget').filter();");
+
     }
 
     public void onChangeHome() {
@@ -267,6 +269,7 @@ public class ContractController {
                 c.setRoomId(currContract.getRoomId());
                 c.setStatus(Constant.STATUS.ACTIVE);
                 c.setType(Constant.CUSTOMER_ROOM.TYPE_PRIMARY);
+                c.setContractId(currContract.getContractId());
                 CustomerRoomServiceImpl.getInstance().save(c);
             }
         }

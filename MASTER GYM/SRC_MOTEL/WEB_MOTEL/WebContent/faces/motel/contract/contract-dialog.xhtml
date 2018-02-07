@@ -53,7 +53,7 @@
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.roomName'])}" >
                                     <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                     <f:selectItems value="#{contractController.lstRoom}" var="p"
-                                                   itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                                                   itemLabel="#{p.roomName}  -  #{p.statusName}" itemValue="#{p.roomId}"/>
                                 </p:selectOneMenu>
                                 <label class="title-elem">#{msg['contract.roomName']} *</label>
                             </span>

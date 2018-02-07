@@ -63,7 +63,7 @@
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
-                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                <p:column headerText="#{msg['datatable.header.action']}" width="50" exportable="false"
                           visible="#{contractController.columnVisibale[1]}" styleClass="TexAlCenter">
                     <p:tooltip position="top" ></p:tooltip>
 
@@ -83,7 +83,7 @@
                                    message="#{msg['title.confirm.delete']}">
                         </p:confirm>
                     </p:commandButton>
-                    <p:commandButton icon="fa fa-close"
+                    <p:commandButton icon="fa fa-close" value="Huỷ HĐ" 
                                      actionListener="#{contractController.onOffContract(contract)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
                                      update="tableContractId "  

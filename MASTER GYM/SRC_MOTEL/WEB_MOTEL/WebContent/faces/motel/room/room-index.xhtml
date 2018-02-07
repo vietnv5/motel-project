@@ -74,6 +74,14 @@
                                      title="Cập nhật" styleClass="White  Fs14 MarTop5" >
                     </p:commandButton>
                     <p:spacer width="2px;"/>
+                    
+                    <p:commandButton icon="fa fa-info" actionListener="#{roomController.preShowLstCustomerRoom(room)}"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('customerRoomDlg').show()"
+                                     update=":customerRoomForm" id="updateCustomerRoomId"
+                                     title="#{msg['customerRoom.header']}" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{roomController.onDelete(room)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
@@ -100,7 +108,7 @@
                 <p:column headerText="#{msg['room.price']}" width="40"
                           visible="#{roomController.columnVisibale[4]}" style="text-align: right;" 
                           filterBy="#{room.price-LIKE}" sortBy="#{room.price}" >
-                     <h:outputText value="#{room.price}">
+                    <h:outputText value="#{room.price}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ"/>
@@ -129,5 +137,6 @@
 
 
         <ui:include src="room-dialog.xhtml"></ui:include>
+        <ui:include src="customerRoom-dialog.xhtml"></ui:include>
     </ui:define>
 </ui:composition>

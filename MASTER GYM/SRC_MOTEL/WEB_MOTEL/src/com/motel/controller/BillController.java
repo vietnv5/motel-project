@@ -18,6 +18,7 @@ import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatItemBO;
 import com.slook.model.CatUser;
 import com.slook.persistence.BillServiceImpl;
+import com.slook.persistence.ContractServiceImpl;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.HomeServiceImpl;
 import com.slook.persistence.RoomServiceImpl;
@@ -169,7 +170,7 @@ public class BillController {
         return lst;
     }
 
-    public Contract getContractOfRoom(Long roomId) {
+    public static Contract getContractOfRoom(Long roomId) {
         LinkedHashMap<String, String> order = new LinkedHashMap<>();
         order.put("startTime", Constant.ORDER.DESC);
         Map<String, Object> filter = new HashMap<>();
@@ -178,7 +179,7 @@ public class BillController {
 
         List<Contract> lst = new ArrayList<>();
         try {
-            lst = contractService.findList(filter, order);
+            lst = ContractServiceImpl.getInstance().findList(filter, order);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -412,6 +413,10 @@ public class BillController {
         }
         for (BillService b : lstBillService) {
             b.setBillId(billId);
+            //fix loi dang tu dong insert ban ghi vao bang service
+            if (b.getService() != null && b.getService().getServiceId() == null) {
+                b.setService(null);
+            }
         }
         billServiceService.delete(lstDel);
         billServiceService.saveOrUpdate(lstBillService);
@@ -495,7 +500,7 @@ public class BillController {
             }
 
             InputStream stream = new FileInputStream(pathRealFile);
-            fileExported = new DefaultStreamedContent(stream, "application/pdf",currBill.getBillCode() + ".pdf");
+            fileExported = new DefaultStreamedContent(stream, "application/pdf", currBill.getBillCode() + ".pdf");
             if (pathRealFile != null && !pathRealFile.equals("")) {
                 MessageUtil.setInfoMessage("Export thành công");
                 RequestContext.getCurrentInstance().update(":showPdfForm");
@@ -659,10 +664,8 @@ public class BillController {
     public void setFileExported(StreamedContent fileExported) {
         this.fileExported = fileExported;
     }
-    
-    
-//</editor-fold>
 
+//</editor-fold>
     //bo sung
     private Date selectedDate;
 
