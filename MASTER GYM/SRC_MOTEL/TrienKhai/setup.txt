@@ -4,3 +4,10 @@
 After installing service it by mysqld --install. Try this mysqld --initialize. We got the same problem but it's now working.
 
 // cai dat csdl moi
+
+mysql -u root -p
+DROP DATABASE  motel
+
+mysql >CREATE DATABASE new_database;
+
+mysql -u username -p new_database < data-dump.sql	
