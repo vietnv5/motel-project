@@ -5,6 +5,7 @@
  */
 package com.motel.model;
 
+import com.slook.util.Constant;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -20,6 +21,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
@@ -70,7 +72,12 @@ public class CustomerRoom implements Serializable {
     @Basic(optional = false)
     @Column(name = "ROOM_ID")
     private Long roomId;
-    
+
+    @Basic(optional = false)
+    @Column(name = "CONTRACT_ID")
+    private Long contractId;
+    @Transient
+    private String typeName;
 
     public CustomerRoom() {
     }
@@ -159,6 +166,14 @@ public class CustomerRoom implements Serializable {
         this.roomId = roomId;
     }
 
+    public Long getContractId() {
+        return contractId;
+    }
+
+    public void setContractId(Long contractId) {
+        this.contractId = contractId;
+    }
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -182,6 +197,19 @@ public class CustomerRoom implements Serializable {
     @Override
     public String toString() {
         return "model.CustomerRoom[ customerRoomId=" + customerRoomId + " ]";
+    }
+
+    public String getTypeName() {
+        if (Constant.CUSTOMER_ROOM.TYPE_PRIMARY.equals(type)) {
+            typeName = "Chính";
+        } else if (Constant.CUSTOMER_ROOM.TYPE_EXTRA.equals(type)) {
+            typeName = "Ở ghép";
+        }
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
     }
 
 }

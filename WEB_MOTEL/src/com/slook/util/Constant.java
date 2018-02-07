@@ -137,9 +137,9 @@ public interface Constant {
     interface SERVICE {
 
         Long PRICE_ROOM_ID = 5L;
-        String ELECTRIC="ELECTRIC";//dv dien de tinh tien dien
-        String WATER="WATER";//dv nuoc de tinh tien nuoc
-        
+        String ELECTRIC = "ELECTRIC";//dv dien de tinh tien dien
+        String WATER = "WATER";//dv nuoc de tinh tien nuoc
+
     }
 
 //    interface STATUS {
@@ -593,6 +593,9 @@ public interface Constant {
 
         Long TYPE_PRIMARY = 1L;
         Long TYPE_EXTRA = 2L;
+
+        Long STATUS_ACTIVE = 1L;
+        Long STATUS_CHECKOUT = 2L;
     }
 
 }

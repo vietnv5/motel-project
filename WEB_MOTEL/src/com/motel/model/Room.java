@@ -57,7 +57,7 @@ public class Room implements Serializable {
     private Long homeId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
     private List<CustomerRoom> customerRoomList;
-    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID",insertable = false,updatable = false)
+    @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Home home;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "roomId")
@@ -65,7 +65,10 @@ public class Room implements Serializable {
 
     @Transient
     private String statusName;
-    
+
+    @Transient
+    private Contract currContract;
+
     public Room() {
     }
 
@@ -130,10 +133,8 @@ public class Room implements Serializable {
         this.home = home;
     }
 
-   
-
     public String getStatusName() {
-         if (Constant.ROOM_STATUS.FREE.equals(status)) {
+        if (Constant.ROOM_STATUS.FREE.equals(status)) {
             statusName = MessageUtil.getResourceBundleMessage("room.status.FREE");
         } else if (Constant.ROOM_STATUS.USE.equals(status)) {
             statusName = MessageUtil.getResourceBundleMessage("room.status.USE");
@@ -147,7 +148,6 @@ public class Room implements Serializable {
         this.statusName = statusName;
     }
 
-    
     @XmlTransient
     public List<ElectricWater> getElectricWaterList() {
         return electricWaterList;
@@ -157,6 +157,15 @@ public class Room implements Serializable {
         this.electricWaterList = electricWaterList;
     }
 
+    public Contract getCurrContract() {
+        return currContract;
+    }
+
+    public void setCurrContract(Contract currContract) {
+        this.currContract = currContract;
+    }
+
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -181,5 +190,5 @@ public class Room implements Serializable {
     public String toString() {
         return "model.Room[ roomId=" + roomId + " ]";
     }
-    
+
 }

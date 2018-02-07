@@ -171,3 +171,10 @@ span.cd-text-required:after{
 .preformatted {
     white-space: pre-wrap;
 }
+
+/*customer form theo kh*/
+.ui-datatable table tbody tr td {
+    color: #000000;
+    font-size: 14px;
+
+}

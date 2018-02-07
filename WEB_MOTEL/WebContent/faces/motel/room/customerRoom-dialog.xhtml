@@ -1,0 +1,135 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+    <p:dialog modal="true" widgetVar="customerRoomDlg" width="80%" id="customerRoomDlgId" height="400"
+              header="#{msg['customerRoom.header']}">
+
+        <h:form id="customerRoomForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+
+                    <div class=" Container100">
+                        <div class=" Container50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{roomController.currCustomerRoom.customerId}" required="true"
+                                                 id="customerId" style="width: 40%"  filter="true" filterMatchMode="contains" 
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['customerRoom.customerName'])}" >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{roomController.lstCustomer}" var="p"
+                                                   itemLabel="#{p.customerInfo}" itemValue="#{p.customerId}"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['customerRoom.customerName']} *</label>
+                            </span>
+                            <p:message for="customerId"/>
+                        </div>
+                        <div class=" Container50">
+                            <p:commandButton value="#{msg['customerRoom.button.add']}" styleClass="GreenButton White" 
+                                             update="@widgetVar(growl),:customerRoomTableForm,:customerRoomForm"
+                                             actionListener="#{roomController.onSaveCustomerRoom()}"
+                                             process=":customerRoomForm" 
+                                             onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                             >
+                            </p:commandButton>
+                        </div>
+                    </div>
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlCenter" >
+                    <p:dataTable value="#{roomController.lazyCustomerRoom}"
+                                 lazy="true" var="customerRoom" rowKey="#{customerRoom.customerRoomId}"
+                                 rowIndexVar="cusIdx" id="tableCustomerId"
+                                 rows="5" paginator="true" paginatorPosition="bottom"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                 rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableCustomerWidget"
+                                 emptyMessage="#{msg['datatable.empty']}"
+                                 styleClass="Container100 NoPadding MarTop10"
+
+                                 >
+                        <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                        <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                        <!--STT-->
+                        <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                                  >
+                            <h:outputText value="#{cusIdx +1 }"/>
+                        </p:column>
+
+                        <p:column headerText="#{msg['datatable.header.action']}" width="70" exportable="false"
+                                  styleClass="TexAlCenter">
+                            <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
+                            <p:menuButton  styleClass="GreenButton Fs14 White"  value="Lựa chọn" 
+                                           id="menuButtonId">
+
+                                <p:menuitem value="#{msg['customerRoom.button.onChangeTypeToPrimary']}" 
+                                            icon="fa fa-user"
+                                            actionListener="#{roomController.onChangeTypeToPrimary(customerRoom)}"
+                                            process="@widgetVar(tableCustomerWidget)" disabled="#{customerRoom.type==1}"
+                                            onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                            update="@widgetVar(tableCustomerWidget),@widgetVar(growlForm)" >
+                                </p:menuitem>
+                                <p:menuitem icon="fa fa-sign-out" actionListener="#{roomController.onCheckoutCustomer(customerRoom)}"
+                                            process="@widgetVar(tableCustomerWidget)"
+                                            onclick="PF('block').show()" oncomplete="PF('block').hide()"
+                                            update="@widgetVar(tableCustomerWidget),@widgetVar(growlForm)"
+                                            value="#{msg['customerRoom.button.onCheckoutCustomer']}">
+                                </p:menuitem>
+
+                            </p:menuButton>
+                            <p:tooltip position="top" ></p:tooltip>
+
+                            <p:spacer width="2px;"/>
+                            <p:commandButton icon="fa fa-trash"
+                                             actionListener="#{roomController.onDeleteCustomerRoom(customerRoom)}"
+                                             onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                             update="tableCustomerId ,@widgetVar(growlForm)"  
+                                             title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                                <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                           message="#{msg['title.confirm.delete']}">
+                                </p:confirm>
+                            </p:commandButton>
+                        </p:column>
+
+
+                        <p:column headerText="#{msg['customer.customerName']}" width="70"  >
+                            <h:outputText value="#{customerRoom.customer.customerName}"/>
+                        </p:column>
+                        <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="50" 
+                                  ><h:outputText value="#{customerRoom.customer.phone}"/></p:column>
+                        <p:column headerText="#{msg['datatable.header.email']}" width="50" 
+                                  visible="false"
+                                  ><h:outputText value="#{customerRoom.customer.email}"/></p:column>
+
+                        <p:column headerText="#{msg['customer.birthDate']}" width="50" 
+                                  >
+                            <h:outputText value="#{customerRoom.customer.birthDate}">
+                                <f:convertDateTime pattern="dd/MM/yyyy"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column headerText="#{msg['datatable.header.sex']}" width="30" 
+                                  ><h:outputText value="#{customerRoom.customer.sexName}"/></p:column>
+                        <p:column headerText="#{msg['customerRoom.type']}" width="30" 
+                                  ><h:outputText value="#{customerRoom.typeName}"/></p:column>
+                    </p:dataTable>
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlCenter" >
+
+                    <p:commandButton value="#{msg['button.close']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('customerRoomDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+        <h:form id="customerRoomTableForm">
+
+
+        </h:form>
+
+    </p:dialog>
+
+</ui:composition>
