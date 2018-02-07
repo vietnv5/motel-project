@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Máy chủ: 127.0.0.1
--- Thời gian đã tạo: Th2 04, 2018 lúc 08:41 PM
+-- Thời gian đã tạo: Th2 07, 2018 lúc 01:54 AM
 -- Phiên bản máy phục vụ: 5.7.18-log
 -- Phiên bản PHP: 7.2.0
 
@@ -34,7 +34,7 @@ CREATE TABLE `bill` (
   `HOME_ID` int(11) NOT NULL,
   `ROOM_ID` int(11) DEFAULT NULL,
   `CREATE_TIME` datetime DEFAULT NULL,
-  `DESCRIPTION` varchar(500) DEFAULT NULL,
+  `DESCRIPTION` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `PAYMENT_DATE` date DEFAULT NULL,
   `TOTAL_PRICE` int(11) DEFAULT NULL,
   `MONTH` date DEFAULT NULL COMMENT 'Hóa đơn tháng',
@@ -48,7 +48,9 @@ CREATE TABLE `bill` (
 INSERT INTO `bill` (`BILL_ID`, `BILL_CODE`, `HOME_ID`, `ROOM_ID`, `CREATE_TIME`, `DESCRIPTION`, `PAYMENT_DATE`, `TOTAL_PRICE`, `MONTH`, `CONTRACT_ID`) VALUES
 (10, 'SP001-00010', 1, 1, '2018-02-03 23:49:16', '', '2018-02-03', 1920000, NULL, NULL),
 (11, 'SP001-00011', 1, 2, '2018-02-04 00:18:24', '', '2018-02-04', 2672610, NULL, NULL),
-(12, 'SP001-00012', 1, 2, '2018-02-04 17:44:55', 'TEST PRINT', '2018-02-04', 372610, NULL, 2);
+(12, 'SP001-00012', 1, 2, '2018-02-04 17:44:55', 'TEST PRINT', '2018-02-04', 372610, NULL, 2),
+(13, 'SP001-00013', 1, 1, '2018-02-06 22:20:48', '', '2018-02-06', 1500000, NULL, NULL),
+(14, 'SP001-00014', 1, 1, '2018-02-06 22:46:48', '', '2018-02-06', 1500000, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -85,7 +87,9 @@ INSERT INTO `bill_service` (`BILL_SERVICE_ID`, `SERVICE_ID`, `AMOUNT`, `PRICE`, 
 (35, 1, 15, 3500, 52500, NULL, 12, 55, 70),
 (36, 4, 1, 100, 100, NULL, 12, NULL, NULL),
 (37, 2, 4, 30000, 120000, NULL, 12, 16, 20),
-(38, 3, 1, 10, 10, NULL, 12, NULL, NULL);
+(38, 3, 1, 10, 10, NULL, 12, NULL, NULL),
+(39, 5, 1, 1500000, 1500000, NULL, 13, NULL, NULL),
+(40, 5, 1, 1500000, 1500000, NULL, 14, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -209,8 +213,11 @@ CREATE TABLE `contract` (
 --
 
 INSERT INTO `contract` (`CONTRACT_ID`, `CONTRACT_CODE`, `HOME_ID`, `ROOM_ID`, `CUSTOMER_ID`, `START_TIME`, `END_TIME`, `DEPOSIT`, `DESCRIPTION`, `STATUS`, `CREATE_TIME`) VALUES
-(1, 'HD001-00002', 1, 1, 1, '2018-01-22', NULL, 540600000, 'ok', 1, NULL),
-(2, 'HD001-00001', 1, 2, 1, '2018-01-22', '2018-02-04', 5000000, '', 1, NULL);
+(1, 'HD001-00002', 1, 1, 1, '2018-01-22', NULL, 540600000, 'ok', 2, NULL),
+(2, 'HD001-00001', 1, 2, 2, '2018-01-22', '2018-02-04', 5000000, '', 1, NULL),
+(3, 'HD001-00003', 1, 1, 3, NULL, NULL, 100000, '', 2, NULL),
+(4, 'HD001-00004', 1, 1, 2, NULL, NULL, NULL, '', 2, NULL),
+(5, 'HD001-00005', 1, 1, 2, NULL, NULL, NULL, '', 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -235,7 +242,19 @@ INSERT INTO `contract_service` (`CONTRACT_ID`, `SERVICE_ID`, `CONTRACT_SERVICE_I
 (2, 1, 3, '2018-01-24 22:58:04'),
 (2, 4, 4, '2018-01-24 22:58:04'),
 (2, 2, 5, '2018-01-24 22:58:04'),
-(2, 3, 6, '2018-01-24 22:58:04');
+(2, 3, 6, '2018-01-24 22:58:04'),
+(3, 1, 7, '2018-02-07 00:29:07'),
+(3, 2, 8, '2018-02-07 00:29:07'),
+(3, 3, 9, '2018-02-07 00:29:07'),
+(4, 1, 10, '2018-02-07 00:32:19'),
+(4, 2, 11, '2018-02-07 00:32:19'),
+(4, 3, 12, '2018-02-07 00:32:19'),
+(4, 1, 13, '2018-02-07 00:32:47'),
+(4, 2, 14, '2018-02-07 00:32:47'),
+(4, 3, 15, '2018-02-07 00:32:47'),
+(5, 1, 16, '2018-02-07 00:38:03'),
+(5, 2, 17, '2018-02-07 00:38:05'),
+(5, 3, 18, '2018-02-07 00:38:07');
 
 -- --------------------------------------------------------
 
@@ -267,7 +286,9 @@ CREATE TABLE `customer` (
 --
 
 INSERT INTO `customer` (`CUSTOMER_ID`, `CUSTOMER_NAME`, `SEX`, `BIRTH_DATE`, `ADDRESS`, `PHONE`, `STATUS`, `DESCRIPTION`, `EMAIL`, `CMND`, `NGAY_CAP`, `NOI_CAP`, `UPDATE_TIME`, `GROUP_USER_ID`, `img_path`, `home_town`) VALUES
-(1, 'Nguyễn Văn Việt', 1, '1992-01-01', 'Hà nội', '01663734698', 1, 'ok', 'vietnv.th@gmail.com', '123123', '2010-02-20', 'Thanh Hóa', NULL, 1, NULL, 'Hoằng Xuân, Hoằng Hóa, Thanh Hóa');
+(1, 'Nguyễn Văn Việt', 1, '1992-01-01', 'Hà nội', '01663734698', 1, 'ok', 'vietnv.th@gmail.com', '123123', '2010-02-20', 'Thanh Hóa', NULL, 1, NULL, 'Hoằng Xuân, Hoằng Hóa, Thanh Hóa'),
+(2, 'Nguyễn A', 1, NULL, '', '0123456778', 1, '', 'vietnv', '', NULL, '', NULL, 1, NULL, ''),
+(3, 'Lê Thị Bé', 2, NULL, '', '0123456789', 1, '', 'gai', '', NULL, '', NULL, 1, NULL, '');
 
 -- --------------------------------------------------------
 
@@ -283,16 +304,19 @@ CREATE TABLE `customer_room` (
   `END_TIME` date DEFAULT NULL,
   `STATUS` int(10) DEFAULT NULL COMMENT '-1 xoa, 1: hoat dong, 2 da tung su dung',
   `CREATE_TIME` datetime DEFAULT NULL,
-  `TYPE` int(11) DEFAULT NULL COMMENT '1:chính, 2: ở ghép'
+  `TYPE` int(11) DEFAULT NULL COMMENT '1:chính, 2: ở ghép',
+  `CONTRACT_ID` int(11) DEFAULT NULL COMMENT 'khách hàng theo hợp đồng'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Đang đổ dữ liệu cho bảng `customer_room`
 --
 
-INSERT INTO `customer_room` (`CUSTOMER_ROOM_ID`, `CUSTOMER_ID`, `ROOM_ID`, `START_TIME`, `END_TIME`, `STATUS`, `CREATE_TIME`, `TYPE`) VALUES
-(1, 1, 1, NULL, NULL, 1, '2018-01-22 01:26:01', 1),
-(2, 1, 2, NULL, NULL, 1, '2018-01-22 01:40:22', 1);
+INSERT INTO `customer_room` (`CUSTOMER_ROOM_ID`, `CUSTOMER_ID`, `ROOM_ID`, `START_TIME`, `END_TIME`, `STATUS`, `CREATE_TIME`, `TYPE`, `CONTRACT_ID`) VALUES
+(1, 1, 1, NULL, '2018-02-06', -1, '2018-01-22 01:26:01', 1, 0),
+(2, 1, 2, NULL, NULL, 1, '2018-01-22 01:40:22', 2, 0),
+(3, 3, 2, '2018-02-07', NULL, 2, '2018-02-07 00:15:31', 2, 2),
+(4, 2, 2, '2018-02-07', NULL, 1, '2018-02-07 00:19:16', 1, 2);
 
 -- --------------------------------------------------------
 
@@ -353,7 +377,8 @@ INSERT INTO `function_path` (`FUNCTION_PATH_ID`, `URL`, `NAME`, `STATUS`, `TYPE`
 (9, '/catUser', 'Acount', 1, 2, 3),
 (10, '/catRole', 'Phân quyền', 1, 2, 3),
 (11, '/logAction', 'Lịch sử tác động', 1, 2, 3),
-(12, '/document', 'Hướng dẫn', 1, 2, 3);
+(12, '/document', 'Hướng dẫn', 1, 2, 3),
+(13, '/dashboard', 'Trang chủ', 1, 2, NULL);
 
 -- --------------------------------------------------------
 
@@ -399,7 +424,7 @@ CREATE TABLE `home` (
 --
 
 INSERT INTO `home` (`HOME_ID`, `HOME_NAME`, `ADDRESS`, `STATUS`, `GROUP_USER_ID`, `DESCRIPTION`, `HOME_CODE`) VALUES
-(1, 'Xóm liều', '', 0, 1, '', '');
+(1, 'Hà Nội', '', 0, 1, '', '');
 
 -- --------------------------------------------------------
 
@@ -452,7 +477,19 @@ INSERT INTO `log_action` (`LOG_ACTION_ID`, `CLIENT_IP`, `USER_NAME`, `EVENT_TIME
 (24, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=10 ]', 'model.Bill[ billId=11 ]', NULL),
 (25, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 2, 'onSaveOrUpdate', 'BillController', NULL, 'model.Bill[ billId=11 ]', 'model.Bill[ billId=11 ]', NULL),
 (26, '0:0:0:0:0:0:0:1', 'admin', '2018-02-03 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=12 ]', NULL),
-(27, '0:0:0:0:0:0:0:1', 'admin', '2018-02-04 17:00:00', 1, 'onSaveOrUpdate', 'RoleController', NULL, NULL, 'com.slook.model.CatRole@590042b6[\r\n  roleId=2\r\n  roleName=Khách\r\n  roleCode=KHACH\r\n  functionPaths=[]\r\n  roleHasFunctionPaths=<null>\r\n  status=1\r\n  statusName=<null>\r\n]', NULL);
+(27, '0:0:0:0:0:0:0:1', 'admin', '2018-02-04 17:00:00', 1, 'onSaveOrUpdate', 'RoleController', NULL, NULL, 'com.slook.model.CatRole@590042b6[\r\n  roleId=2\r\n  roleName=Khách\r\n  roleCode=KHACH\r\n  functionPaths=[]\r\n  roleHasFunctionPaths=<null>\r\n  status=1\r\n  statusName=<null>\r\n]', NULL),
+(28, '0:0:0:0:0:0:0:1', 'admin', '2018-02-05 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=13 ]', NULL),
+(29, '0:0:0:0:0:0:0:1', 'admin', '2018-02-05 17:00:00', 1, 'onSaveOrUpdate', 'BillController', NULL, NULL, 'model.Bill[ billId=14 ]', NULL),
+(30, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 1, 'onSaveOrUpdate', 'CustomerController', NULL, NULL, 'model.Customer[ customerId=2 ]', NULL),
+(31, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 1, 'onSaveOrUpdate', 'CustomerController', NULL, NULL, 'model.Customer[ customerId=3 ]', NULL),
+(32, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onSaveCustomerRoom', 'RoomController', NULL, 'model.Room[ roomId=2 ]', 'model.CustomerRoom[ customerRoomId=null ]', NULL),
+(33, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onSaveCustomerRoom', 'RoomController', NULL, 'model.Room[ roomId=2 ]', 'model.CustomerRoom[ customerRoomId=null ]', NULL),
+(34, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onSaveCustomerRoom', 'RoomController', NULL, 'model.Room[ roomId=2 ]', 'model.CustomerRoom[ customerRoomId=3 ]', NULL),
+(35, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onSaveCustomerRoom', 'RoomController', NULL, 'model.Room[ roomId=2 ]', 'model.CustomerRoom[ customerRoomId=3 ]', NULL),
+(36, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onSaveCustomerRoom', 'RoomController', NULL, 'model.Room[ roomId=2 ]', 'model.CustomerRoom[ customerRoomId=4 ]', NULL),
+(37, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onChangeTypeToPrimary', 'RoomController', NULL, 'model.Contract[ contractId=2 ]', 'model.Contract[ contractId=2 ]', NULL),
+(38, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onChangeTypeToPrimary', 'RoomController', NULL, NULL, 'model.CustomerRoom[ customerRoomId=null ]', NULL),
+(39, '0:0:0:0:0:0:0:1', 'admin', '2018-02-06 17:00:00', 2, 'onCheckoutCustomer', 'RoomController', NULL, 'model.CustomerRoom[ customerRoomId=3 ]', 'model.CustomerRoom[ customerRoomId=3 ]', NULL);
 
 -- --------------------------------------------------------
 
@@ -483,7 +520,14 @@ INSERT INTO `role_has_function_path` (`ID`, `ROLE_ID`, `FUNCTION_PATH_ID`, `STAT
 (9, 1, 10, 1),
 (10, 1, 9, 1),
 (11, 1, 12, 1),
-(12, 1, 11, 1);
+(12, 1, 11, 1),
+(13, 1, 13, 1),
+(14, 2, 13, 1),
+(15, 2, 1, 1),
+(16, 2, 7, 1),
+(17, 2, 4, 1),
+(18, 2, 6, 1),
+(19, 2, 5, 1);
 
 -- --------------------------------------------------------
 
@@ -504,7 +548,7 @@ CREATE TABLE `room` (
 --
 
 INSERT INTO `room` (`ROOM_ID`, `HOME_ID`, `ROOM_NAME`, `PRICE`, `STATUS`) VALUES
-(1, 1, 'Phòng 101', 1500000, 2),
+(1, 1, 'Phòng 101', 1500000, 1),
 (2, 1, 'Phòng 102', 200000, 2);
 
 -- --------------------------------------------------------
@@ -531,12 +575,13 @@ CREATE TABLE `service` (
 INSERT INTO `service` (`SERVICE_ID`, `SERVICE_CODE`, `SERVICE_NAME`, `PRICE`, `UNIT`, `GROUP_USER_ID`, `DEFAULT_STATUS`, `STATUS`) VALUES
 (1, 'ELECTRIC', 'Điện', 3500, 3, 1, 1, 1),
 (2, 'WATER', 'Nước', 30000, 4, 1, 1, 1),
-(3, 'RAC', 'Rác', 10, 2, 1, 1, 2),
+(3, 'VESINH', 'Vệ sinh', 10, 2, 1, 1, 2),
 (4, 'Internet', 'Internet(mạng)', 100, 2, 1, 0, 2),
 (5, 'PRICE_ROOM', 'Giá thuê phòng', NULL, 2, NULL, 0, 1),
 (6, NULL, 'Phòng 101', NULL, NULL, NULL, NULL, NULL),
 (7, NULL, 'Phòng 102', NULL, NULL, NULL, NULL, NULL),
-(8, NULL, 'Phòng 102', NULL, NULL, NULL, NULL, NULL);
+(8, NULL, 'Phòng 102', NULL, NULL, NULL, NULL, NULL),
+(9, NULL, 'Phòng 101', NULL, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -694,13 +739,13 @@ ALTER TABLE `service`
 -- AUTO_INCREMENT cho bảng `bill`
 --
 ALTER TABLE `bill`
-  MODIFY `BILL_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `BILL_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT cho bảng `bill_service`
 --
 ALTER TABLE `bill_service`
-  MODIFY `BILL_SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
+  MODIFY `BILL_SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT cho bảng `cat_item`
@@ -724,25 +769,25 @@ ALTER TABLE `cat_user`
 -- AUTO_INCREMENT cho bảng `contract`
 --
 ALTER TABLE `contract`
-  MODIFY `CONTRACT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `CONTRACT_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT cho bảng `contract_service`
 --
 ALTER TABLE `contract_service`
-  MODIFY `CONTRACT_SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `CONTRACT_SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 
 --
 -- AUTO_INCREMENT cho bảng `customer`
 --
 ALTER TABLE `customer`
-  MODIFY `CUSTOMER_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `CUSTOMER_ID` int(20) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT cho bảng `customer_room`
 --
 ALTER TABLE `customer_room`
-  MODIFY `CUSTOMER_ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `CUSTOMER_ROOM_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT cho bảng `electric_water`
@@ -754,7 +799,7 @@ ALTER TABLE `electric_water`
 -- AUTO_INCREMENT cho bảng `function_path`
 --
 ALTER TABLE `function_path`
-  MODIFY `FUNCTION_PATH_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `FUNCTION_PATH_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT cho bảng `group_user`
@@ -772,13 +817,13 @@ ALTER TABLE `home`
 -- AUTO_INCREMENT cho bảng `log_action`
 --
 ALTER TABLE `log_action`
-  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `LOG_ACTION_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=40;
 
 --
 -- AUTO_INCREMENT cho bảng `role_has_function_path`
 --
 ALTER TABLE `role_has_function_path`
-  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT cho bảng `room`
@@ -790,7 +835,7 @@ ALTER TABLE `room`
 -- AUTO_INCREMENT cho bảng `service`
 --
 ALTER TABLE `service`
-  MODIFY `SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `SERVICE_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- Các ràng buộc cho các bảng đã đổ
