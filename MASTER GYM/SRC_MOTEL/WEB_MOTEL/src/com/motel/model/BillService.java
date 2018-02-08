@@ -57,7 +57,7 @@ public class BillService implements Serializable {
     private Bill bill;
     
     @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID", insertable = false, updatable = false)
-    @ManyToOne(optional = false,cascade = {CascadeType.ALL})
+    @ManyToOne(optional = false)
     private Service service;
 
     @Column(name = "BILL_ID")
