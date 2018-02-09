@@ -232,7 +232,7 @@ public class BillController {
             }
             // tao gia cac dich vu
             for (Service s : lstService) {
-                s.setUnitBO(mapUnit.get(s.getServiceId()));
+                s.setUnitBO(mapUnit.get(s.getUnit()));
 
                 BillService bs = new BillService();
                 bs.setService(s);
