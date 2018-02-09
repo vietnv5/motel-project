@@ -17,38 +17,6 @@
             <div class="Card">
                 <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
                     <div class="Container100 Responsive50">
-
-                        <div class="Container25 Responsive50">
-                            <span class="title-top">
-                                <p:selectOneMenu value="#{billController.currBill.homeId}" required="true"
-                                                 id="homeId" style="width: 40%" disabled="#{billController.isEdit}"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}" >
-                                    <f:selectItems value="#{billController.lstHome}" var="p"
-                                                   itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
-                                    <p:ajax event="change" listener="#{billController.onChangeHome()}"
-                                            process="@this" 
-                                            update="roomId"/>
-                                </p:selectOneMenu>
-                                <label class="title-elem">#{msg['home.homeName']} *</label>
-                            </span>
-                            <p:message for="homeId"/>
-                        </div>
-                        <div class="Container25 Responsive50">
-                            <span class="title-top">
-                                <p:selectOneMenu value="#{billController.currBill.roomId}" required="true"
-                                                 id="roomId" style="width: 40%" disabled="#{billController.isEdit}"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['electricWater.roomName'])}" >
-                                    <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
-                                    <f:selectItems value="#{billController.lstRoom}" var="p"
-                                                   itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
-                                    <p:ajax event="change" listener="#{billController.onSelectRoom()}"
-                                            process="@this" 
-                                            update="tableBilServicelId,memberPaymentPanel"/>
-                                </p:selectOneMenu>
-                                <label class="title-elem">#{msg['electricWater.roomName']} *</label>
-                            </span>
-                            <p:message for="roomId"/>
-                        </div>
                         <div class="Container25 Responsive50">
                             <span class="md-inputfield">
                                 <p:inputText value="#{billController.currBill.billCode}"
@@ -80,7 +48,39 @@
                                 <label class="title-elem">#{msg['bill.paymentDate']} </label>
                             </span>
                             <p:message for="paymentDate"></p:message>
+                        </div>        
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{billController.currBill.homeId}" required="true"
+                                                 id="homeId" style="width: 40%" disabled="#{billController.isEdit}"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}" >
+                                    <f:selectItems value="#{billController.lstHome}" var="p"
+                                                   itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
+                                    <p:ajax event="change" listener="#{billController.onChangeHome()}"
+                                            process="@this" 
+                                            update="roomId"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['home.homeName']} *</label>
+                            </span>
+                            <p:message for="homeId"/>
                         </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{billController.currBill.roomId}" required="true"
+                                                 id="roomId" style="width: 40%" disabled="#{billController.isEdit}"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['electricWater.roomName'])}" >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{billController.lstRoom}" var="p"
+                                                   itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                                    <p:ajax event="change" listener="#{billController.onSelectRoom()}"
+                                            process="@form" 
+                                            update="tableBilServicelId,memberPaymentPanel"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['electricWater.roomName']} *</label>
+                            </span>
+                            <p:message for="roomId"/>
+                        </div>
+                        
                     </div>
 
                     <div class="Container100 Responsive50 MarTop20">
