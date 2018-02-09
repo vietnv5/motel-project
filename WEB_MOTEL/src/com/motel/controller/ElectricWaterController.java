@@ -15,6 +15,7 @@ import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.HomeServiceImpl;
 import com.slook.persistence.RoomServiceImpl;
 import com.slook.util.Constant;
+import com.slook.util.DataConfig;
 import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
 import java.util.ArrayList;
@@ -163,12 +164,21 @@ public class ElectricWaterController {
 
         currElectricWater.setTimeLine(new Date());
         //xu ly round month
-        Date month = DateUtils.round(new Date(), Calendar.MONTH);
+        int nextToMonth = 0;
+        Date payment = new Date();
+        try {
+            if (DataConfig.getConfigByKey("NEXT_DAY_TO_MOTNH") != null) {
+                nextToMonth = Long.valueOf(DataConfig.getConfigByKey("NEXT_DAY_TO_MOTNH")).intValue();
+            }
+            payment.setDate(payment.getDate() + nextToMonth);
+        } catch (Exception e) {
+        }
+        Date month = DateUtils.truncate(payment, Calendar.MONTH);
         currElectricWater.setMonth(month);
         if (lstHome != null && !lstHome.isEmpty()) {
             currElectricWater.setHomeId(lstHome.get(0).getHomeId());
         }
-        this.selectedDate=month;
+        this.selectedDate = month;
         onChangeHome();
     }
 
@@ -180,7 +190,7 @@ public class ElectricWaterController {
                     && currElectricWater.getRoom() != null) {
                 currElectricWater.setHomeId(currElectricWater.getRoom().getHomeId());
             }
-            this.selectedDate=currElectricWater.getMonth();
+            this.selectedDate = currElectricWater.getMonth();
             onChangeHome();
         } catch (Exception ex) {
             ex.printStackTrace();
