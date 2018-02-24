@@ -46,6 +46,7 @@ public class ExcelWriterUtils implements Constant {
 
     public void createWorkbook() {
         SXSSFworkbook = new SXSSFWorkbook();
+        workbook = new SXSSFWorkbook();
     }
 
 
@@ -215,6 +216,7 @@ public class ExcelWriterUtils implements Constant {
         }
         // Create a cell and put a value in it.
         Cell cell = row.createCell(c);
+        if(cellValue!=null)
         cell.setCellValue(cellValue);
         cell.setCellStyle(style);
         return cell;
