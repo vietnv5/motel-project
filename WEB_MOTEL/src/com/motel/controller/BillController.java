@@ -24,11 +24,19 @@ import com.slook.persistence.HomeServiceImpl;
 import com.slook.persistence.RoomServiceImpl;
 import com.slook.util.CommonUtil;
 import com.slook.util.Constant;
+import com.slook.util.DataUtil;
+import com.slook.util.DateTimeUtils;
+import com.slook.util.ExcelWriterUtils;
 import com.slook.util.MessageUtil;
 import com.slook.util.PdfUtil;
 import com.slook.util.Util;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -42,7 +50,19 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
+import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import org.apache.commons.lang3.time.DateUtils;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.RegionUtil;
 import static org.omnifaces.util.Faces.getRequest;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ToggleEvent;
@@ -87,6 +107,8 @@ public class BillController {
     //bo sung in ve
     private String pathRealFile = "";
     StreamedContent fileExported;
+    //export ds hoa don
+    private Long homeId;
 
     public void onToggler(ToggleEvent e) {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
@@ -216,12 +238,12 @@ public class BillController {
             //lay thong tin hop dong cua phong danh sach cac dich vu su dung
             contract = getContractOfRoom(currBill.getRoomId());
             List<Service> lstService = new ArrayList<>();
+            lstBillService = new ArrayList<>();
             if (contract != null && contract.getContractServiceList() != null) {
                 lstService = contract.getContractServiceList().stream().map(ContractService::getService)
                         .collect(Collectors.toList());
                 currBill.setContractId(contract.getContractId());
             } else {
-                lstBillService = new ArrayList<>();
             }
             //lay thong tin dien nuoc
             Date month = DateUtils.round(currBill.getPaymentDate(), Calendar.MONTH);
@@ -511,6 +533,214 @@ public class BillController {
             logger.error(e.getMessage(), e);
         }
     }
+//xuat danh sach hoa don
+
+    public void preExportBill() {
+        this.selectedDate = DateUtils.truncate(new Date(), Calendar.MONTH);
+    }
+
+    public List<Bill> getBillForExport() {
+        List<Bill> lst = new ArrayList<>();
+        try {
+
+            Map<String, Object> filtersHome = new HashMap<>();
+//            filtersHome.put("status-NEQ", Constant.STATUS.DELETE);
+            if (groupUserId != null && groupUserId > 0) {//phan quyen
+                filtersHome.put("home.groupUserId", groupUserId);
+            }
+            if (homeId != null && homeId > 0) {
+                filtersHome.put("homeId", homeId);
+
+            }
+            if (selectedDate != null) {
+                filtersHome.put("paymentDate-GE", selectedDate);
+                filtersHome.put("paymentDate-LT", DateUtils.addMonths(selectedDate, 1));
+            }
+            LinkedHashMap<String, String> orderHome = new LinkedHashMap<>();
+            orderHome.put("home.homeName", Constant.ORDER.ASC);
+            orderHome.put("room.roomName", Constant.ORDER.ASC);
+            lst = billServiceImpl.findList(filtersHome, orderHome);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+        }
+        return lst;
+    }
+
+    public StreamedContent onExportBill() {
+        DefaultStreamedContent defaultStreamed = null;
+        Workbook wbTemplate = null;
+        FileInputStream file = null;
+        try {
+            String templateName = "Template_Bill.xlsx";
+            String templateFileName = File.separator + Constant.DIR.TEMPLATES + File.separator + templateName;
+//            String resultPath = "/share/";
+            String resultPath = Constant.OUT_FOLDER;
+            if (!CommonUtil.makeDirectory(Util.getRealPath(resultPath))) {
+                MessageUtil.setErrorMessage("Export thất bại (Tạo folder)");
+                fileExported = null;
+                return null;
+            }
+
+            String tmpFileName = DateTimeUtils.format(new Date(), "yyyyMMddHHmm") + "_" + templateName;
+            ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
+                    .getExternalContext().getContext();
+            file = new FileInputStream(Util.getRealPath(templateFileName));
+
+            if (templateFileName.endsWith("xls")) {
+                wbTemplate = new HSSFWorkbook(file);
+
+            } else if (templateFileName.endsWith("xlsx")) {
+                wbTemplate = WorkbookFactory.create(file);
+
+            } else {
+                return defaultStreamed;
+            }
+            Sheet sheet = wbTemplate.getSheetAt(0);
+            Row referRow;
+            int rowHeader = 0;
+            int collHeader = 9;
+
+            int startRow = 2;
+            int colData = 0;
+            ExcelWriterUtils excelWriterUtils = new ExcelWriterUtils();
+
+            // lay style
+            Cell cellHeader = excelWriterUtils.getOrCreateRow(sheet, rowHeader).getCell(collHeader);
+            CellStyle cellStyleHeader = cellHeader.getCellStyle();
+
+            int withCol = sheet.getColumnWidth(collHeader);
+            //style data
+            CellStyle cellStyleCenter = excelWriterUtils.getOrCreateRow(sheet, startRow).getCell(0).getCellStyle();
+            CellStyle cellStyleRight = excelWriterUtils.getOrCreateRow(sheet, startRow).getCell(2).getCellStyle();
+
+            List<Bill> lstBill = getBillForExport();
+            //lay ds dich vu su dung
+            List<Service> lstService = new ArrayList<>();
+            for (Bill b : lstBill) {
+                if (b.getBillServiceList() != null) {
+                    for (BillService bs : b.getBillServiceList()) {
+                        if (bs.getService() != null && !lstService.contains(bs.getService())) {
+                            lstService.add(bs.getService());
+                        }
+                    }
+                }
+            }
+
+            Map<String, Service> mapService = new HashMap<>();
+            List<Long> lstServiceIdExt = new ArrayList<>();
+            List<String> lstServiceNameExt = new ArrayList<>();
+            for (Service s : lstService) {
+                mapService.put(s.getServiceCode(), s);
+                if (!Constant.SERVICE.ELECTRIC.equals(s.getServiceCode())
+                        && !Constant.SERVICE.WATER.equals(s.getServiceCode())
+                        && !Constant.SERVICE.PRICE_ROOM_ID.equals(s.getServiceId())) {
+                    lstServiceIdExt.add(s.getServiceId());
+                    lstServiceNameExt.add(s.getServiceName());
+                }
+            }
+
+            //xu ly tao head
+            referRow = excelWriterUtils.getOrCreateRow(sheet, rowHeader);
+            int colIndex = collHeader;
+            for (String headName : lstServiceNameExt) {
+                sheet.setColumnWidth(colIndex, withCol);
+                referRow.createCell(colIndex).setCellValue(headName);
+                referRow.getCell(colIndex).setCellStyle(cellStyleHeader);
+                colIndex++;
+                CellRangeAddress cra=new CellRangeAddress(0, 1, colIndex, colIndex);
+                sheet.addMergedRegion(cra);//merge cell bo qua cot dau vi da merger
+                
+                RegionUtil.setBorderLeft(cellStyleHeader.getBorderLeft(), cra, sheet, wbTemplate);
+                RegionUtil.setBorderRight(cellStyleHeader.getBorderLeft(), cra, sheet, wbTemplate);
+            }
+            //cot tong cong
+//            sheet.addMergedRegion(new CellRangeAddress(0, 1, colIndex, colIndex));//merge cell
+            sheet.setColumnWidth(colIndex, withCol);
+
+            referRow.createCell(colIndex).setCellValue("Tổng cộng");
+            referRow.getCell(colIndex).setCellStyle(cellStyleHeader);
+
+            // list data
+            for (Bill b : lstBill) {
+                int c = 0;
+                referRow = excelWriterUtils.getOrCreateRow(sheet, startRow);
+                excelWriterUtils.createCell(sheet, c++, startRow, c + "", cellStyleCenter);
+                excelWriterUtils.createCell(sheet, c++, startRow, b.getRoom() != null
+                        ? b.getRoom().getRoomName() : "", cellStyleCenter);
+                //xu ly theo dv cung cap dynamic
+                //fix set style cho ca hop dong thieu dich vu
+                for (int t = 0; t < (7 + lstServiceIdExt.size()); t++) {
+                    excelWriterUtils.createCell(sheet, t + c, startRow,
+                            "", cellStyleRight);
+                }
+                List<BillService> lstBs = b.getBillServiceList();
+                for (BillService bs : lstBs) {
+
+                    if (Constant.SERVICE.PRICE_ROOM_ID.equals(bs.getServiceId())) {
+                        excelWriterUtils.createCell(sheet, c + 0, startRow,
+                                DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
+                    } else if (bs.getService() != null
+                            && Constant.SERVICE.ELECTRIC.equals(bs.getService().getServiceCode())) {
+                        excelWriterUtils.createCell(sheet, c + 1, startRow,
+                                DataUtil.getStringNumber(bs.getIndexOld()), cellStyleRight);
+                        excelWriterUtils.createCell(sheet, c + 2, startRow,
+                                DataUtil.getStringNumber(bs.getIndexNew()), cellStyleRight);
+                        excelWriterUtils.createCell(sheet, c + 3, startRow,
+                                DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
+
+                    } else if (bs.getService() != null
+                            && Constant.SERVICE.WATER.equals(bs.getService().getServiceCode())) {
+                        excelWriterUtils.createCell(sheet, c + 4, startRow,
+                                DataUtil.getStringNumber(bs.getIndexOld()), cellStyleRight);
+                        excelWriterUtils.createCell(sheet, c + 5, startRow,
+                                DataUtil.getStringNumber(bs.getIndexNew()), cellStyleRight);
+                        excelWriterUtils.createCell(sheet, c + 6, startRow,
+                                DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
+
+                    } else if (lstServiceIdExt.contains(bs.getServiceId())) {
+                        excelWriterUtils.createCell(sheet, c + 7 + lstServiceIdExt.indexOf(bs.getServiceId()), startRow,
+                                DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
+                    }
+                }
+                //tong gia
+                c += 7 + lstServiceIdExt.size();
+                excelWriterUtils.createCell(sheet, c++, startRow, DataUtil.getStringNumber(b.getTotalPrice()), cellStyleRight);
+
+                startRow++;
+            }
+
+            File tmpTemplateFile = new File(Util.getRealPath(resultPath), tmpFileName);
+            OutputStream outputStream = new FileOutputStream(tmpTemplateFile);
+            wbTemplate.write(outputStream);
+            outputStream.flush();
+            outputStream.close();
+
+            InputStream stream = new FileInputStream((Util.getRealPath(resultPath + tmpFileName)));
+            defaultStreamed = new DefaultStreamedContent(stream, "xlsx", tmpFileName);
+            MessageUtil.setInfoMessage("Export thành công");
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+            MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.fail"),
+                    "Xuất hóa đơn"));
+        } finally {
+            if (wbTemplate != null) {
+                try {
+                    wbTemplate.close();
+                } catch (IOException ex) {
+                    logger.error(ex.getMessage(), ex);
+                }
+            }
+            if (file != null) {
+                try {
+                    file.close();
+                } catch (IOException ex) {
+                    logger.error(ex.getMessage(), ex);
+                }
+            }
+        }
+        return defaultStreamed;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="get/set">
     public LazyDataModel<Bill> getLazyDataModel() {
@@ -663,6 +893,14 @@ public class BillController {
 
     public void setFileExported(StreamedContent fileExported) {
         this.fileExported = fileExported;
+    }
+
+    public Long getHomeId() {
+        return homeId;
+    }
+
+    public void setHomeId(Long homeId) {
+        this.homeId = homeId;
     }
 
 //</editor-fold>

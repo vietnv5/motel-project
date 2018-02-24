@@ -34,6 +34,13 @@
                                              update=":billForm,billDlgId"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
+                            <p:commandButton icon="fa fa-download" styleClass="BlueButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();PF('billExportDlg').show()"
+                                             actionListener="#{billController.preExportBill()}"
+                                             update=":billExportForm" value="Tải hóa đơn"
+                                             title="Tải hóa đơn">
+                            </p:commandButton>
                             <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
                                              title="#{msg['view.dlg.export.obj']}"
                                              actionListener="#{commonUtilsController.attributeListener}">
@@ -145,5 +152,6 @@
         <ui:include src="bill-dialog.xhtml"></ui:include>
         <ui:include src="billService-dialog.xhtml"></ui:include>
         <ui:include src="showPdf-dialog.xhtml"></ui:include>
+        <ui:include src="exportBill-dialog.xhtml"></ui:include>
     </ui:define>
 </ui:composition>
