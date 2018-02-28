@@ -92,6 +92,8 @@ public class Customer implements Serializable {
     private List<Contract> contractList;
     @Column(name = "home_town")
     private String homeTown;
+    @Column(name = "job")
+    private String job;
     @Transient
     private String sexName;
     @Transient
@@ -240,6 +242,14 @@ public class Customer implements Serializable {
 
     public void setHomeTown(String homeTown) {
         this.homeTown = homeTown;
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
     @Override
