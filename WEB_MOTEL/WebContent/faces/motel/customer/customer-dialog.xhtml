@@ -168,6 +168,18 @@
                                 </div>
                                 <div class=" Container25 Responsive50 MarTop20">
                                     <span class="md-inputfield">
+                                        <p:inputText value="#{customerController.currCustomer.job}"
+                                                     id="jobId"  converter="trimConverter" maxlength="200"
+                                                     title="#{msg['customer.job']}"
+                                                     >
+                                        </p:inputText>
+
+                                        <label>#{msg['customer.job']} </label>
+                                    </span>
+                                    <p:message for="jobId"/>
+                                </div>
+                                <div class=" Container25 Responsive50 MarTop20">
+                                    <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.description}"
                                                      id="descriptionId"  converter="trimConverter" maxlength="200"
                                                      title="#{msg['customer.description']}"
