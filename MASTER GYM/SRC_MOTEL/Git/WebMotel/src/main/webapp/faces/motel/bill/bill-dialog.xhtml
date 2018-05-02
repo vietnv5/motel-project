@@ -1,0 +1,207 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+
+    <p:dialog modal="true" widgetVar="billDlg" width="80%" id="billDlgId"  height="500px">
+        <f:facet name="header">
+            <h:outputText value="#{msg['button.add']}" rendered="#{!billController.isEdit }"/>
+            <h:outputText value="#{msg['button.edit']}" rendered="#{billController.isEdit}"/>
+        </f:facet>
+
+        <h:form id="billForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                    <div class="Container100 Responsive50">
+                        <div class="Container25 Responsive50">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{billController.currBill.billCode}"
+                                             id="billCode"  converter="trimConverter"
+                                             title="#{msg['bill.billCode']}"
+                                             required="true" maxlength="150"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['bill.billCode'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['bill.billCode']} *</label>
+                            </span>
+                            <p:message for="billCode"></p:message>
+                        </div>
+
+                        <div class="Container25 Responsive50 ">
+                            <span class="title-top">
+                                <p:calendar value="#{billController.currBill.paymentDate}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="paymentDate"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            title="#{msg['bill.paymentDate']}"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            required="true" requiredMessage="#{msg['common.required'].replace('{0}',msg['bill.paymentDate'])}"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['bill.paymentDate']} </label>
+                            </span>
+                            <p:message for="paymentDate"></p:message>
+                        </div>        
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{billController.currBill.homeId}" required="true"
+                                                 id="homeId" style="width: 40%" disabled="#{billController.isEdit}"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}" >
+                                    <f:selectItems value="#{billController.lstHome}" var="p"
+                                                   itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
+                                    <p:ajax event="change" listener="#{billController.onChangeHome()}"
+                                            process="@this" 
+                                            update="roomId"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['home.homeName']} *</label>
+                            </span>
+                            <p:message for="homeId"/>
+                        </div>
+                        <div class="Container25 Responsive50">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{billController.currBill.roomId}" required="true"
+                                                 id="roomId" style="width: 40%" disabled="#{billController.isEdit}"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['electricWater.roomName'])}" >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                                    <f:selectItems value="#{billController.lstRoom}" var="p"
+                                                   itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                                    <p:ajax event="change" listener="#{billController.onSelectRoom()}"
+                                            process="@form" 
+                                            update="tableBilServicelId,memberPaymentPanel"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['electricWater.roomName']} *</label>
+                            </span>
+                            <p:message for="roomId"/>
+                        </div>
+                        
+                    </div>
+
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class=" Container50 Responsive50 ">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{billController.currBill.description}"
+                                             id="descriptionId"  converter="trimConverter" maxlength="200"
+                                             title="#{msg['customer.description']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['customer.description']} </label>
+                            </span>
+                            <p:message for="descriptionId"/>
+                        </div>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <p:dataTable value="#{billController.lstBillService}"
+                                     lazy="false" var="billServiceItem" rowKey="#{billServiceItem.rowKey}"
+                                     rowIndexVar="cusIdx" id="tableBilServicelId"
+                                     rows="10" paginator="true" paginatorPosition="bottom"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                                     rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableBillServiceWidget"
+                                     emptyMessage="#{msg['datatable.empty']}"
+                                     styleClass="Container100 NoPadding MarTop10"
+
+                                     >
+
+                            <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                            <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                            <!--STT-->
+                            <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                                      >
+                                <h:outputText value="#{cusIdx +1 }"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                                      visible="#{billController.columnVisibale[1]}" styleClass="TexAlCenter">
+                                <!--<p:tooltip position="top" ></p:tooltip>-->
+
+                                <p:commandButton icon="fa fa-edit" actionListener="#{billController.preEditBillService(billServiceItem)}"
+
+                                                 onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('billServiceDlg').show()"
+                                                 update=":billServiceForm,billServiceDlgId" id="updateBillServiceId"
+                                                 title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                </p:commandButton>
+                                <p:spacer width="2px;"/>
+                            </p:column>
+
+                            <p:column headerText="#{msg['contract.service']}" width="50" 
+                                      ><h:outputText value="#{billServiceItem.service.serviceName}"/></p:column>
+
+                            <p:column headerText="#{msg['billService.unit']}" width="30" 
+                                      ><h:outputText value="#{billServiceItem.service.unitBO.name}"/></p:column>
+
+                            <p:column headerText="#{msg['billService.indexOld']}" width="40" 
+                                      ><h:outputText value="#{billServiceItem.indexOld}"/></p:column>
+                            <p:column headerText="#{msg['billService.indexNew']}" width="40" 
+                                      ><h:outputText value="#{billServiceItem.indexNew}"/></p:column>
+                            <p:column headerText="#{msg['billService.amount']}" width="50" 
+                                      ><h:outputText value="#{billServiceItem.amount}"/></p:column>
+
+                            <p:column headerText="#{msg['billService.price']}" width="40"
+                                      style="text-align: right;"  >
+                                <h:outputText value="#{billServiceItem.price}">
+                                    <f:convertNumber pattern="#,###"/>
+                                </h:outputText>
+                                <h:outputText value=" VNĐ"/>
+                            </p:column>
+                            <p:column headerText="#{msg['billService.totalPrice']}" width="40"
+                                      style="text-align: right;"  >
+                                <h:outputText value="#{billServiceItem.totalPrice}">
+                                    <f:convertNumber pattern="#,###"/>
+                                </h:outputText>
+                                <h:outputText value=" VNĐ"/>
+                            </p:column>
+
+                        </p:dataTable>
+                        <p:outputPanel class="Container100 TexAlRight" id="memberPaymentPanel">
+                            <h:outputText  value="#{msg['bill.totalPrice']}: "/>
+                            <b>   <h:outputText id="totalPriceId" value="#{billController.currBill.totalPrice}">
+                                    <f:convertNumber pattern="#,###"/>
+                                </h:outputText>
+                                <h:outputText value=" VNĐ "/>
+                            </b>
+
+                        </p:outputPanel>
+                    </div>
+
+
+                </p:outputPanel>
+
+                <p:outputPanel class="Container100 TexAlCenter" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                                     update="@widgetVar(growl),:billTableForm,:billForm"
+                                     actionListener="#{billController.onSaveOrUpdate()}" process=":billForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('billDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+    <style>
+        .tableView table,
+        .tableView a.ui-datepicker-prev,
+        .tableView a.ui-datepicker-next {
+            display: none;
+        }
+    </style>
+</ui:composition>

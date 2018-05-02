@@ -1,0 +1,142 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <h:form id="roomTableForm">
+            <p:growl id="growlForm" showDetail="true" showSummary="false" widgetVar="growlForm"/>
+            <!--<div class="Card">-->
+            <p:dataTable value="#{roomController.lazyDataModel}"
+                         lazy="true" var="room" rowKey="#{room.roomId}"
+                         rowIndexVar="cusIdx" id="tableRoomId"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableRoomWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 TexAlLeft">
+                            <p:tooltip position="left"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();PF('roomDlg').show()"
+                                             actionListener="#{roomController.preAdd}"
+                                             update=":roomForm,roomDlgId"
+                                             title="#{msg['button.add']}">
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                             actionListener="#{commonUtilsController.attributeListener}">
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.room']}" />
+                                <p:dataExporter type="xls" target="tableRoomId" fileName="room" pageOnly="false"
+                                                postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.room']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableRoomId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{roomController.onToggler}" />
+                            </p:columnToggler>
+                        </div>
+
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          visible="#{roomController.columnVisibale[0]}" >
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                          visible="#{roomController.columnVisibale[1]}" styleClass="TexAlCenter">
+                    <p:tooltip position="top" ></p:tooltip>
+
+                    <p:commandButton icon="fa fa-edit" actionListener="#{roomController.preEdit(room)}"
+
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('roomDlg').show()"
+                                     update=":roomForm,roomDlgId" id="updateRoomId"
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    
+                    <p:commandButton icon="fa fa-info" actionListener="#{roomController.preShowLstCustomerRoom(room)}"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('customerRoomDlg').show()"
+                                     update=":customerRoomForm" id="updateCustomerRoomId"
+                                     title="#{msg['customerRoom.header']}" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{roomController.onDelete(room)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableRoomId "  disabled="#{room.status==2}"
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+
+                <p:column headerText="#{msg['home.homeName']}" width="40"
+                          visible="#{roomController.columnVisibale[2]}"
+                          filterBy="#{room.home.homeName}" >
+                    <h:outputText value="#{room.home.homeName}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['room.roomName']}" width="40"
+                          visible="#{roomController.columnVisibale[3]}"
+                          filterBy="#{room.roomName}" sortBy="#{room.roomName}" >
+                    <h:outputText value="#{room.roomName}"/>
+                </p:column>
+                <p:column headerText="#{msg['room.price']}" width="40"
+                          visible="#{roomController.columnVisibale[4]}" style="text-align: right;" 
+                          filterBy="#{room.price-LIKE}" sortBy="#{room.price}" >
+                    <h:outputText value="#{room.price}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+                <p:column headerText="#{msg['room.status']}" width="40"
+                          visible="#{roomController.columnVisibale[5]}" 
+                          filterBy="#{room.status}" sortBy="#{room.status}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableRoomWidget').filter()">
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                            <f:selectItem itemValue="1"
+                                          itemLabel="#{msg['room.status.FREE']}"/>
+                            <f:selectItem itemValue="2"
+                                          itemLabel="#{msg['room.status.USE']}"/>
+                            <f:selectItem itemValue="3"
+                                          itemLabel="#{msg['room.status.STOP']}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{room.statusName}"/>
+                </p:column>
+
+
+            </p:dataTable>
+        </h:form>
+        <!--</div>-->
+
+
+        <ui:include src="room-dialog.xhtml"></ui:include>
+        <ui:include src="customerRoom-dialog.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>

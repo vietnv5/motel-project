@@ -1,0 +1,180 @@
+/*New input*/
+
+body .md-inputfield {
+	display: block;
+	position: relative;
+}
+
+body .md-inputfield input:focus ~ label,
+body .md-inputfield input.ui-state-filled ~ label {
+	top: -20px;
+	font-size: 14px;
+	color: #027FAC;
+}
+body .md-inputfield textarea:focus ~ label,
+body .md-inputfield textarea.ui-state-filled ~ label,
+body .md-inputfield span.ui-inputnumber ~ label {
+	top: -20px;
+	font-size: 14px;
+	color: #027FAC;
+}
+
+body .md-inputfield input.ui-inputfield.ui-inputmask ~ label{
+    /*top: -20px;*/
+    /*font-size: 14px;*/
+    /*color: #027FAC;*/
+}
+
+
+body .md-inputfield label {
+	color: #999;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 9px;
+	top: 7px;
+	transition: 0.3s ease all;
+	-moz-transition: 0.3s ease all;
+	-webkit-transition: 0.3s ease all;
+}
+
+.title-top {
+	display: block;
+	position: relative;
+}
+.title-top .title-elem{
+	color: #999;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	left: 9px;
+	top: 7px;
+	transition: 0.3s ease all;
+	-moz-transition: 0.3s ease all;
+	-webkit-transition: 0.3s ease all;
+	
+	top: -20px;
+	font-size: 14px;
+	color: #027FAC;
+}
+
+
+
+.ForestButton .ui-button-text {
+	background-color: #228B22;
+	border-color: #127C12;
+}
+.ForestButton.ui-state-hover .ui-button-text {
+	background-color: #127C12;
+}
+.ForestButton.ui-state-active .ui-button-text {
+	background-color: #127C12;
+}
+
+.AmazoniteButton .ui-button-text {
+	background-color: #3A9893;
+	border-color: #00C4B0;
+}
+.AmazoniteButton.ui-state-hover .ui-button-text {
+	background-color: #2f7976;
+}
+.AmazoniteButton.ui-state-active .ui-button-text {
+	background-color: #3A9893;
+}
+
+.TealButton .ui-button-text {
+	background-color: #009688;
+	border: none;
+}
+.TealButton.ui-state-hover .ui-button-text {
+	background-color: #00695c;
+}
+.TealButton.ui-state-focus .ui-button-text {
+	background-color: #00c9b6;
+}
+.TealButton.ui-state-active .ui-button-text {
+	background-color: #009688;
+}
+.TransparentButton .ui-button-text {
+	background-color: white;
+	border: none;
+	color: white;
+}
+
+
+.ui-fieldset{
+	padding: 8px 14px !important;
+}
+.ui-fieldset-legend {
+	background-color: white !important;
+	color: black;
+	background-image: none !important;
+	padding: 8px 14px !important;
+	padding-left: 2px !important;
+	padding-right: 8px !important;
+	border: none!important;
+	box-shadow: none!important;
+}
+.ui-fieldset-legend .ui-icon-minusthick,
+.ui-fieldset-legend .ui-icon-plusthick{
+	background-image: none !important;
+	color: white !important;
+	background: #1976d2;
+	padding: 5px;
+	border-radius: 50%;
+	margin-top: -6px !important;
+	margin-right: 8px;
+	font-family: 'Material Icons';
+	font-weight: normal;
+	font-style: normal;
+	display: inline-block;
+	width: 1em !important;
+	height: 1em !important;
+	line-height: 1;
+	text-transform: none;
+	letter-spacing: normal;
+	word-wrap: normal;
+	white-space: nowrap;
+	direction: ltr;
+	text-indent: 0;
+	-webkit-font-smoothing: antialiased;
+	text-rendering: optimizeLegibility;
+	-moz-osx-font-smoothing: grayscale;
+	font-feature-settings: 'liga';
+}
+.ui-icon-minusthick:before{
+	content: "\e145";
+	text-indent: 0 !important;
+}
+.ui-icon-plusthick:before{
+	content: "\e15b";
+	text-indent: 0 !important;
+}
+.ui-tooltip{
+	background: transparent !important;
+	border: none !important;
+}
+
+span.cd-text-required:after{
+	content: '*';
+	color: red;
+}
+
+.clearfix{
+    clear: both;
+    content: ".";
+    display: block;
+    width: 0px;
+    height: 0px;
+}
+
+.preformatted {
+    white-space: pre-wrap;
+}
+
+/*customer form theo kh*/
+.ui-datatable table tbody tr td {
+    color: #000000;
+    font-size: 14px;
+
+}

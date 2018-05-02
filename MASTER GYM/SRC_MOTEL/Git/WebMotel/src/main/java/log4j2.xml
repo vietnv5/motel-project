@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration packages="com.slook.plugins" monitorInterval="60">
+    <properties>
+        <property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5.5p | [%t] (%F:%L) - %m%n</property>
+        <property name="com.slook">framework</property>
+    </properties>
+    <appenders>
+        <!-- file appender -->
+        <RollingFile name="com.slook" fileName="../logs/${com.slook}.log"
+                     append="true" filePattern="../logs/$${date:yyyy-MM-dd}/${com.slook}-%d{MM-dd-yyyy}-%i.log.gz">
+            <PatternLayout pattern="${pattern}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <!-- log action appender -->
+        <RollingFile name="com.slook.filter.ActionLogFilter"
+                fileName="../logs/logAction/logAction.log"
+                filePattern="../logs/logAction/${com.slook}-%d{MM-dd-yyyy}-%i.log"
+                append="true"
+                >
+            <PatternLayout pattern="%m%n"/>
+            <Policies>
+            <TimeBasedTriggeringPolicy/>
+            <SizeBasedTriggeringPolicy size="200 MB"/>
+            </Policies>
+        </RollingFile>
+
+        <!-- console appender -->
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="${pattern}"/>
+        </Console>
+    </appenders>
+
+    <loggers>
+        <!-- the root category -->
+        <root level="INFO" additivity="true">
+            <!--<AppenderRef ref="STDOUT" />-->
+            <!--<AppenderRef ref="com.slook" />-->
+        </root>
+        <logger name="com.slook" level="TRACE">
+            <AppenderRef ref="STDOUT"/>
+            <AppenderRef ref="com.slook"/>
+        </logger>
+        <logger name="org.hibernate.SQL" level="INFO">
+            <AppenderRef ref="STDOUT"/>
+        </logger>
+        <logger name="com.slook.filter.ActionLogFilter" level="INFO">
+            <!--<AppenderRef ref="STDOUT"/>-->
+            <AppenderRef ref="com.slook.filter.ActionLogFilter"/>
+        </logger>
+
+        <!-- Dinh nghia them logger o day -->
+    </loggers>
+</configuration>
