@@ -1,0 +1,148 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <h:form id="catRoleTableForm">
+            <p:growl id="growlForm" showDetail="true" showSummary="false" widgetVar="growlForm"/>
+            <!--<div class="Card">-->
+            <p:dataTable value="#{roleController.lazyDataModel}"
+                         lazy="true" var="catRole" rowKey="#{catRole.roleId}"
+                         rowIndexVar="cusIdx" id="tableCatRoleId"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableCatRoleWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 TexAlLeft">
+
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.catRole']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+                            <p:tooltip position="left"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();PF('catRoleDlg').show()"
+                                             actionListener="#{roleController.preAdd}"
+                                             update=":catRoleForm,catRoleDlgId"
+                                             title="#{msg['button.add']}">
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                             actionListener="#{commonUtilsController.attributeListener}">
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.catRole']}" />
+                                <p:dataExporter type="xls" target="tableCatRoleId" fileName="catRole" pageOnly="false"
+                                                postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                            </p:commandButton>
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableCatRoleId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{roleController.onToggler}" />
+                            </p:columnToggler>
+                        </div>
+
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          visible="#{roleController.columnVisibale[0]}" >
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['catRole.roleCode']}" width="40"
+                          visible="#{roleController.columnVisibale[1]}"
+                          filterBy="#{catRole.roleCode}" sortBy="#{catRole.roleCode}" >
+                    <h:outputText value="#{catRole.roleCode}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['catRole.roleName']}" width="40"
+                          visible="#{roleController.columnVisibale[2]}"
+                          filterBy="#{catRole.roleName}" sortBy="#{catRole.roleName}" >
+                    <h:outputText value="#{catRole.roleName}"/>
+                </p:column>
+                <p:column headerText="#{msg['catRole.status']}" width="40"
+                          visible="#{roleController.columnVisibale[3]}" 
+                          filterBy="#{catRole.status}" sortBy="#{catRole.status}">
+                    <f:facet name="filter">
+                        <p:selectOneMenu onchange="PF('tableCatRoleWidget').filter()">
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                            <f:selectItem itemValue="1"
+                                          itemLabel="#{msg['common.ACTIVE']}"/>
+                            <f:selectItem itemValue="2"
+                                          itemLabel="#{msg['common.INACTIVE']}"/>
+                        </p:selectOneMenu>
+                    </f:facet>
+                    <h:outputText value="#{catRole.statusName}"/>
+                </p:column>
+
+                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                          visible="#{roleController.columnVisibale[4]}" styleClass="TexAlCenter">
+                    <p:tooltip position="top" ></p:tooltip>
+
+                    <p:commandButton icon="fa fa-list-ul" actionListener="#{roleController.preEditHasFunctionPath(catRole)}"
+                                     rendered="false"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('roleHasFunctionPathDlg').show()"
+                                     update=":roleHasFunctionPathForm" id="updateRoleHasFunctionPathId"
+                                     title="Gán quyền chức năng" styleClass="White  Fs14 MarTop5 YellowButton" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-list-ul" actionListener="#{roleController.preEditTreeHasFunctionPath(catRole)}"
+                                  
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('grantRoleDlg').show();"
+                                     update=":grantRoleForm" id="grantRoleId"
+                                     title="Gán quyền chức năng" styleClass="White  Fs14 MarTop5 YellowButton" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-list-ul" actionListener="#{roleController.preEditTreeHasAction(catRole)}"
+                                  
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('grantRoleActionDlg').show();"
+                                     update=":grantRoleActionForm" id="grantRoleActionId"
+                                     title="Gán quyền hành động" styleClass="White  Fs14 MarTop5 GreenButton" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-edit" actionListener="#{roleController.preEdit(catRole)}"
+                                  
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('catRoleDlg').show()"
+                                     update=":catRoleForm,catRoleDlgId" id="updateCatRoleId"
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{roleController.onDelete(catRole)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableCatRoleId "  disabled="#{catRole.status==1}"
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+
+
+            </p:dataTable>
+        </h:form>
+        <!--</div>-->
+
+
+        <ui:include src="catRole-dialog.xhtml"></ui:include>
+        <ui:include src="roleHasFunctionPath-dialog.xhtml"></ui:include>
+        <ui:include src="grantRole-dialog.xhtml"></ui:include>
+        <ui:include src="grantRoleAction-dialog.xhtml"></ui:include>
+
+    </ui:define>
+</ui:composition>

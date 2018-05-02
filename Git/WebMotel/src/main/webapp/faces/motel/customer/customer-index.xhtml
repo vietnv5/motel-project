@@ -1,0 +1,159 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <h:form id="customerTableForm">
+            <p:growl id="growlForm" showDetail="true" showSummary="false" widgetVar="growlForm"/>
+            <!--<div class="Card">-->
+            <p:dataTable value="#{customerController.lazyDataModel}"
+                         lazy="true" var="customer" rowKey="#{customer.customerId}"
+                         rowIndexVar="cusIdx" id="tableCustomerId"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableCustomerWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 TexAlLeft">
+                            <p:tooltip position="left"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();PF('customerDlg').show()"
+                                             actionListener="#{customerController.preAdd}"
+                                             update=":customerForm,customerDlgId"
+                                             title="#{msg['button.add']}">
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                             actionListener="#{commonUtilsController.attributeListener}">
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.customer']}" />
+                                <p:dataExporter type="xls" target="tableCustomerId" fileName="customer" pageOnly="false"
+                                                postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.customer']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableCustomerId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{customerController.onToggler}" />
+                            </p:columnToggler>
+                        </div>
+
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          visible="#{customerController.columnVisibale[0]}" >
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                          visible="#{customerController.columnVisibale[1]}" styleClass="TexAlCenter">
+                    <p:tooltip position="top" ></p:tooltip>
+
+                    <p:commandButton icon="fa fa-edit" actionListener="#{customerController.preEdit(customer)}"
+
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('customerDlg').show()"
+                                     update=":customerForm,customerDlgId" id="updateRoomId"
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{customerController.onDelete(customer)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableCustomerId "  
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+
+                <p:column headerText="#{msg['customer.customerName']}" width="40"
+                          visible="#{customerController.columnVisibale[2]}"
+                          filterBy="#{customer.customerName}" >
+                    <h:outputText value="#{customer.customerName}"/>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="50" 
+                          visible="#{customerController.columnVisibale[3]}"
+                          filterBy="#{customer.phone}" filterStyle="width:70%"
+                          ><h:outputText value="#{customer.phone}"/></p:column>
+                <p:column headerText="#{msg['datatable.header.email']}" width="50" 
+                          visible="#{customerController.columnVisibale[4]}"
+                          filterBy="#{customer.email}" filterStyle="width:70%"
+
+                          ><h:outputText value="#{customer.email}"/></p:column>
+                <p:column headerText="#{msg['datatable.header.homeTown']}" width="50" 
+                          visible="#{customerController.columnVisibale[5]}"
+                          filterBy="#{customer.homeTown}" filterStyle="width:70%"
+                          ><h:outputText value="#{customer.homeTown}"/></p:column>
+                <p:column headerText="#{msg['datatable.header.address']}" width="50" 
+                          visible="#{customerController.columnVisibale[6]}"
+                          filterBy="#{customer.address}" filterStyle="width:70%"
+                          ><h:outputText value="#{customer.address}"/></p:column>
+                <p:column headerText="#{msg['customer.birthDate']}" width="50" sortBy="#{customer.birthDate}" 
+                          visible="#{customerController.columnVisibale[7]}"
+                          filterBy="#{customer.birthDate-BW}" >
+                    <f:facet name="filter" >
+                        <p:calendar pattern="dd/MM/yyyy" >
+                            <p:ajax event="dateSelect" oncomplete="PF('tableCustomerWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{customer.birthDate}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['datatable.header.sex']}" width="50" 
+                          visible="#{customerController.columnVisibale[8]}"
+                          ><h:outputText value="#{customer.sexName}"/></p:column>
+
+                <p:column headerText="#{msg['customer.cmnd']}" width="40"
+                          visible="#{customerController.columnVisibale[9]}"
+                          filterBy="#{customer.cmnd}" sortBy="#{customer.cmnd}" >
+                    <h:outputText value="#{customer.cmnd}"/>
+                </p:column>
+                <p:column headerText="#{msg['customer.ngayCap']}" width="50" sortBy="#{customer.ngayCap}" 
+                          visible="#{customerController.columnVisibale[10]}"
+                          filterBy="#{customer.ngayCap-BW}" >
+                    <f:facet name="filter" >
+                        <p:calendar pattern="dd/MM/yyyy" >
+                            <p:ajax event="dateSelect" oncomplete="PF('tableCustomerWidget').filter()"/>
+                        </p:calendar>
+                    </f:facet>
+                    <h:outputText value="#{customer.ngayCap}">
+                        <f:convertDateTime pattern="dd/MM/yyyy"/>
+                    </h:outputText>
+                </p:column>
+                <p:column headerText="#{msg['customer.noiCap']}" width="40"
+                          visible="#{customerController.columnVisibale[11]}"
+                          filterBy="#{customer.noiCap}" sortBy="#{customer.noiCap}" >
+                    <h:outputText value="#{customer.noiCap}"/>
+                </p:column>
+
+
+
+            </p:dataTable>
+        </h:form>
+        <!--</div>-->
+
+
+        <ui:include src="customer-dialog.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>
