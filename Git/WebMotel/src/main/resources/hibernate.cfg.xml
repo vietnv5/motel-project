@@ -5,15 +5,16 @@
 <hibernate-configuration>
 
     <session-factory>
-        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+<!--        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
         <property name="hibernate.c3p0.idle_test_period">1800</property>
         <property name="hibernate.c3p0.max_size">20</property>
         <property name="hibernate.c3p0.max_statements">0</property>
         <property name="hibernate.c3p0.min_size">5</property>
-        <property name="hibernate.c3p0.timeout">3000</property>
+        <property name="hibernate.c3p0.timeout">3000</property>-->
+        
         <!--<property name="hibernate.cache.provider_class">org.hibernate.cache.NoCacheProvider</property>-->
-        <property name="hibernate.connection.CharSet">utf8</property>
-        <property name="hibernate.connection.characterEncoding">utf8</property>
+<!--        <property name="hibernate.connection.CharSet">utf8</property>
+        <property name="hibernate.connection.characterEncoding">utf8</property>-->
         <!--<property name="hibernate.connection.driver_class">oracle.jdbc.OracleDriver</property>-->
                <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
 
@@ -26,9 +27,9 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">123456a@</property>
         
-        <property name="hibernate.current_session_context_class">thread</property>
+<!--        <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
-        <property name="hibernate.enable_lazy_load_no_trans">true</property>
+        <property name="hibernate.enable_lazy_load_no_trans">true</property>-->
         <!--<property name="hibernate.dialect">org.hibernate.dialect.Oracle10gDialect</property>-->
                 <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 
