@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
 import static javax.persistence.GenerationType.SEQUENCE;
 
@@ -47,9 +48,10 @@ public class Document {
 	public void setDescription(String description) { 
 		this.description = description; 
 	} 
-	@SequenceGenerator(name = "generator", sequenceName = "DOCUMENT_SEQ", allocationSize = 1)
+//	@SequenceGenerator(name = "generator", sequenceName = "DOCUMENT_SEQ", allocationSize = 1)
 	@Id
-	@GeneratedValue(strategy = SEQUENCE, generator = "generator")
+//	@GeneratedValue(strategy = SEQUENCE, generator = "generator")
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "DOCUMENT_ID", unique = true, nullable = false, precision = 22, scale = 0) 
 	public Long getDocumentId() { 
 		return documentId; 
