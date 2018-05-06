@@ -510,7 +510,8 @@ public class RoleController {
                 for (RoleHasFunctionPath bo : currRole.getRoleHasFunctionPaths()) {
                     if (lstSelect.contains(bo)) {
                         lstCspResult.add(bo);
-                    } else {
+                    } else if ( bo.getFunctionPathId() != null && bo.getFunctionPath()!=null && ( Constant.FUNCTION_PATH.TYPE_FUNCTION.equals(bo.getFunctionPath().getType())
+                            || Constant.FUNCTION_PATH.TYPE_GROUP.equals(bo.getFunctionPath().getType()) )) {
                         lstCspDel.add(bo);// bo chuc nang
                     }
                 }
