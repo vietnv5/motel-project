@@ -15,37 +15,7 @@
                         <p:outputPanel class="Container100 TexAlLeft">
 
                             <div class="Container100">
-                                <div class="Container25 ">
-                                    <span class="title-top">
-                                        <p:selectOneMenu id="empId" value="#{catUserController.currCatUser.employee}"
-                                                         filter="true" converter="employeeConverter"
-                                                         filterMatchMode="contains" var="t"
-                                                         style="width: 71%"
-                                        >
-                                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
-                                                          noSelectionOption="true"/>
-                                            <f:selectItems value="#{catUserController.lstEmployees}" var="m"
-                                                           itemLabel="#{m.employeeCode} - #{m.employeeName}" itemValue="#{m}"/>
-                                            <p:column>
-                                            <h:outputText value="#{t.employeeCode}"/>
-                                            </p:column>
-
-                                            <p:column>
-                                                <h:outputText value="#{t.employeeName}"/>
-                                            </p:column>
-                                            <p:column>
-                                                <h:outputText value="#{t.telephone}"/>
-                                            </p:column>
-<!--                                            <p:column>
-                                                <h:outputText value="# {t.status.statusName}"/>
-                                            </p:column>-->
-
-                                        </p:selectOneMenu>
-                                      <label class="title-elem"
-                                             style="color: #027FAC">#{msg['catUser.employee']} </label>
-                                    </span>
-                                    <p:message for="empId"/>
-                                </div>
+                                
                                 <div class="Container25">
                                         <span class="md-inputfield">
                                             <p:inputText value="#{catUserController.currCatUser.userName}"

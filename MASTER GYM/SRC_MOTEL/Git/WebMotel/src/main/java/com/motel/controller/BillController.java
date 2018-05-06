@@ -531,6 +531,7 @@ public class BillController {
         } catch (Exception e) {
             MessageUtil.setErrorMessage("Export thất bại");
             logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 //xuat danh sach hoa don
