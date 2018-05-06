@@ -1,5 +1,6 @@
 package com.slook.model;
 
+import java.io.Serializable;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.LazyCollection;
@@ -13,7 +14,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
  */
 @Entity
 @Table(name = "CAT_USER")
-public class CatUser {
+public class CatUser implements Serializable  {
 
     private Long userId;
     private String userName;
