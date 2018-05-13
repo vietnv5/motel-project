@@ -1,0 +1,1 @@
+ALTER TABLE `cat_user` CHANGE `GROUP_ID` `GROUP_USER_ID` INT(11) NULL DEFAULT '1' COMMENT 'Nhóm người dùng';
