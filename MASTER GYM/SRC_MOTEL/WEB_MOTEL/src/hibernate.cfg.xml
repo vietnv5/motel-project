@@ -73,8 +73,8 @@
         <mapping class="com.slook.model.V_CatItemBO"/>
         <mapping class="com.slook.model.CatDictionaryBO"/>
         <mapping class="com.slook.model.LogAction"/>
-<!--        <mapping class="com.slook.model.CfgWsTimekeeper"/>
         <mapping class="com.slook.model.Document"/>
+<!--        <mapping class="com.slook.model.CfgWsTimekeeper"/>
         
         <mapping class="com.slook.model.CatPromotion"/>
         <mapping class="com.slook.model.MemberUsedService"/>

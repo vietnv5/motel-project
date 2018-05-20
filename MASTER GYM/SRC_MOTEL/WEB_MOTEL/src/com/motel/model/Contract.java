@@ -5,7 +5,6 @@
  */
 package com.motel.model;
 
-import com.slook.model.CatPack;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;

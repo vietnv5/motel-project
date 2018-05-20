@@ -1,7 +1,5 @@
 package com.slook.controller;
 
-import com.slook.exception.AppException;
-import com.slook.exception.SysException;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.Document;
 import com.slook.persistence.GenericDaoImplNewV2;
@@ -9,7 +7,6 @@ import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
 import com.slook.util.StringUtil;
 import com.slook.util.Util;
-import com.viettel.vsa.util.ResourceBundleUtils;
 import org.apache.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.FileUploadEvent;
@@ -20,7 +17,6 @@ import org.primefaces.model.UploadedFile;
 
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -31,7 +27,6 @@ import java.text.MessageFormat;
 import java.util.*;
 
 import static org.apache.log4j.Logger.getLogger;
-import static org.apache.logging.log4j.MarkerManager.clear;
 import static org.omnifaces.util.Faces.getResponse;
 
 /**

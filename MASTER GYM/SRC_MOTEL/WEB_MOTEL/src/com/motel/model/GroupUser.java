@@ -43,13 +43,13 @@ public class GroupUser implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Basic(optional = false)
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
     @Column(name = "CODE")
     private String code;
     @Column(name = "NAME")
     private String name;
     @Column(name = "STATUS")
-    private Integer status;
+    private Long status;
     @Column(name = "START_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date startTime;
@@ -59,19 +59,24 @@ public class GroupUser implements Serializable {
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-
+    @Column(name = "JOIN_DATE")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date joinDate;
+    @Column(name = "DESCRIPTION")
+    private String description;
+    
     public GroupUser() {
     }
 
-    public GroupUser(Integer id) {
+    public GroupUser(Long id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
@@ -91,11 +96,11 @@ public class GroupUser implements Serializable {
         this.name = name;
     }
 
-    public Integer getStatus() {
+    public Long getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(Long status) {
         this.status = status;
     }
 
@@ -146,6 +151,22 @@ public class GroupUser implements Serializable {
     @Override
     public String toString() {
         return "model.GroupUser[ id=" + id + " ]";
+    }
+
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
     
 }

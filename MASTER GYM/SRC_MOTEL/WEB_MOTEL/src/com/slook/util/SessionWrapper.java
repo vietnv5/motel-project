@@ -7,8 +7,8 @@ package com.slook.util;
 
 import com.slook.model.CatUser;
 import com.slook.model.FunctionPath;
-import com.viettel.vsa.token.ObjectToken;
-import com.viettel.vsa.token.UserToken;
+//import com.viettel.vsa.token.ObjectToken;
+//import com.viettel.vsa.token.UserToken;
 
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -91,6 +91,7 @@ public class SessionWrapper implements Serializable {
         return result;
     }
 
+/*
     protected static Boolean getUrlByKey(String key) {
         HttpSession session = getCurrentSession();
         String url;
@@ -108,4 +109,5 @@ public class SessionWrapper implements Serializable {
 
         return false;
     }
+    */
 }// End class

@@ -5,6 +5,8 @@
  */
 package com.motel.model;
 
+import com.slook.util.Constant;
+import com.slook.util.MessageUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -18,8 +20,11 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
@@ -61,6 +66,9 @@ public class Home implements Serializable {
     private List<Bill> billList;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "homeId")
     private List<Room> roomList;
+
+        @Transient
+    private String statusName;
 
     public Home() {
     }
@@ -165,7 +173,19 @@ public class Home implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Home[ homeId=" + homeId + " ]";
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
-    
+        public String getStatusName() {
+        if (Constant.HOME_STATUS.ACTIVE.equals(status)) {
+            statusName = MessageUtil.getResourceBundleMessage("common.ACTIVE");
+        } else if (Constant.HOME_STATUS.DISABLE.equals(status)) {
+            statusName = MessageUtil.getResourceBundleMessage("common.INACTIVE");
+        }
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
 }

@@ -75,7 +75,7 @@ public class RoomController {
             CatUser catUser = null;
             if (getRequest().getSession().getAttribute("user") != null) {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
-                groupUserId = catUser.getGroupId();
+                groupUserId = catUser.getGroupUserId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("home.homeName", Constant.ORDER.ASC);
@@ -85,6 +85,8 @@ public class RoomController {
             if (groupUserId != null && groupUserId > 0) {//phan quyen
                 filter.put("home.groupUserId", groupUserId);
             }
+            filter.put("home.status-NEQ", Constant.STATUS.DELETE);
+
             lazyDataModel = new LazyDataModelBase<Room, Long>(RoomServiceImpl.getInstance(), filter, order);
 
             Map<String, Object> filtersHome = new HashMap<>();
@@ -139,6 +141,20 @@ public class RoomController {
 
     public void onSaveOrUpdate() {
         try {
+            Map<String, Object> filter = new HashMap<>();
+            filter.put("status-NEQ", Constant.STATUS.DELETE);
+            filter.put("roomName-EXAC_IGNORE_CASE", currRoom.getRoomName());
+            filter.put("homeId", currRoom.getHomeId());
+            if (currRoom.getRoomId() != null) {
+                filter.put("roomId-NEQ", currRoom.getRoomId());
+            }
+
+            List lst = RoomServiceImpl.getInstance().findList(filter);
+            if (lst != null && !lst.isEmpty()) {
+                MessageUtil.setInfoMessage("Tên phòng trọ đã tồn tại!");
+                return;
+            }
+            
             RoomServiceImpl.getInstance().saveOrUpdate(currRoom);
 
             //ghi log
@@ -205,7 +221,7 @@ public class RoomController {
 
     public void onSaveCustomerRoom() {
         try {
-            if(currCustomerRoom.getContractId()==null){
+            if (currCustomerRoom.getContractId() == null) {
                 MessageUtil.setErrorMessage("Phòng chưa có hợp đồng!");
                 return;
             }

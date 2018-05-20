@@ -11,7 +11,7 @@
 
         <h:form id="showPdfForm">
 
-            <p:media value="#{imageStreamerBill.image}" width="100%" height="500" player="pdf" >
+            <p:media value="#{imageStreamerBill.image}" width="100%" height="500" player="pdf"  cache="false">
                 <f:param name="imgPath" value="#{billController.pathRealFile}"/>
             </p:media>
             <div style="text-align: center">

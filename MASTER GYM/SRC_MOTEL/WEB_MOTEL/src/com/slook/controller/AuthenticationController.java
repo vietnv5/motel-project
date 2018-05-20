@@ -36,11 +36,12 @@ public class AuthenticationController implements Constant, Serializable {
     private String userName;
     private String password;
     private CatUser user;
-    @ManagedProperty(value = "#{catUserService}")
+//    @ManagedProperty(value = "#{catUserService}")
     private CatUserServiceImpl catUserService;
 
     public boolean authenticated() {
         try {
+            catUserService=new CatUserServiceImpl();
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Map sessionMap = context.getSessionMap();
 
