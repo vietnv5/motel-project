@@ -15,19 +15,19 @@
                         <p:outputPanel class="Container100 TexAlLeft">
 
                             <div class="Container100">
-                                <div class="Container25 ">
+                                <div class="Container25 " style="display: none">
                                     <span class="title-top">
                                         <p:selectOneMenu id="empId" value="#{catUserController.currCatUser.employee}"
                                                          filter="true" converter="employeeConverter"
                                                          filterMatchMode="contains" var="t"
                                                          style="width: 71%"
-                                        >
+                                                         >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                           noSelectionOption="true"/>
                                             <f:selectItems value="#{catUserController.lstEmployees}" var="m"
                                                            itemLabel="#{m.employeeCode} - #{m.employeeName}" itemValue="#{m}"/>
                                             <p:column>
-                                            <h:outputText value="#{t.employeeCode}"/>
+                                                <h:outputText value="#{t.employeeCode}"/>
                                             </p:column>
 
                                             <p:column>
@@ -36,56 +36,70 @@
                                             <p:column>
                                                 <h:outputText value="#{t.telephone}"/>
                                             </p:column>
-<!--                                            <p:column>
-                                                <h:outputText value="# {t.status.statusName}"/>
-                                            </p:column>-->
+                                            <!--                                            <p:column>
+                                                                                            <h:outputText value="# {t.status.statusName}"/>
+                                                                                        </p:column>-->
 
                                         </p:selectOneMenu>
-                                      <label class="title-elem"
-                                             style="color: #027FAC">#{msg['catUser.employee']} </label>
+                                        <label class="title-elem"
+                                               style="color: #027FAC">#{msg['catUser.employee']} </label>
                                     </span>
                                     <p:message for="empId"/>
                                 </div>
                                 <div class="Container25">
-                                        <span class="md-inputfield">
-                                            <p:inputText value="#{catUserController.currCatUser.userName}"
-                                                         id="userNameId" style="width: 80%" maxlength="50"
-                                                         title="#{msg['catUser.userName']}"
-                                                         required="true"
-                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.userName'])}"
-                                            >
-                                            </p:inputText>
+                                    <span class="md-inputfield">
+                                        <p:inputText value="#{catUserController.currCatUser.fullName}"
+                                                     id="fullNameId" style="width: 80%" maxlength="200"
+                                                     title="#{msg['catUser.fullName']}"
+                                                     required="true"
+                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.fullName'])}"
+                                                     >
+                                        </p:inputText>
 
-                                            <label>#{msg['catUser.userName']} *</label>
-                                        </span>
+                                        <label>#{msg['catUser.fullName']} *</label>
+                                    </span>
+                                    <p:message for="fullNameId"/>
+                                </div>
+                                <div class="Container25">
+                                    <span class="md-inputfield">
+                                        <p:inputText value="#{catUserController.currCatUser.userName}"
+                                                     id="userNameId" style="width: 80%" maxlength="50"
+                                                     title="#{msg['catUser.userName']}"
+                                                     required="true"
+                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.userName'])}"
+                                                     >
+                                        </p:inputText>
+
+                                        <label>#{msg['catUser.userName']} *</label>
+                                    </span>
                                     <p:message for="userNameId"/>
                                 </div>
                                 <div class="Container25">
-                                        <span class="md-inputfield">
-                                            <p:password value="#{catUserController.currCatUser.password}"
-                                                         id="passwordUserId" style="width: 80%" redisplay="false"
-                                                         title="#{msg['catUser.password']}"  maxlength="200"
-                                                         required="#{!catUserController.isEdit}"
-                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.password'])}"
-                                            >
-                                            </p:password>
+                                    <span class="md-inputfield">
+                                        <p:password value="#{catUserController.currCatUser.password}"
+                                                    id="passwordUserId" style="width: 80%" redisplay="false"
+                                                    title="#{msg['catUser.password']}"  maxlength="200"
+                                                    required="#{!catUserController.isEdit}"
+                                                    requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.password'])}"
+                                                    >
+                                        </p:password>
 
-                                            <label>#{msg['catUser.password']} #{catUserController.isEdit?'':'*'}</label>
-                                        </span>
+                                        <label>#{msg['catUser.password']} #{catUserController.isEdit?'':'*'}</label>
+                                    </span>
                                     <p:message for="passwordUserId"/>
                                 </div>
-                            <div class="Container25">
-                                        <span class="md-inputfield">
-                                            <p:password value="#{catUserController.currCatUser.confirmPassword}"
-                                                         id="confirmPasswordUserId" style="width: 80%" redisplay="false"
-                                                         title="#{msg['catUser.confirmPassword']}"  maxlength="200"
-                                                         required="#{!catUserController.isEdit}"
-                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.confirmPassword'])}"
-                                            >
-                                            </p:password>
+                                <div class="Container25">
+                                    <span class="md-inputfield">
+                                        <p:password value="#{catUserController.currCatUser.confirmPassword}"
+                                                    id="confirmPasswordUserId" style="width: 80%" redisplay="false"
+                                                    title="#{msg['catUser.confirmPassword']}"  maxlength="200"
+                                                    required="#{!catUserController.isEdit}"
+                                                    requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.confirmPassword'])}"
+                                                    >
+                                        </p:password>
 
-                                            <label>#{msg['catUser.confirmPassword']} #{catUserController.isEdit?'':'*'}</label>
-                                        </span>
+                                        <label>#{msg['catUser.confirmPassword']} #{catUserController.isEdit?'':'*'}</label>
+                                    </span>
                                     <p:message for="confirmPasswordUserId"/>
                                 </div>
                             </div>
@@ -93,11 +107,11 @@
                                 <div class="Container25 MarTop30">
                                     <span class="title-top">
                                         <p:selectOneMenu id="roleId" value="#{catUserController.currCatUser.roleId}"
-                                                         filter="true"
+                                                         filter="true" disabled="#{!sessionUtil.getUrlDisplay('/catUser.action_modify_role')}"
                                                          filterMatchMode="contains"
                                                          required="true" style="width: 71%" 
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.role'])}"
-                                        >
+                                                         >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"/>
                                             <f:selectItems value="#{catUserController.lstRole}" var="p"
                                                            itemLabel="#{p.roleName}" itemValue="#{p.roleId}"/>
@@ -112,9 +126,9 @@
                                 <div class="Container25 MarTop30">
                                     <span class="title-top">
                                         <p:selectOneMenu id="statusId" value="#{catUserController.currCatUser.status}"
-                                                         required="true" style="width: 71%" scrollHeight="100"
+                                                         required="true" style="width: 71%" 
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.status'])}"
-                                        >
+                                                         >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                           noSelectionOption="true"/>
                                             <f:selectItem itemValue="1"
@@ -130,6 +144,24 @@
                                     <p:message for="statusId"/>
 
 
+                                </div>
+                                <div class="Container25 MarTop30" style="display: #{catUserController.groupUserId!=null and catUserController.groupUserId>0 
+                                                                                    and !sessionUtil.getUrlDisplay('/groupUser') ? 'none':''}">
+                                    <span class="title-top">
+                                        <p:selectOneMenu value="#{catUserController.currCatUser.groupUserId}" required="false"
+                                                         filter="true" filterMatchMode="contains"
+                                                         id="groupUserId" style="width: 40%"
+                                                         disabled="#{catUserController.groupUserId!=null and catUserController.groupUserId>0}"
+
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['home.groupUserId'])}" >
+                                            <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+
+                                            <f:selectItems value="#{homeController.lstGroupUser}" var="p"
+                                                           itemLabel="#{p.id} - #{p.name}" itemValue="#{p.id}"/>
+                                        </p:selectOneMenu>
+                                        <label class="title-elem">#{msg['home.groupUserId']} *</label>
+                                    </span>
+                                    <p:message for="groupUserId"/>
                                 </div>
 
                             </div>
@@ -154,7 +186,7 @@
                 </p:panel>
                 <p:dataTable value="#{catUserController.lazyDataModel}"
                              lazy="true" var="catUser" rowKey="#{catUser.userId}"
-                             rowIndexVar="cusIdx"
+                             rowIndexVar="cusIdx" 
                              rows="20" paginator="true" paginatorPosition="bottom"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
@@ -162,7 +194,7 @@
                              emptyMessage="#{msg['datatable.empty']}"
                              styleClass="Container100 NoPadding MarTop10"
 
-                >
+                             >
                     <!--Header-->
                     <f:facet name="header">
                         <div class="Card NoPadding" style="background: transparent;">
@@ -187,13 +219,18 @@
                     <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                     <!--STT-->
                     <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                    >
+                              >
                         <h:outputText value="#{cusIdx +1 }"/>
                     </p:column>
 
                     <p:column headerText="#{msg['catUser.userName']}" width="50"
                               filterBy="#{catUser.userName}">
                         <h:outputText value="#{catUser.userName}"/>
+                    </p:column>
+
+                    <p:column headerText="#{msg['catUser.fullName']}" width="50"
+                              filterBy="#{catUser.fullName}">
+                        <h:outputText value="#{catUser.fullName}"/>
                     </p:column>
                     <p:column headerText="#{msg['catUser.role']}" width="50"
                               filterBy="#{catUser.roleId}">
@@ -224,9 +261,15 @@
                     </p:column>
 
                     <!--<p:column headerText="#{msg['datatable.header.description']}" width="80" >-->
-                        <!--<h:outputText value="# {catUser.description}"/>-->
+                    <!--<h:outputText value="# {catUser.description}"/>-->
                     <!--</p:column>-->
 
+                    <p:column headerText="#{msg['groupUser.name']}" width="30"
+                              visible="#{!(catUserController.groupUserId!=null and catUserController.groupUserId>0 
+                                                                                    and !sessionUtil.getUrlDisplay('/groupUser'))}"
+                              filterBy="#{catUser.groupUser.name}">
+                        <h:outputText value="#{catUser.groupUser.id} - #{catUser.groupUser.name}"/>
+                    </p:column>
 
                     <p:column headerText="#{msg['datatable.header.action']}" width="20" styleClass="TexAlCenter">
                         <p:commandButton icon="fa fa-edit" actionListener="#{catUserController.preEdit(catUser)}"
@@ -238,7 +281,19 @@
                                 <f:param name="mode" value="'show'"/>
                             </p:effect>
                         </p:commandButton>
+                        <p:spacer width="2px;"/>
 
+
+                        <p:commandButton icon="fa fa-trash"
+                                         actionListener="#{catUserController.onDelete(catUser)}"
+                                         onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                         update="@widgetVar(growl),@widgetVar(tableCatUserWidget)"
+                                         disabled="#{catUser.status==1}"
+                                         title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                            <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                       message="#{msg['title.confirm.delete']}">
+                            </p:confirm>
+                        </p:commandButton>
                     </p:column>
 
 

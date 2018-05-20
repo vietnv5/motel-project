@@ -173,4 +173,8 @@
         <pattern value="/bill"/>
         <view-id value="/faces/motel/bill/bill-index.xhtml"/>
     </url-mapping>
+    <url-mapping id="catHome">
+        <pattern value="/catHome"/>
+        <view-id value="/faces/motel/home/home-index.xhtml"/>
+    </url-mapping>
 </pretty-config>

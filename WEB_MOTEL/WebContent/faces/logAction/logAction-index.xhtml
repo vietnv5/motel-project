@@ -131,7 +131,7 @@
                     <f:facet name="filter">
                         <p:calendar pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
-                            <p:ajax event="change" execute="@this" oncomplete="PF('tblWidgetId').filter()"/>
+                            <p:ajax event="change" process="@this" oncomplete="PF('tblWidgetId').filter()"/>
                         </p:calendar>
                     </f:facet>
                     <h:outputText value="#{logAction.eventTime}">

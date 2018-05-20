@@ -81,7 +81,7 @@ public class ContractController {
             groupUserId = null;
             if (getRequest().getSession().getAttribute("user") != null) {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
-                groupUserId = catUser.getGroupId();
+                groupUserId = catUser.getGroupUserId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("home.homeName", Constant.ORDER.ASC);

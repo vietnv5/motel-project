@@ -131,7 +131,7 @@ public class BillController {
             groupUserId = null;
             if (getRequest().getSession().getAttribute("user") != null) {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
-                groupUserId = catUser.getGroupId();
+                groupUserId = catUser.getGroupUserId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("paymentDate", Constant.ORDER.DESC);
@@ -531,6 +531,7 @@ public class BillController {
         } catch (Exception e) {
             MessageUtil.setErrorMessage("Export thất bại");
             logger.error(e.getMessage(), e);
+            e.printStackTrace();
         }
     }
 //xuat danh sach hoa don

@@ -60,6 +60,7 @@ public class HibernateUtil {
 
         } catch (Throwable ex) {
             logger.error(ex.getMessage(), ex);
+            ex.printStackTrace();
             throw new ExceptionInInitializerError(ex);
         }
     }

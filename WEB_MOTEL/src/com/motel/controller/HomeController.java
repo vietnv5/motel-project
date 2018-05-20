@@ -5,16 +5,13 @@
  */
 package com.motel.controller;
 
-import static com.motel.controller.RoomController.logger;
-import com.motel.model.Customer;
+import com.motel.model.GroupUser;
 import com.motel.model.Home;
-import com.motel.model.Customer;
 import com.slook.controller.LogActionController;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatUser;
-import com.slook.persistence.CustomerServiceImpl;
+import com.slook.persistence.GroupUserServiceImpl;
 import com.slook.persistence.HomeServiceImpl;
-import com.slook.persistence.CustomerServiceImpl;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
 import java.util.ArrayList;
@@ -36,21 +33,24 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * @author VietNV Jan 19, 2018
+ * @author VietNV May 20, 2018
  */
 @ManagedBean
 @ViewScoped
-public class CustomerController {
+public class HomeController {
 
-    protected static final Logger logger = LoggerFactory.getLogger(CustomerController.class);
+    protected static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 
-    LazyDataModel<Customer> lazyDataModel;
-    Customer currCustomer = new Customer();
+    LazyDataModel<Home> lazyDataModel;
+    Home currHome = new Home();
     private String oldObjectStr = null;
-    private Long groupUserId;
+
     private List<Boolean> columnVisibale = new ArrayList<>();
     private boolean isEdit = false;
+    List<GroupUser> lstGroupUser;
+    Long groupUserId = null;
 
+    // customerHome
     public void onToggler(ToggleEvent e) {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
@@ -60,65 +60,85 @@ public class CustomerController {
 
         try {
             CatUser catUser = null;
-            groupUserId = null;
             if (getRequest().getSession().getAttribute("user") != null) {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
                 groupUserId = catUser.getGroupUserId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
-            order.put("customerName", Constant.ORDER.ASC);
+            order.put("groupUserId", Constant.ORDER.ASC);
+            order.put("homeName", Constant.ORDER.ASC);
             Map<String, Object> filter = new HashMap<>();
             filter.put("status-NEQ", Constant.STATUS.DELETE);
             if (groupUserId != null && groupUserId > 0) {//phan quyen
                 filter.put("groupUserId", groupUserId);
             }
-            lazyDataModel = new LazyDataModelBase<Customer, Long>(CustomerServiceImpl.getInstance(), filter, order);
+            lazyDataModel = new LazyDataModelBase<Home, Long>(HomeServiceImpl.getInstance(), filter, order);
+
+            Map<String, Object> filtersGroupUser = new HashMap<>();
+            filtersGroupUser.put("status-NEQ", Constant.STATUS.DELETE);
+//            if (groupUserId != null && groupUserId > 0) {//phan quyen
+//                filtersGroupUser.put("groupUserId", groupUserId);
+//            }
+            LinkedHashMap<String, String> orderHome = new LinkedHashMap<>();
+            orderHome.put("name", Constant.ORDER.ASC);
+            lstGroupUser = GroupUserServiceImpl.getInstance().findList(filtersGroupUser, orderHome);
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        columnVisibale = Arrays.asList(true, true, true, true, true,
-                false,false,false, true, false, false, false
+//        init();
+        columnVisibale = Arrays.asList(true, true, true, true, false,
+                true, false, true, true, true
         );
     }
 
     public void preAdd() {
-        this.currCustomer = new Customer();
-        if (groupUserId != null && groupUserId > 0) {
-            currCustomer.setGroupUserId(groupUserId);
-        }
+        this.currHome = new Home();
+        currHome.setGroupUserId(groupUserId);
         isEdit = false;
     }
 
-    public void preEdit(Customer customer) {
+    public void preEdit(Home home) {
         try {
-            currCustomer = CustomerServiceImpl.getInstance().findById(customer.getCustomerId());
+            currHome = HomeServiceImpl.getInstance().findById(home.getHomeId());
         } catch (Exception ex) {
             ex.printStackTrace();
         }
         isEdit = true;
-        oldObjectStr = currCustomer.toString();
+        oldObjectStr = currHome.toString();
     }
 
     public void onSaveOrUpdate() {
         try {
-            if (currCustomer.getStatus() == null) {
-                currCustomer.setStatus(Constant.STATUS.ACTIVE);
+
+            // validate
+            Map<String, Object> filter = new HashMap<>();
+            filter.put("status-NEQ", Constant.STATUS.DELETE);
+            filter.put("homeName-EXAC_IGNORE_CASE", currHome.getHomeName());
+            filter.put("groupUserId", currHome.getGroupUserId());
+            if (currHome.getHomeId() != null) {
+                filter.put("homeId-NEQ", currHome.getHomeId());
             }
-            if(groupUserId!=null && groupUserId>0)currCustomer.setGroupUserId(groupUserId);
-            CustomerServiceImpl.getInstance().saveOrUpdate(currCustomer);
+
+            List lst = HomeServiceImpl.getInstance().findList(filter);
+            if (lst != null && !lst.isEmpty()) {
+                MessageUtil.setInfoMessage("Tên khu trọ đã tồn tại!");
+
+                return;
+            }
+            HomeServiceImpl.getInstance().saveOrUpdate(currHome);
 
             //ghi log
             if (oldObjectStr != null) {
-                LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currCustomer.toString(),
+                LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currHome.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             } else {
-                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currCustomer.toString(),
+                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currHome.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
-            RequestContext.getCurrentInstance().execute("PF('customerDlg').hide();");
+            RequestContext.getCurrentInstance().execute("PF('homeDlg').hide();");
 
         } catch (Exception e) {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
@@ -126,9 +146,10 @@ public class CustomerController {
         }
     }
 
-    public void onDelete(Customer catRole) {
+    public void onDelete(Home home) {
         try {
-            CustomerServiceImpl.getInstance().delete(catRole);
+            home.setStatus(Constant.STATUS.DELETE);
+            HomeServiceImpl.getInstance().saveOrUpdate(home);
             MessageUtil.setInfoMessageFromRes("common.message.success");
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -136,20 +157,29 @@ public class CustomerController {
         }
     }
 
-    public LazyDataModel<Customer> getLazyDataModel() {
+    //<editor-fold defaultstate="collapsed" desc="get/set">
+    public LazyDataModel<Home> getLazyDataModel() {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<Customer> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<Home> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public Customer getCurrCustomer() {
-        return currCustomer;
+    public Home getCurrHome() {
+        return currHome;
     }
 
-    public void setCurrCustomer(Customer currCustomer) {
-        this.currCustomer = currCustomer;
+    public void setCurrHome(Home currHome) {
+        this.currHome = currHome;
+    }
+
+    public String getOldObjectStr() {
+        return oldObjectStr;
+    }
+
+    public void setOldObjectStr(String oldObjectStr) {
+        this.oldObjectStr = oldObjectStr;
     }
 
     public List<Boolean> getColumnVisibale() {
@@ -167,5 +197,22 @@ public class CustomerController {
     public void setIsEdit(boolean isEdit) {
         this.isEdit = isEdit;
     }
+
+    public List<GroupUser> getLstGroupUser() {
+        return lstGroupUser;
+    }
+
+    public void setLstGroupUser(List<GroupUser> lstGroupUser) {
+        this.lstGroupUser = lstGroupUser;
+    }
+
+    public Long getGroupUserId() {
+        return groupUserId;
+    }
+
+    public void setGroupUserId(Long groupUserId) {
+        this.groupUserId = groupUserId;
+    }
+//</editor-fold>
 
 }

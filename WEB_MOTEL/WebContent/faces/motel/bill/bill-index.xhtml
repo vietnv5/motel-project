@@ -123,7 +123,8 @@
                     <h:outputText value=" VNĐ"/>
                 </p:column>
 
-                <p:column headerText="#{msg['bill.paymentDate']}" width="40" style="text-align: center " sortBy="#{bill.paymentDate}" 
+                <p:column headerText="#{msg['bill.paymentDate']}" width="40" style="text-align: center "
+                          filterStyle="width:70%" sortBy="#{bill.paymentDate}" 
                           visible="#{billController.columnVisibale[5]}"
                           filterBy="#{bill.paymentDate-BW}" >
                     <f:facet name="filter" >

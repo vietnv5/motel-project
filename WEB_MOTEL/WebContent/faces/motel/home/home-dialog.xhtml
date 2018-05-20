@@ -1,0 +1,116 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+
+    <p:dialog modal="true" widgetVar="homeDlg" width="60%" id="homeDlgId">
+        <f:facet name="header">
+            <h:outputText value="#{msg['button.add']}" rendered="#{!homeController.isEdit }"/>
+            <h:outputText value="#{msg['button.edit']}" rendered="#{homeController.isEdit}"/>
+        </f:facet>
+
+        <h:form id="homeForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 " id="panelCheckin" >
+
+                    <div class=" Container100">
+                        <div class=" Container33 Responsive50 MarTop20">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{homeController.currHome.groupUserId}" required="false"
+                                                 filter="true" filterMatchMode="contains"
+                                                 id="groupUserId" style="width: 40%" disabled="#{homeController.groupUserId!=null and homeController.groupUserId>0}"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.groupUserId'])}" >
+                                    <f:selectItems value="#{homeController.lstGroupUser}" var="p"
+                                                   itemLabel="#{p.id} - #{p.name}" itemValue="#{p.id}"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">#{msg['home.groupUserId']} *</label>
+                            </span>
+                            <p:message for="groupUserId"/>
+                        </div>
+                        <div class=" Container33 Responsive50 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{homeController.currHome.homeName}"
+                                             id="homeNameId"  converter="trimConverter" maxlength="200"
+                                             title="#{msg['home.homeName']}"
+                                             required="true"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['home.homeName']} *</label>
+                            </span>
+                            <p:message for="homeNameId"/>
+                        </div>
+                        <div class=" Container33 Responsive50 MarTop20">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{homeController.currHome.status}" required="true"
+                                                 id="statusId"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.status'])}" >
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="#{msg['common.ACTIVE']}"/>
+                                    <f:selectItem itemValue="2" itemLabel="#{msg['common.INACTIVE']}"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Trạng thái *</label>
+                            </span>
+                            <p:message for="statusId"/>
+                        </div>
+                    </div>
+                    <!--<div class=" Container100">-->
+
+                        <div class=" Container100 Responsive50 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{homeController.currHome.address}"
+                                             id="addressId"  converter="trimConverter" maxlength="300"
+                                             title="#{msg['home.address']}"
+                                             required="false" style="width: 90%"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['home.address'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['home.address']} </label>
+                            </span>
+                            <p:message for="addressId"/>
+                        </div>
+                        
+                        <div class=" Container100 Responsive50 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{homeController.currHome.description}" style="width: 90%"
+                                             id="descriptionId"  converter="trimConverter" maxlength="400"
+                                             title="#{msg['contract.description']}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['contract.description']} </label>
+                            </span>
+                            <p:message for="descriptionId"/>
+                        </div>
+                    <!--</div>-->
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlCenter" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                                     update="@widgetVar(growl),:homeTableForm,:homeForm"
+                                     actionListener="#{homeController.onSaveOrUpdate()}" process=":homeForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('homeDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+</ui:composition>

@@ -1,5 +1,7 @@
 package com.slook.model;
 
+import com.motel.model.GroupUser;
+import java.io.Serializable;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.LazyCollection;
@@ -13,7 +15,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
  */
 @Entity
 @Table(name = "CAT_USER")
-public class CatUser {
+public class CatUser implements Serializable{
 
     private Long userId;
     private String userName;
@@ -30,7 +32,9 @@ public class CatUser {
     //change password
     private String oldPassword;
     private String newPassword;
-    private Long groupId;
+    private Long groupUserId;
+
+    private GroupUser groupUser;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
@@ -184,13 +188,24 @@ public class CatUser {
         this.newPassword = newPassword;
     }
 
-    @Column(name = "GROUP_ID")
-    public Long getGroupId() {
-        return groupId;
+    @Column(name = "GROUP_USER_ID")
+    public Long getGroupUserId() {
+        return groupUserId;
     }
 
-    public void setGroupId(Long groupId) {
-        this.groupId = groupId;
+    public void setGroupUserId(Long groupUserId) {
+        this.groupUserId = groupUserId;
+    }
+
+    @JoinColumn(name = "GROUP_USER_ID", referencedColumnName = "ID", insertable = false, updatable = false)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.EXTRA)
+    public GroupUser getGroupUser() {
+        return groupUser;
+    }
+
+    public void setGroupUser(GroupUser groupUser) {
+        this.groupUser = groupUser;
     }
 
 }

@@ -2,7 +2,6 @@ package com.slook.controller;
 
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatUser;
-import com.slook.model.Employee;
 import com.slook.model.LogAction;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.GenericDaoServiceNewV2;

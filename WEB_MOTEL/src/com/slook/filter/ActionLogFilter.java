@@ -7,7 +7,7 @@
  */
 package com.slook.filter;
 
-import com.viettel.vsa.token.UserToken;
+//import com.viettel.vsa.token.UserToken;
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -44,7 +44,7 @@ public class ActionLogFilter implements Filter {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         String requestId = "";
         HttpSession session = null;
-        UserToken vsaUserToken = null;
+//        UserToken vsaUserToken = null;
 
         try {
             //set characterEncoding UTF-8
@@ -53,10 +53,10 @@ public class ActionLogFilter implements Filter {
                 HttpServletRequest hRequest = (HttpServletRequest) request;
                 clientKpiId = hRequest.getHeader("VTS-KPIID");
                 session = hRequest.getSession();
-                vsaUserToken = (UserToken) session.getAttribute("vsaUserToken");
-                if (vsaUserToken != null) {
-                    userName = vsaUserToken.getUserName();
-                }
+//                vsaUserToken = (UserToken) session.getAttribute("vsaUserToken");
+//                if (vsaUserToken != null) {
+//                    userName = vsaUserToken.getUserName();
+//                }
                 ip = hRequest.getHeader("X-ClientIP");
                 if (ip == null || ip.isEmpty()) {
                     ip = hRequest.getRemoteAddr();

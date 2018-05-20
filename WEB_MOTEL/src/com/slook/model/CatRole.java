@@ -4,12 +4,12 @@ import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.util.CommonUtil;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.*;
-import static javax.persistence.GenerationType.SEQUENCE;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Fetch;
@@ -22,7 +22,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  */
 @Entity
 @Table(name = "CAT_ROLE", catalog = "")
-public class CatRole {
+public class CatRole implements Serializable{
 
     private Long roleId;
     private String roleName;

@@ -576,6 +576,13 @@ public interface Constant {
         Long STOP = 3L;
 
     }
+    interface HOME_STATUS {
+
+        Long DELETE = -1l;
+        Long ACTIVE = 1L;
+        Long DISABLE = 2L;
+
+    }
 
     interface CONTRACT_SERVICE {
 

@@ -5,9 +5,8 @@
  */
 package com.slook.util;
 
-import com.viettel.vsa.token.RoleToken;
-import com.viettel.vsa.token.UserToken;
-
+//import com.viettel.vsa.token.RoleToken;
+//import com.viettel.vsa.token.UserToken;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.servlet.http.HttpSession;
@@ -28,7 +27,13 @@ public class SessionUtil extends SessionWrapper implements Constant {
     /**
      * Lay gia tri menu default.
      */
+    static SessionUtil sessionUtil;
+    public static SessionUtil getInstance(){
+        if(sessionUtil==null) sessionUtil=new SessionUtil();
+        return sessionUtil;
+    }
     public static String getMenuDefault() {
+        /*
 //		if (! Config._DEFAULT_URL.equals(""))
 //			return Config._DEFAULT_URL;
 //
@@ -59,6 +64,9 @@ public class SessionUtil extends SessionWrapper implements Constant {
         // 	Nguoi dung khong co url nao trong he thong
         // Tra ve trang bao loi.
 //        return _ERROR_PAGE;
+         */
+        return PAGE._LOGIN;
+
     }
 
     public boolean isCreateAlarmConfig() {
@@ -71,4 +79,5 @@ public class SessionUtil extends SessionWrapper implements Constant {
         }
         return false;
     }
+
 }// End class

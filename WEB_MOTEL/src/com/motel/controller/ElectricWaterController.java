@@ -72,7 +72,7 @@ public class ElectricWaterController {
             groupUserId = null;
             if (getRequest().getSession().getAttribute("user") != null) {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
-                groupUserId = catUser.getGroupId();
+                groupUserId = catUser.getGroupUserId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("month", Constant.ORDER.DESC);
