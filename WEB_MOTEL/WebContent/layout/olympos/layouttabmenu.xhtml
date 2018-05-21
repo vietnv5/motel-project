@@ -123,6 +123,11 @@
                        href="#{facesContext.externalContext.request.contextPath}/catUser"><i
                             class="fa fa-user"></i><span>Acount</span></a>
                 </li>
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/functionPath')? '':'none'}">
+                    <a class="menulink"
+                       href="#{facesContext.externalContext.request.contextPath}/functionPath"><i
+                            class="fa fa-user"></i><span>Danh mục chức năng</span></a>
+                </li>
                 <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catRole')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/catRole"><i
