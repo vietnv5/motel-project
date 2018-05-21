@@ -5,6 +5,8 @@
  */
 package com.motel.model;
 
+import com.slook.util.Constant;
+import com.slook.util.MessageUtil;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -18,7 +20,10 @@ import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 /**
  *
@@ -59,12 +64,16 @@ public class GroupUser implements Serializable {
     @Column(name = "CREATE_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date createTime;
-    @Column(name = "JOIN_DATE")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date joinDate;
+//    @Column(name = "JOIN_DATE")
+//    @Temporal(TemporalType.TIMESTAMP)
+//    private Date joinDate;
     @Column(name = "DESCRIPTION")
     private String description;
-    
+    @Column(name = "MAX_NUMBER_ROOM")
+    private Long maxNumberRoom;
+    @Transient
+    private String statusName;
+
     public GroupUser() {
     }
 
@@ -150,17 +159,16 @@ public class GroupUser implements Serializable {
 
     @Override
     public String toString() {
-        return "model.GroupUser[ id=" + id + " ]";
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
-    public Date getJoinDate() {
-        return joinDate;
-    }
-
-    public void setJoinDate(Date joinDate) {
-        this.joinDate = joinDate;
-    }
-
+//    public Date getJoinDate() {
+//        return joinDate;
+//    }
+//
+//    public void setJoinDate(Date joinDate) {
+//        this.joinDate = joinDate;
+//    }
     public String getDescription() {
         return description;
     }
@@ -168,5 +176,26 @@ public class GroupUser implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
+
+    public Long getMaxNumberRoom() {
+        return maxNumberRoom;
+    }
+
+    public void setMaxNumberRoom(Long maxNumberRoom) {
+        this.maxNumberRoom = maxNumberRoom;
+    }
+
+    public String getStatusName() {
+        if (Constant.HOME_STATUS.ACTIVE.equals(status)) {
+            statusName = MessageUtil.getResourceBundleMessage("common.ACTIVE");
+        } else if (Constant.HOME_STATUS.DISABLE.equals(status)) {
+            statusName = MessageUtil.getResourceBundleMessage("common.INACTIVE");
+        }
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
+
 }

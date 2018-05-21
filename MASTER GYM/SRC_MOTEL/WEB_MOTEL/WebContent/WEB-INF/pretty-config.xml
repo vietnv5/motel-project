@@ -181,4 +181,8 @@
         <pattern value="/functionPath"/>
         <view-id value="/faces/cat/functionPath/functionPath-index.xhtml"/>
     </url-mapping>
+    <url-mapping id="groupUser">
+        <pattern value="/groupUser"/>
+        <view-id value="/faces/motel/groupUser/groupUser-index.xhtml"/>
+    </url-mapping>
 </pretty-config>

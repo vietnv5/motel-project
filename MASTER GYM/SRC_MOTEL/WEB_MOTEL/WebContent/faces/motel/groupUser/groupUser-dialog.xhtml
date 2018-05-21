@@ -1,0 +1,153 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                >
+
+
+    <p:dialog modal="true" widgetVar="groupUserDlg" width="60%" id="groupUserDlgId">
+        <f:facet name="header">
+            <h:outputText value="#{msg['button.add']}" rendered="#{!groupUserController.isEdit}"/>
+            <h:outputText value="#{msg['button.edit']}" rendered="#{groupUserController.isEdit}"/>
+        </f:facet>
+
+        <h:form id="groupUserForm">
+            <div class="Card">
+                <p:outputPanel class="Container100 " id="panelCheckin" >
+
+                    <div class=" Container100">
+                        
+                        <div class=" Container33 Responsive50 ">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{groupUserController.currGroupUser.code}"
+                                             id="codeId"  converter="trimConverter" maxlength="200"
+                                             title="#{msg['groupUser.code']}"
+                                             required="false"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.code'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['groupUser.code']} *</label>
+                            </span>
+                            <p:message for="codeId"/>
+                        </div>
+                        <div class=" Container33 Responsive50 ">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{groupUserController.currGroupUser.name}"
+                                             id="nameId"  converter="trimConverter" maxlength="200"
+                                             title="#{msg['groupUser.name']}"
+                                             required="true"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.name'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['groupUser.name']} *</label>
+                            </span>
+                            <p:message for="nameId"/>
+                        </div>
+                        <div class=" Container33 Responsive50 ">
+                            <span class="md-inputfield">
+                                <p:inputNumber value="#{groupUserController.currGroupUser.maxNumberRoom}"
+                                               id="maxNumberRoomId" symbol=" Phòng" symbolPosition="suffix"
+                                               required="false" decimalPlaces="0" minValue="-999999999"
+                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.maxNumberRoom'])}"
+                                               title="#{msg['groupUser.maxNumberRoom']}"
+                                               >
+                                </p:inputNumber>
+
+                                <label>#{msg['groupUser.maxNumberRoom']} </label>
+                            </span>
+                            <p:message for="maxNumberRoomId"/>
+                        </div>
+                        <div class=" Container33 Responsive50 MarTop30">
+                            <span class="title-top">
+                                <p:calendar value="#{groupUserController.currGroupUser.startTime}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="startTime"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            title="#{msg['groupUser.startTime']}"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['groupUser.startTime']} </label>
+                            </span>
+                            <p:message for="startTime"></p:message>
+                        </div>
+                        <div class=" Container33 Responsive50 MarTop30">
+                            <span class="title-top">
+                                <p:calendar value="#{groupUserController.currGroupUser.endTime}"
+                                            locale="#{language.localeCode}"
+                                            styleClass="CalendarSearch"
+                                            id="endTime"
+                                            showButtonPanel="true" style="width: calc(100% - 15px)"
+                                            title="#{msg['groupUser.endTime']}"
+                                            pattern="dd/MM/yyyy" pages="1" effect="slideDown"
+                                            showOtherMonths="true" selectOtherMonths="true"
+                                            mask="true">
+                                </p:calendar>
+                                <label class="title-elem">#{msg['groupUser.endTime']} </label>
+                            </span>
+                            <p:message for="endTime"></p:message>
+                        </div>
+                        <div class=" Container33 Responsive50 MarTop30">
+                            <span class="title-top">
+                                <p:selectOneMenu value="#{groupUserController.currGroupUser.status}" required="true"
+                                                 id="statusId"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.status'])}" >
+                                    <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                    <f:selectItem itemValue="1" itemLabel="#{msg['common.ACTIVE']}"/>
+                                    <f:selectItem itemValue="2" itemLabel="#{msg['common.INACTIVE']}"/>
+                                </p:selectOneMenu>
+                                <label class="title-elem">Trạng thái *</label>
+                            </span>
+                            <p:message for="statusId"/>
+                        </div>
+                    </div>
+                    <!--<div class=" Container100">-->
+
+                        <div class=" Container100 Responsive50 MarTop20">
+                            <span class="md-inputfield">
+                                <p:inputText value="#{groupUserController.currGroupUser.description}"
+                                             id="descriptionId"  converter="trimConverter" maxlength="300"
+                                             title="#{msg['groupUser.description']}"
+                                             required="false" style="width: 90%"
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.description'])}"
+                                             >
+                                </p:inputText>
+
+                                <label>#{msg['groupUser.description']} </label>
+                            </span>
+                            <p:message for="descriptionId"/>
+                        </div>
+                        
+                        
+                    <!--</div>-->
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlCenter" >
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                                     update="@widgetVar(growl),:groupUserTableForm,:groupUserForm"
+                                     actionListener="#{groupUserController.onSaveOrUpdate()}" process=":groupUserForm" 
+                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
+                                     >
+                    </p:commandButton>
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                                     onclick="PF('groupUserDlg').hide()"  >
+
+                    </p:commandButton>
+
+                </p:outputPanel>
+
+            </div>
+        </h:form>
+    </p:dialog>
+
+    <p:confirmDialog global="true" closeOnEscape="true">
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+    </p:confirmDialog>
+</ui:composition>
