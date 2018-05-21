@@ -177,4 +177,8 @@
         <pattern value="/catHome"/>
         <view-id value="/faces/motel/home/home-index.xhtml"/>
     </url-mapping>
+    <url-mapping id="functionPath">
+        <pattern value="/functionPath"/>
+        <view-id value="/faces/cat/functionPath/functionPath-index.xhtml"/>
+    </url-mapping>
 </pretty-config>

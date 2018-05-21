@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
+
+<p:dialog id="dialog" widgetVar="addDlg" width="40%"
+          height="90%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
+    <f:facet name="header">
+        <h:outputText value="#{functionPathController.empTitle}"/>
+    </f:facet>
+    <h:form id="editForm">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        
+        
+        <p:dataTable value="#{functionPathController.selectedFunctionPath}" id="editTable"
+                     lazy="true" var="function_Path" rowKey="#{function_Path.functionPathId}"
+                     emptyMessage="#{msg['datatable.empty']}"
+                     styleClass="Container100 NoPadding MarTop5 MarBot20">
+            <p:column headerText="#{msg['category.functionPath.url']}" 
+                      width="30" 
+                      styleClass="TexAlCenter" 
+                      visible="true">
+                <p:inputText id="urlFunctionPath" 
+                             value="#{functionPathController.selectedFunctionPath.url}" 
+                             disabled="#{functionPathController.isView}"/>
+            </p:column>
+            <p:column headerText="#{msg['category.functionPath.name']}" 
+                      width="30" 
+                      styleClass="TexAlCenter" 
+                      visible="true">
+                <p:inputText id="nameFunctionPath" 
+                             value="#{functionPathController.selectedFunctionPath.name}" 
+                             disabled="#{functionPathController.isView}"/>
+            </p:column>
+            <!--TYPE-->
+            <p:column headerText="#{msg['category.functionPath.type']}" 
+                      width="30" styleClass="TexAlCenter" visible="true">
+                <p:selectOneMenu value="#{functionPathController.selectedFunctionPath.type}" 
+                                 class="awith" disabled="#{functionPathController.isView}">
+                    <f:selectItem itemLabel="#{msg['functionPath.type.TYPE_GROUP']}"
+                                  itemValue="1"
+                                  noSelectionOption="false"/>
+                    <f:selectItem itemLabel="#{msg['functionPath.type.TYPE_FUNCTION']}"
+                                  itemValue="2"
+                                  noSelectionOption="false"/>
+                    <f:selectItem itemLabel="#{msg['functionPath.type.TYPE_ACTION']}"
+                                  itemValue="3"
+                                  noSelectionOption="false"/>
+                </p:selectOneMenu>
+            </p:column>
+            <!--STATUS-->
+            <p:column headerText="#{msg['category.functionPath.status']}" 
+                      width="30" styleClass="TexAlCenter" visible="true">
+                <p:selectOneMenu value="#{functionPathController.selectedFunctionPath.status}" 
+                                 class="awith" disabled="#{functionPathController.isView}">
+                    <f:selectItem itemLabel="#{msg['status.notUser']}"
+                                  itemValue="0"
+                                  noSelectionOption="false"/>
+                    <f:selectItem itemLabel="#{msg['status.Using']}"
+                                  itemValue="1"
+                                  noSelectionOption="false"/>
+                    
+                </p:selectOneMenu>
+            </p:column>
+            <!--PARENT ID-->
+            <p:column headerText="#{msg['category.functionPath.parentId']}" 
+                      width="30" styleClass="TexAlCenter" visible="true">
+                <p:selectOneMenu value="#{functionPathController.selectedFunctionPath.parentId}" 
+                                 class="awith" disabled="#{functionPathController.isView}">
+                    <f:selectItem itemLabel="null"
+                                  
+                                  noSelectionOption="false"/>
+                    <f:selectItems value="#{functionPathController.listAllFunctionPath}" var="functionPath1"
+                                   itemLabel="#{functionPath1.functionPathId} - #{functionPath1.url}"
+                                   itemValue="#{functionPath1.functionPathId}"/>
+                                   
+                    
+                    
+                </p:selectOneMenu>
+            </p:column>
+        </p:dataTable>
+       
+        <div align="center" style="margin-top: 10px">
+            <p:commandButton id="insertObj" icon="fa fa-floppy-o"
+                             styleClass="GreenButton Fs14 White"
+                             onclick="PF('block').show()"
+                             oncomplete="PF('block').hide();PF('addDlg').hide()"
+                             update=":form,:form:tableFunctionPath"
+                             actionListener="#{functionPathController.save()}"
+                             title="#{msg['button.add']}"
+                             rendered="#{functionPathController.isInsert}"/>
+
+            <p:commandButton id="editObj" icon="fa fa-floppy-o"
+                             styleClass="OrangeButton Fs14 White"
+                             onclick="PF('block').show()"
+                             oncomplete="PF('block').hide();PF('addDlg').hide()"
+                             update=":form,:form:tableFunctionPath"
+                             actionListener="#{functionPathController.save}"
+                             title="#{msg['button.edit']}"
+                             rendered="#{functionPathController.isEdit}"/>
+
+            <p:commandButton id="removeObj" icon="fa fa-trash-o"
+                             styleClass="GreenButton Fs14 White"
+                             onclick="PF('block').show()"
+                             oncomplete="PF('block').hide();PF('addDlg').hide()"
+                             update=":form,:form:tableFunctionPath"
+                             actionListener="#{functionPathController.delete()}"
+                             title="#{msg['button.delete']}"
+                             rendered="#{functionPathController.isRemove}"/>
+
+            <p:commandButton id="closeDlg" icon="fa fa-times"
+                             styleClass="BrownButton Fs14 White"
+                             onclick="PF('block').show()"
+                             oncomplete="PF('block').hide();PF('addDlg').hide()"
+                             title="Đóng"/>
+        </div>
+    </h:form>
+</p:dialog>
+</html>
