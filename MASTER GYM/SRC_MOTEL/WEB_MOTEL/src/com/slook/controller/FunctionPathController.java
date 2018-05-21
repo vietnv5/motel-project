@@ -167,7 +167,8 @@ public class FunctionPathController extends CommonUtil implements Serializable, 
                  RequestContext.getCurrentInstance().execute("PF('block').hide();");
             }
         } catch(Exception ex) {
-            MessageUtil.setUpdateFailMsg();
+                        MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
+
             RequestContext.getCurrentInstance().execute("PF('block').hide();");
             logger.error(ex.getMessage(), ex);
         }
@@ -182,7 +183,7 @@ public class FunctionPathController extends CommonUtil implements Serializable, 
             RequestContext.getCurrentInstance().execute("PF('block').hide();");
 
         } catch (Exception ex) {
-            MessageUtil.setUpdateFailMsg();
+            MessageUtil.setErrorMessageFromRes("common.message.fail");
             RequestContext.getCurrentInstance().execute("PF('block').hide();");
             logger.error(ex.getMessage(), ex);
         }

@@ -6,29 +6,26 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:p="http://primefaces.org/ui">
 
-<p:dialog id="dialog" widgetVar="addDlg" width="70%"
+<p:dialog id="dialog" widgetVar="addDlg" width="60%"
           height="80%" modal="true" showEffect="size" hideEffect="scale" closeOnEscape="true">
     <f:facet name="header">
         <h:outputText value="#{functionPathController.empTitle}"/>
     </f:facet>
     <h:form id="editForm">
         <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
-        <h:panelGrid columns="4" width="100%" cellpadding="1" id="panelGridId">
-            <!--URL-->
+        <h:panelGrid columns="4" width="100%"  id="panelGridId" >
             <h:outputText value="#{msg['category.functionPath.url']}" class="cd-text-required"/>
             <p:inputText id="urlFunctionPath"  maxlength="200"
                              value="#{functionPathController.selectedFunctionPath.url}" 
                              required="true" converter="trimConverter"
                              requiredMessage="#{msg['category.functionPath.urlCannotEmpty']}"
                              disabled="#{functionPathController.isView}"/>
-            <!--URL  name-->
             <h:outputText value="#{msg['category.functionPath.name']}" class="cd-text-required"/>
             <p:inputText id="nameFunctionPath"  maxlength="200" converter="trimConverter"
                          value="#{functionPathController.selectedFunctionPath.name}" 
                              required="true"
                              requiredMessage="#{msg['category.functionPath.nameCannotEmpty']}"
                              disabled="#{functionPathController.isView}"/>
-            <!--TYPE-->
             <h:outputText value="#{msg['category.functionPath.type']}"/>
             <p:selectOneMenu value="#{functionPathController.selectedFunctionPath.type}" 
                                  class="awith" disabled="#{functionPathController.isView}">
@@ -42,7 +39,6 @@
                                   itemValue="3"
                                   noSelectionOption="false"/>
             </p:selectOneMenu>
-            <!--STATUS-->
             <h:outputText value="#{msg['category.functionPath.status']}"/>
             <p:selectOneMenu value="#{functionPathController.selectedFunctionPath.status}" 
                              class="awith" disabled="#{functionPathController.isView}">
@@ -54,9 +50,10 @@
                                noSelectionOption="false"/>
                     
             </p:selectOneMenu>
-            <!--PARENT ID-->
+            
              <h:outputText value="#{msg['category.functionPath.parentId']}"/>
              <p:selectOneMenu value="#{functionPathController.selectedFunctionPath.parentId}" 
+                              style="max-width: 274px"
                                  class="awith" disabled="#{functionPathController.isView}">
                     <f:selectItem itemLabel="Lựa chọn"
                                   
