@@ -11,6 +11,12 @@ INSERT INTO `group_user` (`ID`, `CODE`, `NAME`, `STATUS`, `START_TIME`, `END_TIM
  
 INSERT INTO `function_path` (`FUNCTION_PATH_ID`, `URL`, `NAME`, `STATUS`, `TYPE`, `PARENT_ID`) 
 VALUES (null, '/groupUser', 'Quản lý nhóm khách hàng', '1', '2', '3');
+INSERT INTO `function_path` (`FUNCTION_PATH_ID`, `URL`, `NAME`, `STATUS`, `TYPE`, `PARENT_ID`) 
+VALUES (NULL, '/functionPath', 'Danh mục chức năng', '1', '2', '3');
+
+ALTER TABLE `group_user` ADD `MAX_NUMBER_ROOM` INT(11)   NULL AFTER `DESCRIPTION`;
+
+
 
  9
 /catUser
