@@ -3,15 +3,23 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/faces/catUser/catUser-index.xhtml</file>
-            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/slook/resource/messages_vi_VN.properties</file>
-            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/CustomerRoom.java</file>
-            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/GroupUser.java</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/faces/motel/groupUser/groupUser-dialog.xhtml</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/controller/GroupUserController.java</file>
             <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/BillService.java</file>
-            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/slook/model/CatUser.java</file>
             <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/ElectricWater.java</file>
             <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/Home.java</file>
             <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/Room.java</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/faces/catUser/catUser-index.xhtml</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/slook/resource/messages_vi_VN.properties</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/CustomerRoom.java</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/faces/motel/contract/contract-dialog.xhtml</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/model/GroupUser.java</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/WEB-INF/pretty-config.xml</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/motel/controller/HomeController.java</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/src/com/slook/model/CatUser.java</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/faces/motel/contract/contract-index.xhtml</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/faces/motel/groupUser/groupUser-index.xhtml</file>
+            <file>file:/E:/JOB/SVN/slook/MASTER%20GYM/SRC_MOTEL/WEB_MOTEL/WebContent/layout/olympos/layouttabmenu.xhtml</file>
         </group>
     </open-files>
 </project-private>
