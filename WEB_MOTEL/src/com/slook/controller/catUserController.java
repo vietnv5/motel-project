@@ -118,6 +118,8 @@ public class catUserController implements Serializable {
         try {
             Map<String, Object> filters = new HashMap<String, Object>();
             filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
+            filters.put("status-NEQ", Constant.STATUS.DELETE);
+
             if (currCatUser.getUserId() != null) {
                 filters.put("userId-NEQ", currCatUser.getUserId());
             }
@@ -129,6 +131,8 @@ public class catUserController implements Serializable {
                 return;
             }
 
+            if(!checkValidate())return;
+            
             if (currCatUser.getEmployee() != null) {
                 currCatUser.setEmpId(currCatUser.getEmployee().getEmployeeId());
             }
@@ -157,6 +161,49 @@ public class catUserController implements Serializable {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
+    }
+
+    public boolean checkValidate() {
+        try {
+            if (StringUtil.isNotNullAndNullStr(currCatUser.getPhoneNumber())) {
+
+                Map<String, Object> filters = new HashMap<String, Object>();
+                filters.put("phoneNumber-EXAC_IGNORE_CASE", currCatUser.getPhoneNumber());
+                filters.put("status-NEQ", Constant.STATUS.DELETE);
+                if (currCatUser.getUserId() != null) {
+                    filters.put("userId-NEQ", currCatUser.getUserId());
+                }
+                List<CatUser> lst = catUserService.findList(filters);
+                if (!lst.isEmpty() && lst.size() > 0) {
+                    MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
+                            MessageUtil.getResourceBundleMessage("customer.phone")
+                    ));
+                    return false;
+                }
+            }
+            if (StringUtil.isNotNullAndNullStr(currCatUser.getEmail())) {
+
+                Map<String, Object> filters = new HashMap<String, Object>();
+                filters.put("email-EXAC_IGNORE_CASE", currCatUser.getEmail());
+                filters.put("status-NEQ", Constant.STATUS.DELETE);
+
+                if (currCatUser.getUserId() != null) {
+                    filters.put("userId-NEQ", currCatUser.getUserId());
+                }
+                List<CatUser> lst = catUserService.findList(filters);
+                if (!lst.isEmpty() && lst.size() > 0) {
+                    MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
+                            MessageUtil.getResourceBundleMessage("datatable.header.email")
+                    ));
+                    return false;
+                }
+            }
+
+        } catch (Exception e) {
+            MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
+            e.printStackTrace();
+        }
+        return true;
     }
 
     public void preEdit(CatUser catUser) {
@@ -293,6 +340,63 @@ public class catUserController implements Serializable {
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
             RequestContext.getCurrentInstance().execute("PF('changePassworDlg').hide();");
+
+            preAdd();
+        } catch (Exception e) {
+            MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
+            e.printStackTrace();
+        }
+    }
+
+    public void preShowInfoCurrUser() {
+        try {
+            CatUser u = (CatUser) getRequest().getSession().getAttribute("user");
+            currCatUser = (CatUser) catUserService.findById(u.getUserId());
+            oldObjectStr = currCatUser.toString();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void saveOrUpdateInfoCurrUser() {
+        try {
+            Map<String, Object> filters = new HashMap<String, Object>();
+            filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
+            if (currCatUser.getUserId() != null) {
+                filters.put("userId-NEQ", currCatUser.getUserId());
+            }
+            List<CatUser> lst = catUserService.findList(filters);
+            if (!lst.isEmpty() && lst.size() > 0) {
+                MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
+                        "Username"
+                ));
+                return;
+            }
+            if(!checkValidate())return;
+
+//            if (currCatUser.getEmployee() != null) {
+//                currCatUser.setEmpId(currCatUser.getEmployee().getEmployeeId());
+//            }
+//            if (currCatUser.getPassword() != null && !currCatUser.getPassword().equals(currCatUser.getConfirmPassword())) {
+//                MessageUtil.setErrorMessage("Mật khẩu nhập chưa khớp!");
+//                return;
+//            }
+//            if (StringUtil.isNullOrEmpty(currCatUser.getPassword())) {
+//                currCatUser.setPassword(oldPassword);
+//            }
+            catUserService.saveOrUpdate(currCatUser);
+            //ghi log
+            if (oldObjectStr != null) {
+                LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            } else {
+                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            }
+
+            MessageUtil.setInfoMessageFromRes("info.save.success");
+//            RequestContext.getCurrentInstance().execute("panelAddCatUser:@child(0);PF('widTableCatUser').clearFilters();");
+            RequestContext.getCurrentInstance().execute("PF('infoCurrUserDlg').hide();");
 
             preAdd();
         } catch (Exception e) {
