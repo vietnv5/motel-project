@@ -38,15 +38,24 @@ public class AuthenticationController implements Constant, Serializable {
     private CatUser user;
 //    @ManagedProperty(value = "#{catUserService}")
     private CatUserServiceImpl catUserService;
+    int TYPE_USERNAME = 0;
+    int TYPE_EMAIL = 1;
+    int TYPE_PHONE = 2;
 
     public boolean authenticated() {
         try {
-            catUserService=new CatUserServiceImpl();
+            catUserService = new CatUserServiceImpl();
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Map sessionMap = context.getSessionMap();
-
+            int typeAcount = checkTypeAcount(userName);
             Map<String, Object> filters = new HashMap<>();
-            filters.put("userName-EXAC_IGNORE_CASE", userName);
+            if (typeAcount == TYPE_USERNAME) {
+                filters.put("userName-EXAC_IGNORE_CASE", userName);
+            } else if (typeAcount == TYPE_EMAIL) {
+                filters.put("email-EXAC_IGNORE_CASE", userName);
+            } else if (typeAcount == TYPE_PHONE) {
+                filters.put("phoneNumber-EXAC_IGNORE_CASE", userName);
+            }
             filters.put("password-EXAC", password);
             List<CatUser> list = catUserService.findList(filters);
             if (list != null && !list.isEmpty() && list.size() == 1) {
@@ -55,17 +64,33 @@ public class AuthenticationController implements Constant, Serializable {
                 sessionMap.put("authenticated", true);
                 return true;
             }
-            if ("admin".equals(userName) && "admin".equals(password)) {
-                user.setUserName(userName);
-                user.setPassword(password);
-                sessionMap.put("user", user);
-                sessionMap.put("authenticated", true);
-                return true;
-            }
+//            if ("admin".equals(userName) && "admin@!@#$".equals(password)) {
+//                user.setUserName(userName);
+//                user.setPassword(password);
+//                sessionMap.put("user", user);
+//                sessionMap.put("authenticated", true);
+//                return true;
+//            }
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
         }
         return false;
+    }
+
+    public int checkTypeAcount(String userName) {
+        int type = TYPE_USERNAME;
+        if (userName == null) {
+            return TYPE_USERNAME;
+        }
+        if (userName.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+            return TYPE_EMAIL;
+        }
+
+        if (userName.matches("^[0-9\\-\\+]{4,25}$")) {
+            return TYPE_PHONE;
+        }
+
+        return type;
     }
 
     public void login() {
