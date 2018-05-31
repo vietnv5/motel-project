@@ -76,7 +76,15 @@
         <div class="fr" style="margin-right: 0px;">
             <h:form rendered="#{sessionScope.user!=null}" styleClass="TexAlRight">
                 <p:commandLink  style="text-decoration: unset;"
-                                styleClass="fa fa-cog White Fs18 ElemCmd" value="Change password"
+                                styleClass="fa fa-info White Fs18 ElemCmd" value=" Thông tin cá nhân"
+                                 onclick="PF('block').show()" process="@this"
+                                 oncomplete="PF('block').hide();PF('infoCurrUserDlg').show()"
+                                 actionListener="#{catUserController.preShowInfoCurrUser()}"
+                                 update=":infoCurrUserForm"
+                                 title="My info" >
+                </p:commandLink>
+                <p:commandLink  style="text-decoration: unset;float: right;margin-top: 5px;"
+                                styleClass="fa fa-cog White Fs18 ElemCmd" value=" Đổi mật khẩu"
                                  onclick="PF('block').show()" process="@this"
                                  oncomplete="PF('block').hide();PF('changePassworDlg').show()"
                                  actionListener="#{catUserController.preChangePassword()}"
@@ -84,7 +92,7 @@
                                  title="Change password" >
                 </p:commandLink>
                 <p:commandLink id="cmdLogout" actionListener="#{authenticationController.logout}" style="text-decoration: unset;float: right;margin-top: 5px;"
-                               styleClass="fa fa-sign-out White Fs18 ElemCmd" value="Sign out">
+                               styleClass="fa fa-sign-out White Fs18 ElemCmd" title="Sign out" value="Đăng xuất">
                 </p:commandLink>
             </h:form>
         </div>
@@ -177,6 +185,7 @@
             background: #027FAC;
             z-index: 100;
             display: none;
+            height: 70px;
         }
 
         #search-bar #formSearch\:search-btn {

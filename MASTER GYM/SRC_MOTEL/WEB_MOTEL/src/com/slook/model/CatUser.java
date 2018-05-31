@@ -2,6 +2,7 @@ package com.slook.model;
 
 import com.motel.model.GroupUser;
 import java.io.Serializable;
+import java.util.Date;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.LazyCollection;
@@ -15,7 +16,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
  */
 @Entity
 @Table(name = "CAT_USER")
-public class CatUser implements Serializable{
+public class CatUser implements Serializable {
 
     private Long userId;
     private String userName;
@@ -35,6 +36,15 @@ public class CatUser implements Serializable{
     private Long groupUserId;
 
     private GroupUser groupUser;
+
+    // thong tin bo sung
+    private Long sex;
+    private Date birthDate;
+    private String address;
+    private String phoneNumber;
+    private String description;
+    private String email;
+    private String job;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
@@ -206,6 +216,70 @@ public class CatUser implements Serializable{
 
     public void setGroupUser(GroupUser groupUser) {
         this.groupUser = groupUser;
+    }
+
+    @Column(name = "SEX")
+    public Long getSex() {
+        return sex;
+    }
+
+    public void setSex(Long sex) {
+        this.sex = sex;
+    }
+
+    @Column(name = "BIRTH_DATE")
+    @Temporal(TemporalType.DATE)
+    public Date getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(Date birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    @Column(name = "ADDRESS")
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    @Column(name = "PHONE_NUMBER")
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    @Column(name = "DESCRIPTION")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    @Column(name = "EMAIL")
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    @Column(name = "JOB")
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
     }
 
 }

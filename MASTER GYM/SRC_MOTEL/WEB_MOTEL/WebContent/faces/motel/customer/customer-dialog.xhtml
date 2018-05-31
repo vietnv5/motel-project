@@ -52,7 +52,11 @@
                                                      title="#{msg['datatable.header.email']}"
                                                      required="false" maxlength="50"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
+                                                     validatorMessage="Email không hơp lệ!"
                                                      >
+                                            <f:validateRegex 
+		pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+
                                         </p:inputText>
 
                                         <label>#{msg['datatable.header.email']} </label>
