@@ -57,6 +57,7 @@ public class AuthenticationController implements Constant, Serializable {
                 filters.put("phoneNumber-EXAC_IGNORE_CASE", userName);
             }
             filters.put("password-EXAC", password);
+            filters.put("status", Constant.STATUS.ACTIVE);
             List<CatUser> list = catUserService.findList(filters);
             if (list != null && !list.isEmpty() && list.size() == 1) {
                 user = list.get(0);

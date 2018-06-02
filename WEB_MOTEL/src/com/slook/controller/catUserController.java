@@ -1,6 +1,5 @@
 package com.slook.controller;
 
-import com.motel.controller.HomeController;
 import com.motel.model.GroupUser;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatRole;
@@ -10,9 +9,10 @@ import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.GenericDaoServiceNewV2;
 import com.slook.persistence.GroupUserServiceImpl;
 import com.slook.util.Constant;
+import com.slook.util.DataConfig;
+import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
 import com.slook.util.SessionUtil;
-import com.slook.util.SessionWrapper;
 import com.slook.util.StringUtil;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.LazyDataModel;
@@ -22,6 +22,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
 import java.io.Serializable;
 import java.text.MessageFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -131,8 +132,10 @@ public class catUserController implements Serializable {
                 return;
             }
 
-            if(!checkValidate())return;
-            
+            if (!checkValidate()) {
+                return;
+            }
+
             if (currCatUser.getEmployee() != null) {
                 currCatUser.setEmpId(currCatUser.getEmployee().getEmployeeId());
             }
@@ -360,27 +363,34 @@ public class catUserController implements Serializable {
 
     public void saveOrUpdateInfoCurrUser() {
         try {
-            Map<String, Object> filters = new HashMap<String, Object>();
-            filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
-            if (currCatUser.getUserId() != null) {
-                filters.put("userId-NEQ", currCatUser.getUserId());
-            }
-            List<CatUser> lst = catUserService.findList(filters);
-            if (!lst.isEmpty() && lst.size() > 0) {
-                MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
-                        "Username"
-                ));
+            if (StringUtil.isNullOrEmpty(currCatUser.getPhoneNumber()) && StringUtil.isNullOrEmpty(currCatUser.getEmail())) {
+                MessageUtil.setErrorMessage("Cần phải nhập email hoặc số điện thoại!");
                 return;
             }
-            if(!checkValidate())return;
+            //check trung username
+            if (StringUtil.isNotNullAndNullStr(currCatUser.getUserName())) {
+                Map<String, Object> filters = new HashMap<String, Object>();
+                filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
+                if (currCatUser.getUserId() != null) {
+                    filters.put("userId-NEQ", currCatUser.getUserId());
+                }
+                List<CatUser> lst = catUserService.findList(filters);
+                if (!lst.isEmpty() && lst.size() > 0) {
+                    MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
+                            "Username"
+                    ));
+                    return;
+                }
+            } 
+            if (!checkValidate()) {
+                return;
+            }
 
 //            if (currCatUser.getEmployee() != null) {
 //                currCatUser.setEmpId(currCatUser.getEmployee().getEmployeeId());
 //            }
-//            if (currCatUser.getPassword() != null && !currCatUser.getPassword().equals(currCatUser.getConfirmPassword())) {
-//                MessageUtil.setErrorMessage("Mật khẩu nhập chưa khớp!");
-//                return;
-//            }
+//trường hợp đăng ký tài khoản mới
+            processRegistrationAccount(currCatUser);
 //            if (StringUtil.isNullOrEmpty(currCatUser.getPassword())) {
 //                currCatUser.setPassword(oldPassword);
 //            }
@@ -404,5 +414,53 @@ public class catUserController implements Serializable {
             e.printStackTrace();
         }
     }
+    public void preRegistrationAccount() {
+        try {
+            isEdit=false;
+            currCatUser = new CatUser();
+            currCatUser.setStatus(1l);
+            currCatUser.setGroupUser(new GroupUser());
+            oldObjectStr = null;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void processRegistrationAccount(CatUser currCatUser) {
+        try {
+            if (currCatUser.getUserId() == null) {
+
+                if (currCatUser.getPassword() != null && !currCatUser.getPassword().equals(currCatUser.getConfirmPassword())) {
+                    MessageUtil.setErrorMessage("Mật khẩu nhập chưa khớp!");
+                    return;
+                }
+                GroupUser currGroupUser = new GroupUser();
+                if (currCatUser.getGroupUser() != null) {
+                    currGroupUser = currCatUser.getGroupUser();
+                }
+                //set thong tin mac dinh
+                currGroupUser.setCreateTime(new Date());
+                currGroupUser.setCode(DateTimeUtils.format(new Date(), "yyyyMMddHHmmss"));
+                long numRoomDefault = 10;
+                try {
+                    String numRoomStr = DataConfig.getConfigByKey("MAX_NUMBER_ROOM_DEFAULT");
+                    numRoomDefault = Long.valueOf(numRoomStr);
+                } catch (Exception e) {
+                }
+                currGroupUser.setMaxNumberRoom(numRoomDefault);
+                currGroupUser.setStartTime(new Date());
+                currGroupUser.setDescription("Registration Account");
+                GroupUserServiceImpl.getInstance().saveOrUpdate(currGroupUser);
+                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, null, currGroupUser.toString(),
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+
+                currCatUser.setGroupUserId(currGroupUser.getId());
+            }
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
+            e.printStackTrace();
+        }
+    }
+
 
 }

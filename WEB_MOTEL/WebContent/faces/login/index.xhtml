@@ -103,6 +103,13 @@
                                              actionListener="#{authenticationController.login}"
                                              onclick="PF('block').show()" oncomplete="PF('block').hide()" />
                         </div>
+                        <div class="Container100">
+                            <p:commandLink styleClass="GreenButton"  action="/account-Registration"   ajax="false"
+                                           actionListener="#{catUserController.preRegistrationAccount()}"  >
+                              <h:outputText value="Sign Up" />
+                            </p:commandLink>
+                            
+                        </div>
 
                     </div>
 

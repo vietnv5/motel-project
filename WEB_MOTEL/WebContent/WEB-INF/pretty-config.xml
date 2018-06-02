@@ -185,4 +185,8 @@
         <pattern value="/groupUser"/>
         <view-id value="/faces/motel/groupUser/groupUser-index.xhtml"/>
     </url-mapping>
+    <url-mapping id="account-Registration">
+        <pattern value="/account-Registration"/>
+        <view-id value="/faces/login/accountRegistration.xhtml"/>
+    </url-mapping>
 </pretty-config>
