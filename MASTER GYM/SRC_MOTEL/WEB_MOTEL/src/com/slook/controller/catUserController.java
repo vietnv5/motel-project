@@ -1,6 +1,7 @@
 package com.slook.controller;
 
 import com.motel.model.GroupUser;
+import com.motel.model.Home;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatRole;
 import com.slook.model.CatUser;
@@ -8,6 +9,7 @@ import com.slook.model.Employee;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.GenericDaoServiceNewV2;
 import com.slook.persistence.GroupUserServiceImpl;
+import com.slook.persistence.HomeServiceImpl;
 import com.slook.util.Constant;
 import com.slook.util.DataConfig;
 import com.slook.util.DateTimeUtils;
@@ -27,6 +29,10 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
 import static org.omnifaces.util.Faces.getRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -93,6 +99,8 @@ public class catUserController implements Serializable {
             orderHome.put("name", Constant.ORDER.ASC);
             lstGroupUser = GroupUserServiceImpl.getInstance().findList(filtersGroupUser, orderHome);
 
+            // su dung cho dk tai khoan
+            preRegistrationAccount();
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -381,7 +389,7 @@ public class catUserController implements Serializable {
                     ));
                     return;
                 }
-            } 
+            }
             if (!checkValidate()) {
                 return;
             }
@@ -414,9 +422,10 @@ public class catUserController implements Serializable {
             e.printStackTrace();
         }
     }
+
     public void preRegistrationAccount() {
         try {
-            isEdit=false;
+            isEdit = false;
             currCatUser = new CatUser();
             currCatUser.setStatus(1l);
             currCatUser.setGroupUser(new GroupUser());
@@ -434,6 +443,15 @@ public class catUserController implements Serializable {
                     MessageUtil.setErrorMessage("Mật khẩu nhập chưa khớp!");
                     return;
                 }
+                // set role
+                String ROLE_REGISTRATION=StringUtil.isNotNullAndNullStr(DataConfig.getConfigByKey("ROLE_REGISTRATION"))
+                        ? DataConfig.getConfigByKey("ROLE_REGISTRATION") : Constant.ROLE.CUSTOMER;
+                List<CatRole> lsRole = lstRole.stream().filter(o -> ROLE_REGISTRATION.equalsIgnoreCase(o.getRoleCode())).collect(Collectors.toList());
+                if (lsRole != null && !lsRole.isEmpty()) {
+                    currCatUser.setRoleId(lsRole.get(0).getRoleId());
+                    currCatUser.setRole(lsRole.get(0));
+                }
+
                 GroupUser currGroupUser = new GroupUser();
                 if (currCatUser.getGroupUser() != null) {
                     currGroupUser = currCatUser.getGroupUser();
@@ -450,11 +468,22 @@ public class catUserController implements Serializable {
                 currGroupUser.setMaxNumberRoom(numRoomDefault);
                 currGroupUser.setStartTime(new Date());
                 currGroupUser.setDescription("Registration Account");
+                currGroupUser.setStatus(Constant.STATUS.ACTIVE);
                 GroupUserServiceImpl.getInstance().saveOrUpdate(currGroupUser);
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, null, currGroupUser.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 
                 currCatUser.setGroupUserId(currGroupUser.getId());
+
+                // tao thong tin nha tro
+                Home currHome = new Home();
+                currHome.setGroupUserId(currGroupUser.getId());
+                currHome.setStatus(Constant.STATUS.ACTIVE);
+                currHome.setHomeName(currGroupUser.getName());
+                HomeServiceImpl.getInstance().saveOrUpdate(currHome);
+                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, null, currHome.toString(),
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+
             }
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
@@ -462,5 +491,48 @@ public class catUserController implements Serializable {
         }
     }
 
+    public void onCreateAccount() {
+        try {
+            if (StringUtil.isNullOrEmpty(currCatUser.getPhoneNumber()) && StringUtil.isNullOrEmpty(currCatUser.getEmail())) {
+                MessageUtil.setErrorMessage("Cần phải nhập email hoặc số điện thoại!");
+                return;
+            }
+
+            if (!checkValidate()) {
+                return;
+            }
+
+//trường hợp đăng ký tài khoản mới
+            processRegistrationAccount(currCatUser);
+
+            catUserService.saveOrUpdate(currCatUser);
+            //ghi log
+            if (oldObjectStr != null) {
+                LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            } else {
+                LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            }
+
+            MessageUtil.setInfoMessageFromRes("info.save.success");
+//            RequestContext.getCurrentInstance().execute("PF('infoCurrUserDlg').hide();");
+
+// chuyen toi trang chu
+            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
+            Map sessionMap = context.getSessionMap();
+            sessionMap.put("user", currCatUser);
+            sessionMap.put("authenticated", true);
+            String defaultUrl = DataConfig.getConfigByKey("DEFAULT_URL") != null
+                    ? DataConfig.getConfigByKey("DEFAULT_URL") : "";
+            
+            HttpServletRequest req = (HttpServletRequest) context.getRequest();
+            context.redirect(req.getContextPath() + defaultUrl);
+//            preAdd();
+        } catch (Exception e) {
+            MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
+            e.printStackTrace();
+        }
+    }
 
 }

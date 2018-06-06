@@ -604,5 +604,9 @@ public interface Constant {
         Long STATUS_ACTIVE = 1L;
         Long STATUS_CHECKOUT = 2L;
     }
+    interface ROLE{
+        String CUSTOMER="CUSTOMER";
+    }
+    
 
 }

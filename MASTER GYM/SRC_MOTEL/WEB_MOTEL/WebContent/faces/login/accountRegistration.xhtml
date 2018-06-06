@@ -40,7 +40,7 @@
         <title>#{msg['page.title']}</title>
     </h:head>
     <h:body class="AquaBack" >
-        <h:form>
+        <h:form >
             <div class="Wid70 MarAuto">
 
                 <div class="Wid70 MarAuto WidAutoOnMobile TexAlCenter">
@@ -60,7 +60,7 @@
                         <div class="Container50 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <label>#{msg['catUser.fullName']} *</label>
-                                <p:inputText value="#{catUserController.currCatUser.fullName}"
+                                <p:inputText value="#{accountRegistrationController.currCatUser.fullName}"
                                              id="fullNameId"  maxlength="200" style="width: 90%"
                                              title="#{msg['catUser.fullName']}"
                                              required="true"
@@ -74,7 +74,7 @@
                         <div class=" Container50 Responsive50  MarTop20">
                             <span class="md-inputfield">
                                 <label>#{msg['groupUser.name']} *</label>
-                                <p:inputText value="#{catUserController.currCatUser.groupUser.name}"
+                                <p:inputText value="#{accountRegistrationController.currCatUser.groupUser.name}"
                                              id="nameId"  converter="trimConverter" maxlength="200"
                                              title="#{msg['groupUser.name']}"  style="width: 90%"
                                              required="true" placeholder="#{msg['groupUser.name.placeholder']}"
@@ -88,20 +88,21 @@
                         <div class="Container50 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <label>#{msg['customer.phone']} </label>
-                                <p:inputMask value="#{catUserController.currCatUser.phoneNumber}"
+                                <p:inputText value="#{accountRegistrationController.currCatUser.phoneNumber}"
                                              id="phone" style="width: 90%"
                                              title="#{msg['customer.phone']}"
                                              required="false"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['customer.phone'])}"
-                                             mask="9999?9999999999">
-                                </p:inputMask>
+                                             validatorMessage="#{msg['customer.phone']} không hơp lệ!" >
+                                    <f:validateRegex  pattern="^[0-9]+$" />
+                                </p:inputText>
                                 <p:message for="phone"></p:message>
                             </span>
                         </div>
                         <div class="Container50 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <label>#{msg['datatable.header.email']} </label>
-                                <p:inputText value="#{catUserController.currCatUser.email}" id="email"
+                                <p:inputText value="#{accountRegistrationController.currCatUser.email}" id="email"
                                              title="#{msg['datatable.header.email']}"
                                              required="false" maxlength="50" style="width: 90%"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
@@ -117,11 +118,11 @@
                         </div>
                         <div class="Container50 Responsive50  MarTop20">
                             <span class="md-inputfield">
-                                <label>#{msg['catUser.password']} #{catUserController.isEdit?'':'*'}</label>
-                                <p:password value="#{catUserController.currCatUser.password}"
+                                <label>#{msg['catUser.password']} #{accountRegistrationController.isEdit?'':'*'}</label>
+                                <p:password value="#{accountRegistrationController.currCatUser.password}"
                                             id="passwordUserId"  redisplay="false" style="width: 90%"
                                             title="#{msg['catUser.password']}"  maxlength="200"
-                                            required="#{!catUserController.isEdit}"
+                                            required="#{!accountRegistrationController.isEdit}"
                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.password'])}"
                                             >
                                 </p:password>
@@ -131,11 +132,11 @@
                         </div>
                         <div class="Container50 Responsive50  MarTop20">
                             <span class="md-inputfield">
-                                <label>#{msg['catUser.confirmPassword']} #{catUserController.isEdit?'':'*'}</label>
-                                <p:password value="#{catUserController.currCatUser.confirmPassword}"
+                                <label>#{msg['catUser.confirmPassword']} #{accountRegistrationController.isEdit?'':'*'}</label>
+                                <p:password value="#{accountRegistrationController.currCatUser.confirmPassword}"
                                             id="confirmPasswordUserId"  redisplay="false" style="width: 90%"
                                             title="#{msg['catUser.confirmPassword']}"  maxlength="200"
-                                            required="#{!catUserController.isEdit}"
+                                            required="#{!accountRegistrationController.isEdit}"
                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.confirmPassword'])}"
                                             >
                                 </p:password>
@@ -148,10 +149,12 @@
 
                         <div class="EmptyBox20"></div>
                         <div class="Container100 TexAlCenter">
-                            <p:commandButton styleClass="GreenButton" value="Đăng ký" style="width: 50%"
-                                             actionListener="#{catUserController.saveOrUpdateInfoCurrUser()}"
+                            <p:commandButton styleClass="GreenButton" value="Đăng ký" style="width: 30%"
+                                             actionListener="#{accountRegistrationController.onCreateAccount()}"
                                              onclick="PF('block').show()" oncomplete="PF('block').hide()" />
-                            
+
+                            <p:button  value="Trở về"  style="margin: 5px;width: 30%" href="login" >
+                            </p:button>
                         </div>
 
                     </div>
@@ -165,7 +168,7 @@
                 </div>
             </div>
         </h:form>
-            <!--<ui:include src="accountRegistration.xhtml"/>-->
+        <!--<ui:include src="accountRegistration.xhtml"/>-->
 
         <style type="text/css">
             .ui-button-text, .ui-button-text-only .ui-button-text {
