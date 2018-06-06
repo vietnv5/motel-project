@@ -16,7 +16,14 @@ VALUES (NULL, '/functionPath', 'Danh mục chức năng', '1', '2', '3');
 
 ALTER TABLE `group_user` ADD `MAX_NUMBER_ROOM` INT(11)   NULL AFTER `DESCRIPTION`;
 
+ALTER TABLE `cat_user` ADD `email` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT 'Email' AFTER `GROUP_USER_ID`;
+ALTER TABLE `cat_user` ADD `PHONE_NUMBER` VARCHAR(50) NULL AFTER `email`;
 
-
+ALTER TABLE `cat_user` ADD  (  `SEX` int(10) DEFAULT NULL,
+  `BIRTH_DATE` date DEFAULT NULL,  `ADDRESS` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `DESCRIPTION` varchar(500) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `img_path` varchar(100) DEFAULT NULL,
+  `job` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL)
+;
  9
 /catUser

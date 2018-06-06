@@ -64,13 +64,14 @@
 
                         <div class="Container33 Responsive50 MarTop20">
                             <span class="md-inputfield">
-                                <p:inputMask value="#{catUserController.currCatUser.phoneNumber}"
+                                <p:inputText value="#{catUserController.currCatUser.phoneNumber}"
                                              id="phone" style="width: 80%"
                                              title="#{msg['customer.phone']}"
                                              required="false"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['customer.phone'])}"
-                                             mask="9999999999?9">
-                                </p:inputMask>
+                                             validatorMessage="#{msg['customer.phone']} không hơp lệ!">
+                                    <f:validateRegex  pattern="^[0-9]+$" />
+                                </p:inputText>
                                 <p:message for="phone"></p:message>
                                 <label>#{msg['customer.phone']} </label>
                             </span>
