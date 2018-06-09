@@ -5,28 +5,29 @@
  */
 package com.motel.controller;
 
+import com.motel.model.CatService;
 import com.motel.model.GroupUser;
 import com.motel.model.Home;
+import com.motel.model.Room;
 import com.slook.controller.LogActionController;
 import com.slook.controller.catUserController;
-import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatRole;
 import com.slook.model.CatUser;
-import com.slook.model.Employee;
+import com.slook.persistence.CatServiceServiceImpl;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.persistence.GenericDaoServiceNewV2;
 import com.slook.persistence.GroupUserServiceImpl;
 import com.slook.persistence.HomeServiceImpl;
+import com.slook.persistence.RoomServiceImpl;
 import com.slook.util.Constant;
 import com.slook.util.DataConfig;
 import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
-import com.slook.util.SessionUtil;
 import com.slook.util.StringUtil;
+import com.slook.util.XMLEncoderDecoderExample;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -36,8 +37,6 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
-import static org.omnifaces.util.Faces.getRequest;
-import org.primefaces.model.LazyDataModel;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,6 +58,8 @@ public class AccountRegistrationController {
     private String oldObjectStr = null;
 // phan nhom nguoi dung
     private boolean isEdit = false;
+// thong tin khoi tao
+    Home currHome = new Home();
 
     @PostConstruct
     public void onStart() {
@@ -150,7 +151,7 @@ public class AccountRegistrationController {
                     roleCfg = DataConfig.getConfigByKey("ROLE_REGISTRATION");
                 } catch (Exception e) {
                 }
-                String ROLE_REGISTRATION =roleCfg!=null?roleCfg: Constant.ROLE.CUSTOMER;
+                String ROLE_REGISTRATION = roleCfg != null ? roleCfg : Constant.ROLE.CUSTOMER;
                 List<CatRole> lsRole = lstRole.stream().filter(o -> ROLE_REGISTRATION.equalsIgnoreCase(o.getRoleCode())).collect(Collectors.toList());
                 if (lsRole != null && !lsRole.isEmpty()) {
                     currCatUser.setRoleId(lsRole.get(0).getRoleId());
@@ -181,7 +182,7 @@ public class AccountRegistrationController {
                 currCatUser.setGroupUserId(currGroupUser.getId());
 
                 // tao thong tin nha tro
-                Home currHome = new Home();
+                currHome = new Home();
                 currHome.setGroupUserId(currGroupUser.getId());
                 currHome.setStatus(Constant.STATUS.ACTIVE);
                 currHome.setHomeName(currGroupUser.getName());
@@ -211,6 +212,7 @@ public class AccountRegistrationController {
             processRegistrationAccount(currCatUser);
 
             catUserService.saveOrUpdate(currCatUser);
+            initDataDefault();
             //ghi log
             if (oldObjectStr != null) {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
@@ -238,6 +240,34 @@ public class AccountRegistrationController {
         } catch (Exception e) {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
+        }
+    }
+
+    //tao cac thong tin khac
+    public void initDataDefault() {
+        try {
+            // tao dich vu co ban
+            List<CatService> lstCatService = (List) XMLEncoderDecoderExample.deserializeFromXMLObject(CatService.class);
+            for (CatService bo : lstCatService) {
+                bo.setServiceId(null);
+                bo.setBillServiceList(null);
+                bo.setContractServiceList(null);
+                bo.setGroupUserId(currCatUser.getGroupUserId());
+            }
+            CatServiceServiceImpl.getInstance().saveOrUpdate(lstCatService);
+            //tao phong mau
+            List<Room> lstRoom = (List) XMLEncoderDecoderExample.deserializeFromXMLObject(Room.class);
+            for (Room bo : lstRoom) {
+                bo.setRoomId(null);
+                bo.setHomeId(currHome.getHomeId());
+                bo.setCustomerRoomList(null);
+                bo.setElectricWaterList(null);
+            }
+            RoomServiceImpl.getInstance().saveOrUpdate(lstRoom);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage(),e);
         }
     }
 

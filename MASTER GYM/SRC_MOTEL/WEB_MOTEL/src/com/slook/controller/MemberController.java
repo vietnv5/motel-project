@@ -1291,7 +1291,7 @@ public class MemberController {
                     if (lstCatPacks != null) {
                         for (CatPack bo : lstCatPacks) {
                             if (bo != null && bo.getCatService() != null) {
-                                CatService boService = bo.getCatService();
+                                CatServiceOld boService = bo.getCatService();
 
                                 MemberUsedService mus = new MemberUsedService();
                                 mus.setCreateTime(new Date());
@@ -3613,7 +3613,7 @@ CfgWsTimekeeper cfg = new CfgWsTimekeeper();
                 if (lstCatPacks != null) {
                     for (CatPack bo : lstCatPacks) {
                         if (bo != null && bo.getCatService() != null) {
-                            CatService boService = bo.getCatService();
+                            CatServiceOld boService = bo.getCatService();
 
                             MemberUsedService mus = new MemberUsedService();
                             mus.setCreateTime(new Date());

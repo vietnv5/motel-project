@@ -6,6 +6,8 @@
 package com.motel.model;
 
 import com.slook.model.CatItemBO;
+import com.slook.util.Constant;
+import com.slook.util.MessageUtil;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -29,16 +31,16 @@ import javax.xml.bind.annotation.XmlTransient;
  */
 @Entity
 @Table(name = "service")
-@XmlRootElement
-@NamedQueries({
-    @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s")
-    , @NamedQuery(name = "Service.findByServiceId", query = "SELECT s FROM Service s WHERE s.serviceId = :serviceId")
-    , @NamedQuery(name = "Service.findByServiceName", query = "SELECT s FROM Service s WHERE s.serviceName = :serviceName")
-    , @NamedQuery(name = "Service.findByPrice", query = "SELECT s FROM Service s WHERE s.price = :price")
-    , @NamedQuery(name = "Service.findByUnit", query = "SELECT s FROM Service s WHERE s.unit = :unit")
-    , @NamedQuery(name = "Service.findByGroupUserId", query = "SELECT s FROM Service s WHERE s.groupUserId = :groupUserId")
-    , @NamedQuery(name = "Service.findByDefaultStatus", query = "SELECT s FROM Service s WHERE s.defaultStatus = :defaultStatus")})
-public class Service implements Serializable {
+//@XmlRootElement
+//@NamedQueries({
+//    @NamedQuery(name = "Service.findAll", query = "SELECT s FROM Service s")
+//    , @NamedQuery(name = "Service.findByServiceId", query = "SELECT s FROM Service s WHERE s.serviceId = :serviceId")
+//    , @NamedQuery(name = "Service.findByServiceName", query = "SELECT s FROM Service s WHERE s.serviceName = :serviceName")
+//    , @NamedQuery(name = "Service.findByPrice", query = "SELECT s FROM Service s WHERE s.price = :price")
+//    , @NamedQuery(name = "Service.findByUnit", query = "SELECT s FROM Service s WHERE s.unit = :unit")
+//    , @NamedQuery(name = "Service.findByGroupUserId", query = "SELECT s FROM Service s WHERE s.groupUserId = :groupUserId")
+//    , @NamedQuery(name = "Service.findByDefaultStatus", query = "SELECT s FROM Service s WHERE s.defaultStatus = :defaultStatus")})
+public class CatService implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -67,11 +69,13 @@ public class Service implements Serializable {
 
     @Transient
     private CatItemBO unitBO;
+    @Transient
+    private String defaultStatusStr;
     
-    public Service() {
+    public CatService() {
     }
 
-    public Service(Long serviceId) {
+    public CatService(Long serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -167,10 +171,10 @@ public class Service implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Service)) {
+        if (!(object instanceof CatService)) {
             return false;
         }
-        Service other = (Service) object;
+        CatService other = (CatService) object;
         if ((this.serviceId == null && other.serviceId != null) || (this.serviceId != null && !this.serviceId.equals(other.serviceId))) {
             return false;
         }
@@ -188,6 +192,19 @@ public class Service implements Serializable {
 
     public void setUnitBO(CatItemBO unitBO) {
         this.unitBO = unitBO;
+    }
+
+    public String getDefaultStatusStr() {
+          if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_ON.equals( defaultStatus)) {
+            defaultStatusStr = MessageUtil.getResourceBundleMessage("catService.defaultStatus.YES");
+        } else if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_OFF.equals( defaultStatus)) {
+            defaultStatusStr = MessageUtil.getResourceBundleMessage("catService.defaultStatus.NO");
+        }
+        return defaultStatusStr;
+    }
+
+    public void setDefaultStatusStr(String defaultStatusStr) {
+        this.defaultStatusStr = defaultStatusStr;
     }
     
 }

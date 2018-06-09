@@ -2,7 +2,7 @@ package com.slook.controller;
 
 
 import com.slook.lazy.LazyDataModelBase;
-import com.slook.model.CatService;
+import com.slook.model.CatServiceOld;
 import com.slook.persistence.CatServiceImpl;
 import com.slook.util.MessageUtil;
 import org.primefaces.component.message.Message;
@@ -23,14 +23,14 @@ import java.util.*;
 
 @ManagedBean
 @ViewScoped
-public class CatServiceController {
+public class CatServiceControllerBK {
     protected static final Logger logger = LoggerFactory.getLogger(VCustomerCheckinController.class);
     @ManagedProperty(value = "#{catServiceImpl}")
     private CatServiceImpl catService;
     private List<Boolean> columnVisibale = new ArrayList<>();
-    private LazyDataModel<CatService> lazyDataModel;
-    private CatService catServiceCurr = new CatService();
-    private List<CatService> catServiceList = new ArrayList<>();
+    private LazyDataModel<CatServiceOld> lazyDataModel;
+    private CatServiceOld catServiceCurr = new CatServiceOld();
+    private List<CatServiceOld> catServiceList = new ArrayList<>();
     private Long catServiceId;
 
     @PostConstruct
@@ -47,11 +47,11 @@ public class CatServiceController {
 
     public void preAdd() {
         this.catServiceId = Long.valueOf((catServiceList.size() > 0) ? (catServiceList.size() + 1):1);
-        this.catServiceCurr=new CatService();
+        this.catServiceCurr=new CatServiceOld();
         this.catServiceCurr.setServiceId(this.catServiceId);
     }
 
-    public void preEdit(CatService catService) {
+    public void preEdit(CatServiceOld catService) {
         this.catServiceCurr = catService;
     }
 
@@ -64,13 +64,13 @@ public class CatServiceController {
         Map<String, Object> filterIdExist = new HashMap<>();
         filterIdExist.put("serviceId",catServiceCurr.getServiceId());
         try {
-            List<CatService> listIdExist = catService.findList(filterIdExist, null);
+            List<CatServiceOld> listIdExist = catService.findList(filterIdExist, null);
             if (listIdExist.size() > 0) {
                 catService.saveOrUpdate(catServiceCurr);
                 MessageUtil.setInfoMessageFromRes("common.message.success");
                 return;
             }
-            List<CatService> listExist = catService.findList(filterCodeExist, null);
+            List<CatServiceOld> listExist = catService.findList(filterCodeExist, null);
             if (listExist.size() > 0) {
                 MessageUtil.setWarnMessageFromRes("catService.code.exist");
                 Message message=new Message();
@@ -90,7 +90,7 @@ public class CatServiceController {
 
     }
 
-    public void onDelete(CatService cat) {
+    public void onDelete(CatServiceOld cat) {
         try {
             catService.delete(cat);
             MessageUtil.setInfoMessageFromRes("common.message.success");
@@ -124,27 +124,27 @@ public class CatServiceController {
         this.columnVisibale = columnVisibale;
     }
 
-    public LazyDataModel<CatService> getLazyDataModel() {
+    public LazyDataModel<CatServiceOld> getLazyDataModel() {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<CatService> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<CatServiceOld> lazyDataModel) {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public CatService getCatServiceCurr() {
+    public CatServiceOld getCatServiceCurr() {
         return catServiceCurr;
     }
 
-    public void setCatServiceCurr(CatService catServiceCurr) {
+    public void setCatServiceCurr(CatServiceOld catServiceCurr) {
         this.catServiceCurr = catServiceCurr;
     }
 
-    public List<CatService> getCatServiceList() {
+    public List<CatServiceOld> getCatServiceList() {
         return catServiceList;
     }
 
-    public void setCatServiceList(List<CatService> catServiceList) {
+    public void setCatServiceList(List<CatServiceOld> catServiceList) {
         this.catServiceList = catServiceList;
     }
 

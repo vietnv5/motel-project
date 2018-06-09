@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_131" class="java.beans.XMLDecoder">
+ <object class="java.util.ArrayList">
+  <void method="add">
+   <object class="com.motel.model.CatService" id="CatService0">
+    <void property="billServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService0"/>
+      </void>
+     </object>
+    </void>
+    <void property="contractServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService0"/>
+      </void>
+     </object>
+    </void>
+    <void property="defaultStatus">
+     <long>1</long>
+    </void>
+    <void property="groupUserId">
+     <long>1</long>
+    </void>
+    <void property="price">
+     <long>53500</long>
+    </void>
+    <void property="serviceCode">
+     <string>ELECTRIC</string>
+    </void>
+    <void property="serviceId">
+     <long>1</long>
+    </void>
+    <void property="serviceName">
+     <string>Điện</string>
+    </void>
+    <void property="status">
+     <long>1</long>
+    </void>
+    <void property="unit">
+     <long>3</long>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.motel.model.CatService" id="CatService1">
+    <void property="billServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService1"/>
+      </void>
+     </object>
+    </void>
+    <void property="contractServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService1"/>
+      </void>
+     </object>
+    </void>
+    <void property="defaultStatus">
+     <long>1</long>
+    </void>
+    <void property="groupUserId">
+     <long>1</long>
+    </void>
+    <void property="price">
+     <long>30000</long>
+    </void>
+    <void property="serviceCode">
+     <string>WATER</string>
+    </void>
+    <void property="serviceId">
+     <long>2</long>
+    </void>
+    <void property="serviceName">
+     <string>Nước</string>
+    </void>
+    <void property="status">
+     <long>1</long>
+    </void>
+    <void property="unit">
+     <long>4</long>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.motel.model.CatService" id="CatService2">
+    <void property="billServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService2"/>
+      </void>
+     </object>
+    </void>
+    <void property="contractServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService2"/>
+      </void>
+     </object>
+    </void>
+    <void property="defaultStatus">
+     <long>1</long>
+    </void>
+    <void property="groupUserId">
+     <long>1</long>
+    </void>
+    <void property="price">
+     <long>10</long>
+    </void>
+    <void property="serviceCode">
+     <string>VESINH</string>
+    </void>
+    <void property="serviceId">
+     <long>3</long>
+    </void>
+    <void property="serviceName">
+     <string>Vệ sinh</string>
+    </void>
+    <void property="status">
+     <long>2</long>
+    </void>
+    <void property="unit">
+     <long>2</long>
+    </void>
+   </object>
+  </void>
+  <void method="add">
+   <object class="com.motel.model.CatService" id="CatService3">
+    <void property="billServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService3"/>
+      </void>
+     </object>
+    </void>
+    <void property="contractServiceList">
+     <object class="org.hibernate.collection.internal.PersistentBag">
+      <void property="owner">
+       <object idref="CatService3"/>
+      </void>
+     </object>
+    </void>
+    <void property="defaultStatus">
+     <long>0</long>
+    </void>
+    <void property="groupUserId">
+     <long>1</long>
+    </void>
+    <void property="price">
+     <long>100</long>
+    </void>
+    <void property="serviceCode">
+     <string>Internet</string>
+    </void>
+    <void property="serviceId">
+     <long>4</long>
+    </void>
+    <void property="serviceName">
+     <string>Internet(mạng)</string>
+    </void>
+    <void property="status">
+     <long>2</long>
+    </void>
+    <void property="unit">
+     <long>2</long>
+    </void>
+   </object>
+  </void>
+ </object>
+</java>

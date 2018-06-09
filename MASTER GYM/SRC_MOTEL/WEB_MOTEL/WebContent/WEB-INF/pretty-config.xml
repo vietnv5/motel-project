@@ -95,10 +95,10 @@
         <pattern value="/custom_checkin"/>
         <view-id value="/faces/custom_checkin/custom-checkin-index.xhtml"/>
     </url-mapping>
-    <url-mapping id="catService">
+<!--    <url-mapping id="catService">
         <pattern value="/catService"/>
         <view-id value="/faces/cat_service/cat-service-index.xhtml"/>
-    </url-mapping>
+    </url-mapping>-->
     <url-mapping id="customer_checkout">
         <pattern value="/customer_checkout"/>
         <view-id value="/faces/customer_checkout/customerCheckout-index.xhtml"/>
@@ -188,5 +188,9 @@
     <url-mapping id="account-Registration">
         <pattern value="/account-Registration"/>
         <view-id value="/faces/login/accountRegistration.xhtml"/>
+    </url-mapping>
+    <url-mapping id="catService">
+        <pattern value="/catService"/>
+        <view-id value="/faces/motel/catService/catService-index.xhtml"/>
     </url-mapping>
 </pretty-config>

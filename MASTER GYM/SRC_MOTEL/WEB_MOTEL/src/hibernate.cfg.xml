@@ -122,7 +122,7 @@
         <mapping class="com.motel.model.GroupUser"/>
         <mapping class="com.motel.model.Home"/>
         <mapping class="com.motel.model.Room"/>
-        <mapping class="com.motel.model.Service"/>
+        <mapping class="com.motel.model.CatService"/>
 
     </session-factory>
 

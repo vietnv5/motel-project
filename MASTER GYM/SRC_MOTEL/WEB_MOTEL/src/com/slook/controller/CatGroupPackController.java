@@ -41,12 +41,12 @@ public class CatGroupPackController implements Serializable {
     CatPack currPack = new CatPack();
     private GenericDaoServiceNewV2<CatGroupPack, Long> catGroupPackService;
     private GenericDaoServiceNewV2<CatPack, Long> catPackService;
-    private GenericDaoServiceNewV2<CatService, Long> catServiceService;
+    private GenericDaoServiceNewV2<CatServiceOld, Long> catServiceService;
     private String oldObjectStr = null;
     private String oldObjectGroupStr = null;
-    CatService catServiceTest = new CatService();
+    CatServiceOld catServiceTest = new CatServiceOld();
 
-    private List<CatService> lstCatService;
+    private List<CatServiceOld> lstCatService;
 
     // tim kiem
     private CatGroupPack searchForm;
@@ -62,7 +62,7 @@ public class CatGroupPackController implements Serializable {
             };
             catPackService = new GenericDaoImplNewV2<CatPack, Long>() {
             };
-            catServiceService = new GenericDaoImplNewV2<CatService, Long>() {
+            catServiceService = new GenericDaoImplNewV2<CatServiceOld, Long>() {
             };
             catGroupPacks = catGroupPackService.findList();
             catPacks = catPackService.findList();
@@ -119,14 +119,14 @@ public class CatGroupPackController implements Serializable {
         currPack = catPack;
         oldObjectStr = catPack.toString();
         if (currPack.getCatService() == null) {
-            currPack.setCatService(new CatService());
+            currPack.setCatService(new CatServiceOld());
         }
     }
 
     public void preAddCatPack() {
         currPack = new CatPack();
         currPack.setLimitNumber(false);
-        currPack.setCatService(new CatService());
+        currPack.setCatService(new CatServiceOld());
         oldObjectStr = null;
     }
 
@@ -317,28 +317,28 @@ public class CatGroupPackController implements Serializable {
         this.catPackService = catPackService;
     }
 
-    public List<CatService> getLstCatService() {
+    public List<CatServiceOld> getLstCatService() {
         return lstCatService;
     }
 
-    public void setLstCatService(List<CatService> lstCatService) {
+    public void setLstCatService(List<CatServiceOld> lstCatService) {
         this.lstCatService = lstCatService;
     }
 //</editor-fold>
 
-    public GenericDaoServiceNewV2<CatService, Long> getCatServiceService() {
+    public GenericDaoServiceNewV2<CatServiceOld, Long> getCatServiceService() {
         return catServiceService;
     }
 
-    public void setCatServiceService(GenericDaoServiceNewV2<CatService, Long> catServiceService) {
+    public void setCatServiceService(GenericDaoServiceNewV2<CatServiceOld, Long> catServiceService) {
         this.catServiceService = catServiceService;
     }
 
-    public CatService getCatServiceTest() {
+    public CatServiceOld getCatServiceTest() {
         return catServiceTest;
     }
 
-    public void setCatServiceTest(CatService catServiceTest) {
+    public void setCatServiceTest(CatServiceOld catServiceTest) {
         this.catServiceTest = catServiceTest;
     }
 

@@ -1,0 +1,132 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/layout/olympos/template.xhtml">
+
+
+    <ui:define name="content">
+        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+        <h:form id="catServiceTableForm">
+            <p:growl id="growlForm" showDetail="true" showSummary="false" widgetVar="growlForm"/>
+            <!--<div class="Card">-->
+            <p:dataTable value="#{catServiceController.lazyDataModel}"
+                         lazy="true" var="catService" rowKey="#{catService.serviceId}"
+                         rowIndexVar="cusIdx" id="tableCatServiceId"
+                         rows="20" paginator="true" paginatorPosition="bottom"
+                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                         currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableCatServiceWidget"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="Container100 NoPadding MarTop10"
+
+                         >
+                <!--Header-->
+                <f:facet name="header">
+                    <div class="Card NoPadding" style="background: transparent;">
+                        <div class="Container20 TexAlLeft">
+                            <p:tooltip position="left"></p:tooltip>
+                            <p:commandButton icon="fa fa-plus-circle" styleClass="GreenButton Fs14 White"
+                                             onclick="PF('block').show()" process="@this"
+                                             oncomplete="PF('block').hide();PF('catServiceDlg').show()"
+                                             actionListener="#{catServiceController.preAdd}"
+                                             update=":catServiceForm,catServiceDlgId"
+                                             title="#{msg['button.add']}">
+                            </p:commandButton>
+                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                                             actionListener="#{commonUtilsController.attributeListener}">
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.catService']}" />
+                                <p:dataExporter type="xls" target="tableCatServiceId" fileName="catService" pageOnly="false"
+                                                postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
+                            </p:commandButton>
+                        </div>
+                        <div class="Container60 Responsive50">
+                            <h:outputText styleClass="Fs20" value="#{msg['datatable.header.catService']}"/>
+                        </div>
+                        <div class="Container20 TexAlRight">
+
+                            <p:commandButton id="toggler" type="button"
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="tableCatServiceId" trigger="toggler">
+                                <p:ajax event="toggle" listener="#{catServiceController.onToggler}" />
+                            </p:columnToggler>
+                        </div>
+
+                    </div>
+                </f:facet>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
+                <!--STT-->
+                <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
+                          visible="#{catServiceController.columnVisibale[0]}" >
+                    <h:outputText value="#{cusIdx +1 }"/>
+                </p:column>
+
+                <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
+                          visible="#{catServiceController.columnVisibale[1]}" styleClass="TexAlCenter">
+                    <p:tooltip position="top" ></p:tooltip>
+
+                    <p:commandButton icon="fa fa-edit" actionListener="#{catServiceController.preEdit(catService)}"
+
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('catServiceDlg').show()"
+                                     update=":catServiceForm,catServiceDlgId" id="updateRoomId"
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                    </p:commandButton>
+                    <p:spacer width="2px;"/>
+                    <p:commandButton icon="fa fa-trash"
+                                     actionListener="#{catServiceController.onDelete(catService)}"
+                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                                     update="tableCatServiceId "  rendered="#{catService.status==2}"
+                                     title="Xóa" styleClass="White RedButton Fs14 MarTop5">
+                        <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
+                                   message="#{msg['title.confirm.delete']}">
+                        </p:confirm>
+                    </p:commandButton>
+                </p:column>
+
+
+                <p:column headerText="#{msg['catService.serviceCode']}" width="40"
+                          visible="#{catServiceController.columnVisibale[2]}"
+                          filterBy="#{catService.serviceCode}" >
+                    <h:outputText value="#{catService.serviceCode}"/>
+                </p:column>
+                <p:column headerText="#{msg['catService.serviceName']}" width="50" 
+                          visible="#{catServiceController.columnVisibale[3]}"
+                          filterBy="#{catService.phone}" filterStyle="width:70%"
+                          ><h:outputText value="#{catService.serviceName}"/></p:column>
+                <p:column headerText="#{msg['catService.price']}" width="40"
+                          visible="#{catServiceController.columnVisibale[4]}" style="text-align: right;" 
+                          filterBy="#{catService.price-LIKE}" sortBy="#{catService.price}" >
+                    <h:outputText value="#{catService.price}">
+                        <f:convertNumber pattern="#,###"/>
+                    </h:outputText>
+                    <h:outputText value=" VNĐ"/>
+                </p:column>
+                <p:column headerText="#{msg['catService.unit']}" width="50" 
+                          visible="#{catServiceController.columnVisibale[5]}"
+                        
+                          ><h:outputText value="#{catServiceController.mapUnit.get(catService.unit)!=null ?
+                               catServiceController.mapUnit.get(catService.unit).name :''}"/></p:column>
+                <p:column headerText="#{msg['catService.defaultStatus']}" width="50" 
+                          visible="#{catServiceController.columnVisibale[6]}"
+                          ><h:outputText value="#{catService.defaultStatusStr}"/></p:column>
+                <p:column headerText="#{msg['home.groupUserId']}" width="20" 
+                          exportable="#{catServiceController.columnVisibale[7]}"
+                          visible="#{catServiceController.columnVisibale[7]}"
+                          filterBy="#{catService.groupUserId}" sortBy="#{catService.groupUserId}" >
+                    <h:outputText value="#{catService.groupUserId}"/>
+                </p:column>
+                
+                
+
+
+
+            </p:dataTable>
+        </h:form>
+        <!--</div>-->
+
+
+        <ui:include src="catService-dialog.xhtml"></ui:include>
+    </ui:define>
+</ui:composition>

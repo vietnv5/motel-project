@@ -125,20 +125,20 @@ public class catUserController implements Serializable {
 
     public void saveOrUpdate() {
         try {
-            Map<String, Object> filters = new HashMap<String, Object>();
-            filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
-            filters.put("status-NEQ", Constant.STATUS.DELETE);
-
-            if (currCatUser.getUserId() != null) {
-                filters.put("userId-NEQ", currCatUser.getUserId());
-            }
-            List<CatUser> lst = catUserService.findList(filters);
-            if (!lst.isEmpty() && lst.size() > 0) {
-                MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
-                        "Username"
-                ));
-                return;
-            }
+//            Map<String, Object> filters = new HashMap<String, Object>();
+//            filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
+//            filters.put("status-NEQ", Constant.STATUS.DELETE);
+//
+//            if (currCatUser.getUserId() != null) {
+//                filters.put("userId-NEQ", currCatUser.getUserId());
+//            }
+//            List<CatUser> lst = catUserService.findList(filters);
+//            if (!lst.isEmpty() && lst.size() > 0) {
+//                MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
+//                        "Username"
+//                ));
+//                return;
+//            }
 
             if (!checkValidate()) {
                 return;
@@ -176,6 +176,26 @@ public class catUserController implements Serializable {
 
     public boolean checkValidate() {
         try {
+            //check trung username
+            if (StringUtil.isNotNullAndNullStr(currCatUser.getUserName())) {
+                Map<String, Object> filters = new HashMap<String, Object>();
+                filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
+                filters.put("status-NEQ", Constant.STATUS.DELETE);
+                if (currCatUser.getUserId() != null) {
+                    filters.put("userId-NEQ", currCatUser.getUserId());
+                }
+                List<CatUser> lst = catUserService.findList(filters);
+                if (!lst.isEmpty() && lst.size() > 0) {
+                    MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
+                            "Username"
+                    ));
+                    return false;
+                }
+            }
+            if (StringUtil.isNullOrEmpty(currCatUser.getPhoneNumber()) && StringUtil.isNullOrEmpty(currCatUser.getEmail())) {
+                MessageUtil.setErrorMessage("Cần phải nhập email hoặc số điện thoại!");
+                return false;
+            }
             if (StringUtil.isNotNullAndNullStr(currCatUser.getPhoneNumber())) {
 
                 Map<String, Object> filters = new HashMap<String, Object>();
@@ -371,25 +391,7 @@ public class catUserController implements Serializable {
 
     public void saveOrUpdateInfoCurrUser() {
         try {
-            if (StringUtil.isNullOrEmpty(currCatUser.getPhoneNumber()) && StringUtil.isNullOrEmpty(currCatUser.getEmail())) {
-                MessageUtil.setErrorMessage("Cần phải nhập email hoặc số điện thoại!");
-                return;
-            }
-            //check trung username
-            if (StringUtil.isNotNullAndNullStr(currCatUser.getUserName())) {
-                Map<String, Object> filters = new HashMap<String, Object>();
-                filters.put("userName-EXAC_IGNORE_CASE", currCatUser.getUserName());
-                if (currCatUser.getUserId() != null) {
-                    filters.put("userId-NEQ", currCatUser.getUserId());
-                }
-                List<CatUser> lst = catUserService.findList(filters);
-                if (!lst.isEmpty() && lst.size() > 0) {
-                    MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
-                            "Username"
-                    ));
-                    return;
-                }
-            }
+
             if (!checkValidate()) {
                 return;
             }
@@ -444,7 +446,7 @@ public class catUserController implements Serializable {
                     return;
                 }
                 // set role
-                String ROLE_REGISTRATION=StringUtil.isNotNullAndNullStr(DataConfig.getConfigByKey("ROLE_REGISTRATION"))
+                String ROLE_REGISTRATION = StringUtil.isNotNullAndNullStr(DataConfig.getConfigByKey("ROLE_REGISTRATION"))
                         ? DataConfig.getConfigByKey("ROLE_REGISTRATION") : Constant.ROLE.CUSTOMER;
                 List<CatRole> lsRole = lstRole.stream().filter(o -> ROLE_REGISTRATION.equalsIgnoreCase(o.getRoleCode())).collect(Collectors.toList());
                 if (lsRole != null && !lsRole.isEmpty()) {
@@ -525,7 +527,7 @@ public class catUserController implements Serializable {
             sessionMap.put("authenticated", true);
             String defaultUrl = DataConfig.getConfigByKey("DEFAULT_URL") != null
                     ? DataConfig.getConfigByKey("DEFAULT_URL") : "";
-            
+
             HttpServletRequest req = (HttpServletRequest) context.getRequest();
             context.redirect(req.getContextPath() + defaultUrl);
 //            preAdd();

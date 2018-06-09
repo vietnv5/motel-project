@@ -12,7 +12,7 @@ import com.slook.model.CatItemBO;
 import com.slook.model.CatMachine;
 import com.slook.model.CatPack;
 import com.slook.model.CatPromotion;
-import com.slook.model.CatService;
+import com.slook.model.CatServiceOld;
 import com.slook.model.CatUser;
 import com.slook.model.CfgWsTimekeeper;
 import com.slook.model.Client;
@@ -563,7 +563,7 @@ public class ClientController {
                 if (lstCatPacks != null) {
                     for (CatPack bo : lstCatPacks) {
                         if (bo != null && bo.getCatService() != null) {
-                            CatService boService = bo.getCatService();
+                            CatServiceOld boService = bo.getCatService();
 
                             ClientUsedService mus = new ClientUsedService();
                             mus.setCreateTime(new Date());
