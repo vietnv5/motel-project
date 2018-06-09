@@ -51,7 +51,7 @@ public class ContractService implements Serializable {
     private Contract contract;
     @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID",insertable = false,updatable = false)
     @ManyToOne(optional = false)
-    private Service service;
+    private CatService service;
     @Column(name = "SERVICE_ID")
     private Long serviceId;
     @Column(name = "CONTRACT_ID")
@@ -89,11 +89,11 @@ public class ContractService implements Serializable {
         this.contract = contract;
     }
 
-    public Service getService() {
+    public CatService getService() {
         return service;
     }
 
-    public void setService(Service service) {
+    public void setService(CatService service) {
         this.service = service;
     }
 

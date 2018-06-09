@@ -12,7 +12,7 @@ import com.motel.model.ContractService;
 import com.motel.model.ElectricWater;
 import com.motel.model.Home;
 import com.motel.model.Room;
-import com.motel.model.Service;
+import com.motel.model.CatService;
 import com.slook.controller.LogActionController;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatItemBO;
@@ -237,7 +237,7 @@ public class BillController {
         if (currBill != null && currBill.getRoomId() != null) {
             //lay thong tin hop dong cua phong danh sach cac dich vu su dung
             contract = getContractOfRoom(currBill.getRoomId());
-            List<Service> lstService = new ArrayList<>();
+            List<CatService> lstService = new ArrayList<>();
             lstBillService = new ArrayList<>();
             if (contract != null && contract.getContractServiceList() != null) {
                 lstService = contract.getContractServiceList().stream().map(ContractService::getService)
@@ -253,7 +253,7 @@ public class BillController {
                 ew = lstOldEW.get(0);
             }
             // tao gia cac dich vu
-            for (Service s : lstService) {
+            for (CatService s : lstService) {
                 s.setUnitBO(mapUnit.get(s.getUnit()));
 
                 BillService bs = new BillService();
@@ -291,7 +291,7 @@ public class BillController {
             }
 
             if (room != null && room.getPrice() != null) {
-                Service svDefault = new Service();
+                CatService svDefault = new CatService();
                 svDefault.setServiceName(room.getRoomName());
                 svDefault.setUnitBO(mapUnit.get(Constant.CAT_ITEM.UNIT.ROOM_PER_MONTH_ID));
 
@@ -616,7 +616,7 @@ public class BillController {
 
             List<Bill> lstBill = getBillForExport();
             //lay ds dich vu su dung
-            List<Service> lstService = new ArrayList<>();
+            List<CatService> lstService = new ArrayList<>();
             for (Bill b : lstBill) {
                 if (b.getBillServiceList() != null) {
                     for (BillService bs : b.getBillServiceList()) {
@@ -627,11 +627,11 @@ public class BillController {
                 }
             }
 
-            Map<String, Service> mapService = new HashMap<>();
+//            Map<String, CatService> mapService = new HashMap<>();
             List<Long> lstServiceIdExt = new ArrayList<>();
             List<String> lstServiceNameExt = new ArrayList<>();
-            for (Service s : lstService) {
-                mapService.put(s.getServiceCode(), s);
+            for (CatService s : lstService) {
+//                mapService.put(s.getServiceCode(), s);
                 if (!Constant.SERVICE.ELECTRIC.equals(s.getServiceCode())
                         && !Constant.SERVICE.WATER.equals(s.getServiceCode())
                         && !Constant.SERVICE.PRICE_ROOM_ID.equals(s.getServiceId())) {

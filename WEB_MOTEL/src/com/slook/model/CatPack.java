@@ -29,7 +29,7 @@ public class CatPack {
     private Long status;
     private Long serviceId;
     private Long numberOfTime;
-    private CatService catService;
+    private CatServiceOld catService;
     private boolean limitNumber;
     private String statusName;
 
@@ -181,11 +181,11 @@ public class CatPack {
 
     @ManyToOne
     @JoinColumn(name = "service_id", insertable = false, updatable = false)
-    public CatService getCatService() {
+    public CatServiceOld getCatService() {
         return catService;
     }
 
-    public void setCatService(CatService catService) {
+    public void setCatService(CatServiceOld catService) {
         this.catService = catService;
     }
 

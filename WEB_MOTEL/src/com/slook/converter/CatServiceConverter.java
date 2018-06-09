@@ -5,7 +5,7 @@
  */
 package com.slook.converter;
 
-import com.slook.model.CatService;
+import com.slook.model.CatServiceOld;
 import com.slook.persistence.GenericDaoImplNewV2;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -19,7 +19,7 @@ import javax.faces.convert.FacesConverter;
 @FacesConverter(value = "catServiceConverter")
 public class CatServiceConverter implements Converter {
 
-    GenericDaoImplNewV2<CatService, Long> genericDaoImplNewV2 = new GenericDaoImplNewV2<CatService, Long>() {
+    GenericDaoImplNewV2<CatServiceOld, Long> genericDaoImplNewV2 = new GenericDaoImplNewV2<CatServiceOld, Long>() {
     };
 
     @Override
@@ -39,8 +39,8 @@ public class CatServiceConverter implements Converter {
 
     @Override
     public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        if (o != null && o instanceof CatService && ((CatService) o).getServiceId()!=null) {
-            return ((CatService) o).getServiceId().toString();
+        if (o != null && o instanceof CatServiceOld && ((CatServiceOld) o).getServiceId()!=null) {
+            return ((CatServiceOld) o).getServiceId().toString();
         }
         return null;
     }

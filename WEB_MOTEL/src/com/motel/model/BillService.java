@@ -58,7 +58,7 @@ public class BillService implements Serializable {
     
     @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
-    private Service service;
+    private CatService service;
 
     @Column(name = "BILL_ID")
     private Long billId;
@@ -125,11 +125,11 @@ public class BillService implements Serializable {
         this.bill = bill;
     }
 
-    public Service getService() {
+    public CatService getService() {
         return service;
     }
 
-    public void setService(Service service) {
+    public void setService(CatService service) {
         this.service = service;
     }
 

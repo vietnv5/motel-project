@@ -14,7 +14,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
 @Table(name = "CAT_SERVICE")
-public class CatService {
+public class CatServiceOld {
 
     private String serviceName;
     private Long status;
@@ -92,10 +92,10 @@ public class CatService {
     }
 
 
-    public CatService() {
+    public CatServiceOld() {
     }
 
-    public CatService(Long serviceId) {
+    public CatServiceOld(Long serviceId) {
         this.serviceId = serviceId;
     }
 
@@ -123,7 +123,7 @@ public class CatService {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final CatService other = (CatService) obj;
+        final CatServiceOld other = (CatServiceOld) obj;
         if (!Objects.equals(this.serviceName, other.serviceName)) {
             return false;
         }

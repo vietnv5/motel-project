@@ -11,7 +11,7 @@ import com.motel.model.Customer;
 import com.motel.model.CustomerRoom;
 import com.motel.model.Home;
 import com.motel.model.Room;
-import com.motel.model.Service;
+import com.motel.model.CatService;
 import com.slook.controller.LogActionController;
 import com.slook.lazy.LazyDataModelBase;
 import com.slook.model.CatUser;
@@ -52,7 +52,7 @@ public class ContractController {
 
     private GenericDaoImplNewV2<Contract, Long> contractService;
     private GenericDaoImplNewV2<ContractService, Long> contractServiceService;
-    private GenericDaoImplNewV2<Service, Long> serviceService;
+    private GenericDaoImplNewV2<CatService, Long> serviceService;
     LazyDataModel<Contract> lazyDataModel;
     Contract currContract = new Contract();
     private String oldObjectStr = null;
@@ -61,7 +61,7 @@ public class ContractController {
     private boolean isEdit = false;
     List<Home> lstHome;
     List<Room> lstRoom;
-    List<Service> lstService;
+    List<CatService> lstService;
     List<Customer> lstCustomers;
 
     public void onToggler(ToggleEvent e) {
@@ -74,7 +74,7 @@ public class ContractController {
         };
         contractServiceService = new GenericDaoImplNewV2<ContractService, Long>() {
         };
-        serviceService = new GenericDaoImplNewV2<Service, Long>() {
+        serviceService = new GenericDaoImplNewV2<CatService, Long>() {
         };
         try {
             CatUser catUser = null;
@@ -145,7 +145,7 @@ public class ContractController {
         List<Long> lstServiceId = new ArrayList<>();
         //set lst service default
         if (lstService != null) {
-            for (Service bo : lstService) {
+            for (CatService bo : lstService) {
                 if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_ON.equals(bo.getDefaultStatus())) {
                     lstServiceId.add(bo.getServiceId());
                 }
@@ -379,11 +379,11 @@ public class ContractController {
         this.contractServiceService = contractServiceService;
     }
 
-    public GenericDaoImplNewV2<Service, Long> getServiceService() {
+    public GenericDaoImplNewV2<CatService, Long> getServiceService() {
         return serviceService;
     }
 
-    public void setServiceService(GenericDaoImplNewV2<Service, Long> serviceService) {
+    public void setServiceService(GenericDaoImplNewV2<CatService, Long> serviceService) {
         this.serviceService = serviceService;
     }
 
@@ -411,11 +411,11 @@ public class ContractController {
         this.lstRoom = lstRoom;
     }
 
-    public List<Service> getLstService() {
+    public List<CatService> getLstService() {
         return lstService;
     }
 
-    public void setLstService(List<Service> lstService) {
+    public void setLstService(List<CatService> lstService) {
         this.lstService = lstService;
     }
 

@@ -576,6 +576,7 @@ public interface Constant {
         Long STOP = 3L;
 
     }
+
     interface HOME_STATUS {
 
         Long DELETE = -1l;
@@ -604,9 +605,25 @@ public interface Constant {
         Long STATUS_ACTIVE = 1L;
         Long STATUS_CHECKOUT = 2L;
     }
-    interface ROLE{
-        String CUSTOMER="CUSTOMER";
+
+    interface ROLE {
+
+        String CUSTOMER = "CUSTOMER";
     }
-    
+
+    interface UNIT_STATUS {
+
+        Long DELETE = -1l;
+        Long DEFAULT_NOT_DELETE = 1l;
+        Long NORMAL = 2l;
+
+    }
+
+//        interface SERVICE_DEFAULT_STATUS {
+//
+//            Long YES = 1l;
+//            Long NO = 0l;
+//
+//        }
 
 }

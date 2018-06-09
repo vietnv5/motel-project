@@ -40,7 +40,7 @@ public class MemberUsedService {
     private Long status;
     private Long totalNumber;
     private Long usedNumber;
-    private CatService catService;
+    private CatServiceOld catService;
 
     @Column(name = "AVAILABLE", precision = 22, scale = 0)
     public Long getAvailable() {
@@ -156,11 +156,11 @@ public class MemberUsedService {
 
     @ManyToOne
     @JoinColumn(name = "SERVICE_ID", insertable = false, updatable = false)
-    public CatService getCatService() {
+    public CatServiceOld getCatService() {
         return catService;
     }
 
-    public void setCatService(CatService catService) {
+    public void setCatService(CatServiceOld catService) {
         this.catService = catService;
     }
 
