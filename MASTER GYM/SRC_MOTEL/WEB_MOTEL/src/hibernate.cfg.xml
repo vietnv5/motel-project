@@ -26,6 +26,13 @@
         <property name="hibernate.connection.username">root</property>
         <property name="hibernate.connection.password">123456a@</property>
         
+<!--        
+        <property name="hibernate.connection.url">jdbc:mysql://sql310.epizy.com/epiz_22221815_motel</property>
+        <property name="hibernate.connection.username">epiz_22221815</property>
+        <property name="hibernate.connection.password">vavi02081992</property>-->
+        
+        
+        
         <property name="hibernate.current_session_context_class">thread</property>
         <property name="hibernate.search.autoregister_listeners">false</property>
         <property name="hibernate.enable_lazy_load_no_trans">true</property>

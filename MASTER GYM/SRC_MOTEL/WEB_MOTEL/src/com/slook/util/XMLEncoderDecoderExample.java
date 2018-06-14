@@ -28,7 +28,7 @@ public class XMLEncoderDecoderExample {
     static String pathFile = "resources/datas/";
 
     public static void main(String[] args) throws IOException {
-        pathFile = "WebContent/resources/datas/";
+        pathFile = "WebContent/resources/datas1/";
         try {
             Map<String, Object> filter = new HashMap<>();
             filter.put("status-NEQ", Constant.STATUS.DELETE);
