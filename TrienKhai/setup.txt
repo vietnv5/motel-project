@@ -14,3 +14,22 @@ DROP DATABASE  motel
 mysql >CREATE DATABASE new_database;
 
 mysql -u username -p new_database < data-dump.sql	
+
+
+
+truong hop bo sung
+=============set quyền vào db osuno bằng IP===========================
+mysql> GRANT USAGE ON warranty.* TO osuno@'171.234.217.53' IDENTIFIED BY 'Slook2017';
+mysql> GRANT ALL PRIVILEGES ON warranty.* TO 'osuno'@'171.234.217.53';
+mysql> FLUSH PRIVILEGES;
+
+IPTABLES:
+B1: Login vào server bằng user root
+B2: vi /etc/sysconfig/iptables
+B3: đưa con trỏ chuột xuống dòng cuối cùng có chưa địa chỉ IP
+B4: Ấn phím "o" trên bàn phím để thêm 1 dòng mới
+B5: Copy nội dung dòng trên và sửa lại IP phù hợp
+B6: Ấn phím "Esc"
+B7: Ấn đồng thời các phím " :wq (:q! để exit without save)
+B8: khởi động lại iptables
+# service iptables restart
