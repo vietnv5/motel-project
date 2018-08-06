@@ -12,6 +12,7 @@ import com.slook.persistence.RoomServiceImpl;
 import java.beans.ExceptionListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -78,7 +79,7 @@ public class XMLEncoderDecoderExample {
 
     public static Object deserializeFromXMLObject(Class clazz, String pathFile) throws IOException {
         String fileName = clazz.getSimpleName() + ".xml";
-        FileInputStream fis = new FileInputStream(pathFile + fileName);
+        FileInputStream fis = new FileInputStream(pathFile+File.separator + fileName);
         XMLDecoder decoder = new XMLDecoder(fis);
         Object decodedSettings = decoder.readObject();
         decoder.close();
