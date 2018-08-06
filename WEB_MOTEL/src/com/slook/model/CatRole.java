@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyCollectionOption;
  * Created by T430 on 4/12/2017.
  */
 @Entity
-@Table(name = "CAT_ROLE", catalog = "")
+@Table(name = "cat_role", catalog = "")
 public class CatRole implements Serializable{
 
     private Long roleId;

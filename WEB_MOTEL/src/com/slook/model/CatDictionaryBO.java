@@ -10,7 +10,7 @@ import javax.persistence.SequenceGenerator;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "CAT_DICTIONARY")
+@Table(name = "cat_dictionary")
 public class CatDictionaryBO implements Serializable {
 
     private String catCode;

@@ -12,7 +12,7 @@ import javax.persistence.SequenceGenerator;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 @Entity
-@Table(name = "DOCUMENT") 
+@Table(name = "document") 
 /** 
 * 
 * @author: ThuanNHT 

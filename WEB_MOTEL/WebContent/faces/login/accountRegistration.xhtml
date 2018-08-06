@@ -61,7 +61,7 @@
                             <span class="md-inputfield">
                                 <label>#{msg['catUser.fullName']} *</label>
                                 <p:inputText value="#{accountRegistrationController.currCatUser.fullName}"
-                                             id="fullNameId"  maxlength="200" style="width: 90%"
+                                             id="fullNameId"  maxlength="200" style="width: 100%"
                                              title="#{msg['catUser.fullName']}"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.fullName'])}"
@@ -71,12 +71,12 @@
                             </span>
                             <p:message for="fullNameId"/>
                         </div>
-                        <div class=" Container50 Responsive50  MarTop20">
+                        <div class=" Container50 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <label>#{msg['groupUser.name']} *</label>
                                 <p:inputText value="#{accountRegistrationController.currCatUser.groupUser.name}"
                                              id="nameId"  converter="trimConverter" maxlength="200"
-                                             title="#{msg['groupUser.name']}"  style="width: 90%"
+                                             title="#{msg['groupUser.name']}"  style="width: 100%"
                                              required="true" placeholder="#{msg['groupUser.name.placeholder']}"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.name'])}"
                                              >
@@ -89,7 +89,7 @@
                             <span class="md-inputfield">
                                 <label>#{msg['customer.phone']} </label>
                                 <p:inputText value="#{accountRegistrationController.currCatUser.phoneNumber}"
-                                             id="phone" style="width: 90%"
+                                             id="phone" style="width: 100%"
                                              title="#{msg['customer.phone']}"
                                              required="false"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['customer.phone'])}"
@@ -104,7 +104,7 @@
                                 <label>#{msg['datatable.header.email']} </label>
                                 <p:inputText value="#{accountRegistrationController.currCatUser.email}" id="email"
                                              title="#{msg['datatable.header.email']}"
-                                             required="false" maxlength="50" style="width: 90%"
+                                             required="false" maxlength="50" style="width: 100%"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
                                              validatorMessage="Email không hơp lệ!"
                                              >
@@ -120,7 +120,7 @@
                             <span class="md-inputfield">
                                 <label>#{msg['catUser.password']} #{accountRegistrationController.isEdit?'':'*'}</label>
                                 <p:password value="#{accountRegistrationController.currCatUser.password}"
-                                            id="passwordUserId"  redisplay="false" style="width: 90%"
+                                            id="passwordUserId"  redisplay="false" style="width: 100%"
                                             title="#{msg['catUser.password']}"  maxlength="200"
                                             required="#{!accountRegistrationController.isEdit}"
                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.password'])}"
@@ -134,7 +134,7 @@
                             <span class="md-inputfield">
                                 <label>#{msg['catUser.confirmPassword']} #{accountRegistrationController.isEdit?'':'*'}</label>
                                 <p:password value="#{accountRegistrationController.currCatUser.confirmPassword}"
-                                            id="confirmPasswordUserId"  redisplay="false" style="width: 90%"
+                                            id="confirmPasswordUserId"  redisplay="false" style="width: 100%"
                                             title="#{msg['catUser.confirmPassword']}"  maxlength="200"
                                             required="#{!accountRegistrationController.isEdit}"
                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.confirmPassword'])}"

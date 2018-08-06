@@ -18,7 +18,7 @@ import javax.persistence.TemporalType;
 import javax.persistence.Transient;
 
 @Entity
-@Table(name = "CAT_ITEM")
+@Table(name = "cat_item")
 public class CatItemBO implements Serializable {
 
     private String code;

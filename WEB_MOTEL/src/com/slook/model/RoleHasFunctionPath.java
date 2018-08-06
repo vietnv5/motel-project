@@ -21,7 +21,7 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
 @Entity
-@Table(name = "ROLE_HAS_FUNCTION_PATH")
+@Table(name = "role_has_function_path")
 /**
  *
  * @author: ThuanNHT
