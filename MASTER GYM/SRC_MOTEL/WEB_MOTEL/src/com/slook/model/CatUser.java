@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
  * Created by T430 on 4/12/2017.
  */
 @Entity
-@Table(name = "CAT_USER")
+@Table(name = "cat_user")
 public class CatUser implements Serializable {
 
     private Long userId;

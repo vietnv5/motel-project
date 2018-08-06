@@ -10,7 +10,7 @@ import static javax.persistence.GenerationType.SEQUENCE;
 import java.util.Date;
 
 @Entity
-@Table(name = "LOG_ACTION")
+@Table(name = "log_action")
 /**
  *
  * @author: ThuanNHT

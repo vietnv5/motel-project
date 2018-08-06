@@ -21,7 +21,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
-@Table(name = "FUNCTION_PATH")
+@Table(name = "function_path")
 /**
  *
  * @author: ThuanNHT
