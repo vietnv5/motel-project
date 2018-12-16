@@ -50,3 +50,5 @@ GRANT USAGE ON motel_test.* TO motel_test@'171.241.206.188' IDENTIFIED BY 'motel
 GRANT ALL PRIVILEGES ON motel_test.* TO 'osuno'@'171.241.206.188';
 FLUSH PRIVILEGES;
 
+//doi pass
+UPDATE mysql.user SET Password=PASSWORD('motel2018') WHERE User='motel_test'; FLUSH PRIVILEGES;
