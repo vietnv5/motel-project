@@ -24,10 +24,10 @@ public class DataConfig {
         try {
             ResourceBundle resourceBundle = ResourceBundle.getBundle("config");
 
-            redisSentinelHost = resourceBundle.getString("redis_sentinel_host");
-            redisMasterPass = PasswordEncoder.decrypt(resourceBundle.getString("redis_master_pass"));
-            redisMasterName = PasswordEncoder.decrypt(resourceBundle.getString("redis_master_name"));
-            redisPoolTotal = Integer.valueOf(resourceBundle.getString("redisPoolTotal"));
+//            redisSentinelHost = resourceBundle.getString("redis_sentinel_host");
+//            redisMasterPass = PasswordEncoder.decrypt(resourceBundle.getString("redis_master_pass"));
+//            redisMasterName = PasswordEncoder.decrypt(resourceBundle.getString("redis_master_name"));
+//            redisPoolTotal = Integer.valueOf(resourceBundle.getString("redisPoolTotal"));
 
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
