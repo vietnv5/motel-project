@@ -43,11 +43,15 @@ B8: khởi động lại iptables
 mysql -u root -p motel_test < /home/anhnd/test/motel_180630.sql	
 
 GRANT USAGE ON motel_test.* TO motel_test@'14.225.3.186' IDENTIFIED BY 'motel2018';
-GRANT ALL PRIVILEGES ON motel_test.* TO 'osuno'@'14.225.3.186';
+GRANT ALL PRIVILEGES ON motel_test.* TO 'motel_test'@'14.225.3.186';
 FLUSH PRIVILEGES;
 
 GRANT USAGE ON motel_test.* TO motel_test@'171.241.206.188' IDENTIFIED BY 'motel2018';
-GRANT ALL PRIVILEGES ON motel_test.* TO 'osuno'@'171.241.206.188';
+GRANT ALL PRIVILEGES ON motel_test.* TO 'motel_test'@'171.241.206.188';
+FLUSH PRIVILEGES;
+
+GRANT USAGE ON motel_test.* TO motel_test@'1.52.120.254' IDENTIFIED BY 'motel2018';
+GRANT ALL PRIVILEGES ON motel_test.* TO 'motel_test'@'1.52.120.254';
 FLUSH PRIVILEGES;
 
 //doi pass
