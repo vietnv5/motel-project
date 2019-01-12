@@ -22,7 +22,8 @@ public class AuthenticationFilter implements Filter, Constant {
 
     static {
         try {
-            ResourceBundle rb = ResourceBundle.getBundle("cas");
+            ResourceBundle rb = ResourceBundle.getBundle("cas_en_US");
+            if(rb==null) rb = ResourceBundle.getBundle("cas");
 //            String serviceURL = rb.getString("service");
 //            String domainCode = rb.getString("domainCode");
 //            String passportValidateURL = rb.getString("validateUrl");
