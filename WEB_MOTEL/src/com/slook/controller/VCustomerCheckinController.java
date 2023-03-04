@@ -21,12 +21,14 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import java.util.*;
 import java.util.logging.Level;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
 @ManagedBean
 @ViewScoped
-public class VCustomerCheckinController {
+public class VCustomerCheckinController
+{
 
     protected static final Logger logger = LoggerFactory.getLogger(VCustomerCheckinController.class);
     @ManagedProperty(value = "#{vCustomerCheckinService}")
@@ -39,22 +41,28 @@ public class VCustomerCheckinController {
 //    private List<V_CustomerCheckin> listCustomerCheckinGroup = new ArrayList<>();
 
     @PostConstruct
-    public void onStart() {
+    public void onStart()
+    {
         Map<String, Object> filter = new HashMap<>();
         Map<String, String> oder = new LinkedHashMap<>();
         oder.put("checkTime", Constant.ORDER.DESC);
-        try {
+        try
+        {
             lazyDataModel = new LazyDataModelBase<>(vCustomerCheckinService, filter, oder);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         RequestContext.getCurrentInstance().execute("PF('tblWidgetId').filter();");
 
     }
 
-    public void preShowGroupTable(V_CustomerCheckin customerCheckin) {
+    public void preShowGroupTable(V_CustomerCheckin customerCheckin)
+    {
 //        listCustomerCheckinGroup.clear();
-        if (customerCheckin.getGroupMemberName() == null) {
+        if (customerCheckin.getGroupMemberName() == null)
+        {
             return;
         }
         this.showGroupTable = true;
@@ -63,83 +71,113 @@ public class VCustomerCheckinController {
 //        filter.put("status", Constant.CUSTOMER_CHECKIN.CHECKIN);
         LinkedHashMap<String, String> order = new LinkedHashMap<>();
         order.put("checkTime", Constant.ORDER.DESC);
-        try {
+        try
+        {
 //            listCustomerCheckinGroup = vCustomerCheckinService.findList(filter, order);
-            lazyCheckInGroup= new LazyDataModelBase<>(vCustomerCheckinService, filter, order);
-        } catch (Exception e) {
+            lazyCheckInGroup = new LazyDataModelBase<>(vCustomerCheckinService, filter, order);
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void closeGroupTable() {
+    public void closeGroupTable()
+    {
         this.showGroupTable = false;
 //        listCustomerCheckinGroup.clear();
     }
 
-    public Client getClient(V_CustomerCheckin customCheckin) {
+    public Client getClient(V_CustomerCheckin customCheckin)
+    {
         Client bo = null;
-        try {
-            bo = new GenericDaoImplNewV2<Client, Long>() {
+        try
+        {
+            bo = new GenericDaoImplNewV2<Client, Long>()
+            {
             }.findById(customCheckin.getCustomerId());
-        } catch (AppException ex) {
+        }
+        catch (AppException ex)
+        {
             java.util.logging.Logger.getLogger(VCustomerCheckinController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SysException ex) {
+        }
+        catch (SysException ex)
+        {
             java.util.logging.Logger.getLogger(VCustomerCheckinController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bo;
     }
 
-    public Member getMember(V_CustomerCheckin customCheckin) {
+    public Member getMember(V_CustomerCheckin customCheckin)
+    {
         Member bo = null;
-        try {
-            bo = new GenericDaoImplNewV2<Member, Long>() {
+        try
+        {
+            bo = new GenericDaoImplNewV2<Member, Long>()
+            {
             }.findById(customCheckin.getCustomerId());
-        } catch (AppException ex) {
+        }
+        catch (AppException ex)
+        {
             java.util.logging.Logger.getLogger(VCustomerCheckinController.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SysException ex) {
+        }
+        catch (SysException ex)
+        {
             java.util.logging.Logger.getLogger(VCustomerCheckinController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return bo;
     }
 
-    public void onRowSelect(SelectEvent event) {
+    public void onRowSelect(SelectEvent event)
+    {
         V_CustomerCheckin customerCheckin = (V_CustomerCheckin) event.getObject();
-        if (Constant.CUSTOMER_CHECKIN.TYPE_MEMBER.equals(customerCheckin.getType()) && customerCheckin.getGroupMemberId()!=null) {
+        if (Constant.CUSTOMER_CHECKIN.TYPE_MEMBER.equals(customerCheckin.getType()) && customerCheckin.getGroupMemberId() != null)
+        {
             preShowGroupTable(customerCheckin);
-        } else {
+        }
+        else
+        {
             closeGroupTable();
         }
     }
 
-    public VCustomerCheckinServiceImpl getvCustomerCheckinService() {
+    public VCustomerCheckinServiceImpl getvCustomerCheckinService()
+    {
         return vCustomerCheckinService;
     }
 
-    public void setvCustomerCheckinService(VCustomerCheckinServiceImpl vCustomerCheckinService) {
+    public void setvCustomerCheckinService(VCustomerCheckinServiceImpl vCustomerCheckinService)
+    {
         this.vCustomerCheckinService = vCustomerCheckinService;
     }
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
-    public LazyDataModel<V_CustomerCheckin> getLazyDataModel() {
+    public LazyDataModel<V_CustomerCheckin> getLazyDataModel()
+    {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<V_CustomerCheckin> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<V_CustomerCheckin> lazyDataModel)
+    {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public static Logger getLogger() {
+    public static Logger getLogger()
+    {
         return logger;
     }
 
-    public boolean getShowGroupTable() {
+    public boolean getShowGroupTable()
+    {
         return showGroupTable;
     }
 
-    public void setShowGroupTable(boolean showGroupTable) {
+    public void setShowGroupTable(boolean showGroupTable)
+    {
         this.showGroupTable = showGroupTable;
     }
 
@@ -151,12 +189,14 @@ public class VCustomerCheckinController {
 //        this.listCustomerCheckinGroup = listCustomerCheckinGroup;
 //    }
 
-    public LazyDataModel<V_CustomerCheckin> getLazyCheckInGroup() {
+    public LazyDataModel<V_CustomerCheckin> getLazyCheckInGroup()
+    {
         return lazyCheckInGroup;
     }
 
-    public void setLazyCheckInGroup(LazyDataModel<V_CustomerCheckin> lazyCheckInGroup) {
+    public void setLazyCheckInGroup(LazyDataModel<V_CustomerCheckin> lazyCheckInGroup)
+    {
         this.lazyCheckInGroup = lazyCheckInGroup;
     }
-    
+
 }

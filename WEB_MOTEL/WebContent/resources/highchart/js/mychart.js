@@ -1,78 +1,81 @@
+function drawHighStock(xhr, status, args)
+{
+    var data = args.data;
+    var title = args.title;
+    var seriesName = args.seriesName;
+    $('#container')
+        .highcharts('StockChart', {
 
-function drawHighStock(xhr, status, args){
-	var data = args.data;
-	var title = args.title;
-	var seriesName = args.seriesName;
-	$('#container')
-		.highcharts('StockChart',{
-		 
-        navigator: {
-            adaptToUpdatedData: false,
-            series: {
-                data: data
-            }
-        },
-        scrollbar: {
-            liveRedraw: false
-        },
-        title: {
-            text: title
-        },
-        rangeSelector: {
-            buttons: [{
-                type: 'day',
-                count: 1,
-                text: '1d'
-            }, {
-                type: 'month',
-                count: 1,
-                text: '1m'
-            }, {
-                type: 'year',
-                count: 1,
-                text: '1y'
-            }, {
-                type: 'all',
-                text: 'All'
-            }],
-            inputEnabled: false, // it supports only days
-            selected: 4 // all
-        },
-        xAxis: {
-            events: {
-                afterSetExtremes: afterSetExtremes
+            navigator: {
+                adaptToUpdatedData: false,
+                series: {
+                    data: data
+                }
             },
-            minRange: 3600 * 1000 // one hour
-        },
+            scrollbar: {
+                liveRedraw: false
+            },
+            title: {
+                text: title
+            },
+            rangeSelector: {
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: '1d'
+                }, {
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }],
+                inputEnabled: false, // it supports only days
+                selected: 4 // all
+            },
+            xAxis: {
+                events: {
+                    afterSetExtremes: afterSetExtremes
+                },
+                minRange: 3600 * 1000 // one hour
+            },
 
-        yAxis: {
-            floor: 0
-        },
-        series: [{
-            name: seriesName,
-            data: data,
-            tooltip: {
-                valueDecimals: 2
-            }
-        }]
-	});
+            yAxis: {
+                floor: 0
+            },
+            series: [{
+                name: seriesName,
+                data: data,
+                tooltip: {
+                    valueDecimals: 2
+                }
+            }]
+        });
 }
 
-function afterSetExtremes(e) {
+function afterSetExtremes(e)
+{
 
     var chart = $('#container').highcharts();
 
     chart.showLoading('Loading data from server...');
     $.getJSON('https://vipa.viettel.vn/getEnodeBChartService?start=' + Math.round(e.min) +
-            '&end=' + Math.round(e.max) + '&callback=?', function (data) {
+        '&end=' + Math.round(e.max) + '&callback=?', function (data) {
 
         chart.series[0].setData(data);
         chart.hideLoading();
     });
 }
 
-function drawHighChart(xhr, status, args) {
-    try {
+function drawHighChart(xhr, status, args)
+{
+    try
+    {
         var categories = JSON.parse(args.categories);
         var chartData = JSON.parse(args.chartData);
         var chartId = (args.chartId);
@@ -88,26 +91,37 @@ function drawHighChart(xhr, status, args) {
             xAxisType: args.xAxisType
         }
         renderChart(chartId, type, title, chartData, categories);
-    }catch (e){
+    }
+    catch (e)
+    {
         console.error(e);
     }
 }
 
-function renderChart(divId, type, title, chartData, categories){
+function renderChart(divId, type, title, chartData, categories)
+{
     // var options = createOption(divId, type, title, categories);
     var options;
-    if(type.chartType=='column')
+    if (type.chartType == 'column')
+    {
         options = createOptionStacked(divId, type, title, categories);
-    else if (type.chartType=='StackedArea'){
-        options = createOptionStackedArea(divId,type,title,categories);
-    }else {
+    }
+    else if (type.chartType == 'StackedArea')
+    {
+        options = createOptionStackedArea(divId, type, title, categories);
+    }
+    else
+    {
         options = createOption(divId, type, title, categories);
     }
     options.series = chartData;
-    if(type.xAxisType =='datetime'){
-        options.xAxis.categories=null;
-    }else if(type.chartType!='column') {
-        options.xAxis.labels.formatter=(function() {
+    if (type.xAxisType == 'datetime')
+    {
+        options.xAxis.categories = null;
+    }
+    else if (type.chartType != 'column')
+    {
+        options.xAxis.labels.formatter = (function () {
             return this.value;
         });
     }
@@ -119,7 +133,8 @@ function renderChart(divId, type, title, chartData, categories){
     });
 }
 
-function createOptionStackedArea(divId, type, title, categories) {
+function createOptionStackedArea(divId, type, title, categories)
+{
     var options = {
         chart: {
             // colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
@@ -127,15 +142,15 @@ function createOptionStackedArea(divId, type, title, categories) {
             plotBackgroundColor: 'rgba(255, 255, 255, .9)',
             plotShadow: true,
             plotBorderWidth: 1,
-            renderTo:divId,
-            zoomType : 'x',
+            renderTo: divId,
+            zoomType: 'x',
             type: 'area'
         },
-        exporting : {
-            enabled : true
+        exporting: {
+            enabled: true
         },
-        credits : {
-            enabled : false
+        credits: {
+            enabled: false
         },
         title: {
             text: title.chartTitle,
@@ -155,7 +170,7 @@ function createOptionStackedArea(divId, type, title, categories) {
             title: {
                 enabled: false
             },
-            type : type.xAxisType
+            type: type.xAxisType
         },
         yAxis: {
             title: {
@@ -163,7 +178,7 @@ function createOptionStackedArea(divId, type, title, categories) {
             },
             labels: {
                 formatter: function () {
-                    return this.value ;
+                    return this.value;
                 }
             },
             allowDecimals: false,
@@ -203,7 +218,8 @@ function createOptionStackedArea(divId, type, title, categories) {
     return options;
 }
 
-function createOptionStacked(divId, type, title, categories) {
+function createOptionStacked(divId, type, title, categories)
+{
     var options = {
         colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
         chart: {
@@ -219,14 +235,14 @@ function createOptionStacked(divId, type, title, categories) {
             plotShadow: true,
             plotBorderWidth: 1,
             type: 'column',
-            renderTo:divId,
-            zoomType : 'x'
+            renderTo: divId,
+            zoomType: 'x'
         },
-        exporting : {
-            enabled : true
+        exporting: {
+            enabled: true
         },
-        credits : {
-            enabled : false
+        credits: {
+            enabled: false
         },
         title: {
             text: title.chartTitle,
@@ -290,7 +306,8 @@ function createOptionStacked(divId, type, title, categories) {
 
 }
 
-function createOption(divId, type, title, categories){
+function createOption(divId, type, title, categories)
+{
     var options = {
         colors: ['#058DC7', '#50B432', '#ED561B', '#DDDF00', '#24CBE5', '#64E572', '#FF9655', '#FFF263', '#6AF9C4'],
         chart: {
@@ -307,14 +324,14 @@ function createOption(divId, type, title, categories){
             plotBorderWidth: 1,
             renderTo: divId,
             type: type.chartType,
-            zoomType : 'x'
+            zoomType: 'x'
 
         },
-        exporting : {
-            enabled : false
+        exporting: {
+            enabled: false
         },
-        credits : {
-            enabled : false
+        credits: {
+            enabled: false
         },
         title: {
             text: title.chartTitle,
@@ -356,7 +373,7 @@ function createOption(divId, type, title, categories){
                 },
                 text: title.xAxisTitle
             },
-            type : type.xAxisType
+            type: type.xAxisType
         },
         yAxis: {
             minorTickInterval: 'auto',
@@ -374,8 +391,8 @@ function createOption(divId, type, title, categories){
                 text: title.yAxisTitle
             },
             labels: {
-                formatter: function() {
-                    return this.value ;
+                formatter: function () {
+                    return this.value;
                 },
                 style: {
                     color: '#000',
@@ -386,18 +403,18 @@ function createOption(divId, type, title, categories){
         },
         plotOptions: {
 
-            area : {
-                fillColor : {
-                    linearGradient : {
-                        x1 : 0,
-                        y1 : 0,
-                        x2 : 0,
-                        y2 : 1
+            area: {
+                fillColor: {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
                     },
-                    stops : [
+                    stops: [
                         [
                             0,
-                            Highcharts.getOptions().colors[0] ],
+                            Highcharts.getOptions().colors[0]],
                         [
                             1,
                             Highcharts
@@ -405,18 +422,18 @@ function createOption(divId, type, title, categories){
                                     Highcharts
                                         .getOptions().colors[0])
                                 .setOpacity(0).get(
-                                'rgba') ] ]
+                                'rgba')]]
                 },
-                marker : {
-                    radius : 2
+                marker: {
+                    radius: 2
                 },
-                lineWidth : 1,
-                states : {
-                    hover : {
-                        lineWidth : 1
+                lineWidth: 1,
+                states: {
+                    hover: {
+                        lineWidth: 1
                     }
                 },
-                threshold : null
+                threshold: null
             }
             /*
             area: {

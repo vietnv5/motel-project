@@ -12,7 +12,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
  * Created by xuanh on 5/19/2017.
  */
 @Entity
-public class Employee {
+public class Employee
+{
     private Long employeeId;
     private String employeeCode;
     private String employeeName;
@@ -46,7 +47,7 @@ public class Employee {
 
     Long departmentId;
     CatDepartment department;
-//    EmployeeStatus status;
+    //    EmployeeStatus status;
     CatBranch branch;
 
     @Id
@@ -54,197 +55,239 @@ public class Employee {
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @SequenceGenerator(name = "generator", sequenceName = "EMPLOYEE_SEQ", allocationSize = 1)
 
-    public Long getEmployeeId() {
+    public Long getEmployeeId()
+    {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(Long employeeId)
+    {
         this.employeeId = employeeId;
     }
 
     @Basic
     @Column(name = "EMPLOYEE_CODE")
-    public String getEmployeeCode() {
+    public String getEmployeeCode()
+    {
         return employeeCode;
     }
 
-    public void setEmployeeCode(String employeeCode) {
+    public void setEmployeeCode(String employeeCode)
+    {
         this.employeeCode = employeeCode;
     }
 
     @Basic
     @Column(name = "EMPLOYEE_NAME")
-    public String getEmployeeName() {
+    public String getEmployeeName()
+    {
         return employeeName;
     }
 
-    public void setEmployeeName(String employeeName) {
+    public void setEmployeeName(String employeeName)
+    {
         this.employeeName = employeeName;
     }
 
     @Column(name = "Check_In_Code")
-    public String getCheckInCode() {
+    public String getCheckInCode()
+    {
         return checkInCode;
     }
 
-    public void setCheckInCode(String checkInCode) {
+    public void setCheckInCode(String checkInCode)
+    {
         this.checkInCode = checkInCode;
     }
 
     @Column(name = "ID_NUM")
-    public String getIdNum() {
+    public String getIdNum()
+    {
         return idNum;
     }
 
-    public void setIdNum(String idNum) {
+    public void setIdNum(String idNum)
+    {
         this.idNum = idNum;
     }
 
 
     @Column(name = "Birth_Date")
-    public Date getBirthDate() {
+    public Date getBirthDate()
+    {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Date birthDate)
+    {
         this.birthDate = birthDate;
     }
 
 
     @Column(name = "Birth_Place")
-    public String getBirthPlace() {
+    public String getBirthPlace()
+    {
         return birthPlace;
     }
 
-    public void setBirthPlace(String birthPlace) {
+    public void setBirthPlace(String birthPlace)
+    {
         this.birthPlace = birthPlace;
     }
 
 
     @Column(name = "Join_Date")
-    public Date getJoinDate() {
+    public Date getJoinDate()
+    {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(Date joinDate)
+    {
         this.joinDate = joinDate;
     }
 
     @Column(name = "Telephone")
-    public String getTelephone() {
+    public String getTelephone()
+    {
         return telephone;
     }
 
-    public void setTelephone(String telephone) {
+    public void setTelephone(String telephone)
+    {
         this.telephone = telephone;
     }
 
 
     @Column(name = "Permanent_Address")
-    public String getPermanentAddress() {
+    public String getPermanentAddress()
+    {
         return permanentAddress;
     }
 
-    public void setPermanentAddress(String permanentAddress) {
+    public void setPermanentAddress(String permanentAddress)
+    {
         this.permanentAddress = permanentAddress;
     }
 
     @Column(name = "Present_Address")
-    public String getPresentAddress() {
+    public String getPresentAddress()
+    {
         return presentAddress;
     }
 
-    public void setPresentAddress(String presentAddress) {
+    public void setPresentAddress(String presentAddress)
+    {
         this.presentAddress = presentAddress;
     }
 
     @Column(name = "sex")
-    public Long getSex() {
+    public Long getSex()
+    {
         return sex;
     }
 
-    public void setSex(Long sex) {
+    public void setSex(Long sex)
+    {
         this.sex = sex;
     }
 
     @Column(name = "PERSON_ID")
-    public String getPersonId() {
+    public String getPersonId()
+    {
         return personId;
     }
 
-    public void setPersonId(String personId) {
+    public void setPersonId(String personId)
+    {
         this.personId = personId;
     }
 
     @Column(name = "ISSUED_DATE")
-    public Date getIssuedDate() {
+    public Date getIssuedDate()
+    {
         return issuedDate;
     }
 
-    public void setIssuedDate(Date issuedDate) {
+    public void setIssuedDate(Date issuedDate)
+    {
         this.issuedDate = issuedDate;
     }
 
     @Column(name = "PERSON_PLACE")
-    public String getPersonPlace() {
+    public String getPersonPlace()
+    {
         return personPlace;
     }
 
-    public void setPersonPlace(String personPlace) {
+    public void setPersonPlace(String personPlace)
+    {
         this.personPlace = personPlace;
     }
 
     @Column(name = "MARRIED_STATUS")
-    public String getMarriedStatus() {
+    public String getMarriedStatus()
+    {
         return marriedStatus;
     }
 
-    public void setMarriedStatus(String marriedStatus) {
+    public void setMarriedStatus(String marriedStatus)
+    {
         this.marriedStatus = marriedStatus;
     }
 
     @Column(name = "NATION")
-    public String getNation() {
+    public String getNation()
+    {
         return nation;
     }
 
-    public void setNation(String nation) {
+    public void setNation(String nation)
+    {
         this.nation = nation;
     }
 
     @Column(name = "ETHENIC")
-    public String getEthenic() {
+    public String getEthenic()
+    {
         return ethenic;
     }
 
-    public void setEthenic(String ethenic) {
+    public void setEthenic(String ethenic)
+    {
         this.ethenic = ethenic;
     }
 
     @Column(name = "RELIGION")
-    public String getReligion() {
+    public String getReligion()
+    {
         return religion;
     }
 
-    public void setReligion(String religion) {
+    public void setReligion(String religion)
+    {
         this.religion = religion;
     }
 
     @Column(name = "EDUCATION")
-    public String getEducation() {
+    public String getEducation()
+    {
         return education;
     }
 
-    public void setEducation(String education) {
+    public void setEducation(String education)
+    {
         this.education = education;
     }
 
     @Column(name = "STATUS_ID")
-    public Long getStatusId() {
+    public Long getStatusId()
+    {
         return statusId;
     }
 
-    public void setStatusId(Long statusId) {
+    public void setStatusId(Long statusId)
+    {
         this.statusId = statusId;
     }
 
@@ -259,134 +302,173 @@ public class Employee {
 //    }
 
     @Column(name = "LEFT_DATE")
-    public Date getLeftDate() {
+    public Date getLeftDate()
+    {
         return leftDate;
     }
 
-    public void setLeftDate(Date leftDate) {
+    public void setLeftDate(Date leftDate)
+    {
         this.leftDate = leftDate;
     }
 
     @Column(name = "CONTRACT_TYPE")
-    public Long getContractType() {
+    public Long getContractType()
+    {
         return contractType;
     }
 
-    public void setContractType(Long contractType) {
+    public void setContractType(Long contractType)
+    {
         this.contractType = contractType;
     }
 
     @Column(name = "CONTRACT_NO")
-    public String getContractNo() {
+    public String getContractNo()
+    {
         return contractNo;
     }
 
-    public void setContractNo(String contractNo) {
+    public void setContractNo(String contractNo)
+    {
         this.contractNo = contractNo;
     }
 
     @Column(name = "BEGIN_CONTRACT")
-    public Date getBeginContract() {
+    public Date getBeginContract()
+    {
         return beginContract;
     }
 
-    public void setBeginContract(Date beginContract) {
+    public void setBeginContract(Date beginContract)
+    {
         this.beginContract = beginContract;
     }
 
     @Column(name = "END_CONTRACT")
-    public Date getEndContract() {
+    public Date getEndContract()
+    {
         return endContract;
     }
 
-    public void setEndContract(Date endContract) {
+    public void setEndContract(Date endContract)
+    {
         this.endContract = endContract;
     }
 
     @Basic
     @Column(name = "JOB_TITLE_ID")
-    public Long getJobTitleId() {
+    public Long getJobTitleId()
+    {
         return jobTitleId;
     }
 
-    public void setJobTitleId(Long jobTitleId) {
+    public void setJobTitleId(Long jobTitleId)
+    {
         this.jobTitleId = jobTitleId;
     }
 
     @ManyToOne
     @JoinColumn(name = "JOB_TITLE_ID", insertable = false, updatable = false)
-    public CatJobTitle getJobTitle() {
+    public CatJobTitle getJobTitle()
+    {
         return jobTitle;
     }
 
-    public void setJobTitle(CatJobTitle jobTitle) {
+    public void setJobTitle(CatJobTitle jobTitle)
+    {
         this.jobTitle = jobTitle;
     }
 
     @Column(name = "DEPARTMENT_ID")
-    public Long getDepartmentId() {
+    public Long getDepartmentId()
+    {
         return departmentId;
     }
 
-    public void setDepartmentId(Long departmentId) {
+    public void setDepartmentId(Long departmentId)
+    {
         this.departmentId = departmentId;
     }
 
     @ManyToOne
     @JoinColumn(name = "DEPARTMENT_ID", insertable = false, updatable = false)
-    public CatDepartment getDepartment() {
+    public CatDepartment getDepartment()
+    {
         return department;
     }
 
-    public void setDepartment(CatDepartment department) {
+    public void setDepartment(CatDepartment department)
+    {
         this.department = department;
     }
 
     @Basic
     @Column(name = "BRANCH_ID")
-    public Long getBranchId() {
+    public Long getBranchId()
+    {
         return branchId;
     }
 
-    public void setBranchId(Long branchId) {
+    public void setBranchId(Long branchId)
+    {
         this.branchId = branchId;
     }
 
     @ManyToOne
     @JoinColumn(name = "BRANCH_ID", insertable = false, updatable = false)
-    public CatBranch getBranch() {
+    public CatBranch getBranch()
+    {
         return branch;
     }
 
-    public void setBranch(CatBranch branch) {
+    public void setBranch(CatBranch branch)
+    {
         this.branch = branch;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass())
+        {
+            return false;
+        }
 
         Employee employee = (Employee) o;
 
-        if (employeeId != null ? !employeeId.equals(employee.employeeId) : employee.employeeId != null) return false;
+        if (employeeId != null ? !employeeId.equals(employee.employeeId) : employee.employeeId != null)
+        {
+            return false;
+        }
         if (employeeCode != null ? !employeeCode.equals(employee.employeeCode) : employee.employeeCode != null)
+        {
             return false;
+        }
         if (employeeName != null ? !employeeName.equals(employee.employeeName) : employee.employeeName != null)
+        {
             return false;
+        }
 
         return true;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int result = employeeId != null ? employeeId.hashCode() : 0;
         result = 31 * result + (employeeCode != null ? employeeCode.hashCode() : 0);
         result = 31 * result + (employeeName != null ? employeeName.hashCode() : 0);
         return result;
     }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

@@ -20,7 +20,7 @@
                                         <p:selectOneMenu id="roomtype" value="#{catRoomController.currRoom.type}"
                                                          required="true" style="width: 71%" scrollHeight="100"
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.type'])}"
-                                                         >
+                                        >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                           noSelectionOption="true"/>
                                             <f:selectItem itemValue="1"
@@ -49,7 +49,7 @@
                                                      title="#{msg['datatable.header.room.code']}"
                                                      required="true" style="width: 80%"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.code'])}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['datatable.header.room.code']}</label>
@@ -63,7 +63,7 @@
                                                      title="#{msg['datatable.header.room.name']}"
                                                      required="true"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['datatable.header.room.name']} *</label>
@@ -81,7 +81,7 @@
                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.address'])}"
                                                         var="com" itemValue="#{com}" scrollHeight="100"
                                                         itemLabel="#{com.communeName.concat(', ').concat(com.district.districtName).concat(', ').concat(com.district.province.provinceName)} "
-                                                        >
+                                        >
                                             <p:ajax event="query" onstart="PF('block').show()"
                                                     oncomplete="PF('block').hide()"/>
                                         </p:autoComplete>
@@ -101,9 +101,9 @@
                                                          filterMatchMode="contains"
                                                          required="true" style="width: 71%" height="100"
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branch.name'])}"
-                                                         >
+                                        >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
-                                                          />
+                                            />
                                             <f:selectItems value="#{branchController.branchs}" var="p"
                                                            itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
 
@@ -123,7 +123,7 @@
                                                          title="#{msg['datatable.header.description']}"
                                                          required="true"
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.description'])}"
-                                                         >
+                                        >
                                         </p:inputTextarea>
 
                                         <label>#{msg['datatable.header.description']}</label>
@@ -139,7 +139,7 @@
                                                        required="true"
 
                                                        requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.totalSeat'])}"
-                                                       >
+                                        >
                                         </p:inputNumber>
 
                                         <label>#{msg['datatable.header.room.totalSeat']} *</label>
@@ -150,32 +150,33 @@
                                     <span class="title-top">
                                         <h:outputText value="Có máy vào/ra: "/>
                                         <p:selectBooleanCheckbox
-                                            value="#{catRoomController.currRoom.boolExistMachineInOut}">
+                                                value="#{catRoomController.currRoom.boolExistMachineInOut}">
                                             <p:ajax event="change" update="machineDiv"/>
 
                                         </p:selectBooleanCheckbox>
                                     </span>
                                 </div>
-                                </div>
+                            </div>
                             <div class="Container100">
 
-                                
+
                                 <div class="Container50 MarTop30">
                                     <h:panelGrid id="machineDiv">
                                         <h:panelGrid id="machinePane"
                                                      rendered="#{catRoomController.currRoom.boolExistMachineInOut}">
 
-                                            <span class="title-top" >
+                                            <span class="title-top">
                                                 <label class="title-elem"
                                                        style="color: #027FAC">#{msg['room.ipMachine']} *</label>
 
-                                                <p:selectOneMenu id="machineId" value="#{catRoomController.currRoom.catMachine}"
+                                                <p:selectOneMenu id="machineId"
+                                                                 value="#{catRoomController.currRoom.catMachine}"
                                                                  filter="true" converter="catMachineConverter"
                                                                  filterMatchMode="contains" var="t"
                                                                  required="#{catRoomController.currRoom.boolExistMachineInOut}"
                                                                  height="100" style="width: 80%"
                                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['room.ipMachine'])}"
-                                                                 >
+                                                >
                                                     <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                                   noSelectionOption="true"/>
                                                     <f:selectItems value="#{catRoomController.lstMachines}" var="m"
@@ -201,11 +202,12 @@
                                                 <label class="title-elem"
                                                        style="color: #027FAC">#{msg['room.ipMachineOut']} </label>
 
-                                                <p:selectOneMenu id="machineOutId" value="#{catRoomController.currRoom.catMachineOut}"
+                                                <p:selectOneMenu id="machineOutId"
+                                                                 value="#{catRoomController.currRoom.catMachineOut}"
                                                                  filter="true" converter="catMachineConverter"
                                                                  filterMatchMode="contains" var="t"
                                                                  height="100" style="width: 80%"
-                                                                 >
+                                                >
                                                     <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                                   noSelectionOption="true"/>
                                                     <f:selectItems value="#{catRoomController.lstMachines}" var="m"
@@ -263,7 +265,7 @@
                              emptyMessage="#{msg['datatable.empty']}"
                              styleClass="Container100 NoPadding MarTop10"
 
-                             >
+                >
                     <!--Header-->
                     <f:facet name="header">
                         <div class="Card NoPadding" style="background: transparent;">
@@ -288,7 +290,7 @@
                     <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                     <!--STT-->
                     <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                              >
+                    >
                         <h:outputText value="#{cusIdx +1 }"/>
                     </p:column>
 
@@ -330,13 +332,14 @@
                         <h:outputText value="#{room.branch.branchName}"/>
                     </p:column>
                     <p:column headerText="#{msg['datatable.header.description']}" width="70"
-                              >
+                    >
                         <h:outputText value="#{room.description}"/>
                     </p:column>
-                    <p:column headerText="#{msg['datatable.header.room.totalSeat']}" width="15" style="text-align: right">
+                    <p:column headerText="#{msg['datatable.header.room.totalSeat']}" width="15"
+                              style="text-align: right">
                         <h:outputText value="#{room.totalSeat}"/>
                     </p:column>
-                    <p:column headerText="#{msg['datatable.header.room.useSeat']}" width="15"  style="text-align: right">
+                    <p:column headerText="#{msg['datatable.header.room.useSeat']}" width="15" style="text-align: right">
                         <h:outputText value="#{catRoomController.getUseSeat(room.roomId)}"/>
                     </p:column>
                     <p:column headerText="#{msg['catUser.status']}" width="15"
@@ -352,7 +355,7 @@
                                               itemLabel="#{msg['common.INACTIVE']}"/>
                             </p:selectOneMenu>
                         </f:facet>
-                        <h:outputText value="#{room.statusName}" />
+                        <h:outputText value="#{room.statusName}"/>
                     </p:column>
 
                     <p:column headerText="#{msg['datatable.header.action']}" width="30" styleClass="TexAlCenter">
@@ -366,7 +369,7 @@
                             </p:effect>
                         </p:commandButton>
                         <!--<p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14"-->
-                                         <!--oncomplete="PF('deleteRoomPanel-#{cusIdx}').show('#{component.clientId}')">-->
+                        <!--oncomplete="PF('deleteRoomPanel-#{cusIdx}').show('#{component.clientId}')">-->
 
                         <!--</p:commandButton>-->
                         <p:overlayPanel modal="true" widgetVar="deleteRoomPanel-#{cusIdx}" showEffect="scale"
@@ -381,9 +384,9 @@
 
                             </p:commandButton>
                         </p:overlayPanel>
-                        <p:tooltip position="left" ></p:tooltip>
+                        <p:tooltip position="left"></p:tooltip>
                         <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
-                        <p:menuButton value="" styleClass="GreenButton Fs14 White"  id="menuButtonId">
+                        <p:menuButton value="" styleClass="GreenButton Fs14 White" id="menuButtonId">
 
                             <p:menuitem icon="fa fa-pause" actionListener="#{catRoomController.updateStatus(room,2)}"
                                         process="@widgetVar(tableRoomWidget)"

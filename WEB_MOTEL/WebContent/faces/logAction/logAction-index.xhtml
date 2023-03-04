@@ -19,11 +19,11 @@
                     <p:calendar id="toDateSearchId" value="#{logActionController.toDate}"
                                 pattern="dd/MM/yyyy HH:mm:ss"/>
 
-                <p:commandButton id="search" onclick="PF('block').show()"
-                                 oncomplete="PF('block').hide();"
-                                 update="growlSearch,:form"
-                                 actionListener="#{logActionController.search}" value="Search"
-                                 icon="fa fa-search"/>
+                    <p:commandButton id="search" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide();"
+                                     update="growlSearch,:form"
+                                     actionListener="#{logActionController.search}" value="Search"
+                                     icon="fa fa-search"/>
                 </h:panelGrid>
 
             </p:panel>

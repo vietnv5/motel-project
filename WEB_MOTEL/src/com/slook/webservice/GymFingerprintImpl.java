@@ -10,14 +10,15 @@ import com.slook.util.DateTimeUtils;
 import com.slook.util.Util;
 import com.zkteco.biometric.FingerprintSensorErrorCode;
 import com.zkteco.biometric.FingerprintSensorEx;
+
 import java.io.IOException;
 import java.util.Date;
 
 /**
- *
  * @author SLOOK. JSC on Nov 10, 2017 9:07:02 AM
  */
-public class GymFingerprintImpl {
+public class GymFingerprintImpl
+{
 
     String fingerPath;
 
@@ -56,49 +57,66 @@ public class GymFingerprintImpl {
 
     private static GymFingerprintImpl instance;
 
-    public static GymFingerprintImpl getInstance() {
-        if (instance == null) {
+    public static GymFingerprintImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new GymFingerprintImpl();
         }
         return instance;
     }
 
-    public void listenerFinger() {
-        try {
+    public void listenerFinger()
+    {
+        try
+        {
             FreeSensor();
             openFinger();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void closeCurrentSensor() {
-        try {
+    public void closeCurrentSensor()
+    {
+        try
+        {
             WorkThreadClose workThreadClose = new WorkThreadClose();
             workThreadClose.start();
 //            FreeSensor();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private class WorkThreadClose extends Thread {
+    private class WorkThreadClose extends Thread
+    {
 
         @Override
-        public void run() {
-            try {
+        public void run()
+        {
+            try
+            {
                 FreeSensor();
                 //wait for thread stopping
                 Thread.sleep(500);
-            } catch (InterruptedException e) {
+            }
+            catch (InterruptedException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
         }
     }
 
-    public void openFinger() {
-        if (0 != mhDevice) {
+    public void openFinger()
+    {
+        if (0 != mhDevice)
+        {
             //already inited
             System.out.println("Please close device first!");
             return;
@@ -110,22 +128,26 @@ public class GymFingerprintImpl {
         bIdentify = false;
         iFid = 1;
         enroll_idx = 0;
-        if (FingerprintSensorErrorCode.ZKFP_ERR_OK != FingerprintSensorEx.Init()) {
+        if (FingerprintSensorErrorCode.ZKFP_ERR_OK != FingerprintSensorEx.Init())
+        {
             System.out.println("Init failed!");
             return;
         }
         ret = FingerprintSensorEx.GetDeviceCount();
-        if (ret < 0) {
+        if (ret < 0)
+        {
             System.out.println("No devices connected!");
             FreeSensor();
             return;
         }
-        if (0 == (mhDevice = FingerprintSensorEx.OpenDevice(0))) {
+        if (0 == (mhDevice = FingerprintSensorEx.OpenDevice(0)))
+        {
             System.out.println("Open device fail, ret = " + ret + "!");
             FreeSensor();
             return;
         }
-        if (0 == (mhDB = FingerprintSensorEx.DBInit())) {
+        if (0 == (mhDB = FingerprintSensorEx.DBInit()))
+        {
             System.out.println("Init DB fail, ret = " + ret + "!");
             FreeSensor();
             return;
@@ -161,35 +183,46 @@ public class GymFingerprintImpl {
         System.out.println("Open succ!");
     }
 
-    private void FreeSensor() {
+    private void FreeSensor()
+    {
         mbStop = true;
-        try {        //wait for thread stopping
+        try
+        {        //wait for thread stopping
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        }
+        catch (InterruptedException e)
+        {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        if (0 != mhDB) {
+        if (0 != mhDB)
+        {
             FingerprintSensorEx.DBFree(mhDB);
             mhDB = 0;
         }
-        if (0 != mhDevice) {
+        if (0 != mhDevice)
+        {
             FingerprintSensorEx.CloseDevice(mhDevice);
             mhDevice = 0;
         }
         FingerprintSensorEx.Terminate();
     }
 
-    private class WorkThread extends Thread {
+    private class WorkThread extends Thread
+    {
 
         @Override
-        public void run() {
+        public void run()
+        {
             super.run();
             int ret = 0;
-            while (!mbStop) {
+            while (!mbStop)
+            {
                 templateLen[0] = 2048;
-                if (0 == (ret = FingerprintSensorEx.AcquireFingerprint(mhDevice, imgbuf, template, templateLen))) {
-                    if (nFakeFunOn == 1) {
+                if (0 == (ret = FingerprintSensorEx.AcquireFingerprint(mhDevice, imgbuf, template, templateLen)))
+                {
+                    if (nFakeFunOn == 1)
+                    {
                         byte[] paramValue = new byte[4];
                         int[] size = new int[1];
                         size[0] = 4;
@@ -198,7 +231,8 @@ public class GymFingerprintImpl {
                         ret = FingerprintSensorEx.GetParameters(mhDevice, 2004, paramValue, size);
                         nFakeStatus = byteArrayToInt(paramValue);
                         System.out.println("ret = " + ret + ",nFakeStatus=" + nFakeStatus);
-                        if (0 == ret && (byte) (nFakeStatus & 31) != 31) {
+                        if (0 == ret && (byte) (nFakeStatus & 31) != 31)
+                        {
                             System.out.println("Is a fake-finer?");
                             return;
                         }
@@ -206,86 +240,118 @@ public class GymFingerprintImpl {
                     OnCatpureOK(imgbuf);
                     OnExtractOK(template, templateLen[0]);
                 }
-                try {
+                try
+                {
                     Thread.sleep(500);
-                } catch (InterruptedException e) {
+                }
+                catch (InterruptedException e)
+                {
                     e.printStackTrace();
                 }
 
             }
         }
 
-        private void runOnUiThread(Runnable runnable) {
+        private void runOnUiThread(Runnable runnable)
+        {
             // TODO Auto-generated method stub
         }
     }
 
-    private void OnCatpureOK(byte[] imgBuf) {
-        try {
+    private void OnCatpureOK(byte[] imgBuf)
+    {
+        try
+        {
             String putPath = Util.getRealPath(Constant.FINGERPRINT_FOLDER_TEMP + "/" + "fingerprint_" + DateTimeUtils.format(new Date(), "yyMMddHHmm") + ".bmp");
 
             writeBitmap(imgBuf, fpWidth, fpHeight, putPath);
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
 
-    private void OnExtractOK(byte[] template, int len) {
-        if (bRegister) {
+    private void OnExtractOK(byte[] template, int len)
+    {
+        if (bRegister)
+        {
             int[] fid = new int[1];
             int[] score = new int[1];
             int ret = FingerprintSensorEx.DBIdentify(mhDB, template, fid, score);
-            if (ret == 0) {
+            if (ret == 0)
+            {
                 System.out.println("the finger already enroll by " + fid[0] + ",cancel enroll");
                 bRegister = false;
                 enroll_idx = 0;
                 return;
             }
-            if (enroll_idx > 0 && FingerprintSensorEx.DBMatch(mhDB, regtemparray[enroll_idx - 1], template) <= 0) {
+            if (enroll_idx > 0 && FingerprintSensorEx.DBMatch(mhDB, regtemparray[enroll_idx - 1], template) <= 0)
+            {
                 System.out.println("please press the same finger 3 times for the enrollment");
                 return;
             }
             System.arraycopy(template, 0, regtemparray[enroll_idx], 0, 2048);
             enroll_idx++;
-            if (enroll_idx == 3) {
+            if (enroll_idx == 3)
+            {
                 int[] _retLen = new int[1];
                 _retLen[0] = 2048;
                 byte[] regTemp = new byte[_retLen[0]];
 
                 if (0 == (ret = FingerprintSensorEx.DBMerge(mhDB, regtemparray[0], regtemparray[1], regtemparray[2], regTemp, _retLen))
-                        && 0 == (ret = FingerprintSensorEx.DBAdd(mhDB, iFid, regTemp))) {
+                        && 0 == (ret = FingerprintSensorEx.DBAdd(mhDB, iFid, regTemp)))
+                {
                     iFid++;
                     cbRegTemp = _retLen[0];
                     System.arraycopy(regTemp, 0, lastRegTemp, 0, cbRegTemp);
                     //Base64 Template
                     System.out.println("enroll succ");
-                } else {
+                }
+                else
+                {
                     System.out.println("enroll fail, error code=" + ret);
                 }
                 bRegister = false;
-            } else {
+            }
+            else
+            {
                 System.out.println("You need to press the " + (3 - enroll_idx) + " times fingerprint");
             }
-        } else {
-            if (bIdentify) {
+        }
+        else
+        {
+            if (bIdentify)
+            {
                 int[] fid = new int[1];
                 int[] score = new int[1];
                 int ret = FingerprintSensorEx.DBIdentify(mhDB, template, fid, score);
-                if (ret == 0) {
+                if (ret == 0)
+                {
                     System.out.println("Identify succ, fid=" + fid[0] + ",score=" + score[0]);
-                } else {
+                }
+                else
+                {
                     System.out.println("Identify fail, errcode=" + ret);
                 }
 
-            } else {
-                if (cbRegTemp <= 0) {
+            }
+            else
+            {
+                if (cbRegTemp <= 0)
+                {
                     System.out.println("Please register first!");
-                } else {
+                }
+                else
+                {
                     int ret = FingerprintSensorEx.DBMatch(mhDB, lastRegTemp, template);
-                    if (ret > 0) {
+                    if (ret > 0)
+                    {
                         System.out.println("Verify succ, score=" + ret);
-                    } else {
+                    }
+                    else
+                    {
                         System.out.println("Verify fail, ret=" + ret);
                     }
                 }
@@ -293,7 +359,8 @@ public class GymFingerprintImpl {
         }
     }
 
-    public static void writeBitmap(byte[] imageBuf, int nWidth, int nHeight, String path) throws IOException {
+    public static void writeBitmap(byte[] imageBuf, int nWidth, int nHeight, String path) throws IOException
+    {
         java.io.FileOutputStream fos = new java.io.FileOutputStream(path);
         java.io.DataOutputStream dos = new java.io.DataOutputStream(fos);
 
@@ -334,7 +401,8 @@ public class GymFingerprintImpl {
         dos.write(changeByte(biClrUsed), 0, 4);
         dos.write(changeByte(biClrImportant), 0, 4);
 
-        for (int i = 0; i < 256; i++) {
+        for (int i = 0; i < 256; i++)
+        {
             dos.writeByte(i);
             dos.writeByte(i);
             dos.writeByte(i);
@@ -342,13 +410,16 @@ public class GymFingerprintImpl {
         }
 
         byte[] filter = null;
-        if (w > nWidth) {
+        if (w > nWidth)
+        {
             filter = new byte[w - nWidth];
         }
 
-        for (int i = 0; i < nHeight; i++) {
+        for (int i = 0; i < nHeight; i++)
+        {
             dos.write(imageBuf, (nHeight - 1 - i) * nWidth, nWidth);
-            if (w > nWidth) {
+            if (w > nWidth)
+            {
                 dos.write(filter, 0, w - nWidth);
             }
         }
@@ -357,11 +428,13 @@ public class GymFingerprintImpl {
         fos.close();
     }
 
-    public static byte[] changeByte(int data) {
+    public static byte[] changeByte(int data)
+    {
         return intToByteArray(data);
     }
 
-    public static byte[] intToByteArray(final int number) {
+    public static byte[] intToByteArray(final int number)
+    {
         byte[] abyte = new byte[4];
         abyte[0] = (byte) (0xff & number);
         abyte[1] = (byte) ((0xff00 & number) >> 8);
@@ -370,7 +443,8 @@ public class GymFingerprintImpl {
         return abyte;
     }
 
-    public static int byteArrayToInt(byte[] bytes) {
+    public static int byteArrayToInt(byte[] bytes)
+    {
         int number = bytes[0] & 0xFF;
         number |= ((bytes[1] << 8) & 0xFF00);
         number |= ((bytes[2] << 16) & 0xFF0000);

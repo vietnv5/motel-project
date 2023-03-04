@@ -6,10 +6,10 @@
 package com.slook.object;
 
 /**
- *
  * @author VietNV on Dec 6, 2017
  */
-public class ReportServiceTicketForm {
+public class ReportServiceTicketForm
+{
 
     private Long employeeId;
     private String groupPackName;
@@ -18,53 +18,65 @@ public class ReportServiceTicketForm {
     private String key;
     private Long soLuong;
 
-    public Long getEmployeeId() {
+    public Long getEmployeeId()
+    {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(Long employeeId)
+    {
         this.employeeId = employeeId;
     }
 
-    public String getGroupPackName() {
+    public String getGroupPackName()
+    {
         return groupPackName;
     }
 
-    public void setGroupPackName(String groupPackName) {
+    public void setGroupPackName(String groupPackName)
+    {
         this.groupPackName = groupPackName;
     }
 
-    public String getEmployeeCode() {
+    public String getEmployeeCode()
+    {
         return employeeCode;
     }
 
-    public void setEmployeeCode(String employeeCode) {
+    public void setEmployeeCode(String employeeCode)
+    {
         this.employeeCode = employeeCode;
     }
 
-    public Long getGroupPackId() {
+    public Long getGroupPackId()
+    {
         return groupPackId;
     }
 
-    public void setGroupPackId(Long groupPackId) {
+    public void setGroupPackId(Long groupPackId)
+    {
         this.groupPackId = groupPackId;
     }
 
-    public String getKey() {
+    public String getKey()
+    {
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(String key)
+    {
         this.key = key;
     }
 
-    public Long getSoLuong() {
+    public Long getSoLuong()
+    {
         return soLuong;
     }
 
-    public void setSoLuong(Long soLuong) {
+    public void setSoLuong(Long soLuong)
+    {
         this.soLuong = soLuong;
     }
 
-    
+
 }

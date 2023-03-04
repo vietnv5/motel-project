@@ -107,7 +107,7 @@
         <dispatcher>FORWARD</dispatcher>
     </filter-mapping>
     <!--<listener>-->
-        <!--<listener-class>com.viettel.vsa.util.SessionVTListener</listener-class>-->
+    <!--<listener-class>com.viettel.vsa.util.SessionVTListener</listener-class>-->
     <!--</listener>-->
 
     <!--Log Filter-->
@@ -125,8 +125,8 @@
         <url-pattern>/action_log/*</url-pattern>
     </filter-mapping>-->
     <!--<filter-mapping>-->
-        <!--<filter-name>Log Filter</filter-name>-->
-        <!--<url-pattern>*.do</url-pattern>-->
+    <!--<filter-name>Log Filter</filter-name>-->
+    <!--<url-pattern>*.do</url-pattern>-->
     <!--</filter-mapping>-->
     <session-config>
         <session-timeout>300</session-timeout>

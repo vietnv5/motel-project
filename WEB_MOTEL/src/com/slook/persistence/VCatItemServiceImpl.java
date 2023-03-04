@@ -10,11 +10,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author vietnv14
  */
 @Scope("session")
 @Service(value = "vCatItemService")
-public class VCatItemServiceImpl  extends GenericDaoImplNewV2<V_CatItemBO, Long> {
-    
+public class VCatItemServiceImpl extends GenericDaoImplNewV2<V_CatItemBO, Long>
+{
+
 }

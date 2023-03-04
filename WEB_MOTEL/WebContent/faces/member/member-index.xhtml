@@ -3,12 +3,12 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                template="/layout/olympos/template.xhtml" >
+                template="/layout/olympos/template.xhtml">
 
 
     <ui:define name="content">
         <p:tabView id='tabViewMain'>
-            <p:tab title="#{msg['datatable.header.member']}" id='tabMemberId'> 
+            <p:tab title="#{msg['datatable.header.member']}" id='tabMemberId'>
 
                 <ui:include src="info/table.xhtml"/>
 
@@ -42,12 +42,12 @@
         <ui:include src="group/showPaymentGroupPdf-dialog.xhtml"></ui:include>
         <script type="text/javascript">
             //chi goi lay van tay khi vao chuc nang quan ly hoi vien
-//            setInterval(function () {
-//
-////                document.getElementById('insertForm:memberTabViewId:btnLoadData').click();
-//                document.getElementById('insertForm:btnLoadData').click();
-//                console.log("kiem tra lay dau van tay");
-//            }, 2 * 1000);
+            //            setInterval(function () {
+            //
+            ////                document.getElementById('insertForm:memberTabViewId:btnLoadData').click();
+            //                document.getElementById('insertForm:btnLoadData').click();
+            //                console.log("kiem tra lay dau van tay");
+            //            }, 2 * 1000);
         </script>
     </ui:define>
 </ui:composition>

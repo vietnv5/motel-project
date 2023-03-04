@@ -31,7 +31,8 @@ import static org.apache.log4j.Logger.getLogger;
 @ViewScoped
 @ManagedBean(name = "memberCareController")
 
-public class MemberCareController {
+public class MemberCareController
+{
     private Date startDate;
     private Date endDate;
 
@@ -65,23 +66,30 @@ public class MemberCareController {
     private String oldObjectStr = null;
 
     @PostConstruct
-    public void init() {
-        try {
+    public void init()
+    {
+        try
+        {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Map sessionMap = context.getSessionMap();
-            memberService = new GenericDaoImplNewV2<Member, Long>() {
+            memberService = new GenericDaoImplNewV2<Member, Long>()
+            {
             };
-            statusService = new GenericDaoImplNewV2<MemberCareStatus, Long>() {
+            statusService = new GenericDaoImplNewV2<MemberCareStatus, Long>()
+            {
             };
-            employeService = new GenericDaoImplNewV2<Employee, Long>() {
+            employeService = new GenericDaoImplNewV2<Employee, Long>()
+            {
             };
-            memberCareService = new GenericDaoImplNewV2<MemberCare, Long>() {
+            memberCareService = new GenericDaoImplNewV2<MemberCare, Long>()
+            {
             };
             selectedSubmitStatus = new MemberCareStatus();
 
             boolean isLogged = (boolean) sessionMap.get("authenticated");
             userLogged = new CatUser();
-            if (isLogged) {
+            if (isLogged)
+            {
                 userLogged = (CatUser) sessionMap.get("user");
 
                 status = new MemberCareStatus();
@@ -90,27 +98,34 @@ public class MemberCareController {
 //                employees = employeService.findList();
                 memberModel = getList(type);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
     }
 
-    public void adminCheckStatus() {
-        try {
-            if (selectedMembers == null || selectedMembers.size() == 0) {
+    public void adminCheckStatus()
+    {
+        try
+        {
+            if (selectedMembers == null || selectedMembers.size() == 0)
+            {
                 MessageUtil.setErrorMessage("Hãy chọn member");
                 clearFilter("tableMemberCare");
                 memberModel = getList(type);
                 return;
             }
 
-            for (int i = 0; i < selectedMembers.size(); i++) {
+            for (int i = 0; i < selectedMembers.size(); i++)
+            {
                 Member m = selectedMembers.get(i);
 
                 MemberCare memberCare = new MemberCare();
                 memberCare.setStatusId(5L);
                 List<MemberCare> l = findMemberCare(m.getMemberId(), type);
-                if (l.size() > 0) {
+                if (l.size() > 0)
+                {
                     memberCare.setMemberCareId(l.get(0).getMemberCareId());
                     memberCare.setMemberId(m.getMemberId());
                     memberCare.setEmployeeId(l.get(0).getEmployee().getEmployeeId());
@@ -118,9 +133,12 @@ public class MemberCareController {
                     memberCare.setStartDate(l.get(0).getStartDate());
                     memberCare.setEndDate(l.get(0).getEndDate());
 
-                    if (l.get(0).getStatusId() != 4) {
+                    if (l.get(0).getStatusId() != 4)
+                    {
                         MessageUtil.setErrorMessage("Chỉ có thể phê duyệt các tác vụ của nhân viên đã hoàn thành");
-                    } else {
+                    }
+                    else
+                    {
                         String oldmemberCare = l.get(0).toString();
                         memberCareService.saveOrUpdate(memberCare);
                         LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldmemberCare, memberCare.toString(), this.getClass().getSimpleName()
@@ -134,40 +152,49 @@ public class MemberCareController {
             selectedMembers.clear();
             clearFilter("tableMemberCare");
             memberModel = getList(type);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setInfoMessageFromRes("error.save.unsuccess");
             logger.error(e.getMessage(), e);
         }
     }
 
-    public void updateMemberCare() {
+    public void updateMemberCare()
+    {
         Employee employee = this.employee;
-        try {
-            if (employee == null) {
+        try
+        {
+            if (employee == null)
+            {
                 MessageUtil.setErrorMessage("Chọn nhân viên");
                 clearFilter("tableMemberCare");
                 memberModel = getList(type);
                 return;
             }
-            if (selectedMembers == null || selectedMembers.size() == 0) {
+            if (selectedMembers == null || selectedMembers.size() == 0)
+            {
                 MessageUtil.setErrorMessage("Hãy chọn member");
                 clearFilter("tableMemberCare");
                 memberModel = getList(type);
                 return;
             }
-            if (getZeroTimeDate(startDate).compareTo(getZeroTimeDate(new Date())) < 0) {
+            if (getZeroTimeDate(startDate).compareTo(getZeroTimeDate(new Date())) < 0)
+            {
                 MessageUtil.setErrorMessage("Ngày bắt đầu phải từ hôm nay trở đi");
                 clearFilter("tableMemberCare");
                 memberModel = getList(type);
                 return;
             }
-            if (startDate.compareTo(endDate) >= 0) {
+            if (startDate.compareTo(endDate) >= 0)
+            {
                 MessageUtil.setErrorMessage("Ngày bắt đầu phải lớn hơn ngày kết thúc");
                 clearFilter("tableMemberCare");
                 memberModel = getList(type);
                 return;
             }
-            for (int i = 0; i < selectedMembers.size(); i++) {
+            for (int i = 0; i < selectedMembers.size(); i++)
+            {
                 Member m = selectedMembers.get(i);
                 System.out.println(m.getMemberName() + ":" + employee.getEmployeeName() + ":" + +employee.getEmployeeId() + ":" + type);
 
@@ -181,9 +208,11 @@ public class MemberCareController {
 
                 List<MemberCare> l = findMemberCare(m.getMemberId(), type);
                 String oldObj = null;
-                if (l.size() > 0) {
+                if (l.size() > 0)
+                {
                     memberCare.setMemberCareId(l.get(0).getMemberCareId());
-                    if (l.get(0).getStatusId() == 4) {
+                    if (l.get(0).getStatusId() == 4)
+                    {
                         MessageUtil.setErrorMessage("Chăm sóc thành viên " + m.getMemberName() + " đã được thực hiện. Bạn chỉ có thể phê duyệt");
                         break;
                     }
@@ -192,17 +221,23 @@ public class MemberCareController {
                 memberCareService.saveOrUpdate(memberCare);
                 //ghi log
                 if (oldObj != null)
+                {
                     LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObj, memberCare.toString()
                             , this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+                }
                 else
+                {
                     LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, null, memberCare.toString(), this.getClass().getSimpleName()
                             , (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+                }
 
                 MessageUtil.setInfoMessageFromRes("info.save.success");
             }
             selectedMembers.clear();
             memberModel = getList(type);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             logger.error(e.getMessage(), e);
         }
@@ -210,70 +245,91 @@ public class MemberCareController {
         clearFilter("tableMemberCare");
     }
 
-    private List<MemberCare> findMemberCare(Long memberId, Long memberCareType) throws Exception {
+    private List<MemberCare> findMemberCare(Long memberId, Long memberCareType) throws Exception
+    {
         Map<String, Object> memberCareExist = new HashMap<>();
         memberCareExist.put("memberId", memberId);
         memberCareExist.put("type", memberCareType);
         return memberCareService.findList(memberCareExist);
     }
 
-    public List<Member> getSelectedMembers() {
+    public List<Member> getSelectedMembers()
+    {
         return selectedMembers;
     }
 
-    public void setSelectedMembers(List<Member> selectedMembers) {
+    public void setSelectedMembers(List<Member> selectedMembers)
+    {
         this.selectedMembers = selectedMembers;
     }
 
-    public List<Employee> selectImployeList(String query) {
-        if (query == "") {
+    public List<Employee> selectImployeList(String query)
+    {
+        if (query == "")
+        {
             return null;
         }
-        try {
+        try
+        {
             Map<String, Object> filter = new HashMap<>();
             filter.put("employeeCode", query);
             return employeService.findList(filter);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return null;
     }
 
-    public MemberModel getList(Long type) {
-        try {
-            switch (type.intValue()) {
-                case CARE_BIRTH_DAY: {   // sinh nhat
+    public MemberModel getList(Long type)
+    {
+        try
+        {
+            switch (type.intValue())
+            {
+                case CARE_BIRTH_DAY:
+                {   // sinh nhat
                     DateTime now = new DateTime();
                     DateTime newTime = now.plusDays(14);
                     List<Member> l = memberService.findListAll(genHQL(now.getDayOfMonth(), now.getMonthOfYear(), newTime.getDayOfMonth(), newTime.getMonthOfYear()));
                     MemberModel m = new MemberModel(l);
                     return m;
                 }
-                case CARE_EXPIRE: {  // sap het han
+                case CARE_EXPIRE:
+                {  // sap het han
                     return new MemberModel(memberService.findListAll(genHQLExpire(14)));
                 }
-                case CARE_GIVE_UP: {  // lau k den
+                case CARE_GIVE_UP:
+                {  // lau k den
                     String hql = "select m.member from MemberCheckin m where (m.memberId, m.checkInDate) in (select memberId, max(checkInDate) FROM MemberCheckin GROUP BY  memberId) and m.checkInDate < current_date -14 and m.member.status <> 2";
                     return new MemberModel(memberService.findListAll(hql));
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return null;
     }
 
-    public String findEmployeeName(Member mem) {
-        for (MemberCare memberCare : mem.getMemberCares()) {
-            if (memberCare.getType() != null && memberCare.getType() == type) {
+    public String findEmployeeName(Member mem)
+    {
+        for (MemberCare memberCare : mem.getMemberCares())
+        {
+            if (memberCare.getType() != null && memberCare.getType() == type)
+            {
                 return memberCare.getEmployee().getEmployeeName();
             }
         }
         return "";
     }
 
-    public MemberCareModel getListCare(Long type) {
-        try {
+    public MemberCareModel getListCare(Long type)
+    {
+        try
+        {
 
             Map<String, Object> filter = new HashMap<>();
             filter.clear();
@@ -282,7 +338,9 @@ public class MemberCareController {
             List<MemberCare> l = memberCareService.findList(filter);
             MemberCareModel m = new MemberCareModel(l);
             return m;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return null;
@@ -305,47 +363,61 @@ public class MemberCareController {
 //        return new ArrayList<>();
 //    }
 
-    public void onFilterChange(String widgetVar) {
+    public void onFilterChange(String widgetVar)
+    {
         clearFilter(widgetVar);
         memberModel = getList(type);
     }
 
-    private void clearFilter(String widgetVar) {
+    private void clearFilter(String widgetVar)
+    {
         RequestContext requestContext = RequestContext.getCurrentInstance();
         requestContext.execute("PF('" + widgetVar + "').clearFilters()");
     }
 
-    public MemberCare findStatus(Long memberId, Long type) {
+    public MemberCare findStatus(Long memberId, Long type)
+    {
         MemberCare m = new MemberCare();
-        try {
+        try
+        {
             Map<String, Object> filter = new HashMap<>();
             filter.put("type-EQ", type);
             filter.put("memberId-EQ", memberId);
 
             List<MemberCare> l = memberCareService.findList(filter);
-            if (l.size() > 0) {
+            if (l.size() > 0)
+            {
                 return l.get(0);
             }
             return m;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         m.setStatusId(1L);
         return m;
     }
 
-    public void updateStatus() {
-        try {
-            if (selectedMemberCare == null || selectedMemberCare.size() == 0) {
+    public void updateStatus()
+    {
+        try
+        {
+            if (selectedMemberCare == null || selectedMemberCare.size() == 0)
+            {
                 clearFilter("tableMemberCareEmployee");
                 MessageUtil.setErrorMessage("Hãy chọn member");
                 return;
             }
-            for (int i = 0; i < selectedMemberCare.size(); i++) {
+            for (int i = 0; i < selectedMemberCare.size(); i++)
+            {
                 MemberCare mc = selectedMemberCare.get(i);
-                if (mc.getStatusId() == 5) {
+                if (mc.getStatusId() == 5)
+                {
                     MessageUtil.setErrorMessage("Công việc đã đóng, bạn không thể thay đổi trạng thái");
-                } else {
+                }
+                else
+                {
                     String oldMc = mc.toString();
                     mc.setStatusId(selectStatus);
                     mc.setResult(result);
@@ -358,20 +430,25 @@ public class MemberCareController {
             }
             selectedMemberCare.clear();
             clearFilter("tableMemberCareEmployee");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             logger.error(e.getMessage(), e);
         }
     }
 
-    private String genHQL(int startDay, int startMonth, int endDay, int endMonth) {
-        if (endDay > startDay) {
+    private String genHQL(int startDay, int startMonth, int endDay, int endMonth)
+    {
+        if (endDay > startDay)
+        {
             return String.format("FROM Member WHERE month(birthDay) = %d AND day(birthDay) >= %d AND day(birthDay) <= %d", startMonth, startDay, endDay);
         }
         return String.format("FROM Member WHERE (month(birthDay) = %d OR month(birthDay) = %d) AND day(birthDay) >= %d AND day(birthDay) <= %d", startMonth, endMonth, startDay, endDay);
     }
 
-    private String genHQLExpire(int days) {
+    private String genHQLExpire(int days)
+    {
         DateTime now = new DateTime();
         DateTime newTime = now.plusDays(days);
 
@@ -379,24 +456,31 @@ public class MemberCareController {
                 "WHERE endDate BETWEEN trunc(sysdate) AND TO_DATE('%02d/%02d/%04d', 'DD/MM/YYYY')", newTime.getDayOfMonth(), newTime.getMonthOfYear(), newTime.getYear());
     }
 
-    public String typeToString(int type) {
-        switch (type) {
-            case CARE_BIRTH_DAY: {
+    public String typeToString(int type)
+    {
+        switch (type)
+        {
+            case CARE_BIRTH_DAY:
+            {
                 return "Sắp tới sinh nhật";
             }
-            case CARE_EXPIRE: {
+            case CARE_EXPIRE:
+            {
                 return "Sắp hết hạn";
             }
-            case CARE_GIVE_UP: {
+            case CARE_GIVE_UP:
+            {
                 return "Lâu không tập";
             }
-            default: {
+            default:
+            {
                 return "Không xác định";
             }
         }
     }
 
-    public static Date getZeroTimeDate(Date fecha) {
+    public static Date getZeroTimeDate(Date fecha)
+    {
         Date res = fecha;
         Calendar calendar = Calendar.getInstance();
 
@@ -411,133 +495,165 @@ public class MemberCareController {
         return res;
     }
 
-    public MemberModel getMemberModel() {
+    public MemberModel getMemberModel()
+    {
         return memberModel;
     }
 
-    public void setMemberModel(MemberModel memberModel) {
+    public void setMemberModel(MemberModel memberModel)
+    {
         this.memberModel = memberModel;
     }
 
-    public Employee getEmployee() {
+    public Employee getEmployee()
+    {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(Employee employee)
+    {
         this.employee = employee;
     }
 
-    public List<MemberCare> getSelectedMemberCare() {
+    public List<MemberCare> getSelectedMemberCare()
+    {
         return selectedMemberCare;
     }
 
-    public void setSelectedMemberCare(List<MemberCare> selectedMemberCare) {
+    public void setSelectedMemberCare(List<MemberCare> selectedMemberCare)
+    {
         this.selectedMemberCare = selectedMemberCare;
     }
 
-    public Long getSelectStatus() {
+    public Long getSelectStatus()
+    {
         return selectStatus;
     }
 
-    public void setSelectStatus(Long selectStatus) {
+    public void setSelectStatus(Long selectStatus)
+    {
         this.selectStatus = selectStatus;
     }
 
-    public String getResult() {
+    public String getResult()
+    {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(String result)
+    {
         this.result = result;
     }
 
-    public CatUser getUserLogged() {
+    public CatUser getUserLogged()
+    {
         return userLogged;
     }
 
-    public void setUserLogged(CatUser userLogged) {
+    public void setUserLogged(CatUser userLogged)
+    {
         this.userLogged = userLogged;
     }
 
-    public List<Employee> getEmployees() {
+    public List<Employee> getEmployees()
+    {
         return employees;
     }
 
-    public void setEmployees(List<Employee> employees) {
+    public void setEmployees(List<Employee> employees)
+    {
         this.employees = employees;
     }
 
-    public GenericDaoServiceNewV2<Member, Long> getMemberService() {
+    public GenericDaoServiceNewV2<Member, Long> getMemberService()
+    {
         return memberService;
     }
 
-    public void setMemberService(GenericDaoServiceNewV2<Member, Long> memberService) {
+    public void setMemberService(GenericDaoServiceNewV2<Member, Long> memberService)
+    {
         this.memberService = memberService;
     }
 
 
-    public MemberCareStatus getStatus() {
+    public MemberCareStatus getStatus()
+    {
         return status;
     }
 
-    public void setStatus(MemberCareStatus status) {
+    public void setStatus(MemberCareStatus status)
+    {
         this.status = status;
     }
 
-    public List<Member> getMembers() {
+    public List<Member> getMembers()
+    {
         return members;
     }
 
-    public void setMembers(List<Member> members) {
+    public void setMembers(List<Member> members)
+    {
         this.members = members;
     }
 
-    public Date getStartDate() {
+    public Date getStartDate()
+    {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(Date startDate)
+    {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public Date getEndDate()
+    {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Date endDate)
+    {
         this.endDate = endDate;
     }
 
-    private void addMessage(FacesMessage message) {
+    private void addMessage(FacesMessage message)
+    {
         FacesContext.getCurrentInstance().addMessage(null, message);
     }
 
-    public Long getType() {
+    public Long getType()
+    {
         return type;
     }
 
-    public void setType(Long type) {
+    public void setType(Long type)
+    {
         this.type = type;
     }
 
-    public int getCARE_BIRTH_DAY() {
+    public int getCARE_BIRTH_DAY()
+    {
         return CARE_BIRTH_DAY;
     }
 
-    public int getCARE_EXPIRE() {
+    public int getCARE_EXPIRE()
+    {
         return CARE_EXPIRE;
     }
 
 
-    public int getCARE_GIVE_UP() {
+    public int getCARE_GIVE_UP()
+    {
         return CARE_GIVE_UP;
     }
 
-    public MemberCareStatus getSelectedSubmitStatus() {
+    public MemberCareStatus getSelectedSubmitStatus()
+    {
         return selectedSubmitStatus;
     }
 
-    public void setSelectedSubmitStatus(MemberCareStatus selectedSubmitStatus) {
+    public void setSelectedSubmitStatus(MemberCareStatus selectedSubmitStatus)
+    {
         this.selectedSubmitStatus = selectedSubmitStatus;
     }
 }

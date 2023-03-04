@@ -23,8 +23,8 @@
                             <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
                             <div class="Container100">
                                 <p:password style="padding:15px !important;"
-                                             value="#{authenticationController.password}"
-                                             placeholder="Current Password"/>
+                                            value="#{authenticationController.password}"
+                                            placeholder="Current Password"/>
                             </div>
                             <div class="Container100">
                                 <p:password style="padding:15px !important;" feedback="true"
@@ -39,7 +39,8 @@
                             <div class="EmptyBox20"></div>
                             <div class="Container50">
                                 <p:commandButton styleClass="GreenButton" value="Save"
-                                                 actionListener="#{authenticationController.changePass}" update=":form:growl"
+                                                 actionListener="#{authenticationController.changePass}"
+                                                 update=":form:growl"
                                                  onclick="PF('block').show()" oncomplete="PF('block').hide()"/>
                             </div>
                             <div class="Container50">

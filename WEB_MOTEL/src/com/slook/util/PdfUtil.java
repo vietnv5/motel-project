@@ -29,6 +29,7 @@ import com.slook.model.Membership;
 import com.slook.model.ServiceTicket;
 import com.slook.object.PaymentPackObj;
 import com.slook.object.PrintPaymentForm;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -40,6 +41,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -48,12 +50,13 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 /**
- *
  * @author VietNV
  */
-public class PdfUtil {
+public class PdfUtil
+{
 
-    public static InputStream excel2pdf(InputStream input_document, String outPath) throws Exception {
+    public static InputStream excel2pdf(InputStream input_document, String outPath) throws Exception
+    {
         //First we read the Excel file in binary format into FileInputStream
 //                FileInputStream input_document = new FileInputStream(new File("C:\\excel_to_pdf.xls"));
         // Read workbook into HSSFWorkbook
@@ -72,12 +75,15 @@ public class PdfUtil {
         //We will use the object below to dynamically add new data to the table
         PdfPCell table_cell;
         //Loop through rows.
-        while (rowIterator.hasNext()) {
+        while (rowIterator.hasNext())
+        {
             Row row = rowIterator.next();
             Iterator<Cell> cellIterator = row.cellIterator();
-            while (cellIterator.hasNext()) {
+            while (cellIterator.hasNext())
+            {
                 Cell cell = cellIterator.next(); //Fetch CELL
-                switch (cell.getCellType()) { //Identify CELL type
+                switch (cell.getCellType())
+                { //Identify CELL type
                     //you need to add more code here based on
                     //your requirement / transformations
                     case Cell.CELL_TYPE_STRING:
@@ -103,7 +109,8 @@ public class PdfUtil {
 
     private static final String FILE_NAME = "D:\\Downloads\\itext.pdf";
 
-    public static void main(String[] args) throws FileNotFoundException, Exception {
+    public static void main(String[] args) throws FileNotFoundException, Exception
+    {
         /*
         String pathIn = "D:\\Downloads\\Template_serviceTicket_D.xls";
         String pathout = "D:\\Downloads\\Template_serviceTicket_Convert.pdf";
@@ -144,11 +151,13 @@ public class PdfUtil {
         System.out.println("ok: " + path);
     }
 
-    private static void writeUsingIText() {
+    private static void writeUsingIText()
+    {
 
         Document document = new Document();
 
-        try {
+        try
+        {
 
             PdfWriter.getInstance(document, new FileOutputStream(new File(FILE_NAME)));
 
@@ -176,13 +185,16 @@ public class PdfUtil {
             document.close();
 
             System.out.println("Done");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
     }
 
-    private static void test2(String sourcepath, String destinationPath) throws FileNotFoundException, DocumentException {
+    private static void test2(String sourcepath, String destinationPath) throws FileNotFoundException, DocumentException
+    {
         FileInputStream filecontent = new FileInputStream(new File(sourcepath));
         FileOutputStream out = new FileOutputStream(new File(destinationPath));
         HSSFWorkbook my_xls_workbook = null;
@@ -202,24 +214,32 @@ public class PdfUtil {
 
         Iterator<Row> rowIterator = null;
         int maxColumn = 0;
-        if (sourcepath.endsWith("xls")) {
-            try {
+        if (sourcepath.endsWith("xls"))
+        {
+            try
+            {
                 my_xls_workbook = new HSSFWorkbook(filecontent);
                 my_worksheet = my_xls_workbook.getSheetAt(0);
                 rowIterator = my_worksheet.iterator();
                 maxColumn = my_worksheet.getRow(0).getLastCellNum();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 ex.printStackTrace();
             }
         }
 
-        if (sourcepath.endsWith(".xlsx")) {
-            try {
+        if (sourcepath.endsWith(".xlsx"))
+        {
+            try
+            {
                 my_xlsx_workbook = new XSSFWorkbook(filecontent);
                 my_worksheet_xlsx = my_xlsx_workbook.getSheetAt(0);
                 rowIterator = my_worksheet_xlsx.iterator();
                 maxColumn = my_worksheet_xlsx.getRow(0).getLastCellNum();
-            } catch (IOException ex) {
+            }
+            catch (IOException ex)
+            {
                 ex.printStackTrace();
 
             }
@@ -230,16 +250,20 @@ public class PdfUtil {
         my_table.setSpacingBefore(0f);
         my_table.setSpacingAfter(0f);
         PdfPCell table_cell;
-        while (rowIterator.hasNext()) {
+        while (rowIterator.hasNext())
+        {
             Row row = rowIterator.next();
             Iterator<Cell> cellIterator = row.cellIterator();
-            while (cellIterator.hasNext()) {
+            while (cellIterator.hasNext())
+            {
                 Cell cell = cellIterator.next(); //Fetch CELL
-                switch (cell.getCellType()) { //Identify CELL type
+                switch (cell.getCellType())
+                { //Identify CELL type
                     case Cell.CELL_TYPE_STRING:
                         //Push the data from Excel to PDF Cell
                         table_cell = new PdfPCell(new Phrase(cell.getStringCellValue()));
-                        if (row.getRowNum() == 0) {
+                        if (row.getRowNum() == 0)
+                        {
                             table_cell.setBackgroundColor(BaseColor.LIGHT_GRAY);
                             table_cell.setBorderColor(BaseColor.BLACK);
                         }
@@ -254,9 +278,11 @@ public class PdfUtil {
     }
 
     public static void createPdfTicket(Member curMember, Membership membership,
-            String resultPath, MemberPayment mp, List<ServiceTicket> lstTicket,
-            String pathFont) {
-        try {
+                                       String resultPath, MemberPayment mp, List<ServiceTicket> lstTicket,
+                                       String pathFont)
+    {
+        try
+        {
             System.out.println("start tao file anh:" + resultPath);
             //tao file ma
             String centerName = "Trung Tâm Hoa Sen Spa";
@@ -289,7 +315,8 @@ public class PdfUtil {
             pdfSp.setBorder(0);
             pdfSp.rectangle(0, 0);
             pdfSp.addElement(new Phrase(" "));
-            for (int i = 0; i < lstTicket.size(); i++) {
+            for (int i = 0; i < lstTicket.size(); i++)
+            {
 
 //                addRows(table);
                 String seria1 = "Seri phiếu: ";
@@ -344,7 +371,8 @@ public class PdfUtil {
 //            tb.addCell(pdfWordCell);
 //            table.addCell(tb);
                 table.addCell(pdfWordCell);
-                if (i % 2 == 0) {
+                if (i % 2 == 0)
+                {
 //                PdfPTable tbS = new PdfPTable(1);
 
                     PdfPCell pdfSpCol = new PdfPCell();
@@ -353,7 +381,8 @@ public class PdfUtil {
 //                table.addCell(tbS);
                     table.addCell(pdfSpCol);
                 }
-                if (i % 2 == 1) {
+                if (i % 2 == 1)
+                {
 
 //                tbS.addCell(pdfSp);
 //                table.addCell(tbS);
@@ -363,7 +392,8 @@ public class PdfUtil {
                 }
                 //table.addCell(image);
                 // addCustomRows(table);
-                if (i % 10 == 0 && i > 0) {
+                if (i % 10 == 0 && i > 0)
+                {
                     document.newPage();
                 }
             }
@@ -371,15 +401,19 @@ public class PdfUtil {
 
             document.add(table);
             document.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public static String generateBillPdf(PrintPaymentForm printForm) {
+    public static String generateBillPdf(PrintPaymentForm printForm)
+    {
         String resPath = "";
 
-        try {
+        try
+        {
             String centerName = "Hoa Sen SPA";
             String adr1 = "Lô 1+2, số 19 Phan Chu Trinh, P. Điện Biên";
             String adr2 = "TP Thanh Hóa";
@@ -391,11 +425,16 @@ public class PdfUtil {
 
             //tao file pdf
             String outputName = "";
-            if (Constant.PAYMENT_TYPE.CLIENT.equals(printForm.getCustomerType())) {
+            if (Constant.PAYMENT_TYPE.CLIENT.equals(printForm.getCustomerType()))
+            {
                 outputName = "clientPayment";
-            } else if (Constant.PAYMENT_TYPE.MEMBER.equals(printForm.getCustomerType())) {
+            }
+            else if (Constant.PAYMENT_TYPE.MEMBER.equals(printForm.getCustomerType()))
+            {
                 outputName = "memberPayment";
-            } else if (Constant.PAYMENT_TYPE.GROUP_MEMBER.equals(printForm.getCustomerType())) {
+            }
+            else if (Constant.PAYMENT_TYPE.GROUP_MEMBER.equals(printForm.getCustomerType()))
+            {
                 outputName = "groupMemberPayment";
             }
             String endCode = printForm.getPaymentCode();
@@ -473,7 +512,8 @@ public class PdfUtil {
             table.setLockedWidth(true);
             List<String> lstTileCol = Arrays.asList("Dịch vụ", "SL", "Đơn giá", "Khuyến mãi", "Thành tiền thanh toán");
             List<PdfPCell> lstTileCell = new ArrayList<>();
-            for (String tileStr : lstTileCol) {
+            for (String tileStr : lstTileCol)
+            {
                 PdfPCell tileCell1 = new PdfPCell();
                 tileCell1.setPadding(5);
                 tileCell1.setBorderWidth(1);
@@ -485,8 +525,10 @@ public class PdfUtil {
                 table.addCell(tileCell1);
 
             }
-            if (printForm.getLstPaymentPackObjs() != null && printForm.getLstPaymentPackObjs().size() > 0) {
-                for (PaymentPackObj bo : printForm.getLstPaymentPackObjs()) {
+            if (printForm.getLstPaymentPackObjs() != null && printForm.getLstPaymentPackObjs().size() > 0)
+            {
+                for (PaymentPackObj bo : printForm.getLstPaymentPackObjs())
+                {
                     PdfPCell cel1 = new PdfPCell();
                     cel1.setPadding(2);
                     cel1.setBorderWidth(1);
@@ -535,7 +577,9 @@ public class PdfUtil {
                     table.addCell(cel4);
                     table.addCell(cel5);
                 }
-            } else {
+            }
+            else
+            {
                 PdfPCell cel1 = new PdfPCell();
                 cel1.setPadding(2);
                 cel1.setBorderWidth(1);
@@ -665,16 +709,20 @@ public class PdfUtil {
 
             document.close();
             return resPath;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;
     }
 
-    public static String createBillPdf(Bill bill) {
+    public static String createBillPdf(Bill bill)
+    {
         String resPath = "";
 
-        try {
+        try
+        {
             String centerName = "PHIẾU THANH TOÁN";
             String tile = "HÓA ĐƠN THANH TOÁN";
             String tilePayCode = "Mã hóa đơn: ";
@@ -706,8 +754,8 @@ public class PdfUtil {
 
 //            float width = 252f;
             float height = 362f;
-            String roomName=(bill.getRoom()!=null&&  bill.getRoom().getRoomName()!=null )? bill.getRoom().getRoomName():"";
-            Phrase firstLine = new Phrase(centerName +" "+roomName.toUpperCase(), boldFontCenter);
+            String roomName = (bill.getRoom() != null && bill.getRoom().getRoomName() != null) ? bill.getRoom().getRoomName() : "";
+            Phrase firstLine = new Phrase(centerName + " " + roomName.toUpperCase(), boldFontCenter);
             Phrase sLine4 = new Phrase(tile, boldFont);
             Paragraph p1 = new Paragraph();
             p1.setAlignment(Element.ALIGN_CENTER);
@@ -725,7 +773,7 @@ public class PdfUtil {
             Phrase pPayCode = new Phrase(tilePayCode + bill.getBillCode(), normalFont);
             Phrase pPayTime = new Phrase(tileTime + DateTimeUtils.formatDateCommon(bill.getPaymentDate()), normalFont);
             Phrase pContractCode = new Phrase(tileContract + bill.getContractCode(), normalFont);
-            Phrase pDesc = new Phrase(tileDescription +(bill.getDescription()!=null?bill.getDescription():""), normalFont);
+            Phrase pDesc = new Phrase(tileDescription + (bill.getDescription() != null ? bill.getDescription() : ""), normalFont);
 //            Phrase pRoom = new Phrase(bill.getRoom()!=null ? bill.getRoom().getRoomName():"", normalFont);
 
             paragraphInfo.add(new Paragraph(pPayCode));
@@ -752,7 +800,8 @@ public class PdfUtil {
                     MessageUtil.getResourceBundleMessage("billService.price"),
                     MessageUtil.getResourceBundleMessage("billService.totalPrice"));
             List<PdfPCell> lstTileCell = new ArrayList<>();
-            for (String tileStr : lstTileCol) {
+            for (String tileStr : lstTileCol)
+            {
                 PdfPCell tileCell1 = new PdfPCell();
                 tileCell1.setPadding(5);
                 tileCell1.setBorderWidth(1);
@@ -764,8 +813,10 @@ public class PdfUtil {
                 table.addCell(tileCell1);
 
             }
-            if (bill.getBillServiceList() != null && bill.getBillServiceList().size() > 0) {
-                for (BillService bo : bill.getBillServiceList()) {
+            if (bill.getBillServiceList() != null && bill.getBillServiceList().size() > 0)
+            {
+                for (BillService bo : bill.getBillServiceList())
+                {
                     PdfPCell cel1 = new PdfPCell();
                     cel1.setPadding(2);
                     cel1.setBorderWidth(1);
@@ -819,12 +870,12 @@ public class PdfUtil {
 
                     Paragraph c6 = new Paragraph();
                     c6.setAlignment(Element.ALIGN_RIGHT);
-                    c6.add(new Phrase((DataUtil.getStringNumber(bo.getPrice()) ), contentFont));
+                    c6.add(new Phrase((DataUtil.getStringNumber(bo.getPrice())), contentFont));
                     cel6.addElement(c6);
 
                     Paragraph c7 = new Paragraph();
                     c7.setAlignment(Element.ALIGN_RIGHT);
-                    c7.add(new Phrase((DataUtil.getStringNumber(bo.getTotalPrice()) ), contentFont));
+                    c7.add(new Phrase((DataUtil.getStringNumber(bo.getTotalPrice())), contentFont));
                     cel7.addElement(c7);
 
                     table.addCell(cel1);
@@ -835,7 +886,9 @@ public class PdfUtil {
                     table.addCell(cel6);
                     table.addCell(cel7);
                 }
-            } else {
+            }
+            else
+            {
                 PdfPCell cel1 = new PdfPCell();
                 cel1.setPadding(2);
                 cel1.setBorderWidth(1);
@@ -865,7 +918,7 @@ public class PdfUtil {
             PdfPCell cel6 = new PdfPCell();
             cel6.setPadding(2);
             cel6.setBorderWidth(1);
-            
+
             PdfPCell cel7 = new PdfPCell();
             cel7.setPadding(2);
             cel7.setBorderWidth(1);
@@ -909,7 +962,7 @@ public class PdfUtil {
 //            table.addCell(cel6);
             cel7.setColspan(6);
             table.addCell(cel7);
-            
+
             //them cell gia de khong bi mat du lieu
             table.addCell(pdfSp);
 
@@ -983,7 +1036,9 @@ public class PdfUtil {
 
             document.close();
             return resPath;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;

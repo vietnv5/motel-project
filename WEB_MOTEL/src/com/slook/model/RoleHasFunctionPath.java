@@ -1,10 +1,11 @@
-/* 
-* Copyright 2011 Viettel Telecom. All rights reserved. 
-* VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms. 
+/*
+ * Copyright 2011 Viettel Telecom. All rights reserved.
+ * VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.slook.model;
 
 import com.slook.util.Constant;
+
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,9 +15,12 @@ import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -28,7 +32,8 @@ import org.hibernate.annotations.LazyCollectionOption;
  * @version: 1.0
  * @since: 1.0
  */
-public class RoleHasFunctionPath {
+public class RoleHasFunctionPath
+{
 
     private Long functionPathId;
     private Long status;
@@ -37,64 +42,77 @@ public class RoleHasFunctionPath {
     private FunctionPath functionPath;
 
     @Column(name = "FUNCTION_PATH_ID", precision = 22, scale = 0)
-    public Long getFunctionPathId() {
+    public Long getFunctionPathId()
+    {
         return functionPathId;
     }
 
-    public void setFunctionPathId(Long functionPathId) {
+    public void setFunctionPathId(Long functionPathId)
+    {
         this.functionPathId = functionPathId;
     }
 
     @Column(name = "STATUS", precision = 22, scale = 0)
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Column(name = "ROLE_ID", precision = 22, scale = 0)
-    public Long getRoleId() {
+    public Long getRoleId()
+    {
         return roleId;
     }
 
-    public void setRoleId(Long roleId) {
+    public void setRoleId(Long roleId)
+    {
         this.roleId = roleId;
     }
 
-//    @SequenceGenerator(name = "generator", sequenceName = "ROLE_HAS_FUNCTION_PATH_SEQ", allocationSize = 1)
+    //    @SequenceGenerator(name = "generator", sequenceName = "ROLE_HAS_FUNCTION_PATH_SEQ", allocationSize = 1)
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
 //    @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getId() {
+    public Long getId()
+    {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id)
+    {
         this.id = id;
     }
 
-    public RoleHasFunctionPath() {
+    public RoleHasFunctionPath()
+    {
     }
 
-    public RoleHasFunctionPath(Long id) {
+    public RoleHasFunctionPath(Long id)
+    {
         this.id = id;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @JoinColumn(name = "FUNCTION_PATH_ID", referencedColumnName = "FUNCTION_PATH_ID", insertable = false, updatable = false)
-    public FunctionPath getFunctionPath() {
+    public FunctionPath getFunctionPath()
+    {
         return functionPath;
     }
 
-    public void setFunctionPath(FunctionPath functionPath) {
+    public void setFunctionPath(FunctionPath functionPath)
+    {
         this.functionPath = functionPath;
     }
 
-    public RoleHasFunctionPath(Long functionPathId, Long roleId, Long id, FunctionPath functionPath) {
+    public RoleHasFunctionPath(Long functionPathId, Long roleId, Long id, FunctionPath functionPath)
+    {
         this.functionPathId = functionPathId;
         this.status = Constant.STATUS.ACTIVE;
         this.roleId = roleId;
@@ -103,7 +121,8 @@ public class RoleHasFunctionPath {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 7;
         hash = 89 * hash + Objects.hashCode(this.functionPathId);
         hash = 89 * hash + Objects.hashCode(this.roleId);
@@ -111,21 +130,27 @@ public class RoleHasFunctionPath {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
             return true;
         }
-        if (obj == null) {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
         final RoleHasFunctionPath other = (RoleHasFunctionPath) obj;
-        if (!Objects.equals(this.functionPathId, other.functionPathId)) {
+        if (!Objects.equals(this.functionPathId, other.functionPathId))
+        {
             return false;
         }
-        if (!Objects.equals(this.roleId, other.roleId)) {
+        if (!Objects.equals(this.roleId, other.roleId))
+        {
             return false;
         }
         return true;

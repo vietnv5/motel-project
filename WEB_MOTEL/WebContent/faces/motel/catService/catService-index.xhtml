@@ -21,7 +21,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -34,10 +34,12 @@
                                              update=":catServiceForm,catServiceDlgId"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['datatable.header.catService']}" />
-                                <p:dataExporter type="xls" target="tableCatServiceId" fileName="catService" pageOnly="false"
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.catService']}"/>
+                                <p:dataExporter type="xls" target="tableCatServiceId" fileName="catService"
+                                                pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
                         </div>
@@ -49,7 +51,7 @@
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableCatServiceId" trigger="toggler">
-                                <p:ajax event="toggle" listener="#{catServiceController.onToggler}" />
+                                <p:ajax event="toggle" listener="#{catServiceController.onToggler}"/>
                             </p:columnToggler>
                         </div>
 
@@ -59,25 +61,26 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          visible="#{catServiceController.columnVisibale[0]}" >
+                          visible="#{catServiceController.columnVisibale[0]}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
                 <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
                           visible="#{catServiceController.columnVisibale[1]}" styleClass="TexAlCenter">
-                    <p:tooltip position="top" ></p:tooltip>
+                    <p:tooltip position="top"></p:tooltip>
 
                     <p:commandButton icon="fa fa-edit" actionListener="#{catServiceController.preEdit(catService)}"
 
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('catServiceDlg').show()"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('catServiceDlg').show()"
                                      update=":catServiceForm,catServiceDlgId" id="updateRoomId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{catServiceController.onDelete(catService)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableCatServiceId "  rendered="#{catService.status==2}"
+                                     update="tableCatServiceId " rendered="#{catService.status==2}"
                                      title="Xóa" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                    message="#{msg['title.confirm.delete']}">
@@ -88,38 +91,41 @@
 
                 <p:column headerText="#{msg['catService.serviceCode']}" width="40"
                           visible="#{catServiceController.columnVisibale[2]}"
-                          filterBy="#{catService.serviceCode}" >
+                          filterBy="#{catService.serviceCode}">
                     <h:outputText value="#{catService.serviceCode}"/>
                 </p:column>
-                <p:column headerText="#{msg['catService.serviceName']}" width="50" 
+                <p:column headerText="#{msg['catService.serviceName']}" width="50"
                           visible="#{catServiceController.columnVisibale[3]}"
                           filterBy="#{catService.phone}" filterStyle="width:70%"
-                          ><h:outputText value="#{catService.serviceName}"/></p:column>
+                >
+                    <h:outputText value="#{catService.serviceName}"/>
+                </p:column>
                 <p:column headerText="#{msg['catService.price']}" width="40"
-                          visible="#{catServiceController.columnVisibale[4]}" style="text-align: right;" 
-                          filterBy="#{catService.price-LIKE}" sortBy="#{catService.price}" >
+                          visible="#{catServiceController.columnVisibale[4]}" style="text-align: right;"
+                          filterBy="#{catService.price-LIKE}" sortBy="#{catService.price}">
                     <h:outputText value="#{catService.price}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ"/>
                 </p:column>
-                <p:column headerText="#{msg['catService.unit']}" width="50" 
+                <p:column headerText="#{msg['catService.unit']}" width="50"
                           visible="#{catServiceController.columnVisibale[5]}"
-                        
-                          ><h:outputText value="#{catServiceController.mapUnit.get(catService.unit)!=null ?
-                               catServiceController.mapUnit.get(catService.unit).name :''}"/></p:column>
-                <p:column headerText="#{msg['catService.defaultStatus']}" width="50" 
+
+                >
+                    <h:outputText value="#{catServiceController.mapUnit.get(catService.unit)!=null ?
+                               catServiceController.mapUnit.get(catService.unit).name :''}"/>
+                </p:column>
+                <p:column headerText="#{msg['catService.defaultStatus']}" width="50"
                           visible="#{catServiceController.columnVisibale[6]}"
-                          ><h:outputText value="#{catService.defaultStatusStr}"/></p:column>
-                <p:column headerText="#{msg['home.groupUserId']}" width="20" 
+                >
+                    <h:outputText value="#{catService.defaultStatusStr}"/>
+                </p:column>
+                <p:column headerText="#{msg['home.groupUserId']}" width="20"
                           exportable="#{catServiceController.columnVisibale[7]}"
                           visible="#{catServiceController.columnVisibale[7]}"
-                          filterBy="#{catService.groupUserId}" sortBy="#{catService.groupUserId}" >
+                          filterBy="#{catService.groupUserId}" sortBy="#{catService.groupUserId}">
                     <h:outputText value="#{catService.groupUserId}"/>
                 </p:column>
-                
-                
-
 
 
             </p:dataTable>

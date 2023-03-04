@@ -3,6 +3,7 @@ package com.slook.controller;
 /**
  * Created by dungvv8 on 2/24/2017.
  */
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
@@ -22,16 +23,19 @@ import java.io.Serializable;
 import java.util.*;
 
 @ManagedBean
-public class DashBoardController implements Constant, Serializable {
+public class DashBoardController implements Constant, Serializable
+{
 
     private static final Logger logger = Logger.getLogger(DashBoardController.class);
 
     @PostConstruct
-    public void onStart() {
+    public void onStart()
+    {
 
     }
 
-    public void loadChartData() {
+    public void loadChartData()
+    {
         //Số lượng hội viên theo từng địa điểm
         BarChartModel numOfMemModel = new BarChartModel();
         numOfMemModel.setStacked(true);
@@ -55,14 +59,17 @@ public class DashBoardController implements Constant, Serializable {
                 + "ORDER BY c.BRANCH_ID";
         List<?> list = new MemberService().findListSQLAll(sqlMemNew);
         memberNews.setLabel("Số hội viên mới");
-        for (Object o : list) {
+        for (Object o : list)
+        {
             Object[] obj = (Object[]) o;
             Long nCount = Long.valueOf(obj[0].toString());
             memberNews.set(obj[2], nCount);
-            if (nCount > max) {
+            if (nCount > max)
+            {
                 max = nCount;
             }
-            if (nCount < min) {
+            if (nCount < min)
+            {
                 min = nCount;
             }
         }
@@ -83,14 +90,17 @@ public class DashBoardController implements Constant, Serializable {
                 + "ORDER BY c.BRANCH_ID";
         list = new MemberService().findListSQLAll(sqlMemOld);
         memberOlds.setLabel("Số hội viên cũ");
-        for (Object o : list) {
+        for (Object o : list)
+        {
             Object[] obj = (Object[]) o;
             Long nCount = Long.valueOf(obj[0].toString());
             memberOlds.set(obj[2], nCount);
-            if (nCount > max) {
+            if (nCount > max)
+            {
                 max = nCount;
             }
-            if (nCount < min) {
+            if (nCount < min)
+            {
                 min = nCount;
             }
         }
@@ -113,14 +123,16 @@ public class DashBoardController implements Constant, Serializable {
         List<List<Object>> memberOldss = new ArrayList<>();
         List<String> categoryList = new ArrayList<String>();
 
-        for (Object o : memberNews.getData().keySet()) {
+        for (Object o : memberNews.getData().keySet())
+        {
             List<Object> tmps = new ArrayList<>();
             tmps.add(o);
             categoryList.add(o.toString());
             tmps.add(memberNews.getData().get(o));
             memberNewss.add(tmps);
         }
-        for (Object o : memberOlds.getData().keySet()) {
+        for (Object o : memberOlds.getData().keySet())
+        {
             List<Object> tmps = new ArrayList<>();
             tmps.add(o);
             tmps.add(memberOlds.getData().get(o));
@@ -151,7 +163,8 @@ public class DashBoardController implements Constant, Serializable {
      * Đường 1: Biểu đồ xu thế hội viên của toàn công ty Đường còn lại: Biểu đồ
      * xu thế hội viên của từng địa điểm"
      */
-    public void loadDashboardMemActive() {
+    public void loadDashboardMemActive()
+    {
         String sqlCountMemActive = "SELECT nvl(cc.count,0), c.BRANCH_ID,c.BRANCH_NAME,cc.CHECK_IN_DATE from CAT_BRANCH c LEFT JOIN (\n"
                 + "  SELECT\n"
                 + "    count(*) count,\n"
@@ -189,30 +202,39 @@ public class DashBoardController implements Constant, Serializable {
         List<?> list = new MemberService().findListSQLAll(sqlCountMemActive, dateFrom, dateTo);
         List<ChartSeries> chartSeries = new ArrayList<>();
         Map<String, Map<Date, Number>> mapBranch = new HashMap<>();
-        for (Object o : list) {
+        for (Object o : list)
+        {
             Object[] obj = (Object[]) o;
-            if (mapBranch.get(obj[2].toString()) == null) {
+            if (mapBranch.get(obj[2].toString()) == null)
+            {
                 Map<Date, Number> dateNumberMap = new HashMap<>();
                 dateNumberMap.put((Date) obj[3], (Number) obj[0]);
                 mapBranch.put(obj[2].toString(), dateNumberMap);
-            } else {
+            }
+            else
+            {
                 Map<Date, Number> dateNumberMap = mapBranch.get(obj[2]);
                 dateNumberMap.put((Date) obj[3], (Number) obj[0]);
             }
 
         }
         List<String> categoryList = new ArrayList<>();
-        for (String s : mapBranch.keySet()) {
+        for (String s : mapBranch.keySet())
+        {
             ChartSeries chart = new ChartSeries();
             chart.setLabel(s);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(dateFrom);
 
-            while (calendar1.getTime().before(dateTo)) {
+            while (calendar1.getTime().before(dateTo))
+            {
 
-                if (mapBranch.get(s).get(calendar1.getTime()) != null) {
+                if (mapBranch.get(s).get(calendar1.getTime()) != null)
+                {
                     chart.set(calendar1.getTime(), mapBranch.get(s).get(calendar1.getTime()));
-                } else {
+                }
+                else
+                {
                     chart.set(calendar1.getTime(), 0);
                 }
                 calendar1.add(Calendar.DAY_OF_YEAR, 1);
@@ -221,9 +243,11 @@ public class DashBoardController implements Constant, Serializable {
         }
 //        System.out.println(chartSeries.size());
         List<Series> series = new ArrayList<>();
-        for (ChartSeries chartSery : chartSeries) {
+        for (ChartSeries chartSery : chartSeries)
+        {
             List<List<Object>> memberNewss = new ArrayList<>();
-            for (Object o : chartSery.getData().keySet()) {
+            for (Object o : chartSery.getData().keySet())
+            {
                 List<Object> tmps = new ArrayList<>();
                 tmps.add(((Date) o).getTime());
 
@@ -252,7 +276,8 @@ public class DashBoardController implements Constant, Serializable {
     /**
      * Đường biểu đồ số lượng hội viên mới đăng ký trong 30 ngày gần đây
      */
-    public void loadDashboardNewMember() {
+    public void loadDashboardNewMember()
+    {
         String sqlCountNewMem = "SELECT nvl(cc.count,0), c.BRANCH_ID,c.BRANCH_NAME,cc.JOIN_DATE from CAT_BRANCH c LEFT JOIN (\n"
                 + "  SELECT\n"
                 + "    count(*)           count,\n"
@@ -276,30 +301,39 @@ public class DashBoardController implements Constant, Serializable {
         List<?> list = new MemberService().findListSQLAll(sqlCountNewMem, dateFrom, dateTo);
         List<ChartSeries> chartSeries = new ArrayList<>();
         Map<String, Map<Date, Number>> mapBranch = new HashMap<>();
-        for (Object o : list) {
+        for (Object o : list)
+        {
             Object[] obj = (Object[]) o;
-            if (mapBranch.get(obj[2].toString()) == null) {
+            if (mapBranch.get(obj[2].toString()) == null)
+            {
                 Map<Date, Number> dateNumberMap = new HashMap<>();
                 dateNumberMap.put((Date) obj[3], (Number) obj[0]);
                 mapBranch.put(obj[2].toString(), dateNumberMap);
-            } else {
+            }
+            else
+            {
                 Map<Date, Number> dateNumberMap = mapBranch.get(obj[2]);
                 dateNumberMap.put((Date) obj[3], (Number) obj[0]);
             }
 
         }
         List<String> categoryList = new ArrayList<String>();
-        for (String s : mapBranch.keySet()) {
+        for (String s : mapBranch.keySet())
+        {
             ChartSeries chart = new ChartSeries();
             chart.setLabel(s);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(dateFrom);
 
-            while (calendar1.getTime().before(dateTo)) {
+            while (calendar1.getTime().before(dateTo))
+            {
 
-                if (mapBranch.get(s).get(calendar1.getTime()) != null) {
+                if (mapBranch.get(s).get(calendar1.getTime()) != null)
+                {
                     chart.set(calendar1.getTime(), mapBranch.get(s).get(calendar1.getTime()));
-                } else {
+                }
+                else
+                {
                     chart.set(calendar1.getTime(), 0);
                 }
                 calendar1.add(Calendar.DAY_OF_YEAR, 1);
@@ -308,9 +342,11 @@ public class DashBoardController implements Constant, Serializable {
         }
 //        System.out.println(chartSeries.size());
         List<Series> series = new ArrayList<>();
-        for (ChartSeries chartSery : chartSeries) {
+        for (ChartSeries chartSery : chartSeries)
+        {
             List<List<Object>> memberNewss = new ArrayList<>();
-            for (Object o : chartSery.getData().keySet()) {
+            for (Object o : chartSery.getData().keySet())
+            {
                 List<Object> tmps = new ArrayList<>();
                 tmps.add(((Date) o).getTime());
 
@@ -336,7 +372,8 @@ public class DashBoardController implements Constant, Serializable {
         reqCtx.addCallbackParam("xAxisType", "datetime");
     }
 
-    public void loadDashboardMemberFinish() {
+    public void loadDashboardMemberFinish()
+    {
         String sqlCountNewMem = "SELECT nvl(cc.count,0), c.BRANCH_ID,c.BRANCH_NAME,cc.END_DATE from CAT_BRANCH c LEFT JOIN (\n"
                 + "  SELECT\n"
                 + "    count(*)           count,\n"
@@ -360,30 +397,39 @@ public class DashBoardController implements Constant, Serializable {
         List<?> list = new MemberService().findListSQLAll(sqlCountNewMem, dateFrom, dateTo);
         List<ChartSeries> chartSeries = new ArrayList<>();
         Map<String, Map<Date, Number>> mapBranch = new HashMap<>();
-        for (Object o : list) {
+        for (Object o : list)
+        {
             Object[] obj = (Object[]) o;
-            if (mapBranch.get(obj[2].toString()) == null) {
+            if (mapBranch.get(obj[2].toString()) == null)
+            {
                 Map<Date, Number> dateNumberMap = new HashMap<>();
                 dateNumberMap.put((Date) obj[3], (Number) obj[0]);
                 mapBranch.put(obj[2].toString(), dateNumberMap);
-            } else {
+            }
+            else
+            {
                 Map<Date, Number> dateNumberMap = mapBranch.get(obj[2]);
                 dateNumberMap.put((Date) obj[3], (Number) obj[0]);
             }
 
         }
         List<String> categoryList = new ArrayList<String>();
-        for (String s : mapBranch.keySet()) {
+        for (String s : mapBranch.keySet())
+        {
             ChartSeries chart = new ChartSeries();
             chart.setLabel(s);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(dateFrom);
 
-            while (calendar1.getTime().before(dateTo)) {
+            while (calendar1.getTime().before(dateTo))
+            {
 
-                if (mapBranch.get(s).get(calendar1.getTime()) != null) {
+                if (mapBranch.get(s).get(calendar1.getTime()) != null)
+                {
                     chart.set(calendar1.getTime(), mapBranch.get(s).get(calendar1.getTime()));
-                } else {
+                }
+                else
+                {
                     chart.set(calendar1.getTime(), 0);
                 }
                 calendar1.add(Calendar.DAY_OF_YEAR, 1);
@@ -392,9 +438,11 @@ public class DashBoardController implements Constant, Serializable {
         }
 //        System.out.println(chartSeries.size());
         List<Series> series = new ArrayList<>();
-        for (ChartSeries chartSery : chartSeries) {
+        for (ChartSeries chartSery : chartSeries)
+        {
             List<List<Object>> memberNewss = new ArrayList<>();
-            for (Object o : chartSery.getData().keySet()) {
+            for (Object o : chartSery.getData().keySet())
+            {
                 List<Object> tmps = new ArrayList<>();
                 tmps.add(((Date) o).getTime());
 
@@ -425,11 +473,13 @@ public class DashBoardController implements Constant, Serializable {
      *
      * @param memberId
      */
-    public void loadChartLineDataMemberCheckin(Long memberId) {
+    public void loadChartLineDataMemberCheckin(Long memberId)
+    {
 
         String sqlCountMemActive = "select member_id,trunc(CHECK_IN_DATE) CHECK_IN_DATE, 1 as value from MEMBER_CHECKIN\n";
         sqlCountMemActive += "where CHECK_IN_DATE BETWEEN ? AND ?\n";
-        if (memberId != null) {
+        if (memberId != null)
+        {
             sqlCountMemActive += "and member_id=?\n";
         }
         sqlCountMemActive += "group by member_id, trunc(CHECK_IN_DATE)\n";
@@ -446,38 +496,50 @@ public class DashBoardController implements Constant, Serializable {
 //        System.out.println(dateFrom);
 //        System.out.println(dateTo);
         List list;
-        if (memberId != null) {
+        if (memberId != null)
+        {
             list = new MemberService().findListSQLAll(sqlCountMemActive, dateFrom, dateTo, memberId);
-        } else {
+        }
+        else
+        {
             list = new MemberService().findListSQLAll(sqlCountMemActive, dateFrom, dateTo);
         }
         List<ChartSeries> chartSeries = new ArrayList<>();
         Map<String, Map<Date, Number>> mapMemberCheckin = new HashMap<>();
-        for (Object o : list) {
+        for (Object o : list)
+        {
             Object[] obj = (Object[]) o;
-            if (mapMemberCheckin.get(obj[0].toString()) == null) {
+            if (mapMemberCheckin.get(obj[0].toString()) == null)
+            {
                 Map<Date, Number> dateNumberMap = new HashMap<>();
                 dateNumberMap.put((Date) obj[1], (Number) obj[2]);
                 mapMemberCheckin.put(obj[0].toString(), dateNumberMap);
-            } else {
+            }
+            else
+            {
                 Map<Date, Number> dateNumberMap = mapMemberCheckin.get(obj[0].toString());
                 dateNumberMap.put((Date) obj[1], (Number) obj[2]);
             }
 
         }
         List<String> categoryList = new ArrayList<>();
-        for (String s : mapMemberCheckin.keySet()) {
+        for (String s : mapMemberCheckin.keySet())
+        {
             ChartSeries chart = new ChartSeries();
 //            chart.setLabel(s);
-            chart.setLabel("Mã hội viên: "+s);
+            chart.setLabel("Mã hội viên: " + s);
             Calendar calendar1 = Calendar.getInstance();
             calendar1.setTime(dateFrom);
 
-            while (calendar1.getTime().before(dateTo)) {
+            while (calendar1.getTime().before(dateTo))
+            {
 
-                if (mapMemberCheckin.get(s).get(calendar1.getTime()) != null) {
+                if (mapMemberCheckin.get(s).get(calendar1.getTime()) != null)
+                {
                     chart.set(calendar1.getTime(), mapMemberCheckin.get(s).get(calendar1.getTime()));
-                } else {
+                }
+                else
+                {
                     chart.set(calendar1.getTime(), 0);
                 }
                 calendar1.add(Calendar.DAY_OF_YEAR, 1);
@@ -486,9 +548,11 @@ public class DashBoardController implements Constant, Serializable {
         }
 //        System.out.println(chartSeries.size());
         List<Series> series = new ArrayList<>();
-        for (ChartSeries chartSery : chartSeries) {
+        for (ChartSeries chartSery : chartSeries)
+        {
             List<List<Object>> memberNewss = new ArrayList<>();
-            for (Object o : chartSery.getData().keySet()) {
+            for (Object o : chartSery.getData().keySet())
+            {
                 List<Object> tmps = new ArrayList<>();
                 tmps.add(((Date) o).getTime());
 
@@ -514,7 +578,8 @@ public class DashBoardController implements Constant, Serializable {
         reqCtx.addCallbackParam("xAxisType", "datetime");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         new DashBoardController().loadDashboardMemActive();
     }
 

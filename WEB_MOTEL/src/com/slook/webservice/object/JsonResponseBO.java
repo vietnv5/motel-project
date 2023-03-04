@@ -5,7 +5,8 @@ import java.io.Serializable;
 /**
  * @author xuanh
  */
-public class JsonResponseBO implements Serializable {
+public class JsonResponseBO implements Serializable
+{
     private int status; //0: SUCC; 1: ERRO
     private String detailError;
     private String dataJson;
@@ -14,69 +15,85 @@ public class JsonResponseBO implements Serializable {
     private String sendTime;
     private int totalDataJson;
 
-    public JsonResponseBO() {
+    public JsonResponseBO()
+    {
         this.status = 0;
     }
 
-    public JsonResponseBO(int status, String detailError, String dataJson) {
+    public JsonResponseBO(int status, String detailError, String dataJson)
+    {
         this.status = status;
         this.detailError = detailError;
         this.dataJson = dataJson;
     }
 
-    public int getStatus() {
+    public int getStatus()
+    {
         return status;
     }
 
-    public void setStatus(int status) {
+    public void setStatus(int status)
+    {
         this.status = status;
     }
 
-    public String getDetailError() {
+    public String getDetailError()
+    {
         return detailError;
     }
 
-    public void setDetailError(String detailError) {
+    public void setDetailError(String detailError)
+    {
         this.detailError = detailError;
     }
 
-    public String getDataJson() {
+    public String getDataJson()
+    {
         return dataJson;
     }
 
-    public void setDataJson(String dataJson) {
+    public void setDataJson(String dataJson)
+    {
         this.dataJson = dataJson;
     }
 
-    public String getReceiverTime() {
+    public String getReceiverTime()
+    {
         return receiverTime;
     }
 
-    public void setReceiverTime(String receiverTime) {
+    public void setReceiverTime(String receiverTime)
+    {
         this.receiverTime = receiverTime;
     }
 
-    public String getSendTime() {
+    public String getSendTime()
+    {
         return sendTime;
     }
 
-    public void setSendTime(String sendTime) {
+    public void setSendTime(String sendTime)
+    {
         this.sendTime = sendTime;
     }
 
-    public int getTotalDataJson() {
+    public int getTotalDataJson()
+    {
         return totalDataJson;
     }
 
-    public void setTotalDataJson(int totalDataJson) {
+    public void setTotalDataJson(int totalDataJson)
+    {
         this.totalDataJson = totalDataJson;
     }
 
-    public byte[] getByteDataJson() {
+    public byte[] getByteDataJson()
+    {
         return byteDataJson;
     }
 
-    public void setByteDataJson(byte[] byteDataJson) {
+    public void setByteDataJson(byte[] byteDataJson)
+    {
         this.byteDataJson = byteDataJson;
     }
 }

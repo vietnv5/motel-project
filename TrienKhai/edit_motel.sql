@@ -1,1 +1,0 @@
-alter table customer add(`job` varchar(250) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL);

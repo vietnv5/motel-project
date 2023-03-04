@@ -6,10 +6,10 @@
 package com.slook.object;
 
 /**
- *
  * @author vietnv
  */
-public class PaymentPackObj {
+public class PaymentPackObj
+{
 
     String groupPackName;
     Long quantity;
@@ -18,54 +18,66 @@ public class PaymentPackObj {
     Long amount;
     String exp;
 
-    public String getGroupPackName() {
+    public String getGroupPackName()
+    {
         return groupPackName;
     }
 
-    public void setGroupPackName(String groupPackName) {
+    public void setGroupPackName(String groupPackName)
+    {
         this.groupPackName = groupPackName;
     }
 
 
-    public Long getQuantity() {
+    public Long getQuantity()
+    {
         return quantity;
     }
 
-    public void setQuantity(Long quantity) {
+    public void setQuantity(Long quantity)
+    {
         this.quantity = quantity;
     }
 
-    public Long getPrice() {
+    public Long getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Long price)
+    {
         this.price = price;
     }
 
-    public String getProm() {
+    public String getProm()
+    {
         return prom;
     }
 
-    public void setProm(String Prom) {
+    public void setProm(String Prom)
+    {
         this.prom = Prom;
     }
 
-    public Long getAmount() {
+    public Long getAmount()
+    {
         return amount;
     }
 
-    public void setAmount(Long amount) {
+    public void setAmount(Long amount)
+    {
         this.amount = amount;
     }
 
-    public String getExp() {
+    public String getExp()
+    {
         return exp;
     }
 
-    public void setExp(String exp) {
+    public void setExp(String exp)
+    {
         this.exp = exp;
     }
-    
-    
+
+
 }

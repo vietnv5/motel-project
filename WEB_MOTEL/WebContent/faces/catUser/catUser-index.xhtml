@@ -21,11 +21,12 @@
                                                          filter="true" converter="employeeConverter"
                                                          filterMatchMode="contains" var="t"
                                                          style="width: 71%"
-                                                         >
+                                        >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                           noSelectionOption="true"/>
                                             <f:selectItems value="#{catUserController.lstEmployees}" var="m"
-                                                           itemLabel="#{m.employeeCode} - #{m.employeeName}" itemValue="#{m}"/>
+                                                           itemLabel="#{m.employeeCode} - #{m.employeeName}"
+                                                           itemValue="#{m}"/>
                                             <p:column>
                                                 <h:outputText value="#{t.employeeCode}"/>
                                             </p:column>
@@ -53,7 +54,7 @@
                                                      title="#{msg['catUser.fullName']}"
                                                      required="true"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.fullName'])}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['catUser.fullName']} *</label>
@@ -67,7 +68,7 @@
                                                      title="#{msg['catUser.userName']}"
                                                      required="false"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.userName'])}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['catUser.userName']} </label>
@@ -78,10 +79,10 @@
                                     <span class="md-inputfield">
                                         <p:password value="#{catUserController.currCatUser.password}"
                                                     id="passwordUserId" style="width: 80%" redisplay="false"
-                                                    title="#{msg['catUser.password']}"  maxlength="200"
+                                                    title="#{msg['catUser.password']}" maxlength="200"
                                                     required="#{!catUserController.isEdit}"
                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.password'])}"
-                                                    >
+                                        >
                                         </p:password>
 
                                         <label>#{msg['catUser.password']} #{catUserController.isEdit?'':'*'}</label>
@@ -92,10 +93,10 @@
                                     <span class="md-inputfield">
                                         <p:password value="#{catUserController.currCatUser.confirmPassword}"
                                                     id="confirmPasswordUserId" style="width: 80%" redisplay="false"
-                                                    title="#{msg['catUser.confirmPassword']}"  maxlength="200"
+                                                    title="#{msg['catUser.confirmPassword']}" maxlength="200"
                                                     required="#{!catUserController.isEdit}"
                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.confirmPassword'])}"
-                                                    >
+                                        >
                                         </p:password>
 
                                         <label>#{msg['catUser.confirmPassword']} #{catUserController.isEdit?'':'*'}</label>
@@ -107,11 +108,12 @@
                                 <div class="Container25 MarTop30 Responsive50 ">
                                     <span class="title-top">
                                         <p:selectOneMenu id="roleId" value="#{catUserController.currCatUser.roleId}"
-                                                         filter="true" disabled="#{!sessionUtil.getUrlDisplay('/catUser.action_modify_role')}"
+                                                         filter="true"
+                                                         disabled="#{!sessionUtil.getUrlDisplay('/catUser.action_modify_role')}"
                                                          filterMatchMode="contains"
-                                                         required="true" style="width: 71%" 
+                                                         required="true" style="width: 71%"
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.role'])}"
-                                                         >
+                                        >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"/>
                                             <f:selectItems value="#{catUserController.lstRole}" var="p"
                                                            itemLabel="#{p.roleName}" itemValue="#{p.roleId}"/>
@@ -126,9 +128,9 @@
                                 <div class="Container25 MarTop30 Responsive50 ">
                                     <span class="title-top">
                                         <p:selectOneMenu id="statusId" value="#{catUserController.currCatUser.status}"
-                                                         required="true" style="width: 71%" 
+                                                         required="true" style="width: 71%"
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.status'])}"
-                                                         >
+                                        >
                                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"
                                                           noSelectionOption="true"/>
                                             <f:selectItem itemValue="1"
@@ -148,14 +150,16 @@
                                 <div class="Container25 MarTop30 Responsive50 " style="display: #{catUserController.groupUserId!=null and catUserController.groupUserId>0 
                                                                                                   and !sessionUtil.getUrlDisplay('/groupUser') ? 'none':''}">
                                     <span class="title-top">
-                                        <p:selectOneMenu value="#{catUserController.currCatUser.groupUserId}" required="false"
+                                        <p:selectOneMenu value="#{catUserController.currCatUser.groupUserId}"
+                                                         required="false"
                                                          filter="true" filterMatchMode="contains"
                                                          id="groupUserId" style="width: 40%"
                                                          disabled="#{catUserController.groupUserId!=null and catUserController.groupUserId>0 
                                                                      and !sessionUtil.getUrlDisplay('/catUser.action_modify_group')}"
 
-                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['home.groupUserId'])}" >
-                                            <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
+                                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['home.groupUserId'])}">
+                                            <f:selectItem itemLabel="-- Lựa chọn --" itemValue=""
+                                                          noSelectionOption="true"/>
 
                                             <f:selectItems value="#{homeController.lstGroupUser}" var="p"
                                                            itemLabel="#{p.id} - #{p.name}" itemValue="#{p.id}"/>
@@ -168,12 +172,12 @@
                                     <span class="md-inputfield">
                                         <p:inputText value="#{catUserController.currCatUser.email}" id="email"
                                                      title="#{msg['datatable.header.email']}"
-                                                     required="false" maxlength="50" style="width: 80%" 
+                                                     required="false" maxlength="50" style="width: 80%"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
                                                      validatorMessage="Email không hơp lệ!"
-                                                     >
+                                        >
                                             <f:validateRegex
-                                                pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
 
                                         </p:inputText>
 
@@ -188,7 +192,7 @@
                         <!--<p:outputPanel class="Container100 TexAlLeft">-->
                         <p:fieldset legend="#{msg['view.header.member.add.detail']}"
                                     style="width: 100% !important; margin-left: 0%"
-                                    toggleable="true" collapsed="true" >
+                                    toggleable="true" collapsed="true">
                             <div class="Card">
                                 <div class="Container100 Responsive50 ">
                                     <div class="Container25 Responsive50 MarTop20">
@@ -199,8 +203,8 @@
                                                          required="false"
                                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['customer.phone'])}"
                                                          validatorMessage="#{msg['customer.phone']} không hơp lệ!"
-                                                         >
-                                                <f:validateRegex  pattern="^[0-9]+$" />
+                                            >
+                                                <f:validateRegex pattern="^[0-9]+$"/>
                                             </p:inputText>
                                             <p:message for="phone"></p:message>
                                             <label>#{msg['customer.phone']} </label>
@@ -211,9 +215,9 @@
 
                                         <span class="title-top">
                                             <p:selectOneRadio id="sex" value="#{catUserController.currCatUser.sex}"
-                                                              required="false"                                                      
+                                                              required="false"
                                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.sex'])}"
-                                                              >
+                                            >
                                                 <f:selectItem itemLabel="#{msg['view.label.sexMale']}"
                                                               itemValue="1"/>
                                                 <f:selectItem itemLabel="#{msg['view.label.sexFemale']}"
@@ -248,9 +252,9 @@
                                     <div class=" Container25 Responsive50 MarTop20">
                                         <span class="md-inputfield">
                                             <p:inputText value="#{catUserController.currCatUser.address}"
-                                                         id="addressId"  converter="trimConverter" maxlength="200"
+                                                         id="addressId" converter="trimConverter" maxlength="200"
                                                          title="#{msg['customer.address']}"
-                                                         >
+                                            >
                                             </p:inputText>
 
                                             <label>#{msg['customer.address']} </label>
@@ -260,9 +264,9 @@
                                     <div class=" Container25 Responsive50 MarTop20">
                                         <span class="md-inputfield">
                                             <p:inputText value="#{catUserController.currCatUser.job}"
-                                                         id="jobId"  converter="trimConverter" maxlength="200"
+                                                         id="jobId" converter="trimConverter" maxlength="200"
                                                          title="#{msg['customer.job']}"
-                                                         >
+                                            >
                                             </p:inputText>
 
                                             <label>#{msg['customer.job']} </label>
@@ -272,9 +276,9 @@
                                     <div class=" Container50 Responsive50 MarTop20">
                                         <span class="md-inputfield">
                                             <p:inputText value="#{catUserController.currCatUser.description}"
-                                                         id="descriptionId"  converter="trimConverter" maxlength="200"
+                                                         id="descriptionId" converter="trimConverter" maxlength="200"
                                                          title="#{msg['customer.description']}" style="width: 80%"
-                                                         >
+                                            >
                                             </p:inputText>
 
                                             <label>#{msg['customer.description']} </label>
@@ -305,7 +309,7 @@
                 </p:panel>
                 <p:dataTable value="#{catUserController.lazyDataModel}"
                              lazy="true" var="catUser" rowKey="#{catUser.userId}"
-                             rowIndexVar="cusIdx" 
+                             rowIndexVar="cusIdx"
                              rows="20" paginator="true" paginatorPosition="bottom"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
@@ -313,7 +317,7 @@
                              emptyMessage="#{msg['datatable.empty']}"
                              styleClass="Container100 NoPadding MarTop10"
 
-                             >
+                >
                     <!--Header-->
                     <f:facet name="header">
                         <div class="Card NoPadding" style="background: transparent;">
@@ -338,7 +342,7 @@
                     <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                     <!--STT-->
                     <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                              >
+                    >
                         <h:outputText value="#{cusIdx +1 }"/>
                     </p:column>
 
@@ -379,7 +383,7 @@
                                               itemLabel="#{msg['catUser.status.0']}"/>
                             </p:selectOneMenu>
                         </f:facet>
-                        <h:outputText value="#{catUser.statusName}" />
+                        <h:outputText value="#{catUser.statusName}"/>
 
                     </p:column>
 

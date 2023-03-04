@@ -9,7 +9,8 @@ import static org.apache.log4j.Logger.getLogger;
 /**
  * Created by huynx6 on 10/01/2017.
  */
-public class DataConfig {
+public class DataConfig
+{
 
     private static final Logger logger = getLogger(DataConfig.class);
 
@@ -20,8 +21,10 @@ public class DataConfig {
     private static int redisPoolTotal;
     private static String redisSentinelHost;
 
-    static {
-        try {
+    static
+    {
+        try
+        {
             ResourceBundle resourceBundle = ResourceBundle.getBundle("config");
 
 //            redisSentinelHost = resourceBundle.getString("redis_sentinel_host");
@@ -29,60 +32,75 @@ public class DataConfig {
 //            redisMasterName = PasswordEncoder.decrypt(resourceBundle.getString("redis_master_name"));
 //            redisPoolTotal = Integer.valueOf(resourceBundle.getString("redisPoolTotal"));
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
     }
 
-    public static String getConfigByKey(String key) {
+    public static String getConfigByKey(String key)
+    {
         return ResourceBundle.getBundle("config").getString(key);
     }
 
-    public static int getRedisPoolTotal() {
+    public static int getRedisPoolTotal()
+    {
         return redisPoolTotal;
     }
 
-    public static void setRedisPoolTotal(int redisPoolTotal) {
+    public static void setRedisPoolTotal(int redisPoolTotal)
+    {
         DataConfig.redisPoolTotal = redisPoolTotal;
     }
 
-    public static String getRedisHost() {
+    public static String getRedisHost()
+    {
         return redisHost;
     }
 
-    public static void setRedisHost(String redisHost) {
+    public static void setRedisHost(String redisHost)
+    {
         DataConfig.redisHost = redisHost;
     }
 
-    public static String getRedisMasterPass() {
+    public static String getRedisMasterPass()
+    {
         return redisMasterPass;
     }
 
-    public static void setRedisMasterPass(String redisMasterPass) {
+    public static void setRedisMasterPass(String redisMasterPass)
+    {
         DataConfig.redisMasterPass = redisMasterPass;
     }
 
-    public static String getRedisMasterName() {
+    public static String getRedisMasterName()
+    {
         return redisMasterName;
     }
 
-    public static void setRedisMasterName(String redisMasterName) {
+    public static void setRedisMasterName(String redisMasterName)
+    {
         DataConfig.redisMasterName = redisMasterName;
     }
 
-    public static int getRedisPort() {
+    public static int getRedisPort()
+    {
         return redisPort;
     }
 
-    public static void setRedisPort(int redisPort) {
+    public static void setRedisPort(int redisPort)
+    {
         DataConfig.redisPort = redisPort;
     }
 
-    public static String getRedisSentinelHost() {
+    public static String getRedisSentinelHost()
+    {
         return redisSentinelHost;
     }
 
-    public static void setRedisSentinelHost(String redisSentinelHost) {
+    public static void setRedisSentinelHost(String redisSentinelHost)
+    {
         DataConfig.redisSentinelHost = redisSentinelHost;
     }
 }

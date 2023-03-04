@@ -20,26 +20,34 @@ import static org.apache.log4j.Logger.getLogger;
  */
 @ViewScoped
 @ManagedBean
-public class MemberCareStatusController {
+public class MemberCareStatusController
+{
     private static final Logger logger = getLogger(MemberCareStatusController.class);
 
     List<MemberCareStatus> statusList;
     private GenericDaoServiceNewV2<MemberCareStatus, Long> statusService;
 
     @PostConstruct
-    public void init() {
-        statusList =  new ArrayList<>();
-        statusService = new GenericDaoImplNewV2<MemberCareStatus, Long>() {};
+    public void init()
+    {
+        statusList = new ArrayList<>();
+        statusService = new GenericDaoImplNewV2<MemberCareStatus, Long>()
+        {
+        };
     }
 
-    public List<MemberCareStatus> findStatusList(String roleCode) {
+    public List<MemberCareStatus> findStatusList(String roleCode)
+    {
         List<MemberCareStatus> l = new ArrayList<>();
-        try {
+        try
+        {
             Map<String, Object> filter = new HashMap<>();
             filter.put("role.roleCode-EQ", roleCode);
             l = statusService.findList(filter);
 
-        }catch (Exception e){
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return l;

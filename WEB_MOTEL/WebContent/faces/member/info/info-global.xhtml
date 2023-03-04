@@ -8,53 +8,53 @@
             <div class="Card">
                 <div class="Container100 ">
                     <!--<div class="Container75">-->
-                        <div class="Container100 Responsive50">
+                    <div class="Container100 Responsive50">
 
-                            <div class="Container25 Responsive50">
+                        <div class="Container25 Responsive50">
                                 <span class="md-inputfield">
                                     <p:inputText value="#{memberController.curMember.memberCode}"
                                                  id="memberCode"
                                                  title="#{msg['datatable.header.memberCode']}"
                                                  required="false" disabled="true"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberCode'])}"
-                                                 >
+                                    >
                                     </p:inputText>
 
                                     <label>#{msg['datatable.header.memberCode']} *</label>
                                 </span>
-                                <p:message for="memberCode"></p:message>
-                            </div>
-                            <div class="Container25 Responsive50">
+                            <p:message for="memberCode"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50">
                                 <span class="md-inputfield">
                                     <p:inputText value="#{memberController.curMember.memberName}"
-                                                 id="memberName"  converter="trimConverter"
+                                                 id="memberName" converter="trimConverter"
                                                  title="#{msg['datatable.header.memberName']}"
                                                  required="true"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberName'])}"
-                                                 >
+                                    >
                                     </p:inputText>
 
                                     <label>#{msg['datatable.header.memberName']} *</label>
                                 </span>
-                                <p:message for="memberName"></p:message>
-                            </div>
-                            <div class="Container25 Responsive50" style="display: none">
+                            <p:message for="memberName"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50" style="display: none">
                                 <span class="md-inputfield">
                                     <p:inputText value="#{memberController.curMember.cardCode}"
                                                  id="cardCode"
                                                  title="#{msg['datatable.header.cardCode']}"
-                                                 required="false"  onkeypress="if (event.keyCode == 13) {
+                                                 required="false" onkeypress="if (event.keyCode == 13) {
                                                              return false;
                                                          }" disabled="true"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.cardCode'])}"
-                                                 >
+                                    >
                                     </p:inputText>
 
                                     <label>#{msg['datatable.header.cardCode']} </label>
                                 </span>
-                                <p:message for="cardCode"></p:message>
-                            </div>
-                            <div class="Container25 Responsive50">
+                            <p:message for="cardCode"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50">
                                 <span class="md-inputfield">
                                     <p:inputMask value="#{memberController.curMember.phoneNumber}"
                                                  id="phoneNumber"
@@ -66,48 +66,47 @@
                                     <p:message for="phoneNumber"></p:message>
                                     <label>#{msg['datatable.header.phoneNumber']} *</label>
                                 </span>
-                            </div>
+                        </div>
 
-                       
 
-                             </div>
-                        <div class="Container100 Responsive50 MarTop20">
-                            <div class="Container25 Responsive50">
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
+                        <div class="Container25 Responsive50">
                                 <span class="md-inputfield">
                                     <p:inputText value="#{memberController.curMember.email}" id="email"
                                                  title="#{msg['datatable.header.email']}"
                                                  required="false"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
-                                                 >
+                                    >
                                     </p:inputText>
 
                                     <label>#{msg['datatable.header.email']} </label>
                                 </span>
-                                <p:message for="email"></p:message>
-                            </div>
+                            <p:message for="email"></p:message>
+                        </div>
 
 
-                            <div class="Container25 Responsive50">
+                        <div class="Container25 Responsive50">
                                 <span class="md-inputfield">
                                     <p:inputText value="#{memberController.curMember.address}"
                                                  id="address"
                                                  title="#{msg['datatable.header.memberName']}"
                                                  required="true"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.address'])}"
-                                                 >
+                                    >
                                     </p:inputText>
 
                                     <label>#{msg['datatable.header.address']} *</label>
                                 </span>
-                                <p:message for="address"></p:message>
-                            </div>
-                            <div class="Container25 Responsive50">
+                            <p:message for="address"></p:message>
+                        </div>
+                        <div class="Container25 Responsive50">
 
                                 <span class="title-top">
                                     <p:selectOneRadio id="sex"
                                                       value="#{memberController.curMember.sex}"
                                                       required="true" style=""
-                                                      >
+                                    >
                                         <f:selectItem itemLabel="#{msg['view.label.sexMale']}"
                                                       itemValue="#{msg['view.label.sexMale']}"/>
                                         <f:selectItem itemLabel="#{msg['view.label.sexFemale']}"
@@ -118,10 +117,10 @@
                                 </span>
 
 
-                                <p:message for="sex"></p:message>
-                            </div>
-                       
-                            <div class="Container25 Responsive50">
+                            <p:message for="sex"></p:message>
+                        </div>
+
+                        <div class="Container25 Responsive50">
                                 <span class="title-top">
                                     <p:calendar value="#{memberController.curMember.birthDay}"
                                                 locale="#{language.localeCode}"
@@ -138,17 +137,17 @@
 
                                     <label class="title-elem">#{msg['datatable.header.birthDay']} *</label>
                                 </span>
-                                <p:message for="birthDay"></p:message>
-                            </div>
-                             </div>
-                        <div class="Container100 Responsive50 MarTop20">
-
+                            <p:message for="birthDay"></p:message>
                         </div>
+                    </div>
+                    <div class="Container100 Responsive50 MarTop20">
 
                     </div>
-                    
+
+                </div>
+
                 <!--</div>-->
-            </div> 
+            </div>
         </p:fieldset>
         <p:fieldset legend="#{msg['view.header.member.add.detail']}">
             <div class="Card">
@@ -168,7 +167,7 @@
                                         mask="true"
                                         required="true"
                                         requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.joinDate'])}"
-                                        >
+                            >
                             </p:calendar>
                             <label class="title-elem">#{msg['datatable.header.joinDate']} </label>
                         </span>
@@ -202,7 +201,7 @@
                                              style="width: 43%"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.status'])}"
 
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}"
                                               noSelectionOption="true"/>
                                 <f:selectItem itemLabel="#{msg['member.status.NEW']}"
@@ -244,7 +243,7 @@
                                              style=""
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberType'])}"
 
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}"
                                               noSelectionOption="true"/>
                                 <f:selectItem itemLabel="#{msg['view.label.memberType.copper']}"
@@ -254,8 +253,8 @@
                                 <f:selectItem itemLabel="#{msg['view.label.memberType.gold']}"
                                               itemValue="GOLD"/>
                                 <f:selectItem
-                                    itemLabel="#{msg['view.label.memberType.diamond']}"
-                                    itemValue="DIAMOND"/>
+                                        itemLabel="#{msg['view.label.memberType.diamond']}"
+                                        itemValue="DIAMOND"/>
 
                             </p:selectOneMenu>
                             <label class="title-elem">#{msg['datatable.header.memberType']} *</label>
@@ -272,7 +271,7 @@
                                              style=""
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branchId'])}"
 
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}"
                                               noSelectionOption="true"/>
                                 <f:selectItems value="#{branchController.branchs}" var="o"
@@ -288,9 +287,12 @@
                     </div>
                     <div class="Container25 Responsive50">
                         <span class="title-top">
-                            <p:autoComplete id="employeeId" value="#{memberController.curMember.employee}" completeMethod="#{employeeController.completeEmployee}"
-                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter" dropdown="true"  scrollHeight="200"
-                                            var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                            <p:autoComplete id="employeeId" value="#{memberController.curMember.employee}"
+                                            completeMethod="#{employeeController.completeEmployee}"
+                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter"
+                                            dropdown="true" scrollHeight="200"
+                                            var="emp" itemLabel="#{emp.employeeCode} #{emp.employeeName}"
+                                            itemValue="#{emp}">
                                 <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
                                 <p:column width="50"><h:outputText value="#{emp.employeeName}"/></p:column>
                                 <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
@@ -306,14 +308,16 @@
         <div class="Card">
             <div class="Container100 Responsive50 TexAlRight">
                 <p:commandButton value="#{msg['button.saveAndRegisterFingerprint']}" onclick="PF('block').show()"
-                                 oncomplete="PF('block').hide()"  styleClass="White Fs14" 
-                                  icon="fa fa-hand-pointer-o" 
+                                 oncomplete="PF('block').hide()" styleClass="White Fs14"
+                                 icon="fa fa-hand-pointer-o"
                                  rendered="#{(memberController.isEdit==false and memberController.IS_LOCAL==true) }"
-                                 actionListener="#{memberController.saveOrUpdateWithFingerprint()}" update="tabViewMain:form,@widgetVar(growl)"/>
+                                 actionListener="#{memberController.saveOrUpdateWithFingerprint()}"
+                                 update="tabViewMain:form,@widgetVar(growl)"/>
                 <p:spacer width="5px"/>
                 <p:commandButton value="#{msg['button.save']}" onclick="PF('block').show()"
                                  oncomplete="PF('block').hide()"
-                                 actionListener="#{memberController.saveOrUpdate}" update="tabViewMain:form,@widgetVar(growl)"/>
+                                 actionListener="#{memberController.saveOrUpdate}"
+                                 update="tabViewMain:form,@widgetVar(growl)"/>
             </div>
         </div>
     </p:tab>

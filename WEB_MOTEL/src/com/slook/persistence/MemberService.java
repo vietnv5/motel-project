@@ -9,12 +9,15 @@ import org.springframework.stereotype.Service;
  */
 @Service()
 @Scope("session")
-public class MemberService extends GenericDaoImplNewV2<Member, Long> {
-    
-      private static MemberService instance;
+public class MemberService extends GenericDaoImplNewV2<Member, Long>
+{
 
-    public static MemberService getInstance() {
-        if (instance == null) {
+    private static MemberService instance;
+
+    public static MemberService getInstance()
+    {
+        if (instance == null)
+        {
             instance = new MemberService();
         }
 

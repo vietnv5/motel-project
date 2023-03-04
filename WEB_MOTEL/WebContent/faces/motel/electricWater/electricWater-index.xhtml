@@ -17,11 +17,12 @@
                          rows="20" paginator="true" paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableElectricWaterWidget"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500"
+                         widgetVar="tableElectricWaterWidget"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -34,11 +35,13 @@
                                              update=":electricWaterForm,electricWaterDlgId"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              title="#{msg['view.dlg.export.obj']}"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['datatable.header.electricWater']}" />
-                                <p:dataExporter type="xls" target="tableElectricWaterId" fileName="electricWater" pageOnly="false"
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.electricWater']}"/>
+                                <p:dataExporter type="xls" target="tableElectricWaterId" fileName="electricWater"
+                                                pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
                         </div>
@@ -50,7 +53,7 @@
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableElectricWaterId" trigger="toggler">
-                                <p:ajax event="toggle" listener="#{electricWaterController.onToggler}" />
+                                <p:ajax event="toggle" listener="#{electricWaterController.onToggler}"/>
                             </p:columnToggler>
                         </div>
 
@@ -60,7 +63,7 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          visible="#{electricWaterController.columnVisibale[0]}" >
+                          visible="#{electricWaterController.columnVisibale[0]}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
@@ -68,17 +71,19 @@
                           visible="#{electricWaterController.columnVisibale[1]}" styleClass="TexAlCenter">
                     <!--<p:tooltip position="top" ></p:tooltip>-->
 
-                    <p:commandButton icon="fa fa-edit" actionListener="#{electricWaterController.preEdit(electricWater)}"
+                    <p:commandButton icon="fa fa-edit"
+                                     actionListener="#{electricWaterController.preEdit(electricWater)}"
 
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('electricWaterDlg').show()"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('electricWaterDlg').show()"
                                      update=":electricWaterForm,electricWaterDlgId" id="updateElectricWaterId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{electricWaterController.onDelete(electricWater)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableElectricWaterId "  
+                                     update="tableElectricWaterId "
                                      title="Xóa" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                    message="#{msg['title.confirm.delete']}">
@@ -89,48 +94,50 @@
 
                 <p:column headerText="#{msg['electricWater.homeName']}" width="40"
                           visible="#{electricWaterController.columnVisibale[2]}"
-                          filterBy="#{electricWater.room.home.homeName}" sortBy="#{electricWater.room.home.homeName}" >
+                          filterBy="#{electricWater.room.home.homeName}" sortBy="#{electricWater.room.home.homeName}">
                     <h:outputText value="#{electricWater.room.home.homeName}"/>
                 </p:column>
-                <p:column headerText="#{msg['electricWater.roomName']}" width="50" 
+                <p:column headerText="#{msg['electricWater.roomName']}" width="50"
                           visible="#{electricWaterController.columnVisibale[3]}"
                           filterBy="#{electricWater.room.roomName}" filterStyle="width:70%"
-                          ><h:outputText value="#{electricWater.room.roomName}"/></p:column>
+                >
+                    <h:outputText value="#{electricWater.room.roomName}"/>
+                </p:column>
 
                 <p:column headerText="#{msg['electricWater.electricOld']}" width="40"
-                          visible="#{electricWaterController.columnVisibale[4]}" style="text-align: right;" 
-                          filterBy="#{electricWater.electricOld-LIKE}" >
+                          visible="#{electricWaterController.columnVisibale[4]}" style="text-align: right;"
+                          filterBy="#{electricWater.electricOld-LIKE}">
                     <h:outputText value="#{electricWater.electricOld}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="#{msg['electricWater.electricNew']}" width="40"
-                          visible="#{electricWaterController.columnVisibale[5]}" style="text-align: right;" 
-                          filterBy="#{electricWater.electricNew-LIKE}" >
+                          visible="#{electricWaterController.columnVisibale[5]}" style="text-align: right;"
+                          filterBy="#{electricWater.electricNew-LIKE}">
                     <h:outputText value="#{electricWater.electricNew}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="#{msg['electricWater.waterOld']}" width="40"
-                          visible="#{electricWaterController.columnVisibale[6]}" style="text-align: right;" 
-                          filterBy="#{electricWater.waterOld-LIKE}" >
+                          visible="#{electricWaterController.columnVisibale[6]}" style="text-align: right;"
+                          filterBy="#{electricWater.waterOld-LIKE}">
                     <h:outputText value="#{electricWater.waterOld}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                 </p:column>
                 <p:column headerText="#{msg['electricWater.waterNew']}" width="40"
-                          visible="#{electricWaterController.columnVisibale[7]}" style="text-align: right;" 
-                          filterBy="#{electricWater.waterNew-LIKE}" >
+                          visible="#{electricWaterController.columnVisibale[7]}" style="text-align: right;"
+                          filterBy="#{electricWater.waterNew-LIKE}">
                     <h:outputText value="#{electricWater.waterNew}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg['electricWater.timeLine']}" width="50" sortBy="#{electricWater.timeLine}" 
+                <p:column headerText="#{msg['electricWater.timeLine']}" width="50" sortBy="#{electricWater.timeLine}"
                           visible="#{electricWaterController.columnVisibale[8]}"
-                          filterBy="#{electricWater.timeLine-BW}" >
-                    <f:facet name="filter" >
-                        <p:calendar pattern="dd/MM/yyyy" >
+                          filterBy="#{electricWater.timeLine-BW}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tableElectricWaterWidget').filter()"/>
                         </p:calendar>
                     </f:facet>
@@ -138,11 +145,11 @@
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="#{msg['electricWater.month']}" width="50" sortBy="#{electricWater.month}" 
+                <p:column headerText="#{msg['electricWater.month']}" width="50" sortBy="#{electricWater.month}"
                           visible="#{electricWaterController.columnVisibale[9]}"
-                          filterBy="#{electricWater.month-BW}" >
-                    <f:facet name="filter" >
-                        <p:calendar pattern="MM/yyyy" >
+                          filterBy="#{electricWater.month-BW}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tableElectricWaterWidget').filter()"/>
                         </p:calendar>
                     </f:facet>
@@ -150,7 +157,6 @@
                         <f:convertDateTime pattern="MM/yyyy"/>
                     </h:outputText>
                 </p:column>
-
 
 
             </p:dataTable>

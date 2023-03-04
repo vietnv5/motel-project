@@ -8,15 +8,15 @@
 
     <ui:define name="content">
         <h:form id="customerCheckinSearchForm">
-            <p:growl id="growlSearchIpRangesCatalog" showDetail="true" showSummary="false" />
-            <p:panel  header="#{msg['common.search.info']}" style="text-align: left" styleClass="" toggleable="true"  >
-                <h:panelGrid columns="8" cellpadding="5" width="100%" >
+            <p:growl id="growlSearchIpRangesCatalog" showDetail="true" showSummary="false"/>
+            <p:panel header="#{msg['common.search.info']}" style="text-align: left" styleClass="" toggleable="true">
+                <h:panelGrid columns="8" cellpadding="5" width="100%">
 
-                    <h:outputText value="Loại khách hàng" />
+                    <h:outputText value="Loại khách hàng"/>
                     <p:selectOneMenu id="status"
                                      value="#{reportPaymentController.paymentSearchForm.type}"
                                      style="width: 43%"
-                                     >
+                    >
                         <f:selectItem itemLabel="Toàn bộ" itemValue="-1"
                                       noSelectionOption="true"/>
                         <f:selectItem itemLabel="#{msg['customerCheckin.type1']}"
@@ -27,12 +27,12 @@
                                       itemValue="3"/>
 
                     </p:selectOneMenu>
-                    <h:outputText value="Từ thời gian" />
-                    <p:calendar value="#{reportPaymentController.paymentSearchForm.fromDate}"  />
-                    <h:outputText value="Đến thời gian" />
-                    <p:calendar value="#{reportPaymentController.paymentSearchForm.toDate}"  />
+                    <h:outputText value="Từ thời gian"/>
+                    <p:calendar value="#{reportPaymentController.paymentSearchForm.fromDate}"/>
+                    <h:outputText value="Đến thời gian"/>
+                    <p:calendar value="#{reportPaymentController.paymentSearchForm.toDate}"/>
 
-                    <p:commandButton id="search" onclick="PF('blockDlg').show()"   
+                    <p:commandButton id="search" onclick="PF('blockDlg').show()"
                                      oncomplete="PF('blockDlg').hide();"
                                      update="growlSearchIpRangesCatalog,:ipRangesFormId"
                                      actionListener="#{reportPaymentController.search}" value="Search"
@@ -42,33 +42,36 @@
             </p:panel>
         </h:form>
         <h:form id="ipRangesFormId">
-            <p:growl id="growlCatalog" showDetail="true" showSummary="false" />
-            <p:dataTable value="#{reportPaymentController.lstPaymentGroupPackTotal}" 
+            <p:growl id="growlCatalog" showDetail="true" showSummary="false"/>
+            <p:dataTable value="#{reportPaymentController.lstPaymentGroupPackTotal}"
                          id="tableIpRangesId" widgetVar="widTableIpRanges"
                          lazy="false" var="paymentGroupPack" rowKey="#{paymentGroupPack.key}"
                          rowIndexVar="cusIdx" editable="true" editMode="cell"
                          rows="20" paginator="true" paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                         rowsPerPageTemplate="10,15,20,30,50,60,80,100,150,200" 
-                         resizableColumns="false"  selectionMode="single"
-                         emptyMessage="#{msg['datatable.empty']}" styleClass="DatabaseTable Container100 NoPadding MarTop10 upperColumnTitle" >
+                         rowsPerPageTemplate="10,15,20,30,50,60,80,100,150,200"
+                         resizableColumns="false" selectionMode="single"
+                         emptyMessage="#{msg['datatable.empty']}"
+                         styleClass="DatabaseTable Container100 NoPadding MarTop10 upperColumnTitle">
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
                         <div class="Container20 Responsive50" style="text-align: left;">
 
                         </div>
                         <div class="Container60 Responsive50">
-                            <h:outputText styleClass="Fs18" value="#{msg['reportPaymentPack.header']}" />
+                            <h:outputText styleClass="Fs18" value="#{msg['reportPaymentPack.header']}"/>
                         </div>
                         <div class="Container20" style="text-align: right;">
                             <p:tooltip position="right"></p:tooltip>
 
                             <p:tooltip position="right"></p:tooltip>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['reportPaymentPack.header']}" />
-                                <p:dataExporter type="xls" target="tableIpRangesId" fileName="paymentGroupPack" pageOnly="false"
+                                <f:attribute name="headerExport" value="#{msg['reportPaymentPack.header']}"/>
+                                <p:dataExporter type="xls" target="tableIpRangesId" fileName="paymentGroupPack"
+                                                pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
 
@@ -76,39 +79,41 @@
                     </div>
 
                 </f:facet>
-                <p:ajax event="rowSelect" listener="#{reportPaymentController.onRowSelect}" update="@form:detailCustomerPaymentPanel" />
+                <p:ajax event="rowSelect" listener="#{reportPaymentController.onRowSelect}"
+                        update="@form:detailCustomerPaymentPanel"/>
 
                 <p:column headerText="#{msg['datatable.header.stt']}" width="20" style="text-align: center"
-                          >
-                    <h:outputText value="#{cusIdx +1 }" />
+                >
+                    <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
 
-                <p:column headerText="#{msg['reportPaymentPack.groupPackName']}" width="200" >
+                <p:column headerText="#{msg['reportPaymentPack.groupPackName']}" width="200">
                     <h:outputText value="#{paymentGroupPack.groupPackName}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['reportPaymentPack.customerType']}" width="100" >
+                <p:column headerText="#{msg['reportPaymentPack.customerType']}" width="100">
                     <h:outputText value="#{paymentGroupPack.customerTypeName}"/>
                 </p:column>
-                <p:column headerText="#{msg['reportPaymentPack.soLuong']}" width="50" style="text-align: right" >
+                <p:column headerText="#{msg['reportPaymentPack.soLuong']}" width="50" style="text-align: right">
                     <h:outputText value="#{paymentGroupPack.soLuong}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="#{msg['reportPaymentPack.tongTien']}" width="150" style="text-align: right"  >
+                <p:column headerText="#{msg['reportPaymentPack.tongTien']}" width="150" style="text-align: right">
                     <h:outputText value="#{paymentGroupPack.tongTien}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ"/>
                 </p:column>
-                <p:column headerText="#{msg['reportPaymentPack.daNop']}" width="150" style="text-align: right"  >
+                <p:column headerText="#{msg['reportPaymentPack.daNop']}" width="150" style="text-align: right">
                     <h:outputText value="#{paymentGroupPack.daNop}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ"/>
                 </p:column>
-                <p:column headerText="#{msg['reportPaymentPack.tongNo']}" width="150" style="text-align: right"  id="tongNoColumnId" >
+                <p:column headerText="#{msg['reportPaymentPack.tongNo']}" width="150" style="text-align: right"
+                          id="tongNoColumnId">
                     <h:outputText id="tongNoId" value="#{paymentGroupPack.tongNo}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
@@ -117,24 +122,28 @@
 
             </p:dataTable>
             <p:outputPanel class="Container100 TexAlRight" id="memberPaymentPanel">
-                <h:outputText  value="#{msg['reportPaymentPack.tongTien']}: "/>
-                <b>   <h:outputText id="totalPriceId" value="#{reportPaymentController.paymentGroupPackTotal.tongTien}">
+                <h:outputText value="#{msg['reportPaymentPack.tongTien']}: "/>
+                <b>
+                    <h:outputText id="totalPriceId" value="#{reportPaymentController.paymentGroupPackTotal.tongTien}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ "/>
                 </b>
-                <h:outputText  value="#{msg['reportPaymentPack.daNop']}: "/>
-                <b>   <h:outputText id="totalDespoitId" value="#{reportPaymentController.paymentGroupPackTotal.daNop}">
+                <h:outputText value="#{msg['reportPaymentPack.daNop']}: "/>
+                <b>
+                    <h:outputText id="totalDespoitId" value="#{reportPaymentController.paymentGroupPackTotal.daNop}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ "/>
                 </b>
-                <h:outputText  value="#{msg['reportPaymentPack.tongNo']}: "/>
-                <b>   <h:outputText id="totalPaymentId" value="#{reportPaymentController.paymentGroupPackTotal.tongNo}">
+                <h:outputText value="#{msg['reportPaymentPack.tongNo']}: "/>
+                <b>
+                    <h:outputText id="totalPaymentId" value="#{reportPaymentController.paymentGroupPackTotal.tongNo}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ "/>
-                    <p:tooltip value="Giá trị dương là trả nợ, giá trị âm là tiền khách hàng đang nợ" for="totalPaymentId" />
+                    <p:tooltip value="Giá trị dương là trả nợ, giá trị âm là tiền khách hàng đang nợ"
+                               for="totalPaymentId"/>
                 </b>
             </p:outputPanel>
             <ui:include src="detailCustomerPayment-info.xhtml"/>

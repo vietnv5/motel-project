@@ -30,6 +30,7 @@ import com.slook.util.ExcelWriterUtils;
 import com.slook.util.MessageUtil;
 import com.slook.util.PdfUtil;
 import com.slook.util.Util;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -52,6 +53,7 @@ import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
+
 import org.apache.commons.lang3.time.DateUtils;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.BorderStyle;
@@ -63,7 +65,9 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.ss.util.RegionUtil;
+
 import static org.omnifaces.util.Faces.getRequest;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -74,12 +78,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author VietNV Jan 25, 2018
  */
 @ManagedBean
 @ViewScoped
-public class BillController {
+public class BillController
+{
 
     protected static final Logger logger = LoggerFactory.getLogger(BillController.class);
 
@@ -110,26 +114,34 @@ public class BillController {
     //export ds hoa don
     private Long homeId;
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
     @PostConstruct
-    public void onStart() {
-        billServiceService = new GenericDaoImplNewV2<BillService, Long>() {
+    public void onStart()
+    {
+        billServiceService = new GenericDaoImplNewV2<BillService, Long>()
+        {
         };
-        electricWaterService = new GenericDaoImplNewV2<ElectricWater, Long>() {
+        electricWaterService = new GenericDaoImplNewV2<ElectricWater, Long>()
+        {
         };
-        contractService = new GenericDaoImplNewV2<Contract, Long>() {
+        contractService = new GenericDaoImplNewV2<Contract, Long>()
+        {
         };
-        contractServiceService = new GenericDaoImplNewV2<ContractService, Long>() {
+        contractServiceService = new GenericDaoImplNewV2<ContractService, Long>()
+        {
         };
 
         lstBillService = new ArrayList<>();
-        try {
+        try
+        {
             CatUser catUser = null;
             groupUserId = null;
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
                 groupUserId = catUser.getGroupUserId();
             }
@@ -139,7 +151,8 @@ public class BillController {
             order.put("room.roomName", Constant.ORDER.ASC);
             Map<String, Object> filter = new HashMap<>();
 //            filter.put("status-NEQ", Constant.STATUS.DELETE);
-            if (groupUserId != null && groupUserId > 0) {//phan quyen
+            if (groupUserId != null && groupUserId > 0)
+            {//phan quyen
                 filter.put("home.groupUserId", groupUserId);
             }
             lazyDataModel = new LazyDataModelBase<Bill, Long>(billServiceImpl, filter, order);
@@ -147,7 +160,8 @@ public class BillController {
             //init data
             Map<String, Object> filtersHome = new HashMap<>();
             filtersHome.put("status-NEQ", Constant.STATUS.DELETE);
-            if (groupUserId != null && groupUserId > 0) {//phan quyen
+            if (groupUserId != null && groupUserId > 0)
+            {//phan quyen
                 filtersHome.put("groupUserId", groupUserId);
             }
             LinkedHashMap<String, String> orderHome = new LinkedHashMap<>();
@@ -156,7 +170,9 @@ public class BillController {
 
             //map unit
             mapUnit = CommonUtil.getMapCatItemByKeyId(Constant.CAT_CODE.UNIT);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         columnVisibale = Arrays.asList(true, true, true, true, true,
@@ -169,30 +185,37 @@ public class BillController {
      * tính hóa đơn lấy mốc là tháng tính hóa đơn
      *
      * @param roomId id phòng
-     * @param month tháng lập hóa đơn
+     * @param month  tháng lập hóa đơn
      * @return
      */
-    public List<ElectricWater> getListElectricWaterOfRoom(Long roomId, Date month) {
+    public List<ElectricWater> getListElectricWaterOfRoom(Long roomId, Date month)
+    {
         LinkedHashMap<String, String> order = new LinkedHashMap<>();
         order.put("timeLine", Constant.ORDER.DESC);
         Map<String, Object> filter = new HashMap<>();
         filter.put("status-NEQ", Constant.STATUS.DELETE);
-        if (month != null) {
+        if (month != null)
+        {
             filter.put("month", month);
         }
-        if (roomId != null) {
+        if (roomId != null)
+        {
             filter.put("roomId", roomId);
         }
         List<ElectricWater> lst = new ArrayList<>();
-        try {
+        try
+        {
             lst = electricWaterService.findList(filter, order);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return lst;
     }
 
-    public static Contract getContractOfRoom(Long roomId) {
+    public static Contract getContractOfRoom(Long roomId)
+    {
         LinkedHashMap<String, String> order = new LinkedHashMap<>();
         order.put("startTime", Constant.ORDER.DESC);
         Map<String, Object> filter = new HashMap<>();
@@ -200,31 +223,42 @@ public class BillController {
         filter.put("roomId", roomId);
 
         List<Contract> lst = new ArrayList<>();
-        try {
+        try
+        {
             lst = ContractServiceImpl.getInstance().findList(filter, order);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
-        if (lst != null && !lst.isEmpty()) {
+        if (lst != null && !lst.isEmpty())
+        {
             return lst.get(0);
         }
         return null;
     }
 
-    public void onChangeHome() {
-        if (currBill != null && currBill.getHomeId() != null && currBill.getHomeId() > 0) {
+    public void onChangeHome()
+    {
+        if (currBill != null && currBill.getHomeId() != null && currBill.getHomeId() > 0)
+        {
             Map<String, Object> filtersRoom = new HashMap<>();
             filtersRoom.put("status-NEQ", Constant.ROOM_STATUS.DELETE);
             filtersRoom.put("homeId", currBill.getHomeId());
             LinkedHashMap<String, String> orderRoom = new LinkedHashMap<>();
             orderRoom.put("roomName", Constant.ORDER.ASC);
-            try {
+            try
+            {
                 lstRoom = RoomServiceImpl.getInstance().findList(filtersRoom, orderRoom);
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 logger.error(ex.getMessage(), ex);
             }
 
-        } else {
+        }
+        else
+        {
             lstRoom = new ArrayList<>();
         }
     }
@@ -232,28 +266,35 @@ public class BillController {
     /**
      * tự động danh sach dich vu
      */
-    public void onSelectRoom() {
+    public void onSelectRoom()
+    {
         Room room = null;
-        if (currBill != null && currBill.getRoomId() != null) {
+        if (currBill != null && currBill.getRoomId() != null)
+        {
             //lay thong tin hop dong cua phong danh sach cac dich vu su dung
             contract = getContractOfRoom(currBill.getRoomId());
             List<CatService> lstService = new ArrayList<>();
             lstBillService = new ArrayList<>();
-            if (contract != null && contract.getContractServiceList() != null) {
+            if (contract != null && contract.getContractServiceList() != null)
+            {
                 lstService = contract.getContractServiceList().stream().map(ContractService::getService)
                         .collect(Collectors.toList());
                 currBill.setContractId(contract.getContractId());
-            } else {
+            }
+            else
+            {
             }
             //lay thong tin dien nuoc
             Date month = DateUtils.round(currBill.getPaymentDate(), Calendar.MONTH);
             List<ElectricWater> lstOldEW = getListElectricWaterOfRoom(currBill.getRoomId(), month);
             ElectricWater ew = null;
-            if (lstOldEW != null && !lstOldEW.isEmpty()) {
+            if (lstOldEW != null && !lstOldEW.isEmpty())
+            {
                 ew = lstOldEW.get(0);
             }
             // tao gia cac dich vu
-            for (CatService s : lstService) {
+            for (CatService s : lstService)
+            {
                 s.setUnitBO(mapUnit.get(s.getUnit()));
 
                 BillService bs = new BillService();
@@ -261,20 +302,28 @@ public class BillController {
                 bs.setPrice(s.getPrice());
                 Double amount = 0d;
                 //dv dien nuoc
-                if (Constant.SERVICE.ELECTRIC.equals(s.getServiceCode())) {
-                    if (ew != null) {
+                if (Constant.SERVICE.ELECTRIC.equals(s.getServiceCode()))
+                {
+                    if (ew != null)
+                    {
                         bs.setIndexOld(ew.getElectricOld());
                         bs.setIndexNew(ew.getElectricNew());
                     }
-                } else if (Constant.SERVICE.WATER.equals(s.getServiceCode())) {
-                    if (ew != null) {
+                }
+                else if (Constant.SERVICE.WATER.equals(s.getServiceCode()))
+                {
+                    if (ew != null)
+                    {
                         bs.setIndexOld(ew.getWaterOld());
                         bs.setIndexNew(ew.getWaterNew());
                     }
-                } else {
+                }
+                else
+                {
                     amount = 1d;
                 }
-                if (bs.getIndexOld() != null && bs.getIndexNew() != null) {
+                if (bs.getIndexOld() != null && bs.getIndexNew() != null)
+                {
                     amount = bs.getIndexNew() - bs.getIndexOld();
                 }
 
@@ -285,12 +334,16 @@ public class BillController {
             }
 
             //tao gia phong
-            try {
+            try
+            {
                 room = RoomServiceImpl.getInstance().findById(currBill.getRoomId());
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
             }
 
-            if (room != null && room.getPrice() != null) {
+            if (room != null && room.getPrice() != null)
+            {
                 CatService svDefault = new CatService();
                 svDefault.setServiceName(room.getRoomName());
                 svDefault.setUnitBO(mapUnit.get(Constant.CAT_ITEM.UNIT.ROOM_PER_MONTH_ID));
@@ -307,21 +360,27 @@ public class BillController {
         }
     }
 
-    public void onChangeTotalPricePayment(List<BillService> lstBillService) {
+    public void onChangeTotalPricePayment(List<BillService> lstBillService)
+    {
         Long totalPricePayment = 0l;
-        if (lstBillService != null) {
-            for (BillService b : lstBillService) {
+        if (lstBillService != null)
+        {
+            for (BillService b : lstBillService)
+            {
                 totalPricePayment += b.getTotalPrice();
             }
         }
         currBill.setTotalPrice(totalPricePayment);
     }
 
-    public void onchangeBillService(int index) {
+    public void onchangeBillService(int index)
+    {
 
-        if (lstBillService != null && lstBillService.get(index) != null) {
+        if (lstBillService != null && lstBillService.get(index) != null)
+        {
             BillService billService = lstBillService.get(index);
-            if (billService.getAmount() != null && billService.getPrice() != null) {
+            if (billService.getAmount() != null && billService.getPrice() != null)
+            {
                 billService.setTotalPrice(Math.round(
                         billService.getAmount() * billService.getPrice()));
             }
@@ -330,7 +389,8 @@ public class BillController {
         }
     }
 
-    public void preAdd() {
+    public void preAdd()
+    {
         this.currBill = new Bill();
         this.lstBillService = new ArrayList<>();
         isEdit = false;
@@ -339,7 +399,8 @@ public class BillController {
         //xu ly round month
 //        Date month = DateUtils.round(new Date(), Calendar.MONTH);
 //        currBill.setMonth(month);
-        if (lstHome != null && !lstHome.isEmpty()) {
+        if (lstHome != null && !lstHome.isEmpty())
+        {
             currBill.setHomeId(lstHome.get(0).getHomeId());
         }
 //        this.selectedDate = month;
@@ -348,30 +409,39 @@ public class BillController {
         onChangeHome();
     }
 
-    public void preEdit(Bill bill) {
-        try {
+    public void preEdit(Bill bill)
+    {
+        try
+        {
             currBill = billServiceImpl.findById(bill.getBillId());
 
 //            this.selectedDate = currBill.getMonth();
             onChangeHome();
             lstBillService = currBill.getBillServiceList();
-            if (lstBillService != null) {
-                for (BillService bo : lstBillService) {
-                    if (bo.getService() != null && bo.getService().getUnit() != null) {
+            if (lstBillService != null)
+            {
+                for (BillService bo : lstBillService)
+                {
+                    if (bo.getService() != null && bo.getService().getUnit() != null)
+                    {
                         bo.getService().setUnitBO(mapUnit.get(bo.getService().getUnit()));
                     }
                 }
             }
             //dich vu gia phong
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         isEdit = true;
         oldObjectStr = currBill.toString();
     }
 
-    public void onSaveOrUpdate() {
-        try {
+    public void onSaveOrUpdate()
+    {
+        try
+        {
 
 //xu ly round month
 //            currBill.setMonth(selectedDate);
@@ -382,11 +452,13 @@ public class BillController {
 //            filter.put("roomId", currBill.getRoomId());
 //            filter.put("month", currBill.getMonth());
             filter.put("billCode", currBill.getBillCode());
-            if (currBill.getBillId() != null) {
+            if (currBill.getBillId() != null)
+            {
                 filter.put("billId-NEQ", currBill.getBillId());
             }
             List<Bill> lstElectricWater = billServiceImpl.findList(filter);
-            if (lstElectricWater != null && !lstElectricWater.isEmpty()) {
+            if (lstElectricWater != null && !lstElectricWater.isEmpty())
+            {
                 MessageUtil.setErrorMessage("Mã hóa đơn đã tồn tại!");
 
                 return;
@@ -394,7 +466,8 @@ public class BillController {
 //            if (currBill.getStatus() == null) {
 //                currBill.setStatus(Constant.STATUS.ACTIVE);
 //            }
-            if (currBill.getCreateTime() == null) {
+            if (currBill.getCreateTime() == null)
+            {
                 currBill.setCreateTime(new Date());
             }
 
@@ -403,10 +476,13 @@ public class BillController {
             updateBillService(currBill.getBillId(), lstBillService);
 
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currBill.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currBill.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -414,29 +490,37 @@ public class BillController {
             MessageUtil.setInfoMessageFromRes("info.save.success");
             RequestContext.getCurrentInstance().execute("PF('billDlg').hide();");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void updateBillService(Long billId, List<BillService> lstBillService) throws Exception {
+    public void updateBillService(Long billId, List<BillService> lstBillService) throws Exception
+    {
         List<Long> lstBillServiceNew = lstBillService.stream().map(BillService::getBillServiceId).collect(Collectors.toList());
         List<BillService> lstDel = new ArrayList<>();
         Map<String, Object> filter = new HashMap<>();
         filter.put("billId", billId);
         List<BillService> lstOld = billServiceService.findList(filter);
-        if (lstOld != null) {
-            for (BillService bo : lstOld) {
-                if (!lstBillServiceNew.contains(bo.getBillServiceId())) {
+        if (lstOld != null)
+        {
+            for (BillService bo : lstOld)
+            {
+                if (!lstBillServiceNew.contains(bo.getBillServiceId()))
+                {
                     lstDel.add(bo);
                 }
             }
         }
-        for (BillService b : lstBillService) {
+        for (BillService b : lstBillService)
+        {
             b.setBillId(billId);
             //fix loi dang tu dong insert ban ghi vao bang service
-            if (b.getService() != null && b.getService().getServiceId() == null) {
+            if (b.getService() != null && b.getService().getServiceId() == null)
+            {
                 b.setService(null);
             }
         }
@@ -445,8 +529,10 @@ public class BillController {
 
     }
 
-    public void onDelete(Bill bill) {
-        try {
+    public void onDelete(Bill bill)
+    {
+        try
+        {
             oldObjectStr = bill.toString();
             Map<String, Object> filters = new HashMap<>();
             filters.put("billId", bill.getBillId());
@@ -457,24 +543,30 @@ public class BillController {
                     this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 
             MessageUtil.setInfoMessageFromRes("common.message.success");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             MessageUtil.setErrorMessageFromRes("common.message.fail");
         }
     }
 
-    public void preEditBillService(BillService billService) {
+    public void preEditBillService(BillService billService)
+    {
         this.currBillService = billService;
     }
 
-    public void onChangeBillServicePrice() {
-        if (currBillService.getAmount() != null && currBillService.getPrice() != null) {
+    public void onChangeBillServicePrice()
+    {
+        if (currBillService.getAmount() != null && currBillService.getPrice() != null)
+        {
             Double totalPrice = currBillService.getAmount() * currBillService.getPrice();
             currBillService.setTotalPrice(totalPrice.longValue());
         }
     }
 
-    public void onSaveBillServiceInList() {
+    public void onSaveBillServiceInList()
+    {
         //cap nhat lai thay doi
         onchangeBillService(this.lstBillService.indexOf(this.currBillService));
         RequestContext.getCurrentInstance().execute("PF('billServiceDlg').hide();");
@@ -482,23 +574,30 @@ public class BillController {
     }
 
     //in hoa don
-    public void exportBillPdf(Bill bill) {
-        try {
+    public void exportBillPdf(Bill bill)
+    {
+        try
+        {
             currBill = billServiceImpl.findById(bill.getBillId());
 
 //            this.selectedDate = currBill.getMonth();
             lstBillService = currBill.getBillServiceList();
-            if (lstBillService != null) {
-                for (BillService bo : lstBillService) {
-                    if (bo.getService() != null && bo.getService().getUnit() != null) {
+            if (lstBillService != null)
+            {
+                for (BillService bo : lstBillService)
+                {
+                    if (bo.getService() != null && bo.getService().getUnit() != null)
+                    {
                         bo.getService().setUnitBO(mapUnit.get(bo.getService().getUnit()));
                     }
                 }
             }
             currBill.setBillServiceList(lstBillService);
-            if (currBill.getContractId() != null) {
+            if (currBill.getContractId() != null)
+            {
                 Contract c = contractService.findById(currBill.getContractId());
-                if (c != null) {
+                if (c != null)
+                {
                     currBill.setContractCode(c.getContractCode());
                 }
             }
@@ -506,16 +605,20 @@ public class BillController {
 
             String resultPath = Constant.OUT_FOLDER;
 
-            if (!CommonUtil.makeDirectory(Util.getRealPath(resultPath))) {
+            if (!CommonUtil.makeDirectory(Util.getRealPath(resultPath)))
+            {
                 MessageUtil.setErrorMessage("Export thất bại (Tạo folder)");
                 fileExported = null;
                 return;
             }
 
-            if (lstBillService == null || lstBillService.isEmpty()) {
+            if (lstBillService == null || lstBillService.isEmpty())
+            {
                 MessageUtil.setInfoMessage("Không có dịch vụ!");
                 pathRealFile = "";
-            } else {
+            }
+            else
+            {
 
                 pathRealFile = PdfUtil.createBillPdf(currBill);
 //                pathRealFile = Util.getRealPath(resultPath + desFileNamePdf);
@@ -523,12 +626,15 @@ public class BillController {
 
             InputStream stream = new FileInputStream(pathRealFile);
             fileExported = new DefaultStreamedContent(stream, "application/pdf", currBill.getBillCode() + ".pdf");
-            if (pathRealFile != null && !pathRealFile.equals("")) {
+            if (pathRealFile != null && !pathRealFile.equals(""))
+            {
                 MessageUtil.setInfoMessage("Export thành công");
                 RequestContext.getCurrentInstance().update(":showPdfForm");
                 RequestContext.getCurrentInstance().execute("PF('showPdfDlg').show();");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessage("Export thất bại");
             logger.error(e.getMessage(), e);
             e.printStackTrace();
@@ -536,24 +642,30 @@ public class BillController {
     }
 //xuat danh sach hoa don
 
-    public void preExportBill() {
+    public void preExportBill()
+    {
         this.selectedDate = DateUtils.truncate(new Date(), Calendar.MONTH);
     }
 
-    public List<Bill> getBillForExport() {
+    public List<Bill> getBillForExport()
+    {
         List<Bill> lst = new ArrayList<>();
-        try {
+        try
+        {
 
             Map<String, Object> filtersHome = new HashMap<>();
 //            filtersHome.put("status-NEQ", Constant.STATUS.DELETE);
-            if (groupUserId != null && groupUserId > 0) {//phan quyen
+            if (groupUserId != null && groupUserId > 0)
+            {//phan quyen
                 filtersHome.put("home.groupUserId", groupUserId);
             }
-            if (homeId != null && homeId > 0) {
+            if (homeId != null && homeId > 0)
+            {
                 filtersHome.put("homeId", homeId);
 
             }
-            if (selectedDate != null) {
+            if (selectedDate != null)
+            {
                 filtersHome.put("paymentDate-GE", selectedDate);
                 filtersHome.put("paymentDate-LT", DateUtils.addMonths(selectedDate, 1));
             }
@@ -561,22 +673,27 @@ public class BillController {
             orderHome.put("home.homeName", Constant.ORDER.ASC);
             orderHome.put("room.roomName", Constant.ORDER.ASC);
             lst = billServiceImpl.findList(filtersHome, orderHome);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return lst;
     }
 
-    public StreamedContent onExportBill() {
+    public StreamedContent onExportBill()
+    {
         DefaultStreamedContent defaultStreamed = null;
         Workbook wbTemplate = null;
         FileInputStream file = null;
-        try {
+        try
+        {
             String templateName = "Template_Bill.xlsx";
             String templateFileName = File.separator + Constant.DIR.TEMPLATES + File.separator + templateName;
 //            String resultPath = "/share/";
             String resultPath = Constant.OUT_FOLDER;
-            if (!CommonUtil.makeDirectory(Util.getRealPath(resultPath))) {
+            if (!CommonUtil.makeDirectory(Util.getRealPath(resultPath)))
+            {
                 MessageUtil.setErrorMessage("Export thất bại (Tạo folder)");
                 fileExported = null;
                 return null;
@@ -587,13 +704,18 @@ public class BillController {
                     .getExternalContext().getContext();
             file = new FileInputStream(Util.getRealPath(templateFileName));
 
-            if (templateFileName.endsWith("xls")) {
+            if (templateFileName.endsWith("xls"))
+            {
                 wbTemplate = new HSSFWorkbook(file);
 
-            } else if (templateFileName.endsWith("xlsx")) {
+            }
+            else if (templateFileName.endsWith("xlsx"))
+            {
                 wbTemplate = WorkbookFactory.create(file);
 
-            } else {
+            }
+            else
+            {
                 return defaultStreamed;
             }
             Sheet sheet = wbTemplate.getSheetAt(0);
@@ -617,10 +739,14 @@ public class BillController {
             List<Bill> lstBill = getBillForExport();
             //lay ds dich vu su dung
             List<CatService> lstService = new ArrayList<>();
-            for (Bill b : lstBill) {
-                if (b.getBillServiceList() != null) {
-                    for (BillService bs : b.getBillServiceList()) {
-                        if (bs.getService() != null && !lstService.contains(bs.getService())) {
+            for (Bill b : lstBill)
+            {
+                if (b.getBillServiceList() != null)
+                {
+                    for (BillService bs : b.getBillServiceList())
+                    {
+                        if (bs.getService() != null && !lstService.contains(bs.getService()))
+                        {
                             lstService.add(bs.getService());
                         }
                     }
@@ -630,11 +756,13 @@ public class BillController {
 //            Map<String, CatService> mapService = new HashMap<>();
             List<Long> lstServiceIdExt = new ArrayList<>();
             List<String> lstServiceNameExt = new ArrayList<>();
-            for (CatService s : lstService) {
+            for (CatService s : lstService)
+            {
 //                mapService.put(s.getServiceCode(), s);
                 if (!Constant.SERVICE.ELECTRIC.equals(s.getServiceCode())
                         && !Constant.SERVICE.WATER.equals(s.getServiceCode())
-                        && !Constant.SERVICE.PRICE_ROOM_ID.equals(s.getServiceId())) {
+                        && !Constant.SERVICE.PRICE_ROOM_ID.equals(s.getServiceId()))
+                {
                     lstServiceIdExt.add(s.getServiceId());
                     lstServiceNameExt.add(s.getServiceName());
                 }
@@ -643,14 +771,15 @@ public class BillController {
             //xu ly tao head
             referRow = excelWriterUtils.getOrCreateRow(sheet, rowHeader);
             int colIndex = collHeader;
-            for (String headName : lstServiceNameExt) {
+            for (String headName : lstServiceNameExt)
+            {
                 sheet.setColumnWidth(colIndex, withCol);
                 referRow.createCell(colIndex).setCellValue(headName);
                 referRow.getCell(colIndex).setCellStyle(cellStyleHeader);
                 colIndex++;
-                CellRangeAddress cra=new CellRangeAddress(0, 1, colIndex, colIndex);
+                CellRangeAddress cra = new CellRangeAddress(0, 1, colIndex, colIndex);
                 sheet.addMergedRegion(cra);//merge cell bo qua cot dau vi da merger
-                
+
                 RegionUtil.setBorderLeft(cellStyleHeader.getBorderLeft(), cra, sheet, wbTemplate);
                 RegionUtil.setBorderRight(cellStyleHeader.getBorderLeft(), cra, sheet, wbTemplate);
             }
@@ -662,7 +791,8 @@ public class BillController {
             referRow.getCell(colIndex).setCellStyle(cellStyleHeader);
 
             // list data
-            for (Bill b : lstBill) {
+            for (Bill b : lstBill)
+            {
                 int c = 0;
                 referRow = excelWriterUtils.getOrCreateRow(sheet, startRow);
                 excelWriterUtils.createCell(sheet, c++, startRow, c + "", cellStyleCenter);
@@ -670,18 +800,23 @@ public class BillController {
                         ? b.getRoom().getRoomName() : "", cellStyleCenter);
                 //xu ly theo dv cung cap dynamic
                 //fix set style cho ca hop dong thieu dich vu
-                for (int t = 0; t < (7 + lstServiceIdExt.size()); t++) {
+                for (int t = 0; t < (7 + lstServiceIdExt.size()); t++)
+                {
                     excelWriterUtils.createCell(sheet, t + c, startRow,
                             "", cellStyleRight);
                 }
                 List<BillService> lstBs = b.getBillServiceList();
-                for (BillService bs : lstBs) {
+                for (BillService bs : lstBs)
+                {
 
-                    if (Constant.SERVICE.PRICE_ROOM_ID.equals(bs.getServiceId())) {
+                    if (Constant.SERVICE.PRICE_ROOM_ID.equals(bs.getServiceId()))
+                    {
                         excelWriterUtils.createCell(sheet, c + 0, startRow,
                                 DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
-                    } else if (bs.getService() != null
-                            && Constant.SERVICE.ELECTRIC.equals(bs.getService().getServiceCode())) {
+                    }
+                    else if (bs.getService() != null
+                            && Constant.SERVICE.ELECTRIC.equals(bs.getService().getServiceCode()))
+                    {
                         excelWriterUtils.createCell(sheet, c + 1, startRow,
                                 DataUtil.getStringNumber(bs.getIndexOld()), cellStyleRight);
                         excelWriterUtils.createCell(sheet, c + 2, startRow,
@@ -689,8 +824,10 @@ public class BillController {
                         excelWriterUtils.createCell(sheet, c + 3, startRow,
                                 DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
 
-                    } else if (bs.getService() != null
-                            && Constant.SERVICE.WATER.equals(bs.getService().getServiceCode())) {
+                    }
+                    else if (bs.getService() != null
+                            && Constant.SERVICE.WATER.equals(bs.getService().getServiceCode()))
+                    {
                         excelWriterUtils.createCell(sheet, c + 4, startRow,
                                 DataUtil.getStringNumber(bs.getIndexOld()), cellStyleRight);
                         excelWriterUtils.createCell(sheet, c + 5, startRow,
@@ -698,7 +835,9 @@ public class BillController {
                         excelWriterUtils.createCell(sheet, c + 6, startRow,
                                 DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
 
-                    } else if (lstServiceIdExt.contains(bs.getServiceId())) {
+                    }
+                    else if (lstServiceIdExt.contains(bs.getServiceId()))
+                    {
                         excelWriterUtils.createCell(sheet, c + 7 + lstServiceIdExt.indexOf(bs.getServiceId()), startRow,
                                 DataUtil.getStringNumber(bs.getTotalPrice()), cellStyleRight);
                     }
@@ -719,23 +858,35 @@ public class BillController {
             InputStream stream = new FileInputStream((Util.getRealPath(resultPath + tmpFileName)));
             defaultStreamed = new DefaultStreamedContent(stream, "xlsx", tmpFileName);
             MessageUtil.setInfoMessage("Export thành công");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.fail"),
                     "Xuất hóa đơn"));
-        } finally {
-            if (wbTemplate != null) {
-                try {
+        }
+        finally
+        {
+            if (wbTemplate != null)
+            {
+                try
+                {
                     wbTemplate.close();
-                } catch (IOException ex) {
+                }
+                catch (IOException ex)
+                {
                     logger.error(ex.getMessage(), ex);
                 }
             }
-            if (file != null) {
-                try {
+            if (file != null)
+            {
+                try
+                {
                     file.close();
-                } catch (IOException ex) {
+                }
+                catch (IOException ex)
+                {
                     logger.error(ex.getMessage(), ex);
                 }
             }
@@ -744,179 +895,222 @@ public class BillController {
     }
 
     //<editor-fold defaultstate="collapsed" desc="get/set">
-    public LazyDataModel<Bill> getLazyDataModel() {
+    public LazyDataModel<Bill> getLazyDataModel()
+    {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<Bill> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<Bill> lazyDataModel)
+    {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public Bill getCurrBill() {
+    public Bill getCurrBill()
+    {
         return currBill;
     }
 
-    public void setCurrBill(Bill currBill) {
+    public void setCurrBill(Bill currBill)
+    {
         this.currBill = currBill;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
 
-    public GenericDaoImplNewV2<ElectricWater, Long> getElectricWaterService() {
+    public GenericDaoImplNewV2<ElectricWater, Long> getElectricWaterService()
+    {
         return electricWaterService;
     }
 
-    public void setElectricWaterService(GenericDaoImplNewV2<ElectricWater, Long> electricWaterService) {
+    public void setElectricWaterService(GenericDaoImplNewV2<ElectricWater, Long> electricWaterService)
+    {
         this.electricWaterService = electricWaterService;
     }
 
-    public Long getGroupUserId() {
+    public Long getGroupUserId()
+    {
         return groupUserId;
     }
 
-    public void setGroupUserId(Long groupUserId) {
+    public void setGroupUserId(Long groupUserId)
+    {
         this.groupUserId = groupUserId;
     }
 
-    public List<Home> getLstHome() {
+    public List<Home> getLstHome()
+    {
         return lstHome;
     }
 
-    public void setLstHome(List<Home> lstHome) {
+    public void setLstHome(List<Home> lstHome)
+    {
         this.lstHome = lstHome;
     }
 
-    public List<Room> getLstRoom() {
+    public List<Room> getLstRoom()
+    {
         return lstRoom;
     }
 
-    public void setLstRoom(List<Room> lstRoom) {
+    public void setLstRoom(List<Room> lstRoom)
+    {
         this.lstRoom = lstRoom;
     }
 
-    public BillServiceImpl getBillServiceImpl() {
+    public BillServiceImpl getBillServiceImpl()
+    {
         return billServiceImpl;
     }
 
-    public void setBillServiceImpl(BillServiceImpl billServiceImpl) {
+    public void setBillServiceImpl(BillServiceImpl billServiceImpl)
+    {
         this.billServiceImpl = billServiceImpl;
     }
 
-    public GenericDaoImplNewV2<BillService, Long> getBillServiceService() {
+    public GenericDaoImplNewV2<BillService, Long> getBillServiceService()
+    {
         return billServiceService;
     }
 
-    public void setBillServiceService(GenericDaoImplNewV2<BillService, Long> billServiceService) {
+    public void setBillServiceService(GenericDaoImplNewV2<BillService, Long> billServiceService)
+    {
         this.billServiceService = billServiceService;
     }
 
-    public GenericDaoImplNewV2<Contract, Long> getContractService() {
+    public GenericDaoImplNewV2<Contract, Long> getContractService()
+    {
         return contractService;
     }
 
-    public void setContractService(GenericDaoImplNewV2<Contract, Long> contractService) {
+    public void setContractService(GenericDaoImplNewV2<Contract, Long> contractService)
+    {
         this.contractService = contractService;
     }
 
-    public GenericDaoImplNewV2<ContractService, Long> getContractServiceService() {
+    public GenericDaoImplNewV2<ContractService, Long> getContractServiceService()
+    {
         return contractServiceService;
     }
 
-    public void setContractServiceService(GenericDaoImplNewV2<ContractService, Long> contractServiceService) {
+    public void setContractServiceService(GenericDaoImplNewV2<ContractService, Long> contractServiceService)
+    {
         this.contractServiceService = contractServiceService;
     }
 
-    public String getOldObjectStr() {
+    public String getOldObjectStr()
+    {
         return oldObjectStr;
     }
 
-    public void setOldObjectStr(String oldObjectStr) {
+    public void setOldObjectStr(String oldObjectStr)
+    {
         this.oldObjectStr = oldObjectStr;
     }
 
-    public Contract getContract() {
+    public Contract getContract()
+    {
         return contract;
     }
 
-    public void setContract(Contract contract) {
+    public void setContract(Contract contract)
+    {
         this.contract = contract;
     }
 
-    public List<BillService> getLstBillService() {
+    public List<BillService> getLstBillService()
+    {
         return lstBillService;
     }
 
-    public void setLstBillService(List<BillService> lstBillService) {
+    public void setLstBillService(List<BillService> lstBillService)
+    {
         this.lstBillService = lstBillService;
     }
 
-    public Map<Long, CatItemBO> getMapUnit() {
+    public Map<Long, CatItemBO> getMapUnit()
+    {
         return mapUnit;
     }
 
-    public void setMapUnit(Map<Long, CatItemBO> mapUnit) {
+    public void setMapUnit(Map<Long, CatItemBO> mapUnit)
+    {
         this.mapUnit = mapUnit;
     }
 
-    public BillService getCurrBillService() {
+    public BillService getCurrBillService()
+    {
         return currBillService;
     }
 
-    public void setCurrBillService(BillService currBillService) {
+    public void setCurrBillService(BillService currBillService)
+    {
         this.currBillService = currBillService;
     }
 
-    public String getPathRealFile() {
+    public String getPathRealFile()
+    {
         return pathRealFile;
     }
 
-    public void setPathRealFile(String pathRealFile) {
+    public void setPathRealFile(String pathRealFile)
+    {
         this.pathRealFile = pathRealFile;
     }
 
-    public StreamedContent getFileExported() {
+    public StreamedContent getFileExported()
+    {
         return fileExported;
     }
 
-    public void setFileExported(StreamedContent fileExported) {
+    public void setFileExported(StreamedContent fileExported)
+    {
         this.fileExported = fileExported;
     }
 
-    public Long getHomeId() {
+    public Long getHomeId()
+    {
         return homeId;
     }
 
-    public void setHomeId(Long homeId) {
+    public void setHomeId(Long homeId)
+    {
         this.homeId = homeId;
     }
 
-//</editor-fold>
+    //</editor-fold>
     //bo sung
     private Date selectedDate;
 
-    public Date getSelectedDate() {
+    public Date getSelectedDate()
+    {
         return selectedDate;
     }
 
-    public void setSelectedDate(Date selectedDate) {
+    public void setSelectedDate(Date selectedDate)
+    {
         this.selectedDate = selectedDate;
     }
 
-    public void decrementMonth() throws Exception {
+    public void decrementMonth() throws Exception
+    {
         Calendar c = Calendar.getInstance();
         c.setTime(this.selectedDate);
         c.add(Calendar.MONTH, -1);
@@ -924,7 +1118,8 @@ public class BillController {
         selectedDate = c.getTime();
     }
 
-    public void incrementMonth() throws Exception {
+    public void incrementMonth() throws Exception
+    {
         Calendar c = Calendar.getInstance();
         c.setTime(this.selectedDate);
         c.add(Calendar.MONTH, 1);

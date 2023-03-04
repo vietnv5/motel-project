@@ -10,7 +10,8 @@ import java.util.List;
 /**
  * Created by dungvv8 on 12/23/2016.
  */
-public class ConfigObj {
+public class ConfigObj
+{
     private String day;
     private List<String> days;
     private List<String> hours;
@@ -28,154 +29,193 @@ public class ConfigObj {
     private List<SelectItem> listDay;
     private List<SelectItem> listHour;
 
-    public String getUnitType() {
+    public String getUnitType()
+    {
         return unitType;
     }
 
-    public void setUnitType(String unitType) {
+    public void setUnitType(String unitType)
+    {
         this.unitType = unitType;
     }
 
-    public boolean isDisabled() {
+    public boolean isDisabled()
+    {
         return disabled;
     }
 
-    public void setDisabled(boolean disabled) {
+    public void setDisabled(boolean disabled)
+    {
         this.disabled = disabled;
     }
 
-    public Long getFromDay() {
+    public Long getFromDay()
+    {
         return fromDay;
     }
 
-    public void setFromDay(Long fromDay) {
+    public void setFromDay(Long fromDay)
+    {
         this.fromDay = fromDay;
     }
 
-    public Long getToDay() {
+    public Long getToDay()
+    {
         return toDay;
     }
 
-    public void setToDay(Long toDay) {
+    public void setToDay(Long toDay)
+    {
         this.toDay = toDay;
     }
 
-    public Long getFromHour() {
+    public Long getFromHour()
+    {
         return fromHour;
     }
 
-    public void setFromHour(Long fromHour) {
+    public void setFromHour(Long fromHour)
+    {
         this.fromHour = fromHour;
     }
 
-    public Long getToHour() {
+    public Long getToHour()
+    {
         return toHour;
     }
 
-    public void setToHour(Long toHour) {
+    public void setToHour(Long toHour)
+    {
         this.toHour = toHour;
     }
 
-    public List<String> getDays() {
+    public List<String> getDays()
+    {
         return Arrays.asList(new String[]{"T2", "T3", "T4", "T5", "T6", "T7", "CN"});
     }
 
-    public void setDays(List<String> days) {
+    public void setDays(List<String> days)
+    {
         this.days = days;
     }
 
-    public List<String> getHours() {
+    public List<String> getHours()
+    {
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < 24; i++) {
+        for (int i = 0; i < 24; i++)
+        {
             list.add(String.valueOf(i));
         }
         return list;
     }
 
-    public void setHours(List<String> hours) {
+    public void setHours(List<String> hours)
+    {
         this.hours = hours;
     }
 
-    public List<String> getSelectedHours() {
+    public List<String> getSelectedHours()
+    {
         return this.selectedHours;
     }
 
-    public List<String> getSelectedHourValue() {
+    public List<String> getSelectedHourValue()
+    {
         return this.selectedHours;
     }
 
-    public void setSelectedHours(List<String> selectedHours) {
+    public void setSelectedHours(List<String> selectedHours)
+    {
         this.selectedHours = selectedHours;
     }
 
-    public List<String> getSelectedDays() {
+    public List<String> getSelectedDays()
+    {
         return this.selectedDays;
     }
 
-    public List<String> getSelectedDaysValue() {
+    public List<String> getSelectedDaysValue()
+    {
         return this.selectedDays;
     }
 
-    public void setSelectedDays(List<String> selectedDays) {
+    public void setSelectedDays(List<String> selectedDays)
+    {
         this.selectedDays = selectedDays;
     }
 
-    public List<SelectItem> getListDay() {
+    public List<SelectItem> getListDay()
+    {
         List<SelectItem> list = new ArrayList<>();
         List<String> days = Splitter.on(",").splitToList(this.day);
         List<String> week = Arrays.asList(new String[]{"T2", "T3", "T4", "T5", "T6", "T7", "CN"});
 
-        for (String dayOfWeek : week) {
-            if (days.contains(dayOfWeek)) {
+        for (String dayOfWeek : week)
+        {
+            if (days.contains(dayOfWeek))
+            {
                 list.add(new SelectItem(true, dayOfWeek));
-            } else {
+            }
+            else
+            {
                 list.add(new SelectItem(false, dayOfWeek));
             }
         }
         return list;
     }
 
-    public void setListDay(List<SelectItem> listDay) {
+    public void setListDay(List<SelectItem> listDay)
+    {
         this.listDay = listDay;
     }
 
-    public List<SelectItem> getListHour() {
+    public List<SelectItem> getListHour()
+    {
         return listHour;
     }
 
-    public void setListHour(List<SelectItem> listHour) {
+    public void setListHour(List<SelectItem> listHour)
+    {
         this.listHour = listHour;
     }
 
-    public String getDay() {
+    public String getDay()
+    {
         return day;
     }
 
-    public void setDay(String day) {
+    public void setDay(String day)
+    {
         this.day = day;
     }
 
-    public String getHour() {
+    public String getHour()
+    {
         return hour;
     }
 
-    public void setHour(String hour) {
+    public void setHour(String hour)
+    {
         this.hour = hour;
     }
 
-    public String getWarning() {
+    public String getWarning()
+    {
         return warning;
     }
 
-    public void setWarning(String warning) {
+    public void setWarning(String warning)
+    {
         this.warning = warning;
     }
 
-    public String getCritical() {
+    public String getCritical()
+    {
         return critical;
     }
 
-    public void setCritical(String critical) {
+    public void setCritical(String critical)
+    {
         this.critical = critical;
     }
 }

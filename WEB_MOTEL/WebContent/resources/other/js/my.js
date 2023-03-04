@@ -6,7 +6,7 @@ PrimeFaces.locales['vi'] = {
     prevText: 'Tháng trước',
     nextText: 'Tháng sau',
     monthNames: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
-    monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12' ],
+    monthNamesShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
     dayNames: ['Chủ nhật', 'Thứ Hai', 'Thứ Ba', 'Thứ Tư', 'Thứ Năm', 'Thứ Sáu', 'Thứ Bảy'],
     dayNamesShort: ['CN', 'Hai', 'Ba', 'Tư', 'Năm', 'Sáu', 'Bảy'],
     dayNamesMin: ['CN', 'T2', 'T3', 'T4', 'T5', 'T6', 'T7'],
@@ -14,7 +14,7 @@ PrimeFaces.locales['vi'] = {
     firstDay: 1,
     isRTL: false,
     showMonthAfterYear: false,
-    yearSuffix:'',
+    yearSuffix: '',
     timeOnlyTitle: 'Chọn giờ',
     timeText: 'Giờ',
     hourText: 'Giờ',
@@ -95,39 +95,47 @@ PrimeFaces.locales['vi'] = {
     }
 };
 
-PrimeFaces.skinInput = function(input) {
-    if(input.val() != '') {
+PrimeFaces.skinInput = function (input) {
+    if (input.val() != '')
+    {
         input.addClass('ui-state-filled');
     }
 
-    input.on('mouseenter', function() {
+    input.on('mouseenter', function () {
         $(this).addClass('ui-state-hover');
-        })
-        .on('mouseleave', function() {
+    })
+        .on('mouseleave', function () {
             $(this).removeClass('ui-state-hover');
         })
-        .on('focus', function() {
+        .on('focus', function () {
             $(this).addClass('ui-state-focus');
         })
-        .on('blur', function() {
+        .on('blur', function () {
             $(this).removeClass('ui-state-focus');
-            if (!(input.val() != '' && input.val() != '___________')) {
+            if (!(input.val() != '' && input.val() != '___________'))
+            {
                 input.removeClass('ui-state-filled');
             }
         })
-        .on('input', function(e) {
-            if(input.val() != ''){
+        .on('input', function (e) {
+            if (input.val() != '')
+            {
                 input.addClass('ui-state-filled');
             }
             else
+            {
                 input.removeClass('ui-state-filled');
+            }
         })
-        .on('keyup', function(e) {
-            if(input.val() != '' && input.val() != '___________'){
+        .on('keyup', function (e) {
+            if (input.val() != '' && input.val() != '___________')
+            {
                 input.addClass('ui-state-filled');
             }
             else
+            {
                 input.removeClass('ui-state-filled');
+            }
         });
 
     //aria
@@ -135,7 +143,8 @@ PrimeFaces.skinInput = function(input) {
         .attr('aria-disabled', input.is(':disabled'))
         .attr('aria-readonly', input.prop('readonly'));
 
-    if(input.is('textarea')) {
+    if (input.is('textarea'))
+    {
         input.attr('aria-multiline', true);
     }
 

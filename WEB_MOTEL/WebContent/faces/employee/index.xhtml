@@ -16,7 +16,7 @@
                          rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tbEmployee"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -73,13 +73,14 @@
                                      oncomplete="PF('block').hide(); PF('dialogEmployee').show()"
                                      icon="fa fa-info" title="Xem thông tin">
                     </p:commandButton>
-                    <p:spacer width="2px;" />
+                    <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-trash" actionListener="#{employeeController.onDelete(employee)}"
                                      onclick="PF('block').show()" oncomplete="PF('block').hide();"
-                                     update=":form " id="deleteId" rendered="#{sessionUtil.getUrlDisplay('/employee.action_delete_employee')}"
-                                     title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5" >
+                                     update=":form " id="deleteId"
+                                     rendered="#{sessionUtil.getUrlDisplay('/employee.action_delete_employee')}"
+                                     title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
-                                   message="#{msg['title.confirm.delete']}" >
+                                   message="#{msg['title.confirm.delete']}">
                         </p:confirm>
                     </p:commandButton>
                 </p:column>
@@ -108,7 +109,7 @@
                         </p:selectOneMenu>
                     </f:facet>
                     <h:outputText id="deptId" value="#{employee.department.departmentName}"
-                                  />
+                    />
                     <p:tooltip for="deptId" value="#{employee.department.departmentName}"
                                trackMouse="true" showEffect="clip"/>
                 </p:column>
@@ -127,7 +128,7 @@
                         </p:selectOneMenu>
                     </f:facet>
                     <h:outputText id="positionId" value="#{employee.jobTitle.jobTitleName}"
-                                  />
+                    />
                     <p:tooltip for="positionId" value="#{employee.jobTitle.jobTitleName}"
                                trackMouse="true" showEffect="clip"/>
                 </p:column>
@@ -210,7 +211,7 @@
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.employeeCode}"
                                              id="empCode" disabled="true"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.empCode']}</label>
                             </span>
@@ -219,10 +220,10 @@
                         <div class="Container20 Responsive50">
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.employeeName}"
-                                             id="empName"  converter="trimConverter"
+                                             id="empName" converter="trimConverter"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['employee.fullName'])}"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.fullName']} *</label>
                             </span>
@@ -234,7 +235,7 @@
 
                                 <p:inputText value="#{employeeController.currentEmployee.telephone}"
                                              id="empTelephone"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.telephone']}</label>
                             </span>
@@ -243,8 +244,8 @@
                         <div class="Container20 Responsive50">
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.idNum}"
-                                             id="empIdNum"  converter="trimConverter"
-                                             >
+                                             id="empIdNum" converter="trimConverter"
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.idNum']}</label>
                             </span>
@@ -254,7 +255,7 @@
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.checkInCode}"
                                              id="empCheckInCode" disabled="true"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.checkin.code']}</label>
                             </span>
@@ -266,7 +267,7 @@
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.contractNo}"
                                              id="empContractNo"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employeeContract.contractNo']}</label>
                             </span>
@@ -429,7 +430,7 @@
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.personId}"
                                              id="empPersionID"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.personId']}</label>
                             </span>
@@ -456,7 +457,7 @@
 
                                 <p:inputText value="#{employeeController.currentEmployee.personPlace}"
                                              id="empPersionPlace"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.personPlace']}</label>
                             </span>
@@ -482,7 +483,7 @@
                                 <p:inputText value="#{employeeController.currentEmployee.birthPlace}"
                                              id="empBirthPlace"
 
-                                             >
+                                >
                                     <p:ajax event="keyup" listener="#{employeeController.addressField('birthPlace')}"
                                             oncomplete="PF('findAddress').show()"/>
                                 </p:inputText>
@@ -500,7 +501,7 @@
 
                                 <p:inputText value="#{employeeController.currentEmployee.ethenic}"
                                              id="empEthenic"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.ethenic']}</label>
                             </span>
@@ -510,7 +511,7 @@
                             <span class="md-inputfield">
                                 <p:inputText value="#{employeeController.currentEmployee.education}"
                                              id="empEducation"
-                                             >
+                                >
                                 </p:inputText>
                                 <label>#{msg['employee.education']} *</label>
                             </span>
@@ -520,8 +521,8 @@
                             <span class="title-top">
 
                                 <p:selectOneMenu
-                                    value="#{employeeController.currentEmployee.marriedStatus}"
-                                    id="empMarriedStatus">
+                                        value="#{employeeController.currentEmployee.marriedStatus}"
+                                        id="empMarriedStatus">
                                     <f:selectItems value="#{employeeController.lstMarriedStatus}" var="s"
                                                    itemLabel="#{s.name}"
                                                    itemValue="#{s.value}">
@@ -581,11 +582,11 @@
                 </p:fieldset>
                 <div class="Container100 Responsive50 MarTop20">
                     <p:commandButton
-                        disabled="${employeeController.disableEdit}"
-                        icon="fa fa-save" styleClass="BlueButton Fs14 White"
-                        onstart="PF('block').show()" oncomplete="PF('block').hide()"
-                        value="Lưu" actionListener="#{employeeController.save}"
-                        update="@widgetVar(tbEmployee) @widgetVar(dialogEmployee) @widgetVar(mainMessage)"/>
+                            disabled="${employeeController.disableEdit}"
+                            icon="fa fa-save" styleClass="BlueButton Fs14 White"
+                            onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                            value="Lưu" actionListener="#{employeeController.save}"
+                            update="@widgetVar(tbEmployee) @widgetVar(dialogEmployee) @widgetVar(mainMessage)"/>
                     <p:commandButton icon="fa fa-remove" styleClass="RedButton Fs14 White"
                                      value="Đóng"
                                      actionListener="#{employeeController.preInsert}"

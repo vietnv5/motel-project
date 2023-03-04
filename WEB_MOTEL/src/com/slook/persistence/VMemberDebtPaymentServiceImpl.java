@@ -10,17 +10,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author SLOOK. JSC
  */
 @Scope("session")
 @Service(value = "vMemberDebtPaymentService")
-public class VMemberDebtPaymentServiceImpl extends GenericDaoImplNewV2<V_MemberDebtPayment, Long> {
+public class VMemberDebtPaymentServiceImpl extends GenericDaoImplNewV2<V_MemberDebtPayment, Long>
+{
 
     private static VMemberDebtPaymentServiceImpl instance;
 
-    public static VMemberDebtPaymentServiceImpl getInstance() {
-        if (instance == null) {
+    public static VMemberDebtPaymentServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new VMemberDebtPaymentServiceImpl();
         }
         return instance;

@@ -8,12 +8,13 @@ package com.slook.persistence;
 import com.slook.model.CatDictionaryBO;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
+
 /**
- *
  * @author vietnv14
  */
 @Scope("session")
 @Service(value = "catDictionaryService")
-public class CatDictionaryServiceImpl  extends GenericDaoImplNewV2<CatDictionaryBO, Long> {
+public class CatDictionaryServiceImpl extends GenericDaoImplNewV2<CatDictionaryBO, Long>
+{
 
 }

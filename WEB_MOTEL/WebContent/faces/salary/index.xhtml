@@ -18,7 +18,7 @@
                          rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tblWidgetId"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
-                         >
+            >
 
                 <!--Header-->
                 <f:facet name="header">
@@ -33,7 +33,7 @@
                                              actionListener="#{rpEmpController.calculateSalary()}"
                                              title="#{msg['button.calculateSalary']}"
 
-                                             />
+                            />
                         </div>
                         <div class="Container60 Responsive50">
                             <h:outputText styleClass="Fs20" value="#{msg['datatable.header.salary']}"/>
@@ -41,11 +41,11 @@
 
 
                         <div class="Container20 TexAlRight">
-                             <p:commandButton icon="fa fa-download" styleClass="BlueButton Fs14 White"
-                                         title="#{msg['button.exportSalary']}"
-                                         ajax="false">
-                            <p:fileDownload value="#{rpEmpController.exportEmployee()}"/>
-                        </p:commandButton>
+                            <p:commandButton icon="fa fa-download" styleClass="BlueButton Fs14 White"
+                                             title="#{msg['button.exportSalary']}"
+                                             ajax="false">
+                                <p:fileDownload value="#{rpEmpController.exportEmployee()}"/>
+                            </p:commandButton>
                             <p:commandButton id="toggler" type="button"
                                              icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableSalary" trigger="toggler">
@@ -62,7 +62,7 @@
                           visible="#{rpEmpController.colVisible.get('index')}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
-                <p:column  styleClass="TexAlCenter" width="3" exportable="false">
+                <p:column styleClass="TexAlCenter" width="3" exportable="false">
                     <p:commandButton icon="fa fa-info-circle"
                                      styleClass="GreenButton Fs14 White"
                                      onclick="PF('block').show()"
@@ -71,7 +71,7 @@
                                      actionListener="#{rpEmpController.preView(salary)}"
                                      title="#{msg['button.view']}"
 
-                                     />
+                    />
 
                 </p:column>
                 <!--empCode-->
@@ -93,27 +93,25 @@
                 <p:column headerText="#{msg['employee.catDepartment.deptId']}" width="50"
                           filterBy="#{salary.employee.catDepartment.deptName}" styleClass="TexAlLeft"
                           visible="#{rpEmpController.colVisible.get('deptName')}">
-                    <h:outputText  value="#{salary.employee.catDepartment.deptName}"
-                                   title="#{msg['employee.catDepartment.deptId']}"/>
+                    <h:outputText value="#{salary.employee.catDepartment.deptName}"
+                                  title="#{msg['employee.catDepartment.deptId']}"/>
                 </p:column>
 
                 <!--position-->
                 <p:column headerText="#{msg['employee.catPosition.positionId']}" width="50"
                           filterBy="#{salary.employee.catPosition.positionName}" styleClass="TexAlLeft"
                           visible="#{rpEmpController.colVisible.get('position')}">
-                    <h:outputText  value="#{salary.employee.catPosition.positionName}"
-                                   title="#{msg['employee.catPosition.positionId']}"/>
+                    <h:outputText value="#{salary.employee.catPosition.positionName}"
+                                  title="#{msg['employee.catPosition.positionId']}"/>
                 </p:column>
 
                 <!--position-->
                 <p:column headerText="#{msg['salary.salaryTotal']}" width="50"
                           filterBy="#{salary.salaryTotal}" styleClass="TexAlLeft"
                           visible="#{rpEmpController.colVisible.get('position')}">
-                    <h:outputText  value="#{salary.salaryTotal}"
-                                   title="#{msg['salary.salaryTotal']}"/>
+                    <h:outputText value="#{salary.salaryTotal}"
+                                  title="#{msg['salary.salaryTotal']}"/>
                 </p:column>
-
-
 
 
             </p:dataTable>
@@ -139,7 +137,7 @@
                             <p:outputLabel value="#{msg['employee.catDepartment.deptId']}"/>
                             <p:inputText value="#{rpEmpController.selectSalary.employee.catDepartment.deptName}"/>
 
-                            <p:outputLabel value="#{msg['employee.catPosition.positionId']}" />
+                            <p:outputLabel value="#{msg['employee.catPosition.positionId']}"/>
                             <p:inputText value="#{rpEmpController.selectSalary.employee.catPosition.positionName}"/>
 
                             <p:outputLabel value="#{msg['salary.basicTrainingSalary1']}"/>

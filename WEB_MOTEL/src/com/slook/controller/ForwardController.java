@@ -28,7 +28,8 @@ import static org.apache.log4j.Logger.getLogger;
  */
 @RequestScoped
 @ManagedBean(name = "forwardService")
-public class ForwardController implements Serializable {
+public class ForwardController implements Serializable
+{
     private static final long serialVersionUID = 4870520554535423726L;
     // Trang home.
     private static final String _HOME_PAGE = "/home";
@@ -37,13 +38,17 @@ public class ForwardController implements Serializable {
     /**
      * Dieu huong den trang home page.
      */
-    private void homeForward() {
+    private void homeForward()
+    {
         FacesContext fc = FacesContext.getCurrentInstance();
         HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
                 .getRequest();
-        try {
+        try
+        {
             fc.getExternalContext().redirect(req.getContextPath() + _HOME_PAGE);
-        } catch (IOException ex) {
+        }
+        catch (IOException ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
     }
@@ -53,7 +58,8 @@ public class ForwardController implements Serializable {
      *
      * @throws IOException
      */
-    public void doForward(final ComponentSystemEvent event) throws IOException {
+    public void doForward(final ComponentSystemEvent event) throws IOException
+    {
         homeForward();
     }
 
@@ -62,8 +68,10 @@ public class ForwardController implements Serializable {
      *
      * @throws IOException
      */
-    public void doRedirect(final ComponentSystemEvent event) throws IOException {
-        try {
+    public void doRedirect(final ComponentSystemEvent event) throws IOException
+    {
+        try
+        {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext()
                     .getRequest();
@@ -71,10 +79,16 @@ public class ForwardController implements Serializable {
             // Lay gia tri menu default cua user dang nhap.
             String defaultUrl = SessionUtil.getMenuDefault();
             if (defaultUrl == "")
+            {
                 homeForward();
+            }
             else
+            {
                 fc.getExternalContext().redirect(req.getContextPath() + defaultUrl);
-        } catch (SysException ex) {
+            }
+        }
+        catch (SysException ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
     }

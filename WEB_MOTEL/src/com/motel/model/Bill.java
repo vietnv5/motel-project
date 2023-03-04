@@ -6,6 +6,7 @@
 package com.motel.model;
 
 import com.slook.persistence.GenericDaoImplNewV2;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -29,22 +30,22 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "bill")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Bill.findAll", query = "SELECT b FROM Bill b")
-    , @NamedQuery(name = "Bill.findByBillId", query = "SELECT b FROM Bill b WHERE b.billId = :billId")
-    , @NamedQuery(name = "Bill.findByBillCode", query = "SELECT b FROM Bill b WHERE b.billCode = :billCode")
-    , @NamedQuery(name = "Bill.findByRoomId", query = "SELECT b FROM Bill b WHERE b.roomId = :roomId")
-    , @NamedQuery(name = "Bill.findByCreateTime", query = "SELECT b FROM Bill b WHERE b.createTime = :createTime")
-    , @NamedQuery(name = "Bill.findByDescription", query = "SELECT b FROM Bill b WHERE b.description = :description")
-    , @NamedQuery(name = "Bill.findByPaymentDate", query = "SELECT b FROM Bill b WHERE b.paymentDate = :paymentDate")
-    , @NamedQuery(name = "Bill.findByTotalPrice", query = "SELECT b FROM Bill b WHERE b.totalPrice = :totalPrice")})
-public class Bill implements Serializable {
+        @NamedQuery(name = "Bill.findAll", query = "SELECT b FROM Bill b")
+        , @NamedQuery(name = "Bill.findByBillId", query = "SELECT b FROM Bill b WHERE b.billId = :billId")
+        , @NamedQuery(name = "Bill.findByBillCode", query = "SELECT b FROM Bill b WHERE b.billCode = :billCode")
+        , @NamedQuery(name = "Bill.findByRoomId", query = "SELECT b FROM Bill b WHERE b.roomId = :roomId")
+        , @NamedQuery(name = "Bill.findByCreateTime", query = "SELECT b FROM Bill b WHERE b.createTime = :createTime")
+        , @NamedQuery(name = "Bill.findByDescription", query = "SELECT b FROM Bill b WHERE b.description = :description")
+        , @NamedQuery(name = "Bill.findByPaymentDate", query = "SELECT b FROM Bill b WHERE b.paymentDate = :paymentDate")
+        , @NamedQuery(name = "Bill.findByTotalPrice", query = "SELECT b FROM Bill b WHERE b.totalPrice = :totalPrice")})
+public class Bill implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -74,7 +75,7 @@ public class Bill implements Serializable {
     @JoinColumn(name = "HOME_ID", referencedColumnName = "HOME_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Home home;
-//    @Column(name = "MONTH")
+    //    @Column(name = "MONTH")
 //    @Temporal(TemporalType.DATE)
 //    private Date month;
     @JoinColumn(name = "ROOM_ID", referencedColumnName = "ROOM_ID", insertable = false, updatable = false)
@@ -85,129 +86,159 @@ public class Bill implements Serializable {
     @Transient
     public String contractCode;
 
-    public Bill() {
+    public Bill()
+    {
     }
 
-    public Bill(Long billId) {
+    public Bill(Long billId)
+    {
         this.billId = billId;
     }
 
-    public Bill(Long billId, String billCode) {
+    public Bill(Long billId, String billCode)
+    {
         this.billId = billId;
         this.billCode = billCode;
     }
 
-    public Long getBillId() {
+    public Long getBillId()
+    {
         return billId;
     }
 
-    public void setBillId(Long billId) {
+    public void setBillId(Long billId)
+    {
         this.billId = billId;
     }
 
-    public String getBillCode() {
+    public String getBillCode()
+    {
         return billCode;
     }
 
-    public void setBillCode(String billCode) {
+    public void setBillCode(String billCode)
+    {
         this.billCode = billCode;
     }
 
-    public Long getRoomId() {
+    public Long getRoomId()
+    {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(Long roomId)
+    {
         this.roomId = roomId;
     }
 
-    public Date getCreateTime() {
+    public Date getCreateTime()
+    {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Date createTime)
+    {
         this.createTime = createTime;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public Date getPaymentDate() {
+    public Date getPaymentDate()
+    {
         return paymentDate;
     }
 
-    public void setPaymentDate(Date paymentDate) {
+    public void setPaymentDate(Date paymentDate)
+    {
         this.paymentDate = paymentDate;
     }
 
-    public Long getTotalPrice() {
+    public Long getTotalPrice()
+    {
         return totalPrice;
     }
 
-    public void setTotalPrice(Long totalPrice) {
+    public void setTotalPrice(Long totalPrice)
+    {
         this.totalPrice = totalPrice;
     }
 
     @XmlTransient
-    public List<BillService> getBillServiceList() {
+    public List<BillService> getBillServiceList()
+    {
         return billServiceList;
     }
 
-    public void setBillServiceList(List<BillService> billServiceList) {
+    public void setBillServiceList(List<BillService> billServiceList)
+    {
         this.billServiceList = billServiceList;
     }
 
-    public Home getHome() {
+    public Home getHome()
+    {
         return home;
     }
 
-    public void setHome(Home home) {
+    public void setHome(Home home)
+    {
         this.home = home;
     }
 
-    public Long getContractId() {
+    public Long getContractId()
+    {
         return contractId;
     }
 
-    public void setContractId(Long contractId) {
+    public void setContractId(Long contractId)
+    {
         this.contractId = contractId;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (billId != null ? billId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Bill)) {
+        if (!(object instanceof Bill))
+        {
             return false;
         }
         Bill other = (Bill) object;
-        if ((this.billId == null && other.billId != null) || (this.billId != null && !this.billId.equals(other.billId))) {
+        if ((this.billId == null && other.billId != null) || (this.billId != null && !this.billId.equals(other.billId)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.Bill[ billId=" + billId + " ]";
     }
 
-    public Long getHomeId() {
+    public Long getHomeId()
+    {
         return homeId;
     }
 
-    public void setHomeId(Long homeId) {
+    public void setHomeId(Long homeId)
+    {
         this.homeId = homeId;
     }
 //
@@ -219,50 +250,65 @@ public class Bill implements Serializable {
 //        this.month = month;
 //    }
 
-    public Room getRoom() {
+    public Room getRoom()
+    {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(Room room)
+    {
         this.room = room;
     }
 
-    public void createBillCode(Long groupUseId) {
+    public void createBillCode(Long groupUseId)
+    {
 
 //        String hqlCheckCode = "select count(*) from MemberPayment where paymentCode like ?||'%'";
 //        String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,-5),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
         String hqlCheckCode = "select max(CONVERT( substr(BILL_CODE,INSTR(BILL_CODE, '-')+1),UNSIGNED INTEGER)) from BILL where BILL_CODE like CONCAT(?,'%')";
         String code = "SP";
         String barch = "000";
-        if (groupUseId != null) {
-            if (groupUseId.toString().length() < 3) {
+        if (groupUseId != null)
+        {
+            if (groupUseId.toString().length() < 3)
+            {
                 barch = barch + groupUseId.toString();
                 code += barch.substring(barch.length() - 3);
-            } else {
+            }
+            else
+            {
                 code += groupUseId.toString();
             }
-        } else {
+        }
+        else
+        {
             code += barch;
         }
 
-        List<?> counts = new GenericDaoImplNewV2<Contract, Long>() {
+        List<?> counts = new GenericDaoImplNewV2<Contract, Long>()
+        {
         }.findListSQLAll(hqlCheckCode, code);
         String numberStr = "00000";
-        if (counts.size() > 0 && counts.get(0) != null) {
+        if (counts.size() > 0 && counts.get(0) != null)
+        {
             Long number = (Long.valueOf(counts.get(0).toString()) + 1);
             numberStr += number;
             numberStr = numberStr.substring(numberStr.length() - 5);
-        } else {
+        }
+        else
+        {
             numberStr = "00001";
         }
         billCode = code + "-" + numberStr;
     }
 
-    public String getContractCode() {
+    public String getContractCode()
+    {
         return contractCode;
     }
 
-    public void setContractCode(String contractCode) {
+    public void setContractCode(String contractCode)
+    {
         this.contractCode = contractCode;
     }
 

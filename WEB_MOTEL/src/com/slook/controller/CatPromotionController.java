@@ -13,7 +13,9 @@ import com.slook.util.CommonUtil;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
 import com.slook.util.StringUtil;
+
 import java.text.MessageFormat;
+
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.Visibility;
@@ -27,13 +29,15 @@ import javax.faces.bean.ViewScoped;
 import java.util.*;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.TransferEvent;
 import org.primefaces.model.DualListModel;
 
 @ManagedBean
 @ViewScoped
-public class CatPromotionController {
+public class CatPromotionController
+{
 
     protected static final Logger logger = LoggerFactory.getLogger(VCustomerCheckinController.class);
     @ManagedProperty(value = "#{catPromotionService}")
@@ -54,14 +58,17 @@ public class CatPromotionController {
     private String oldObjectStr = null;
 
     @PostConstruct
-    public void onStart() {
-        packHasPromotionService = new GenericDaoImplNewV2<PackHasPromotion, Long>() {
+    public void onStart()
+    {
+        packHasPromotionService = new GenericDaoImplNewV2<PackHasPromotion, Long>()
+        {
         };
 
         Map<String, Object> filter = new HashMap<>();
         Map<String, Object> oder = new LinkedHashMap<>();
         lazyDataModel = new LazyDataModelBase<>(catPromotionService, filter, oder);
-        try {
+        try
+        {
             catPromotionList = catPromotionService.findList(filter, null);
 
             //
@@ -70,53 +77,66 @@ public class CatPromotionController {
             LinkedHashMap<String, String> orderPack = new LinkedHashMap<>();
             orderPack.put("groupPackName", Constant.ORDER.ASC);
             lstCatGroupPacks = CatGroupPackServiceImpl.getInstance().findList(filtersPack, orderPack);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         lstComparisonOperator = (List<CatItemBO>) CommonUtil.getItemBOList(Constant.CAT_CODE.COMPARISON_OPERATOR, "value");
 
     }
 
-    public void preAdd() {
+    public void preAdd()
+    {
         this.catPromotionCurr = new CatPromotion();
     }
 
-    public void preEdit(CatPromotion catPromotion) {
+    public void preEdit(CatPromotion catPromotion)
+    {
         this.catPromotionCurr = catPromotion;
         changeComparisonOperator();
     }
 
-    public void onSaveOrUpdate() {
-        if (catPromotionCurr == null) {
+    public void onSaveOrUpdate()
+    {
+        if (catPromotionCurr == null)
+        {
             return;
         }
-        if (StringUtil.isNullOrEmpty(catPromotionCurr.getCatPromotionCode())) {
+        if (StringUtil.isNullOrEmpty(catPromotionCurr.getCatPromotionCode()))
+        {
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                     "Mã khuyến mãi"));
             return;
         }
-        if (StringUtil.isNullOrEmpty(catPromotionCurr.getCatPromotionName())) {
+        if (StringUtil.isNullOrEmpty(catPromotionCurr.getCatPromotionName()))
+        {
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                     "Tên khuyến mãi"));
             return;
         }
-        if (catPromotionCurr.getType() == null || catPromotionCurr.getType() < 1) {
+        if (catPromotionCurr.getType() == null || catPromotionCurr.getType() < 1)
+        {
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                     "Loại khuyến mãi"));
             return;
         }
-        if (catPromotionCurr.getValue() == null) {
+        if (catPromotionCurr.getValue() == null)
+        {
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                     "Giá trị"));
             return;
         }
 
-        try {
+        try
+        {
             catPromotionService.saveOrUpdate(catPromotionCurr);
             preAdd();
             RequestContext.getCurrentInstance().update(":catFormId");
             MessageUtil.setInfoMessageFromRes("common.message.success");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             MessageUtil.setInfoMessageFromRes("common.message.fail");
 
@@ -124,149 +144,189 @@ public class CatPromotionController {
 
     }
 
-    public void onDelete(CatPromotion cat) {
-        try {
+    public void onDelete(CatPromotion cat)
+    {
+        try
+        {
             catPromotionService.delete(cat);
             MessageUtil.setInfoMessageFromRes("common.message.success");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             MessageUtil.setErrorMessageFromRes("common.message.fail");
         }
     }
 
-    public void changeComparisonOperator() {
+    public void changeComparisonOperator()
+    {
         guide = CommonUtil.changeComparisonOperator(catPromotionCurr.getOperator());
     }
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
-    public static Logger getLogger() {
+    public static Logger getLogger()
+    {
         return logger;
     }
 
-    public CatPromotionServiceImpl getCatPromotionService() {
+    public CatPromotionServiceImpl getCatPromotionService()
+    {
         return catPromotionService;
     }
 
-    public void setCatPromotionService(CatPromotionServiceImpl catPromotionService) {
+    public void setCatPromotionService(CatPromotionServiceImpl catPromotionService)
+    {
         this.catPromotionService = catPromotionService;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
 
-    public LazyDataModel<CatPromotion> getLazyDataModel() {
+    public LazyDataModel<CatPromotion> getLazyDataModel()
+    {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<CatPromotion> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<CatPromotion> lazyDataModel)
+    {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public CatPromotion getCatPromotionCurr() {
+    public CatPromotion getCatPromotionCurr()
+    {
         return catPromotionCurr;
     }
 
-    public void setCatPromotionCurr(CatPromotion catPromotionCurr) {
+    public void setCatPromotionCurr(CatPromotion catPromotionCurr)
+    {
         this.catPromotionCurr = catPromotionCurr;
     }
 
-    public List<CatPromotion> getCatPromotionList() {
+    public List<CatPromotion> getCatPromotionList()
+    {
         return catPromotionList;
     }
 
-    public void setCatPromotionList(List<CatPromotion> catPromotionList) {
+    public void setCatPromotionList(List<CatPromotion> catPromotionList)
+    {
         this.catPromotionList = catPromotionList;
     }
 
-    public Long getCatPromotionId() {
+    public Long getCatPromotionId()
+    {
         return catPromotionId;
     }
 
-    public void setCatPromotionId(Long catPromotionId) {
+    public void setCatPromotionId(Long catPromotionId)
+    {
         this.catPromotionId = catPromotionId;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
 
-    public List<CatItemBO> getLstComparisonOperator() {
+    public List<CatItemBO> getLstComparisonOperator()
+    {
         return lstComparisonOperator;
     }
 
-    public void setLstComparisonOperator(List<CatItemBO> lstComparisonOperator) {
+    public void setLstComparisonOperator(List<CatItemBO> lstComparisonOperator)
+    {
         this.lstComparisonOperator = lstComparisonOperator;
     }
 
-    public String getGuide() {
+    public String getGuide()
+    {
         return guide;
     }
 
-    public void setGuide(String guide) {
+    public void setGuide(String guide)
+    {
         this.guide = guide;
     }
 
-    public List<CatGroupPack> getLstCatGroupPacks() {
+    public List<CatGroupPack> getLstCatGroupPacks()
+    {
         return lstCatGroupPacks;
     }
 
-    public void setLstCatGroupPacks(List<CatGroupPack> lstCatGroupPacks) {
+    public void setLstCatGroupPacks(List<CatGroupPack> lstCatGroupPacks)
+    {
         this.lstCatGroupPacks = lstCatGroupPacks;
     }
 
-    public DualListModel<CatGroupPack> getDualLstCatGroupPack() {
+    public DualListModel<CatGroupPack> getDualLstCatGroupPack()
+    {
         return dualLstCatGroupPack;
     }
 
-    public void setDualLstCatGroupPack(DualListModel<CatGroupPack> dualLstCatGroupPack) {
+    public void setDualLstCatGroupPack(DualListModel<CatGroupPack> dualLstCatGroupPack)
+    {
         this.dualLstCatGroupPack = dualLstCatGroupPack;
     }
 
-    public GenericDaoImplNewV2 getPackHasPromotionService() {
+    public GenericDaoImplNewV2 getPackHasPromotionService()
+    {
         return packHasPromotionService;
     }
 
-    public void setPackHasPromotionService(GenericDaoImplNewV2 packHasPromotionService) {
+    public void setPackHasPromotionService(GenericDaoImplNewV2 packHasPromotionService)
+    {
         this.packHasPromotionService = packHasPromotionService;
     }
 
     //promotion for pack
-    public void preEditPromotionForPack(CatPromotion role) {
+    public void preEditPromotionForPack(CatPromotion role)
+    {
         List<CatGroupPack> packSource = new ArrayList<>();
         List<CatGroupPack> packTarget = new ArrayList<>();
-        try {
+        try
+        {
 
             catPromotionCurr = catPromotionService.findById(role.getCatPromotionId());
             packTarget.addAll(catPromotionCurr.getLstCatGroupPacks());
-            for (CatGroupPack bo : lstCatGroupPacks) {
-                if (!packTarget.contains(bo)) {
+            for (CatGroupPack bo : lstCatGroupPacks)
+            {
+                if (!packTarget.contains(bo))
+                {
                     packSource.add(bo);
                 }
             }
             dualLstCatGroupPack = new DualListModel<>(packSource, packTarget);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         isEdit = true;
 
-        oldObjectStr = (new Gson()).toJson(packTarget);;
+        oldObjectStr = (new Gson()).toJson(packTarget);
+        ;
     }
 
-    public void onTransfer(TransferEvent event) {
+    public void onTransfer(TransferEvent event)
+    {
         StringBuilder builder = new StringBuilder();
-        for (Object item : event.getItems()) {
+        for (Object item : event.getItems())
+        {
             String s = (((CatGroupPack) item).getGroupPackName() != null ? ((CatGroupPack) item).getGroupPackName() : "");
             builder.append(s).append("<br />");
         }
@@ -279,31 +339,42 @@ public class CatPromotionController {
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
-    public void onSaveOrUpdatePromotionForPack() {
-        try {
+    public void onSaveOrUpdatePromotionForPack()
+    {
+        try
+        {
             List<CatGroupPack> functionTarget = dualLstCatGroupPack.getTarget();
 
             List<PackHasPromotion> lstSelect = new ArrayList<>();
             List<PackHasPromotion> lstCspDel = new ArrayList<>();
             List<PackHasPromotion> lstCspResult = new ArrayList<>();
 
-            if (functionTarget != null) {
-                for (CatGroupPack bo : functionTarget) {
+            if (functionTarget != null)
+            {
+                for (CatGroupPack bo : functionTarget)
+                {
                     lstSelect.add(new PackHasPromotion(catPromotionCurr.getCatPromotionId(), bo.getGroupPackId()));
                 }
             }
             if (catPromotionCurr.getPackHasPromotions() != null
-                    && catPromotionCurr.getPackHasPromotions().size() > 0) {
-                for (PackHasPromotion bo : catPromotionCurr.getPackHasPromotions()) {
-                    if (lstSelect.contains(bo)) {
+                    && catPromotionCurr.getPackHasPromotions().size() > 0)
+            {
+                for (PackHasPromotion bo : catPromotionCurr.getPackHasPromotions())
+                {
+                    if (lstSelect.contains(bo))
+                    {
                         lstCspResult.add(bo);
-                    } else {
+                    }
+                    else
+                    {
                         lstCspDel.add(bo);// bo chuc nang
                     }
                 }
             }
-            for (PackHasPromotion bo : lstSelect) {
-                if (!lstCspResult.contains(bo)) {
+            for (PackHasPromotion bo : lstSelect)
+            {
+                if (!lstCspResult.contains(bo))
+                {
                     lstCspResult.add(bo);//them chuc nang
                 }
 
@@ -314,7 +385,9 @@ public class CatPromotionController {
             MessageUtil.setInfoMessageFromRes("common.message.success");
             RequestContext.getCurrentInstance().execute("PF('promotionForPackDlg').hide();");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             MessageUtil.setErrorMessageFromRes("common.message.fail");
         }

@@ -22,20 +22,20 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "bill_service")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "BillService.findAll", query = "SELECT b FROM BillService b")
-    , @NamedQuery(name = "BillService.findByBillServiceId", query = "SELECT b FROM BillService b WHERE b.billServiceId = :billServiceId")
-    , @NamedQuery(name = "BillService.findByAmount", query = "SELECT b FROM BillService b WHERE b.amount = :amount")
-    , @NamedQuery(name = "BillService.findByPrice", query = "SELECT b FROM BillService b WHERE b.price = :price")
-    , @NamedQuery(name = "BillService.findByTotalPrice", query = "SELECT b FROM BillService b WHERE b.totalPrice = :totalPrice")
-    , @NamedQuery(name = "BillService.findByStatus", query = "SELECT b FROM BillService b WHERE b.status = :status")})
-public class BillService implements Serializable {
+        @NamedQuery(name = "BillService.findAll", query = "SELECT b FROM BillService b")
+        , @NamedQuery(name = "BillService.findByBillServiceId", query = "SELECT b FROM BillService b WHERE b.billServiceId = :billServiceId")
+        , @NamedQuery(name = "BillService.findByAmount", query = "SELECT b FROM BillService b WHERE b.amount = :amount")
+        , @NamedQuery(name = "BillService.findByPrice", query = "SELECT b FROM BillService b WHERE b.price = :price")
+        , @NamedQuery(name = "BillService.findByTotalPrice", query = "SELECT b FROM BillService b WHERE b.totalPrice = :totalPrice")
+        , @NamedQuery(name = "BillService.findByStatus", query = "SELECT b FROM BillService b WHERE b.status = :status")})
+public class BillService implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -55,7 +55,7 @@ public class BillService implements Serializable {
     @JoinColumn(name = "BILL_ID", referencedColumnName = "BILL_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Bill bill;
-    
+
     @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private CatService service;
@@ -70,136 +70,174 @@ public class BillService implements Serializable {
     private Double indexNew;
     @Transient
     private String rowKey;
-    public BillService() {
+
+    public BillService()
+    {
     }
 
-    public BillService(Long billServiceId) {
+    public BillService(Long billServiceId)
+    {
         this.billServiceId = billServiceId;
     }
 
-    public Long getBillServiceId() {
+    public Long getBillServiceId()
+    {
         return billServiceId;
     }
 
-    public void setBillServiceId(Long billServiceId) {
+    public void setBillServiceId(Long billServiceId)
+    {
         this.billServiceId = billServiceId;
     }
 
-    public Double getAmount() {
+    public Double getAmount()
+    {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(Double amount)
+    {
         this.amount = amount;
     }
 
-    public Long getPrice() {
+    public Long getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Long price)
+    {
         this.price = price;
     }
 
-    public Long getTotalPrice() {
+    public Long getTotalPrice()
+    {
         return totalPrice;
     }
 
-    public void setTotalPrice(Long totalPrice) {
+    public void setTotalPrice(Long totalPrice)
+    {
         this.totalPrice = totalPrice;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
-    public Bill getBill() {
+    public Bill getBill()
+    {
         return bill;
     }
 
-    public void setBill(Bill bill) {
+    public void setBill(Bill bill)
+    {
         this.bill = bill;
     }
 
-    public CatService getService() {
+    public CatService getService()
+    {
         return service;
     }
 
-    public void setService(CatService service) {
+    public void setService(CatService service)
+    {
         this.service = service;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (billServiceId != null ? billServiceId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof BillService)) {
+        if (!(object instanceof BillService))
+        {
             return false;
         }
         BillService other = (BillService) object;
-        if ((this.billServiceId == null && other.billServiceId != null) || (this.billServiceId != null && !this.billServiceId.equals(other.billServiceId))) {
+        if ((this.billServiceId == null && other.billServiceId != null) || (this.billServiceId != null && !this.billServiceId.equals(other.billServiceId)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.BillService[ billServiceId=" + billServiceId + " ]";
     }
 
-    public Long getBillId() {
+    public Long getBillId()
+    {
         return billId;
     }
 
-    public void setBillId(Long billId) {
+    public void setBillId(Long billId)
+    {
         this.billId = billId;
     }
 
-    public Long getServiceId() {
+    public Long getServiceId()
+    {
         return serviceId;
     }
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(Long serviceId)
+    {
         this.serviceId = serviceId;
     }
 
-    public Double getIndexOld() {
+    public Double getIndexOld()
+    {
         return indexOld;
     }
 
-    public void setIndexOld(Double indexOld) {
+    public void setIndexOld(Double indexOld)
+    {
         this.indexOld = indexOld;
     }
 
-    public Double getIndexNew() {
+    public Double getIndexNew()
+    {
         return indexNew;
     }
 
-    public void setIndexNew(Double indexNew) {
+    public void setIndexNew(Double indexNew)
+    {
         this.indexNew = indexNew;
     }
 
-    public String getRowKey() {
-        rowKey="";
-        if(billId!=null)rowKey+=billId;
-        rowKey+="_";
-        if(serviceId!=null)rowKey+=serviceId;
-        
+    public String getRowKey()
+    {
+        rowKey = "";
+        if (billId != null)
+        {
+            rowKey += billId;
+        }
+        rowKey += "_";
+        if (serviceId != null)
+        {
+            rowKey += serviceId;
+        }
+
         return rowKey;
     }
 
-    public void setRowKey(String rowKey) {
+    public void setRowKey(String rowKey)
+    {
         this.rowKey = rowKey;
     }
 

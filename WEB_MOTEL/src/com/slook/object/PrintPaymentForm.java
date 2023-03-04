@@ -8,10 +8,10 @@ package com.slook.object;
 import java.util.List;
 
 /**
- *
  * @author vietnv
  */
-public class PrintPaymentForm {
+public class PrintPaymentForm
+{
 
     String barCode;
     String paymentCode;
@@ -33,166 +33,206 @@ public class PrintPaymentForm {
     Long newDept = 0l;
     Long oldDept = 0l;
     Long totalDept = 0l;
-//    Long paymentValue;
+    //    Long paymentValue;
     List<PaymentPackObj> lstPaymentPackObjs;
 
-    public String getBarCode() {
+    public String getBarCode()
+    {
         return barCode;
     }
 
-    public void setBarCode(String barCode) {
+    public void setBarCode(String barCode)
+    {
         this.barCode = barCode;
     }
 
-    public String getPaymentCode() {
+    public String getPaymentCode()
+    {
         return paymentCode;
     }
 
-    public void setPaymentCode(String paymentCode) {
+    public void setPaymentCode(String paymentCode)
+    {
         this.paymentCode = paymentCode;
     }
 
-    public String getPaymentTime() {
+    public String getPaymentTime()
+    {
         return paymentTime;
     }
 
-    public void setPaymentTime(String paymentTime) {
+    public void setPaymentTime(String paymentTime)
+    {
         this.paymentTime = paymentTime;
     }
 
-    public String getCustomerName() {
+    public String getCustomerName()
+    {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
+    public void setCustomerName(String customerName)
+    {
         this.customerName = customerName;
     }
 
-    public String getCustomerTypeName() {
+    public String getCustomerTypeName()
+    {
         return customerTypeName;
     }
 
-    public void setCustomerTypeName(String customerTypeName) {
+    public void setCustomerTypeName(String customerTypeName)
+    {
         this.customerTypeName = customerTypeName;
     }
 
-    public Long getCustomerType() {
+    public Long getCustomerType()
+    {
         return customerType;
     }
 
-    public void setCustomerType(Long customerType) {
+    public void setCustomerType(Long customerType)
+    {
         this.customerType = customerType;
     }
 
-    public Long getNumCustomer() {
+    public Long getNumCustomer()
+    {
         return numCustomer;
     }
 
-    public void setNumCustomer(Long numCustomer) {
+    public void setNumCustomer(Long numCustomer)
+    {
         this.numCustomer = numCustomer;
     }
 
-    public String getCheckinTime() {
+    public String getCheckinTime()
+    {
         return checkinTime;
     }
 
-    public void setCheckinTime(String checkinTime) {
+    public void setCheckinTime(String checkinTime)
+    {
         this.checkinTime = checkinTime;
     }
 
-    public String getCheckoutTime() {
+    public String getCheckoutTime()
+    {
         return checkoutTime;
     }
 
-    public void setCheckoutTime(String checkoutTime) {
+    public void setCheckoutTime(String checkoutTime)
+    {
         this.checkoutTime = checkoutTime;
     }
 
-    public String getEmployeeName() {
+    public String getEmployeeName()
+    {
         return employeeName;
     }
 
-    public void setEmployeeName(String employeeName) {
+    public void setEmployeeName(String employeeName)
+    {
         this.employeeName = employeeName;
     }
 
-    public Long getTotalPriceService() {
+    public Long getTotalPriceService()
+    {
         return totalPriceService;
     }
 
-    public void setTotalPriceService(Long totalPriceService) {
+    public void setTotalPriceService(Long totalPriceService)
+    {
         this.totalPriceService = totalPriceService;
     }
 
-    public Long getDiscount() {
+    public Long getDiscount()
+    {
         return discount;
     }
 
-    public void setDiscount(Long discount) {
+    public void setDiscount(Long discount)
+    {
         this.discount = discount;
     }
 
-    public Long getVatPrice() {
+    public Long getVatPrice()
+    {
         return vatPrice;
     }
 
-    public void setVatPrice(Long vatPrice) {
+    public void setVatPrice(Long vatPrice)
+    {
         this.vatPrice = vatPrice;
     }
 
-    public Long getTotal() {
+    public Long getTotal()
+    {
         return total;
     }
 
-    public void setTotal(Long total) {
+    public void setTotal(Long total)
+    {
         this.total = total;
     }
 
-    public Long getDeposit() {
+    public Long getDeposit()
+    {
         return deposit;
     }
 
-    public void setDeposit(Long deposit) {
+    public void setDeposit(Long deposit)
+    {
         this.deposit = deposit;
     }
 
-    public Long getMustPay() {
+    public Long getMustPay()
+    {
         return mustPay;
     }
 
-    public void setMustPay(Long mustPay) {
+    public void setMustPay(Long mustPay)
+    {
         this.mustPay = mustPay;
     }
 
-    public Long getCustomerPay() {
+    public Long getCustomerPay()
+    {
         return customerPay;
     }
 
-    public void setCustomerPay(Long customerPay) {
+    public void setCustomerPay(Long customerPay)
+    {
         this.customerPay = customerPay;
     }
 
-    public Long getNewDept() {
+    public Long getNewDept()
+    {
         return newDept;
     }
 
-    public void setNewDept(Long newDept) {
+    public void setNewDept(Long newDept)
+    {
         this.newDept = newDept;
     }
 
-    public Long getOldDept() {
+    public Long getOldDept()
+    {
         return oldDept;
     }
 
-    public void setOldDept(Long oldDept) {
+    public void setOldDept(Long oldDept)
+    {
         this.oldDept = oldDept;
     }
 
-    public Long getTotalDept() {
+    public Long getTotalDept()
+    {
         return totalDept;
     }
 
-    public void setTotalDept(Long totalDept) {
+    public void setTotalDept(Long totalDept)
+    {
         this.totalDept = totalDept;
     }
 
@@ -204,11 +244,13 @@ public class PrintPaymentForm {
 //        this.paymentValue = paymentValue;
 //    }
 
-    public List<PaymentPackObj> getLstPaymentPackObjs() {
+    public List<PaymentPackObj> getLstPaymentPackObjs()
+    {
         return lstPaymentPackObjs;
     }
 
-    public void setLstPaymentPackObjs(List<PaymentPackObj> lstPaymentPackObjs) {
+    public void setLstPaymentPackObjs(List<PaymentPackObj> lstPaymentPackObjs)
+    {
         this.lstPaymentPackObjs = lstPaymentPackObjs;
     }
 

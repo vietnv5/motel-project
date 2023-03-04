@@ -24,24 +24,24 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "electric_water")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ElectricWater.findAll", query = "SELECT e FROM ElectricWater e")
-    , @NamedQuery(name = "ElectricWater.findByElectricWaterId", query = "SELECT e FROM ElectricWater e WHERE e.electricWaterId = :electricWaterId")
-    , @NamedQuery(name = "ElectricWater.findByElectricOld", query = "SELECT e FROM ElectricWater e WHERE e.electricOld = :electricOld")
-    , @NamedQuery(name = "ElectricWater.findByWaterOld", query = "SELECT e FROM ElectricWater e WHERE e.waterOld = :waterOld")
-    , @NamedQuery(name = "ElectricWater.findByElectricNew", query = "SELECT e FROM ElectricWater e WHERE e.electricNew = :electricNew")
-    , @NamedQuery(name = "ElectricWater.findByWaterNew", query = "SELECT e FROM ElectricWater e WHERE e.waterNew = :waterNew")
-    , @NamedQuery(name = "ElectricWater.findByCreateTime", query = "SELECT e FROM ElectricWater e WHERE e.createTime = :createTime")
-    , @NamedQuery(name = "ElectricWater.findByTimeLine", query = "SELECT e FROM ElectricWater e WHERE e.timeLine = :timeLine")
-    , @NamedQuery(name = "ElectricWater.findByStatus", query = "SELECT e FROM ElectricWater e WHERE e.status = :status")
-    , @NamedQuery(name = "ElectricWater.findByMonth", query = "SELECT e FROM ElectricWater e WHERE e.month = :month")})
-public class ElectricWater implements Serializable {
+        @NamedQuery(name = "ElectricWater.findAll", query = "SELECT e FROM ElectricWater e")
+        , @NamedQuery(name = "ElectricWater.findByElectricWaterId", query = "SELECT e FROM ElectricWater e WHERE e.electricWaterId = :electricWaterId")
+        , @NamedQuery(name = "ElectricWater.findByElectricOld", query = "SELECT e FROM ElectricWater e WHERE e.electricOld = :electricOld")
+        , @NamedQuery(name = "ElectricWater.findByWaterOld", query = "SELECT e FROM ElectricWater e WHERE e.waterOld = :waterOld")
+        , @NamedQuery(name = "ElectricWater.findByElectricNew", query = "SELECT e FROM ElectricWater e WHERE e.electricNew = :electricNew")
+        , @NamedQuery(name = "ElectricWater.findByWaterNew", query = "SELECT e FROM ElectricWater e WHERE e.waterNew = :waterNew")
+        , @NamedQuery(name = "ElectricWater.findByCreateTime", query = "SELECT e FROM ElectricWater e WHERE e.createTime = :createTime")
+        , @NamedQuery(name = "ElectricWater.findByTimeLine", query = "SELECT e FROM ElectricWater e WHERE e.timeLine = :timeLine")
+        , @NamedQuery(name = "ElectricWater.findByStatus", query = "SELECT e FROM ElectricWater e WHERE e.status = :status")
+        , @NamedQuery(name = "ElectricWater.findByMonth", query = "SELECT e FROM ElectricWater e WHERE e.month = :month")})
+public class ElectricWater implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -77,132 +77,163 @@ public class ElectricWater implements Serializable {
     @Transient
     private Long homeId;
 
-    public ElectricWater() {
+    public ElectricWater()
+    {
     }
 
-    public ElectricWater(Long electricWaterId) {
+    public ElectricWater(Long electricWaterId)
+    {
         this.electricWaterId = electricWaterId;
     }
 
-    public Long getElectricWaterId() {
+    public Long getElectricWaterId()
+    {
         return electricWaterId;
     }
 
-    public void setElectricWaterId(Long electricWaterId) {
+    public void setElectricWaterId(Long electricWaterId)
+    {
         this.electricWaterId = electricWaterId;
     }
 
-    public Double getElectricOld() {
+    public Double getElectricOld()
+    {
         return electricOld;
     }
 
-    public void setElectricOld(Double electricOld) {
+    public void setElectricOld(Double electricOld)
+    {
         this.electricOld = electricOld;
     }
 
-    public Double getWaterOld() {
+    public Double getWaterOld()
+    {
         return waterOld;
     }
 
-    public void setWaterOld(Double waterOld) {
+    public void setWaterOld(Double waterOld)
+    {
         this.waterOld = waterOld;
     }
 
-    public Double getElectricNew() {
+    public Double getElectricNew()
+    {
         return electricNew;
     }
 
-    public void setElectricNew(Double electricNew) {
+    public void setElectricNew(Double electricNew)
+    {
         this.electricNew = electricNew;
     }
 
-    public Double getWaterNew() {
+    public Double getWaterNew()
+    {
         return waterNew;
     }
 
-    public void setWaterNew(Double waterNew) {
+    public void setWaterNew(Double waterNew)
+    {
         this.waterNew = waterNew;
     }
 
-    public Date getCreateTime() {
+    public Date getCreateTime()
+    {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Date createTime)
+    {
         this.createTime = createTime;
     }
 
-    public Date getTimeLine() {
+    public Date getTimeLine()
+    {
         return timeLine;
     }
 
-    public void setTimeLine(Date timeLine) {
+    public void setTimeLine(Date timeLine)
+    {
         this.timeLine = timeLine;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
-    public Date getMonth() {
+    public Date getMonth()
+    {
         return month;
     }
 
-    public void setMonth(Date month) {
+    public void setMonth(Date month)
+    {
         this.month = month;
     }
 
-    public Room getRoom() {
+    public Room getRoom()
+    {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(Room room)
+    {
         this.room = room;
     }
 
-    public Long getRoomId() {
+    public Long getRoomId()
+    {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(Long roomId)
+    {
         this.roomId = roomId;
     }
 
-    public Long getHomeId() {
+    public Long getHomeId()
+    {
         return homeId;
     }
 
-    public void setHomeId(Long homeId) {
+    public void setHomeId(Long homeId)
+    {
         this.homeId = homeId;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (electricWaterId != null ? electricWaterId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof ElectricWater)) {
+        if (!(object instanceof ElectricWater))
+        {
             return false;
         }
         ElectricWater other = (ElectricWater) object;
-        if ((this.electricWaterId == null && other.electricWaterId != null) || (this.electricWaterId != null && !this.electricWaterId.equals(other.electricWaterId))) {
+        if ((this.electricWaterId == null && other.electricWaterId != null) || (this.electricWaterId != null && !this.electricWaterId.equals(other.electricWaterId)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.ElectricWater[ electricWaterId=" + electricWaterId + " ]";
     }
-    
+
 }

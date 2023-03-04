@@ -4,13 +4,15 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
     <p:dialog modal="true" header="Thông báo" widgetVar="warningOffDlg" width="70%" id="warningOffDlgId">
         <div class="Container100 Responsive50 " style="text-align: center;">
-            <a  href="#{facesContext.externalContext.request.contextPath}/member" >
-                <h:outputText value="Vui lòng sử dụng chức năng Hội viên/Nhóm để thực hiện quản lý khách hàng!" style="color: red; font-size: 20px;text-align: center; " /></a>
+            <a href="#{facesContext.externalContext.request.contextPath}/member">
+                <h:outputText value="Vui lòng sử dụng chức năng Hội viên/Nhóm để thực hiện quản lý khách hàng!"
+                              style="color: red; font-size: 20px;text-align: center; "/>
+            </a>
         </div>
     </p:dialog>
 </ui:composition>

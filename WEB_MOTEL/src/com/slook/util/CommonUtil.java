@@ -23,29 +23,33 @@ import java.util.Map;
 import java.util.Set;
 
 import static org.apache.log4j.Logger.getLogger;
+
 import org.dozer.DozerBeanMapper;
 import org.dozer.Mapper;
 
 //import com.viettel.persistence.SysActionLogServiceImpl;
+
 /**
  * Created by dungvv8 on 3/8/2017.
  */
 @Service(value = "commonUtil")
 @Scope("session")
-public class CommonUtil implements Serializable {
+public class CommonUtil implements Serializable
+{
 
     private static final Logger logger = getLogger(CommonUtil.class);
     public Map<String, Boolean> colVisible;
-//    @Autowired
+    //    @Autowired
 //    private SysActionLogServiceImpl sysActionLogService;
     public static Mapper mapper = new DozerBeanMapper();
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.colVisible.put(new ArrayList<>(colVisible.keySet()).get((Integer) e.getData()),
                 e.getVisibility() == Visibility.VISIBLE);
     }
 
-//    public void createActionLog(Map<String, Object> map) {
+    //    public void createActionLog(Map<String, Object> map) {
 //        try {
 //            ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
 //            HttpServletRequest request = (HttpServletRequest) context.getRequest();
@@ -80,7 +84,8 @@ public class CommonUtil implements Serializable {
 //            logger.error(ex.getMessage(), ex);
 //        }
 //    }
-    public Map<String, String> createMapClassName() {
+    public Map<String, String> createMapClassName()
+    {
         Map<String, String> map = new HashMap<>();
         map.put("com.viettel.controller.AlarmConfigController", MessageUtil.getKey("menu.title.config"));
         map.put("com.viettel.controller.AlarmMonitoringController", MessageUtil.getKey("menu.title.monitor"));
@@ -89,7 +94,8 @@ public class CommonUtil implements Serializable {
         return map;
     }
 
-    public Map<String, String> createMapFunctionName() {
+    public Map<String, String> createMapFunctionName()
+    {
         Map<String, String> map = new HashMap<>();
         map.put("lockAlarmConfig", MessageUtil.getKey("funcName.lockAlarmConfig"));
         map.put("unlockAlarmConfig", MessageUtil.getKey("funcName.unlockAlarmConfig"));
@@ -99,33 +105,39 @@ public class CommonUtil implements Serializable {
         return map;
     }
 
-//    public SysActionLogServiceImpl getSysActionLogService() {
+    //    public SysActionLogServiceImpl getSysActionLogService() {
 //        return sysActionLogService;
 //    }
 //
 //    public void setSysActionLogService(SysActionLogServiceImpl sysActionLogService) {
 //        this.sysActionLogService = sysActionLogService;
 //    }
-    public Map<String, Boolean> getColVisible() {
+    public Map<String, Boolean> getColVisible()
+    {
         return colVisible;
     }
 
-    public void setColVisible(Map<String, Boolean> colVisible) {
+    public void setColVisible(Map<String, Boolean> colVisible)
+    {
         this.colVisible = colVisible;
     }
 
-//    vietnv start
-    public static String getTableInConstraint(String constraintName) {
+    //    vietnv start
+    public static String getTableInConstraint(String constraintName)
+    {
         Session session = null;
         String tableName = "";
-        try {
+        try
+        {
             // lay ten constraint
             List<String> lstStr = StringUtil.findWithRegexMultiline(constraintName, " \\((\\w*\\d*\\.*)*\\)", 0);
-            if (lstStr.size() > 0) {
+            if (lstStr.size() > 0)
+            {
                 constraintName = lstStr.get(0).replaceAll("\\(", "")
                         .replaceAll("\\)", "");
                 String[] arrs = constraintName.split("\\.");
-                if (arrs.length > 0) {
+                if (arrs.length > 0)
+                {
                     constraintName = arrs[arrs.length - 1];
                 }
             }
@@ -139,16 +151,25 @@ public class CommonUtil implements Serializable {
             query1.setParameter(0, constraintName);
             List lst = query1.list();
 
-            if (lst.size() > 0) {
+            if (lst.size() > 0)
+            {
                 tableName = (String) lst.get(0);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
-        } finally {
-            if (session != null) {
-                try {
+        }
+        finally
+        {
+            if (session != null)
+            {
+                try
+                {
                     session.close();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage(), e);
                 }
             }
@@ -156,17 +177,22 @@ public class CommonUtil implements Serializable {
         return tableName;
     }
 
-    public static List getItemBOList(String catCode, String sortField) {
+    public static List getItemBOList(String catCode, String sortField)
+    {
         Session session = null;
         List<CatItemBO> lst = new ArrayList<CatItemBO>();
-        try {
+        try
+        {
             session = HibernateUtil.openSession();
             String choise = MessageUtil.getResourceBundleMessage("common.choose");
             Criteria cri = session.createCriteria(CatItemBO.class);
             cri.add(Restrictions.eq("catCode", catCode).ignoreCase());
-            if (StringUtil.isNotNull(sortField)) {
+            if (StringUtil.isNotNull(sortField))
+            {
                 cri.addOrder(Order.asc(sortField));
-            } else {
+            }
+            else
+            {
                 cri.addOrder(Order.asc("code"));
             }
             List lstVendor = cri.list();
@@ -176,16 +202,25 @@ public class CommonUtil implements Serializable {
             bo.setCode(choise);
             bo.setName(choise);
             lst.add(bo);
-            if (lstVendor != null && lstVendor.size() > 0) {
+            if (lstVendor != null && lstVendor.size() > 0)
+            {
                 lst.addAll(lstVendor);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
-        } finally {
-            if (session != null) {
-                try {
+        }
+        finally
+        {
+            if (session != null)
+            {
+                try
+                {
                     session.close();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage(), e);
                 }
             }
@@ -194,57 +229,74 @@ public class CommonUtil implements Serializable {
     }
 //    vietnv end
 
-    public static Map<String, Long> getMapCatItemByKeyName(Session session, String catCode) {
+    public static Map<String, Long> getMapCatItemByKeyName(Session session, String catCode)
+    {
         Map<String, Long> map = new HashMap<String, Long>();
         Criteria cri = session.createCriteria(CatItemBO.class);
         cri.add(Restrictions.eq("catCode", catCode));
         List<CatItemBO> lst = cri.list();
-        for (CatItemBO itemBO : lst) {
+        for (CatItemBO itemBO : lst)
+        {
             map.put(itemBO.getName() != null ? itemBO.getName().trim().toUpperCase() : null, itemBO.getItemId());
         }
         return map;
     }
 
-    public static Map<String, Long> getMapCatItemByKeyCode(Session session, String catCode) {
+    public static Map<String, Long> getMapCatItemByKeyCode(Session session, String catCode)
+    {
         Map<String, Long> map = new HashMap<String, Long>();
         Criteria cri = session.createCriteria(CatItemBO.class);
         cri.add(Restrictions.eq("catCode", catCode));
         List<CatItemBO> lst = cri.list();
-        for (CatItemBO itemBO : lst) {
+        for (CatItemBO itemBO : lst)
+        {
             map.put(itemBO.getCode() != null ? itemBO.getCode().trim().toUpperCase() : null, itemBO.getItemId());
         }
         return map;
     }
 
-    public static Map<String, CatItemBO> getMapCatItemByKeyValue(Session session, String catCode) {
+    public static Map<String, CatItemBO> getMapCatItemByKeyValue(Session session, String catCode)
+    {
         Map<String, CatItemBO> map = new HashMap<String, CatItemBO>();
         Criteria cri = session.createCriteria(CatItemBO.class);
         cri.add(Restrictions.eq("catCode", catCode));
         List<CatItemBO> lst = cri.list();
-        for (CatItemBO itemBO : lst) {
+        for (CatItemBO itemBO : lst)
+        {
             map.put(itemBO.getValue() != null ? itemBO.getValue().trim().toUpperCase() : null, itemBO);
         }
         return map;
     }
 
-    public static Map<String, CatItemBO> getMapCatItemByKeyValue(String catCode) {
+    public static Map<String, CatItemBO> getMapCatItemByKeyValue(String catCode)
+    {
         Map<String, CatItemBO> map = new HashMap<String, CatItemBO>();
         Session session = null;
-        try {
+        try
+        {
             session = HibernateUtil.openSession();
             Criteria cri = session.createCriteria(CatItemBO.class);
             cri.add(Restrictions.eq("catCode", catCode));
             List<CatItemBO> lst = cri.list();
-            for (CatItemBO itemBO : lst) {
+            for (CatItemBO itemBO : lst)
+            {
                 map.put(itemBO.getValue() != null ? itemBO.getValue().trim().toUpperCase() : null, itemBO);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
-        } finally {
-            if (session != null) {
-                try {
+        }
+        finally
+        {
+            if (session != null)
+            {
+                try
+                {
                     session.close();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage(), e);
                 }
             }
@@ -252,19 +304,29 @@ public class CommonUtil implements Serializable {
         return map;
     }
 
-    public static Map<String, Long> getMapCatItemByKeyCode(String catCode) {
+    public static Map<String, Long> getMapCatItemByKeyCode(String catCode)
+    {
         Map<String, Long> map = new HashMap<String, Long>();
         Session session = null;
-        try {
+        try
+        {
             session = HibernateUtil.openSession();
             map = getMapCatItemByKeyCode(session, catCode);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
-        } finally {
-            if (session != null) {
-                try {
+        }
+        finally
+        {
+            if (session != null)
+            {
+                try
+                {
                     session.close();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage(), e);
                 }
             }
@@ -272,24 +334,35 @@ public class CommonUtil implements Serializable {
         return map;
     }
 
-    public static Map<Long, CatItemBO> getMapCatItemByKeyId(String catCode) {
+    public static Map<Long, CatItemBO> getMapCatItemByKeyId(String catCode)
+    {
         Map<Long, CatItemBO> map = new HashMap<Long, CatItemBO>();
         Session session = null;
-        try {
+        try
+        {
             session = HibernateUtil.openSession();
             Criteria cri = session.createCriteria(CatItemBO.class);
             cri.add(Restrictions.eq("catCode", catCode));
             List<CatItemBO> lst = cri.list();
-            for (CatItemBO itemBO : lst) {
+            for (CatItemBO itemBO : lst)
+            {
                 map.put(itemBO.getItemId(), itemBO);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
-        } finally {
-            if (session != null) {
-                try {
+        }
+        finally
+        {
+            if (session != null)
+            {
+                try
+                {
                     session.close();
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage(), e);
                 }
             }
@@ -297,69 +370,93 @@ public class CommonUtil implements Serializable {
         return map;
     }
 
-    public static Map convertListToMap(List<Object> lst, String field) {
+    public static Map convertListToMap(List<Object> lst, String field)
+    {
         Map<Object, Object> map = new HashMap<Object, Object>();
-        try {
-            if (lst != null && lst.size() > 0) {
+        try
+        {
+            if (lst != null && lst.size() > 0)
+            {
                 Method methods = lst.get(0).getClass().getMethod(DataUtil.getGetterOfColumn(field));
-                for (Object val : lst) {
+                for (Object val : lst)
+                {
                     Object value = methods.invoke(val);
                     map.put(value, val);
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return map;
     }
 
-    public static Map convertListToMap(List<Object> lst, String field, boolean isUpperKey) {
+    public static Map convertListToMap(List<Object> lst, String field, boolean isUpperKey)
+    {
         Map<String, Object> map = new HashMap<String, Object>();
-        try {
-            if (lst != null && lst.size() > 0) {
+        try
+        {
+            if (lst != null && lst.size() > 0)
+            {
                 Method methods = lst.get(0).getClass().getMethod(DataUtil.getGetterOfColumn(field));
-                for (Object val : lst) {
+                for (Object val : lst)
+                {
                     String value = (String) methods.invoke(val);
-                    if (value != null) {
+                    if (value != null)
+                    {
                         map.put(value.trim().toUpperCase(), val);
                     }
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return map;
     }
 
-    public static Map convertListToMap(List<Object> lst, String fieldKey, String fieldValue) {
+    public static Map convertListToMap(List<Object> lst, String fieldKey, String fieldValue)
+    {
         Map<Object, Object> map = new HashMap<Object, Object>();
-        try {
-            if (lst != null && lst.size() > 0) {
+        try
+        {
+            if (lst != null && lst.size() > 0)
+            {
                 Method methods = lst.get(0).getClass().getMethod(DataUtil.getGetterOfColumn(fieldKey));
                 Method methodsVal = lst.get(0).getClass().getMethod(DataUtil.getGetterOfColumn(fieldValue));
-                for (Object val : lst) {
+                for (Object val : lst)
+                {
                     Object valueKey = methods.invoke(val);
                     Object value = methodsVal.invoke(val);
                     map.put(valueKey, value);
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return map;
     }
 
-    public static boolean validateFileExtension(String fileName, List<String> lstFileType) {
+    public static boolean validateFileExtension(String fileName, List<String> lstFileType)
+    {
         boolean rs = false;
         int dotIndex = fileName.lastIndexOf(".");
-        if (dotIndex > -1) {
+        if (dotIndex > -1)
+        {
             String extension = fileName.substring(fileName.lastIndexOf(".") + 1, fileName.length());
-            if (lstFileType != null && !lstFileType.isEmpty()) {
-                for (String it : lstFileType) {
-                    if (it != null && it.equalsIgnoreCase(extension)) {
+            if (lstFileType != null && !lstFileType.isEmpty())
+            {
+                for (String it : lstFileType)
+                {
+                    if (it != null && it.equalsIgnoreCase(extension))
+                    {
                         return true;
                     }
                 }
@@ -368,163 +465,215 @@ public class CommonUtil implements Serializable {
         return rs;
     }
 
-    public static boolean makeDirectory(String urlFolder) {
+    public static boolean makeDirectory(String urlFolder)
+    {
         System.out.println(urlFolder);
         File directory = new File(urlFolder);
 
-        if (!directory.exists()) {
+        if (!directory.exists())
+        {
             return directory.mkdir();
         }
         return true;
     }
 
-    public static List getListAttributeInList(List<Object> lst, String field) {
+    public static List getListAttributeInList(List<Object> lst, String field)
+    {
         List lstRes = new ArrayList<>();
-        try {
-            if (lst != null && lst.size() > 0) {
+        try
+        {
+            if (lst != null && lst.size() > 0)
+            {
                 Method methods = lst.get(0).getClass().getMethod(DataUtil.getGetterOfColumn(field));
-                for (Object val : lst) {
+                for (Object val : lst)
+                {
                     Object value = methods.invoke(val);
-                    if (value != null) {
+                    if (value != null)
+                    {
                         lstRes.add(value);
                     }
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return lstRes;
     }
 
-    public static boolean compareValue(String value, String comparisonOperator, String individualThreshold) {
+    public static boolean compareValue(String value, String comparisonOperator, String individualThreshold)
+    {
         if (StringUtil.isNullOrEmpty(comparisonOperator)
-                || (StringUtil.isNullOrEmpty(individualThreshold))) {
+                || (StringUtil.isNullOrEmpty(individualThreshold)))
+        {
             return true;
         }
-        if (StringUtil.isNullOrEmpty(value)) {
+        if (StringUtil.isNullOrEmpty(value))
+        {
             return false;
         }
         String threshold = individualThreshold;
-        switch (comparisonOperator) {
+        switch (comparisonOperator)
+        {
 
             case Constant.COMPARISON_OPERATOR.EQ:
-                if (threshold.equalsIgnoreCase(value.trim())) {
+                if (threshold.equalsIgnoreCase(value.trim()))
+                {
                     return true;
                 }
-                try {
-                    if (Double.valueOf(value).equals(Double.valueOf(threshold))) {
+                try
+                {
+                    if (Double.valueOf(value).equals(Double.valueOf(threshold)))
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                 }
 
                 return false;
             case Constant.COMPARISON_OPERATOR.LT:
-                try {
-                    if (Double.valueOf(value) < (Double.valueOf(threshold))) {
+                try
+                {
+                    if (Double.valueOf(value) < (Double.valueOf(threshold)))
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage());
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.LE:
-                try {
-                    if (Double.valueOf(value) <= (Double.valueOf(threshold))) {
+                try
+                {
+                    if (Double.valueOf(value) <= (Double.valueOf(threshold)))
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage());
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.GT:
-                try {
-                    if (Double.valueOf(value) > (Double.valueOf(threshold))) {
+                try
+                {
+                    if (Double.valueOf(value) > (Double.valueOf(threshold)))
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage());
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.GE:
-                try {
-                    if (Double.valueOf(value) > (Double.valueOf(threshold))) {
+                try
+                {
+                    if (Double.valueOf(value) > (Double.valueOf(threshold)))
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage());
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.IN:
                 String[] lst = threshold.split(",");
                 Set<String> set = new HashSet<String>();
-                for (String s : lst) {
+                for (String s : lst)
+                {
                     set.add(s.trim().toUpperCase());
                 }
-                if (set.contains(value.trim().toUpperCase())) {
+                if (set.contains(value.trim().toUpperCase()))
+                {
                     return true;
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.NOT_IN:
                 String[] lstNotIn = threshold.split(",");
                 Set<String> setNotIn = new HashSet<String>();
-                for (String s : lstNotIn) {
+                for (String s : lstNotIn)
+                {
                     setNotIn.add(s.trim().toUpperCase());
                 }
-                if (setNotIn.contains(value.trim().toUpperCase())) {
+                if (setNotIn.contains(value.trim().toUpperCase()))
+                {
                     return false;
                 }
                 return true;
             case Constant.COMPARISON_OPERATOR.CONTAINS:
                 String[] lstValue = value.split(",");
                 Set<String> setValue = new HashSet<String>();
-                for (String s : lstValue) {
+                for (String s : lstValue)
+                {
                     setValue.add(s.trim().toUpperCase());
                 }
-                if (setValue.contains(threshold.toUpperCase())) {
+                if (setValue.contains(threshold.toUpperCase()))
+                {
                     return true;
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.NOT_CONTAINS:
                 String[] lstValueNot = value.split(",");
                 Set<String> setValueNot = new HashSet<String>();
-                for (String s : lstValueNot) {
+                for (String s : lstValueNot)
+                {
                     setValueNot.add(s.trim().toUpperCase());
                 }
-                if (setValueNot.contains(threshold.toUpperCase())) {
+                if (setValueNot.contains(threshold.toUpperCase()))
+                {
                     return false;
                 }
                 return true;
             case Constant.COMPARISON_OPERATOR.BETWEEN:
                 String[] lstNum = threshold.split(",");
-                if (lstNum.length < 2) {
+                if (lstNum.length < 2)
+                {
                     return false;
                 }
-                try {
+                try
+                {
                     Double val = Double.valueOf(value.trim());
                     Double val1 = Double.valueOf(lstNum[0]);
                     Double val2 = Double.valueOf(lstNum[1]);
-                    if (val >= val1 && val <= val2) {
+                    if (val >= val1 && val <= val2)
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage());
                 }
                 return false;
             case Constant.COMPARISON_OPERATOR.NOT_BETWEEN:
                 String[] lstNumNot = threshold.split(",");
-                if (lstNumNot.length < 2) {
+                if (lstNumNot.length < 2)
+                {
                     return false;
                 }
-                try {
+                try
+                {
                     Double val = Double.valueOf(value.trim());
                     Double val1 = Double.valueOf(lstNumNot[0]);
                     Double val2 = Double.valueOf(lstNumNot[1]);
-                    if (val < val1 || val > val2) {
+                    if (val < val1 || val > val2)
+                    {
                         return true;
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     logger.error(e.getMessage());
                 }
                 return false;
@@ -535,11 +684,14 @@ public class CommonUtil implements Serializable {
 
     }
 
-    public static String changeComparisonOperator(String operator) {
+    public static String changeComparisonOperator(String operator)
+    {
         String guide = "";
-        if (operator != null) {
+        if (operator != null)
+        {
 
-            switch (operator) {
+            switch (operator)
+            {
                 case Constant.COMPARISON_OPERATOR.GE:
                 case Constant.COMPARISON_OPERATOR.GT:
                 case Constant.COMPARISON_OPERATOR.LE:
@@ -562,7 +714,9 @@ public class CommonUtil implements Serializable {
                     guide = MessageUtil.getResourceBundleMessage("catChecklistDb.guide.inputIn");
                     break;
             }
-        } else {
+        }
+        else
+        {
             guide = "";
         }
 

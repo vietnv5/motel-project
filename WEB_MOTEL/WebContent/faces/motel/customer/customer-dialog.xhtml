@@ -4,7 +4,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
     <p:dialog modal="true" widgetVar="customerDlg" width="70%" id="customerDlgId" height="500px">
@@ -15,18 +15,18 @@
 
         <h:form id="customerForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
                     <p:fieldset legend="#{msg['view.header.member.contact']}">
                         <div class="Card">
                             <div class="Container100 Responsive50">
                                 <div class="Container25 Responsive50">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.customerName}"
-                                                     id="customerName"  converter="trimConverter"
+                                                     id="customerName" converter="trimConverter"
                                                      title="#{msg['customer.customerName']}"
                                                      required="true" maxlength="150"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['customer.customerName'])}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['customer.customerName']} *</label>
@@ -53,9 +53,9 @@
                                                      required="false" maxlength="50"
                                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
                                                      validatorMessage="Email không hơp lệ!"
-                                                     >
-                                            <f:validateRegex 
-		pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                        >
+                                            <f:validateRegex
+                                                    pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
 
                                         </p:inputText>
 
@@ -67,9 +67,9 @@
 
                                     <span class="title-top">
                                         <p:selectOneRadio id="sex" value="#{customerController.currCustomer.sex}"
-                                                          required="true"                                                      
+                                                          required="true"
                                                           requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.sex'])}"
-                                                          >
+                                        >
                                             <f:selectItem itemLabel="#{msg['view.label.sexMale']}"
                                                           itemValue="1"/>
                                             <f:selectItem itemLabel="#{msg['view.label.sexFemale']}"
@@ -83,7 +83,7 @@
                             </div>
                         </div>
                     </p:fieldset>
-                    <p:fieldset legend="#{msg['view.header.member.add.detail']}" toggleable="true" collapsed="true" >
+                    <p:fieldset legend="#{msg['view.header.member.add.detail']}" toggleable="true" collapsed="true">
                         <div class="Card">
                             <div class="Container100 Responsive50 MarTop20">
                                 <div class="Container25 Responsive50">
@@ -94,7 +94,7 @@
                                                     id="birthDate"
                                                     showButtonPanel="true" style="width: calc(100% - 15px)"
                                                     title="#{msg['customer.birthDate']}"
-                                                   
+
                                                     pattern="dd/MM/yyyy" pages="1" effect="slideDown"
                                                     showOtherMonths="true" selectOtherMonths="true"
                                                     mask="true">
@@ -108,9 +108,9 @@
                                 <div class=" Container25 Responsive50">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.cmnd}"
-                                                     id="cmndId"  converter="trimConverter" maxlength="20"
+                                                     id="cmndId" converter="trimConverter" maxlength="20"
                                                      title="#{msg['customer.cmnd']}"
-                                                     >
+                                        >
                                         </p:inputText>
                                         <label>#{msg['customer.cmnd']}</label>
                                     </span>
@@ -124,7 +124,7 @@
                                                     id="ngayCap"
                                                     showButtonPanel="true" style="width: calc(100% - 15px)"
                                                     title="#{msg['customer.ngayCap']}"
-                                                  
+
                                                     pattern="dd/MM/yyyy" pages="1" effect="slideDown"
                                                     showOtherMonths="true" selectOtherMonths="true"
                                                     mask="true">
@@ -137,9 +137,9 @@
                                 <div class=" Container25 Responsive50">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.noiCap}"
-                                                     id="noiCapId"  converter="trimConverter" maxlength="200"
+                                                     id="noiCapId" converter="trimConverter" maxlength="200"
                                                      title="#{msg['customer.noiCap']}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['customer.noiCap']} </label>
@@ -149,9 +149,9 @@
                                 <div class=" Container25 Responsive50 MarTop20">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.homeTown}"
-                                                     id="homeTownId"  converter="trimConverter" maxlength="200"
+                                                     id="homeTownId" converter="trimConverter" maxlength="200"
                                                      title="#{msg['customer.homeTown']}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['customer.homeTown']} </label>
@@ -161,9 +161,9 @@
                                 <div class=" Container25 Responsive50 MarTop20">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.address}"
-                                                     id="addressId"  converter="trimConverter" maxlength="200"
+                                                     id="addressId" converter="trimConverter" maxlength="200"
                                                      title="#{msg['customer.address']}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['customer.address']} </label>
@@ -173,9 +173,9 @@
                                 <div class=" Container25 Responsive50 MarTop20">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.job}"
-                                                     id="jobId"  converter="trimConverter" maxlength="200"
+                                                     id="jobId" converter="trimConverter" maxlength="200"
                                                      title="#{msg['customer.job']}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['customer.job']} </label>
@@ -185,9 +185,9 @@
                                 <div class=" Container25 Responsive50 MarTop20">
                                     <span class="md-inputfield">
                                         <p:inputText value="#{customerController.currCustomer.description}"
-                                                     id="descriptionId"  converter="trimConverter" maxlength="200"
+                                                     id="descriptionId" converter="trimConverter" maxlength="200"
                                                      title="#{msg['customer.description']}"
-                                                     >
+                                        >
                                         </p:inputText>
 
                                         <label>#{msg['customer.description']} </label>
@@ -200,16 +200,17 @@
 
 
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlCenter" >
+                <p:outputPanel class="Container100 TexAlCenter">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growl),:customerTableForm,:customerForm"
-                                     actionListener="#{customerController.onSaveOrUpdate()}" process=":customerForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{customerController.onSaveOrUpdate()}" process=":customerForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('customerDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('customerDlg').hide()">
 
                     </p:commandButton>
 
@@ -220,7 +221,9 @@
     </p:dialog>
 
     <p:confirmDialog global="true" closeOnEscape="true">
-        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
     </p:confirmDialog>
 </ui:composition>

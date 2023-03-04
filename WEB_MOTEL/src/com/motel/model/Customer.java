@@ -6,6 +6,7 @@
 package com.motel.model;
 
 import com.slook.util.MessageUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -27,29 +28,29 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "customer")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
-    , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.customerId = :customerId")
-    , @NamedQuery(name = "Customer.findByCustomerName", query = "SELECT c FROM Customer c WHERE c.customerName = :customerName")
-    , @NamedQuery(name = "Customer.findBySex", query = "SELECT c FROM Customer c WHERE c.sex = :sex")
-    , @NamedQuery(name = "Customer.findByBirthDate", query = "SELECT c FROM Customer c WHERE c.birthDate = :birthDate")
-    , @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address")
-    , @NamedQuery(name = "Customer.findByPhone", query = "SELECT c FROM Customer c WHERE c.phone = :phone")
-    , @NamedQuery(name = "Customer.findByStatus", query = "SELECT c FROM Customer c WHERE c.status = :status")
-    , @NamedQuery(name = "Customer.findByDescription", query = "SELECT c FROM Customer c WHERE c.description = :description")
-    , @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email")
-    , @NamedQuery(name = "Customer.findByCmnd", query = "SELECT c FROM Customer c WHERE c.cmnd = :cmnd")
-    , @NamedQuery(name = "Customer.findByNgayCap", query = "SELECT c FROM Customer c WHERE c.ngayCap = :ngayCap")
-    , @NamedQuery(name = "Customer.findByNoiCap", query = "SELECT c FROM Customer c WHERE c.noiCap = :noiCap")
-    , @NamedQuery(name = "Customer.findByUpdateTime", query = "SELECT c FROM Customer c WHERE c.updateTime = :updateTime")
-    , @NamedQuery(name = "Customer.findByGroupUserId", query = "SELECT c FROM Customer c WHERE c.groupUserId = :groupUserId")})
-public class Customer implements Serializable {
+        @NamedQuery(name = "Customer.findAll", query = "SELECT c FROM Customer c")
+        , @NamedQuery(name = "Customer.findByCustomerId", query = "SELECT c FROM Customer c WHERE c.customerId = :customerId")
+        , @NamedQuery(name = "Customer.findByCustomerName", query = "SELECT c FROM Customer c WHERE c.customerName = :customerName")
+        , @NamedQuery(name = "Customer.findBySex", query = "SELECT c FROM Customer c WHERE c.sex = :sex")
+        , @NamedQuery(name = "Customer.findByBirthDate", query = "SELECT c FROM Customer c WHERE c.birthDate = :birthDate")
+        , @NamedQuery(name = "Customer.findByAddress", query = "SELECT c FROM Customer c WHERE c.address = :address")
+        , @NamedQuery(name = "Customer.findByPhone", query = "SELECT c FROM Customer c WHERE c.phone = :phone")
+        , @NamedQuery(name = "Customer.findByStatus", query = "SELECT c FROM Customer c WHERE c.status = :status")
+        , @NamedQuery(name = "Customer.findByDescription", query = "SELECT c FROM Customer c WHERE c.description = :description")
+        , @NamedQuery(name = "Customer.findByEmail", query = "SELECT c FROM Customer c WHERE c.email = :email")
+        , @NamedQuery(name = "Customer.findByCmnd", query = "SELECT c FROM Customer c WHERE c.cmnd = :cmnd")
+        , @NamedQuery(name = "Customer.findByNgayCap", query = "SELECT c FROM Customer c WHERE c.ngayCap = :ngayCap")
+        , @NamedQuery(name = "Customer.findByNoiCap", query = "SELECT c FROM Customer c WHERE c.noiCap = :noiCap")
+        , @NamedQuery(name = "Customer.findByUpdateTime", query = "SELECT c FROM Customer c WHERE c.updateTime = :updateTime")
+        , @NamedQuery(name = "Customer.findByGroupUserId", query = "SELECT c FROM Customer c WHERE c.groupUserId = :groupUserId")})
+public class Customer implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -99,211 +100,263 @@ public class Customer implements Serializable {
     @Transient
     private String customerInfo;
 
-    public Customer() {
+    public Customer()
+    {
     }
 
-    public Customer(Long customerId) {
+    public Customer(Long customerId)
+    {
         this.customerId = customerId;
     }
 
-    public Long getCustomerId() {
+    public Long getCustomerId()
+    {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Long customerId)
+    {
         this.customerId = customerId;
     }
 
-    public String getCustomerName() {
+    public String getCustomerName()
+    {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
+    public void setCustomerName(String customerName)
+    {
         this.customerName = customerName;
     }
 
-    public Long getSex() {
+    public Long getSex()
+    {
         return sex;
     }
 
-    public void setSex(Long sex) {
+    public void setSex(Long sex)
+    {
         this.sex = sex;
     }
 
-    public Date getBirthDate() {
+    public Date getBirthDate()
+    {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(Date birthDate)
+    {
         this.birthDate = birthDate;
     }
 
-    public String getAddress() {
+    public String getAddress()
+    {
         return address;
     }
 
-    public void setAddress(String address) {
+    public void setAddress(String address)
+    {
         this.address = address;
     }
 
-    public String getPhone() {
+    public String getPhone()
+    {
         return phone;
     }
 
-    public void setPhone(String phone) {
+    public void setPhone(String phone)
+    {
         this.phone = phone;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public String getEmail() {
+    public String getEmail()
+    {
         return email;
     }
 
-    public void setEmail(String email) {
+    public void setEmail(String email)
+    {
         this.email = email;
     }
 
-    public String getCmnd() {
+    public String getCmnd()
+    {
         return cmnd;
     }
 
-    public void setCmnd(String cmnd) {
+    public void setCmnd(String cmnd)
+    {
         this.cmnd = cmnd;
     }
 
-    public Date getNgayCap() {
+    public Date getNgayCap()
+    {
         return ngayCap;
     }
 
-    public void setNgayCap(Date ngayCap) {
+    public void setNgayCap(Date ngayCap)
+    {
         this.ngayCap = ngayCap;
     }
 
-    public String getNoiCap() {
+    public String getNoiCap()
+    {
         return noiCap;
     }
 
-    public void setNoiCap(String noiCap) {
+    public void setNoiCap(String noiCap)
+    {
         this.noiCap = noiCap;
     }
 
-    public Date getUpdateTime() {
+    public Date getUpdateTime()
+    {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Date updateTime)
+    {
         this.updateTime = updateTime;
     }
 
-    public Long getGroupUserId() {
+    public Long getGroupUserId()
+    {
         return groupUserId;
     }
 
-    public void setGroupUserId(Long groupUserId) {
+    public void setGroupUserId(Long groupUserId)
+    {
         this.groupUserId = groupUserId;
     }
 
     @XmlTransient
-    public List<CustomerRoom> getCustomerRoomList() {
+    public List<CustomerRoom> getCustomerRoomList()
+    {
         return customerRoomList;
     }
 
-    public void setCustomerRoomList(List<CustomerRoom> customerRoomList) {
+    public void setCustomerRoomList(List<CustomerRoom> customerRoomList)
+    {
         this.customerRoomList = customerRoomList;
     }
 
     @XmlTransient
-    public List<Contract> getContractList() {
+    public List<Contract> getContractList()
+    {
         return contractList;
     }
 
-    public void setContractList(List<Contract> contractList) {
+    public void setContractList(List<Contract> contractList)
+    {
         this.contractList = contractList;
     }
 
-    public String getHomeTown() {
+    public String getHomeTown()
+    {
         return homeTown;
     }
 
-    public void setHomeTown(String homeTown) {
+    public void setHomeTown(String homeTown)
+    {
         this.homeTown = homeTown;
     }
 
-    public String getJob() {
+    public String getJob()
+    {
         return job;
     }
 
-    public void setJob(String job) {
+    public void setJob(String job)
+    {
         this.job = job;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (customerId != null ? customerId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof Customer)) {
+        if (!(object instanceof Customer))
+        {
             return false;
         }
         Customer other = (Customer) object;
-        if ((this.customerId == null && other.customerId != null) || (this.customerId != null && !this.customerId.equals(other.customerId))) {
+        if ((this.customerId == null && other.customerId != null) || (this.customerId != null && !this.customerId.equals(other.customerId)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.Customer[ customerId=" + customerId + " ]";
     }
 
-    public String getSexName() {
-        if (sex != null && sex.equals(1L)) {
+    public String getSexName()
+    {
+        if (sex != null && sex.equals(1L))
+        {
             sexName = MessageUtil.getResourceBundleMessage("view.label.sexMale");
-        } else if (sex != null && sex.equals(2L)) {
+        }
+        else if (sex != null && sex.equals(2L))
+        {
             sexName = MessageUtil.getResourceBundleMessage("view.label.sexFemale");
         }
         return sexName;
     }
 
-    public void setSexName(String sexName) {
+    public void setSexName(String sexName)
+    {
         this.sexName = sexName;
     }
 
-    public String getCustomerInfo() {
+    public String getCustomerInfo()
+    {
         customerInfo = "";
-        if (customerName != null) {
+        if (customerName != null)
+        {
             customerInfo += customerName;
         }
         customerInfo += " - ";
-        if (phone != null) {
+        if (phone != null)
+        {
             customerInfo += phone;
         }
 
         return customerInfo;
     }
 
-    public void setCustomerInfo(String customerInfo) {
+    public void setCustomerInfo(String customerInfo)
+    {
         this.customerInfo = customerInfo;
     }
 

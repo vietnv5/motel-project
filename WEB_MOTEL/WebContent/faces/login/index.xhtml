@@ -4,142 +4,143 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
-    <h:head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
-        <meta name="apple-mobile-web-app-capable" content="yes"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/fa/font-awesome.css.xhtml?ln=primefaces&amp;v=6.0"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/theme.css.xhtml?ln=primefaces-olympos"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/components.css.xhtml?ln=primefaces&amp;v=6.0"/>
-        <script type="text/javascript"
-        src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-        <script type="text/javascript"
-        src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/jquery/jquery-plugins.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-        <script type="text/javascript"
-        src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/core.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-        <script type="text/javascript"
-        src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/components.js.xhtml?ln=primefaces&amp;v=6.0"></script>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/core-layout.css.xhtml?ln=olympos-layout"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/font-awesome.css.xhtml?ln=olympos-layout"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/animate.css.xhtml?ln=olympos-layout"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/olympos-layout.css.xhtml?ln=olympos-layout"/>
-        <link type="text/css" rel="stylesheet"
-              href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/olympos-font.css.xhtml?ln=olympos-layout"/>
+<h:head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/fa/font-awesome.css.xhtml?ln=primefaces&amp;v=6.0"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/theme.css.xhtml?ln=primefaces-olympos"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/components.css.xhtml?ln=primefaces&amp;v=6.0"/>
+    <script type="text/javascript"
+            src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/jquery/jquery.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+    <script type="text/javascript"
+            src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/jquery/jquery-plugins.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+    <script type="text/javascript"
+            src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/core.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+    <script type="text/javascript"
+            src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/components.js.xhtml?ln=primefaces&amp;v=6.0"></script>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/core-layout.css.xhtml?ln=olympos-layout"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/font-awesome.css.xhtml?ln=olympos-layout"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/animate.css.xhtml?ln=olympos-layout"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/olympos-layout.css.xhtml?ln=olympos-layout"/>
+    <link type="text/css" rel="stylesheet"
+          href="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/css/olympos-font.css.xhtml?ln=olympos-layout"/>
 
-        <script type="text/javascript">if (window.PrimeFaces) {
-                PrimeFaces.settings.locale = 'en_US';
-            }</script>
-        <title>#{msg['page.title']}</title>
-    </h:head>
-    <h:body class="AquaBack" >
-        <h:form>
-            <div class="Wid70 MarAuto">
-                <div class="Wid70 MarAuto WidAutoOnMobile TexAlCenter">
+    <script type="text/javascript">if (window.PrimeFaces)
+    {
+        PrimeFaces.settings.locale = 'en_US';
+    }</script>
+    <title>#{msg['page.title']}</title>
+</h:head>
+<h:body class="AquaBack">
+    <h:form>
+        <div class="Wid70 MarAuto">
+            <div class="Wid70 MarAuto WidAutoOnMobile TexAlCenter">
 
-                    <div class="Wid70 MarAuto WidAutoOnMobile">
-                        <div class="EmptyBox30"></div>
-                        <div class="Container50 Responsive50" style="display: none">
-                            <a href="#" class="DispBlock Fleft FloatNoneOnMobile"><img
-                                    src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/images/ssl.png.xhtml?ln=olympos-layout"
-                                    style="height:25px;"/></a>
+                <div class="Wid70 MarAuto WidAutoOnMobile">
+                    <div class="EmptyBox30"></div>
+                    <div class="Container50 Responsive50" style="display: none">
+                        <a href="#" class="DispBlock Fleft FloatNoneOnMobile"><img
+                                src="#{facesContext.externalContext.request.contextPath}/javax.faces.resource/images/ssl.png.xhtml?ln=olympos-layout"
+                                style="height:25px;"/></a>
+                    </div>
+                    <div class="Container50 Responsive50">
+                    </div>
+                    <div class="EmptyBox10 ShowOnMobile"></div>
+
+                    <div class="EmptyBox100 ShowOnDesktop"></div>
+                    <div class="EmptyBox20 ShowOnMobile"></div>
+
+                    <div class="Wid100 FontLatoRegular White Fs18" style="display: block">#{msg['page.title']}</div>
+                    <div class="EmptyBox30"></div>
+                    <div class="Card ui-fluid ShadowEffect">
+                        <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
+                        <div class="Container100">
+                            <p:inputText style="padding:15px !important;" value="#{authenticationController.userName}"
+                                         placeholder="Địa chỉ email hoặc số điện thoại"
+                            />
                         </div>
-                        <div class="Container50 Responsive50">
+                        <div class="Container100">
+                            <p:password style="padding:15px !important;" value="#{authenticationController.password}"
+                                        placeholder="Password"/>
                         </div>
-                        <div class="EmptyBox10 ShowOnMobile"></div>
-
-                        <div class="EmptyBox100 ShowOnDesktop"></div>
-                        <div class="EmptyBox20 ShowOnMobile"></div>
-
-                        <div class="Wid100 FontLatoRegular White Fs18" style="display: block">#{msg['page.title']}</div>
-                        <div class="EmptyBox30"></div>
-                        <div class="Card ui-fluid ShadowEffect">
-                            <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
-                            <div class="Container100">
-                                <p:inputText style="padding:15px !important;" value="#{authenticationController.userName}"
-                                             placeholder="Địa chỉ email hoặc số điện thoại" 
-                                             />
-                            </div>
-                            <div class="Container100">
-                                <p:password style="padding:15px !important;" value="#{authenticationController.password}"
-                                            placeholder="Password"/>
-                            </div>
-                            <div class="Container100 TexAlLeft">
-                                <div class="EmptyBox10"></div>
-                                <div id="j_idt16" class="ui-selectmanycheckbox ui-widget ui-grid ui-grid-responsive">
-                                    <div class="ui-grid-row">
-                                        <div class="ui-grid-col-12">
-                                            <td>
-                                                <div class="ui-chkbox ui-widget">
-                                                    <!--<div class="ui-helper-hidden-accessible">-->
-                                                    <!--                                                <input id="j_idt16:05" name="j_idt165"
-                                                                                                               type="checkbox"
-                                                                                                               value="Remember Me"/>-->
-                                                    <input id="j_idt16:0" name="j_idt16"
-                                                           type="checkbox"
-                                                           value="Remember Me"/>
-                                                    <!--</div>-->
-                                                    <!--                                                <div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">
-                                                                                                        <span class="ui-chkbox-icon ui-icon ui-icon-blank ui-c"></span>
-                                                                                                    </div>-->
-                                                </div>
-                                            </td>
-                                            <td><label for="j_idt16:0">Remember Me</label></td>
-                                        </div>
+                        <div class="Container100 TexAlLeft">
+                            <div class="EmptyBox10"></div>
+                            <div id="j_idt16" class="ui-selectmanycheckbox ui-widget ui-grid ui-grid-responsive">
+                                <div class="ui-grid-row">
+                                    <div class="ui-grid-col-12">
+                                        <td>
+                                            <div class="ui-chkbox ui-widget">
+                                                <!--<div class="ui-helper-hidden-accessible">-->
+                                                <!--                                                <input id="j_idt16:05" name="j_idt165"
+                                                                                                           type="checkbox"
+                                                                                                           value="Remember Me"/>-->
+                                                <input id="j_idt16:0" name="j_idt16"
+                                                       type="checkbox"
+                                                       value="Remember Me"/>
+                                                <!--</div>-->
+                                                <!--                                                <div class="ui-chkbox-box ui-widget ui-corner-all ui-state-default">
+                                                                                                    <span class="ui-chkbox-icon ui-icon ui-icon-blank ui-c"></span>
+                                                                                                </div>-->
+                                            </div>
+                                        </td>
+                                        <td><label for="j_idt16:0">Remember Me</label></td>
                                     </div>
                                 </div>
                             </div>
-
-                            <div class="EmptyBox20"></div>
-                            <div class="Container100">
-                                <p:commandButton styleClass="GreenButton" value="Sign In"
-                                                 actionListener="#{authenticationController.login}"
-                                                 onclick="PF('block').show()" oncomplete="PF('block').hide()" />
-                            </div>
-                            <div class="Container100">
-
-                                <a href="#{facesContext.externalContext.request.contextPath}/account-Registration"><i
-                                        ></i><span>Đăng ký tài khoản</span></a>
-
-                            </div>
-
                         </div>
 
                         <div class="EmptyBox20"></div>
-                        <div class="Wid100 FontLatoRegular Fs12 TransparentWhite"><i
-                                class="fa fa-copyright DispInlBlock"></i> Copyright 2018.
-                            <br/> All Rights Reserved by Motel.
+                        <div class="Container100">
+                            <p:commandButton styleClass="GreenButton" value="Sign In"
+                                             actionListener="#{authenticationController.login}"
+                                             onclick="PF('block').show()" oncomplete="PF('block').hide()"/>
                         </div>
-                        <div class="EmptyBox30"></div>
+                        <div class="Container100">
+
+                            <a href="#{facesContext.externalContext.request.contextPath}/account-Registration"><i
+                            ></i><span>Đăng ký tài khoản</span></a>
+
+                        </div>
+
                     </div>
+
+                    <div class="EmptyBox20"></div>
+                    <div class="Wid100 FontLatoRegular Fs12 TransparentWhite"><i
+                            class="fa fa-copyright DispInlBlock"></i> Copyright 2018.
+                        <br/> All Rights Reserved by Motel.
+                    </div>
+                    <div class="EmptyBox30"></div>
                 </div>
             </div>
-        </h:form>
-        <style type="text/css">
-            .ui-button-text, .ui-button-text-only .ui-button-text {
-                padding: 15px !important;
-                transition: none !important;
-            }
+        </div>
+    </h:form>
+    <style type="text/css">
+        .ui-button-text, .ui-button-text-only .ui-button-text {
+            padding: 15px !important;
+            transition: none !important;
+        }
 
-            body{
-                background-image: url(#{facesContext.externalContext.request.contextPath}/javax.faces.resource/images/backgroud-motel.jpg.xhtml?ln=olympos-layout) !important;
-                background-repeat: inherit;
-                background-position: center;
-                background-size: 100%;
-            }
+        body {
+            background-image: url(#{facesContext.externalContext.request.contextPath}/javax.faces.resource/images/backgroud-motel.jpg.xhtml?ln=olympos-layout) !important;
+            background-repeat: inherit;
+            background-position: center;
+            background-size: 100%;
+        }
 
-            body form{
-                padding-top: 0%;
+        body form {
+            padding-top: 0%;
 
-            }
-        </style>
-    </h:body>
+        }
+    </style>
+</h:body>
 
 </html>

@@ -21,7 +21,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -40,16 +40,17 @@
                                              update=":catRoleForm,catRoleDlgId"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['datatable.header.catRole']}" />
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.catRole']}"/>
                                 <p:dataExporter type="xls" target="tableCatRoleId" fileName="catRole" pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableCatRoleId" trigger="toggler">
-                                <p:ajax event="toggle" listener="#{roleController.onToggler}" />
+                                <p:ajax event="toggle" listener="#{roleController.onToggler}"/>
                             </p:columnToggler>
                         </div>
 
@@ -59,23 +60,23 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          visible="#{roleController.columnVisibale[0]}" >
+                          visible="#{roleController.columnVisibale[0]}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
                 <p:column headerText="#{msg['catRole.roleCode']}" width="40"
                           visible="#{roleController.columnVisibale[1]}"
-                          filterBy="#{catRole.roleCode}" sortBy="#{catRole.roleCode}" >
+                          filterBy="#{catRole.roleCode}" sortBy="#{catRole.roleCode}">
                     <h:outputText value="#{catRole.roleCode}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['catRole.roleName']}" width="40"
                           visible="#{roleController.columnVisibale[2]}"
-                          filterBy="#{catRole.roleName}" sortBy="#{catRole.roleName}" >
+                          filterBy="#{catRole.roleName}" sortBy="#{catRole.roleName}">
                     <h:outputText value="#{catRole.roleName}"/>
                 </p:column>
                 <p:column headerText="#{msg['catRole.status']}" width="40"
-                          visible="#{roleController.columnVisibale[3]}" 
+                          visible="#{roleController.columnVisibale[3]}"
                           filterBy="#{catRole.status}" sortBy="#{catRole.status}">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tableCatRoleWidget').filter()">
@@ -91,47 +92,53 @@
 
                 <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
                           visible="#{roleController.columnVisibale[4]}" styleClass="TexAlCenter">
-                    <p:tooltip position="top" ></p:tooltip>
+                    <p:tooltip position="top"></p:tooltip>
 
-                    <p:commandButton icon="fa fa-list-ul" actionListener="#{roleController.preEditHasFunctionPath(catRole)}"
+                    <p:commandButton icon="fa fa-list-ul"
+                                     actionListener="#{roleController.preEditHasFunctionPath(catRole)}"
                                      rendered="false"
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('roleHasFunctionPathDlg').show()"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('roleHasFunctionPathDlg').show()"
                                      update=":roleHasFunctionPathForm" id="updateRoleHasFunctionPathId"
-                                     title="Gán quyền chức năng" styleClass="White  Fs14 MarTop5 YellowButton" >
+                                     title="Gán quyền chức năng" styleClass="White  Fs14 MarTop5 YellowButton">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
-                    <p:commandButton icon="fa fa-list-ul" actionListener="#{roleController.preEditTreeHasFunctionPath(catRole)}"
-                                  
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('grantRoleDlg').show();"
+                    <p:commandButton icon="fa fa-list-ul"
+                                     actionListener="#{roleController.preEditTreeHasFunctionPath(catRole)}"
+
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('grantRoleDlg').show();"
                                      update=":grantRoleForm" id="grantRoleId"
-                                     title="Gán quyền chức năng" styleClass="White  Fs14 MarTop5 YellowButton" >
+                                     title="Gán quyền chức năng" styleClass="White  Fs14 MarTop5 YellowButton">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
-                    <p:commandButton icon="fa fa-list-ul" actionListener="#{roleController.preEditTreeHasAction(catRole)}"
-                                  
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('grantRoleActionDlg').show();"
+                    <p:commandButton icon="fa fa-list-ul"
+                                     actionListener="#{roleController.preEditTreeHasAction(catRole)}"
+
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('grantRoleActionDlg').show();"
                                      update=":grantRoleActionForm" id="grantRoleActionId"
-                                     title="Gán quyền hành động" styleClass="White  Fs14 MarTop5 GreenButton" >
+                                     title="Gán quyền hành động" styleClass="White  Fs14 MarTop5 GreenButton">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-edit" actionListener="#{roleController.preEdit(catRole)}"
-                                  
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('catRoleDlg').show()"
+
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('catRoleDlg').show()"
                                      update=":catRoleForm,catRoleDlgId" id="updateCatRoleId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{roleController.onDelete(catRole)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableCatRoleId "  disabled="#{catRole.status==1}"
+                                     update="tableCatRoleId " disabled="#{catRole.status==1}"
                                      title="Xóa" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                    message="#{msg['title.confirm.delete']}">
                         </p:confirm>
                     </p:commandButton>
                 </p:column>
-
 
 
             </p:dataTable>

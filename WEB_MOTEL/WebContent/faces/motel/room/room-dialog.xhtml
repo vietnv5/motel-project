@@ -4,7 +4,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
     <p:dialog modal="true" widgetVar="roomDlg" width="40%" id="roomDlgId">
@@ -15,14 +15,14 @@
 
         <h:form id="roomForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
 
                     <div class=" Container100">
                         <div class=" Container50">
                             <span class="title-top">
                                 <p:selectOneMenu value="#{roomController.currRoom.homeId}" required="true"
                                                  id="homeId" style="width: 40%"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}" >
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}">
                                     <f:selectItems value="#{roomController.lstHome}" var="p"
                                                    itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
 
@@ -35,11 +35,11 @@
                         <div class=" Container50">
                             <span class="md-inputfield">
                                 <p:inputText value="#{roomController.currRoom.roomName}"
-                                             id="roleNameId"  converter="trimConverter" maxlength="200"
+                                             id="roleNameId" converter="trimConverter" maxlength="200"
                                              title="#{msg['room.roomName']}"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['room.roomName'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['room.roomName']} *</label>
@@ -56,7 +56,7 @@
                                                required="true" decimalPlaces="0"
                                                requiredMessage="#{msg['common.required'].replace('{0}',msg['room.price'])}"
                                                title="#{msg['room.price']}"
-                                               >
+                                >
                                 </p:inputNumber>
 
                                 <label>#{msg['room.price']} *</label>
@@ -67,7 +67,7 @@
                             <span class="title-top">
                                 <p:selectOneMenu value="#{roomController.currRoom.status}" required="true"
                                                  id="statusId"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['room.status'])}" >
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['room.status'])}">
                                     <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
                                     <f:selectItem itemValue="1" itemLabel="#{msg['room.status.FREE']}"/>
                                     <f:selectItem itemValue="2" itemLabel="#{msg['room.status.USE']}"/>
@@ -79,16 +79,17 @@
                         </div>
                     </div>
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlCenter" >
+                <p:outputPanel class="Container100 TexAlCenter">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growl),:roomTableForm,:roomForm"
-                                     actionListener="#{roomController.onSaveOrUpdate()}" process=":roomForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{roomController.onSaveOrUpdate()}" process=":roomForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('roomDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('roomDlg').hide()">
 
                     </p:commandButton>
 
@@ -99,7 +100,9 @@
     </p:dialog>
 
     <p:confirmDialog global="true" closeOnEscape="true">
-        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
     </p:confirmDialog>
 </ui:composition>

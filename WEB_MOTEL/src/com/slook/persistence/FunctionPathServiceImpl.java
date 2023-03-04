@@ -10,17 +10,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author VietNV on Dec 19, 2017
  */
 @Scope("session")
 @Service(value = "functionPathService")
-public class FunctionPathServiceImpl extends GenericDaoImplNewV2<FunctionPath, Long> {
+public class FunctionPathServiceImpl extends GenericDaoImplNewV2<FunctionPath, Long>
+{
 
     private static FunctionPathServiceImpl instance;
 
-    public static FunctionPathServiceImpl getInstance() {
-        if (instance == null) {
+    public static FunctionPathServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new FunctionPathServiceImpl();
         }
         return instance;

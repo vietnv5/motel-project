@@ -25,41 +25,49 @@ import java.util.AbstractMap.SimpleEntry;
 /**
  * @author tamdx
  */
-public class CommonExport {
+public class CommonExport
+{
 
-    private CommonExport() {
+    private CommonExport()
+    {
         //Ham khoi tao
     }
 
-    public static String getTemplateExport() {
+    public static String getTemplateExport()
+    {
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
                 .getExternalContext().getContext();
         return ctx.getRealPath("/")
                 + File.separator + "templates" + File.separator + "TEMPLATE_EXPORT.xlsx";
     }
 
-    public static String getTemplateExportMultiSheet() {
+    public static String getTemplateExportMultiSheet()
+    {
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
                 .getExternalContext().getContext();
         return ctx.getRealPath("/") + File.separator + "templates" + File.separator + "TEMPLATE_EXPORT_MULTI_SHEET.xlsx";
     }
 
-    public static String getTemplateMultiExport(String fileName) {
+    public static String getTemplateMultiExport(String fileName)
+    {
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
                 .getExternalContext().getContext();
         return ctx.getRealPath("/") + File.separator + "templates" + File.separator + fileName;
 
     }
 
-    public static List<SimpleEntry<String, String>> buildExportHeader(String[] header, String[] align) {
+    public static List<SimpleEntry<String, String>> buildExportHeader(String[] header, String[] align)
+    {
         List<SimpleEntry<String, String>> headerAlign = new ArrayList<SimpleEntry<String, String>>();
-        for (int i = 0; i < header.length; i++) {
+        for (int i = 0; i < header.length; i++)
+        {
             headerAlign.add(new SimpleEntry(header[i], align[i]));
         }
         return headerAlign;
     }
 
-    public static String getPathSaveFileExport(String fileNameOut) {
+    public static String getPathSaveFileExport(String fileNameOut)
+    {
         String pathOut = getFolderSave();
         SimpleDateFormat dateFormat = new SimpleDateFormat();
         dateFormat.applyPattern("dd/MM/yyyy HH:mm:ss");
@@ -72,13 +80,15 @@ public class CommonExport {
         return pathOut;
     }
 
-    public static String getFolderSave() {
+    public static String getFolderSave()
+    {
         String pathOut;
         ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
                 .getExternalContext().getContext();
         pathOut = ctx.getRealPath("/") + Config.PATH_OUT;
         File folderOut = new File(pathOut);
-        if (!folderOut.exists()) {
+        if (!folderOut.exists())
+        {
             folderOut.mkdirs();
         }
         return pathOut;
@@ -86,10 +96,12 @@ public class CommonExport {
 
     public static File exportFile(List lstDTO, List<SimpleEntry<String, String>> headerAlign,
                                   String headerPrefix, String pathTemplate, String fileNameOut, int startRow,
-                                  String subTitle, int cellTitleIndex, String... title) throws Exception {
+                                  String subTitle, int cellTitleIndex, String... title) throws Exception
+    {
         String pathOut = getPathSaveFileExport(fileNameOut);
 
-        try {
+        try
+        {
             InputStream fileTemplate = new FileInputStream(pathTemplate);
             Workbook workbook = WorkbookFactory.create(fileTemplate);
 //            if (pathTemplate.endsWith(".xls") || pathTemplate.endsWith(".XLS")) {
@@ -103,37 +115,48 @@ public class CommonExport {
             initDataToSheet(workbook, worksheet, cellStyleTitle, lstDTO,
                     headerAlign, headerPrefix,
                     startRow, subTitle, cellTitleIndex, title);
-            try {
+            try
+            {
 
                 FileOutputStream fileOut = new FileOutputStream(pathOut);
                 workbook.write(fileOut);
                 fileOut.flush();
                 fileOut.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
             e.printStackTrace();
         }
         return new File(pathOut);
     }
 
-    public static File exportFileMultiSheet(ExcelDTO excel, String pathTemplate, String fileNameOut) throws Exception {
+    public static File exportFileMultiSheet(ExcelDTO excel, String pathTemplate, String fileNameOut) throws Exception
+    {
         String pathOut = getPathSaveFileExport(fileNameOut);
-        try {
+        try
+        {
             InputStream fileTemplate = new FileInputStream(pathTemplate);
             Workbook workbook = null;
-            if (pathTemplate.endsWith(".xls") || pathTemplate.endsWith(".XLS")) {
+            if (pathTemplate.endsWith(".xls") || pathTemplate.endsWith(".XLS"))
+            {
                 workbook = new HSSFWorkbook(fileTemplate);
-            } else if (pathTemplate.endsWith(".xlsx") || pathTemplate.endsWith(".XLSX")) {
+            }
+            else if (pathTemplate.endsWith(".xlsx") || pathTemplate.endsWith(".XLSX"))
+            {
                 workbook = new XSSFWorkbook(fileTemplate);
             }
             CellStyle cellStyleTitle = setStyleForWorkbook(workbook);
 
             List<SheetDTO> lstAllSheet = excel.getLstDataSheel();
             int i = 0;
-            for (SheetDTO sheet : lstAllSheet) {
+            for (SheetDTO sheet : lstAllSheet)
+            {
                 Sheet worksheet = workbook.getSheetAt(i);
                 initDataToSheet(workbook, worksheet, cellStyleTitle, sheet.getDataSheet(),
                         sheet.getHeaderAlign(), sheet.getHeaderPrefix(),
@@ -143,17 +166,22 @@ public class CommonExport {
                         sheet.getTitle());
                 i++;
             }
-            try {
+            try
+            {
 
                 FileOutputStream fileOut = new FileOutputStream(pathOut);
                 workbook.write(fileOut);
                 fileOut.flush();
                 fileOut.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
             e.printStackTrace();
         }
         return new File(pathOut);
@@ -163,14 +191,19 @@ public class CommonExport {
     //Quytv7_export_file_date_start
     public static File exportFileDate(int sheetIndex, List lstDTO, String startDate, String endDate, List<SimpleEntry<String, String>> headerAlign,
                                       String headerPrefix, String pathTemplate, String fileNameOut, int startRow,
-                                      String subTitle, int cellTitleIndex, String... title) throws Exception {
+                                      String subTitle, int cellTitleIndex, String... title) throws Exception
+    {
         String pathOut = getPathSaveFileExport(fileNameOut);
-        try {
+        try
+        {
             InputStream fileTemplate = new FileInputStream(pathTemplate);
             Workbook workbook = null;
-            if (pathTemplate.endsWith(".xls") || pathTemplate.endsWith(".XLS")) {
+            if (pathTemplate.endsWith(".xls") || pathTemplate.endsWith(".XLS"))
+            {
                 workbook = new HSSFWorkbook(fileTemplate);
-            } else if (pathTemplate.endsWith(".xlsx") || pathTemplate.endsWith(".XLSX")) {
+            }
+            else if (pathTemplate.endsWith(".xlsx") || pathTemplate.endsWith(".XLSX"))
+            {
                 workbook = new XSSFWorkbook(fileTemplate);
             }
             Sheet worksheet = workbook.getSheetAt(sheetIndex);
@@ -179,17 +212,22 @@ public class CommonExport {
             initDataToSheetDate(workbook, worksheet, cellStyleTitle, lstDTO, startDate, endDate,
                     headerAlign, headerPrefix,
                     startRow, subTitle, cellTitleIndex, title);
-            try {
+            try
+            {
 
                 FileOutputStream fileOut = new FileOutputStream(pathOut);
                 workbook.write(fileOut);
                 fileOut.flush();
                 fileOut.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
-        } catch (FileNotFoundException e) {
+        }
+        catch (FileNotFoundException e)
+        {
             e.printStackTrace();
         }
         return new File(pathOut);
@@ -200,9 +238,11 @@ public class CommonExport {
                                             List lstDTO, String startDate, String endDate, List<SimpleEntry<String, String>> headerAlign,
                                             String headerPrefix,
                                             int startRow, String subTitle, int cellTitleIndex, String... title)
-            throws Exception {
+            throws Exception
+    {
 
-        if (title != null && title.length > 0) {
+        if (title != null && title.length > 0)
+        {
             Row rowMainTitle = worksheet.createRow(startRow - 4);
             Cell mainCellTitle = rowMainTitle.createCell(cellTitleIndex - 2);
             mainCellTitle.setCellValue(title[0]);
@@ -220,7 +260,8 @@ public class CommonExport {
         hSSFFontDate.setColor(HSSFColor.BLACK.index);
         hSSFFontDate.setBoldweight(HSSFFont.BOLDWEIGHT_BOLD);
         cellStyleDate.setFont(hSSFFontDate);
-        if (startDate != null && endDate != null) {
+        if (startDate != null && endDate != null)
+        {
             Row rowMainTitle = worksheet.createRow(startRow - 3);
             Cell mainCellTitle = rowMainTitle.createCell(cellTitleIndex - 2);
             mainCellTitle.setCellValue(MessageUtil.getResourceBundleMessage("report.startTime")
@@ -254,11 +295,15 @@ public class CommonExport {
         hSSFFontHeader.setColor(HSSFColor.BLUE.index);
         cellStyleHeader.setFont(hSSFFontHeader);
 
-        for (int i = -1; i < headerAlign.size(); i++) {
+        for (int i = -1; i < headerAlign.size(); i++)
+        {
             Cell cellHeader = rowHeader.createCell(i + 1);
-            if (i == -1) {
+            if (i == -1)
+            {
                 cellHeader.setCellValue(MessageUtil.getResourceBundleMessage("datatable.header.stt"));
-            } else {
+            }
+            else
+            {
                 SimpleEntry<String, String> entry = headerAlign.get(i);
                 cellHeader.setCellValue(MessageUtil.getResourceBundleMessage(entry.getKey()));
 
@@ -295,46 +340,59 @@ public class CommonExport {
         cellStyleCenter.setWrapText(false);
 
         //Data
-        if (lstDTO != null && !lstDTO.isEmpty()) {
+        if (lstDTO != null && !lstDTO.isEmpty())
+        {
             //init mapColumn
             Object firstRow = lstDTO.get(0);
             Map<String, Field> mapField = new HashMap<String, Field>();
-            for (int j = 0; j < headerAlign.size(); j++) {
+            for (int j = 0; j < headerAlign.size(); j++)
+            {
                 SimpleEntry<String, String> entryHeader = headerAlign.get(j);
                 String header = entryHeader.getKey();
-                for (Field f : firstRow.getClass().getDeclaredFields()) {
+                for (Field f : firstRow.getClass().getDeclaredFields())
+                {
                     f.setAccessible(true);
-                    if (f.getName().equals(header)) {
+                    if (f.getName().equals(header))
+                    {
                         mapField.put(header, f);
                     }
                 }
             }
 
             //fillData
-            for (int i = 0; i < lstDTO.size(); i++) {
+            for (int i = 0; i < lstDTO.size(); i++)
+            {
                 Row row = worksheet.createRow(i + startRow + 1);
-                for (int j = -1; j < headerAlign.size(); j++) {
+                for (int j = -1; j < headerAlign.size(); j++)
+                {
                     Cell cell = row.createCell(j + 1);
-                    if (j == -1) {
+                    if (j == -1)
+                    {
                         cell.setCellValue(i + 1);
                         cell.setCellStyle(cellStyleCenter);
-                    } else {
+                    }
+                    else
+                    {
                         SimpleEntry<String, String> entryHeader = headerAlign.get(j);
                         String header = entryHeader.getKey();
                         String align = entryHeader.getValue();
                         Object obj = lstDTO.get(i);
                         Field f = mapField.get(header);
 //                            f.setAccessible(true);
-                        if (f.getName().equals(header)) {
+                        if (f.getName().equals(header))
+                        {
                             Object value = f.get(obj);
                             cell.setCellValue(value == null ? "" : value.toString());
-                            if ("CENTER".equals(align)) {
+                            if ("CENTER".equals(align))
+                            {
                                 cell.setCellStyle(cellStyleCenter);
                             }
-                            if ("LEFT".equals(align)) {
+                            if ("LEFT".equals(align))
+                            {
                                 cell.setCellStyle(cellStyleLeft);
                             }
-                            if ("RIGHT".equals(align)) {
+                            if ("RIGHT".equals(align))
+                            {
                                 cell.setCellStyle(cellStyleRight);
                             }
                         }
@@ -346,16 +404,19 @@ public class CommonExport {
         }
 
         //Set Width
-        for (int i = 0; i <= headerAlign.size(); i++) {
+        for (int i = 0; i <= headerAlign.size(); i++)
+        {
             worksheet.autoSizeColumn(i);
-            if (worksheet.getColumnWidth(i) > 20000) {
+            if (worksheet.getColumnWidth(i) > 20000)
+            {
                 worksheet.setColumnWidth(i, 20000);
             }
         }
     }
     //Quytv7_export_file_date_start
 
-    private static CellStyle setStyleForWorkbook(Workbook workbook) {
+    private static CellStyle setStyleForWorkbook(Workbook workbook)
+    {
         CellStyle cellStyle;
 
         CellStyle cellStyleFormatNumber = workbook.createCellStyle();
@@ -395,9 +456,11 @@ public class CommonExport {
                                         List lstDTO, List<SimpleEntry<String, String>> headerAlign,
                                         String headerPrefix,
                                         int startRow, String subTitle, int cellTitleIndex, String... title)
-            throws Exception {
+            throws Exception
+    {
 
-        if (title != null && title.length > 0) {
+        if (title != null && title.length > 0)
+        {
             Row rowMainTitle = worksheet.createRow(startRow - 4);
             Cell mainCellTitle = rowMainTitle.createCell(cellTitleIndex - 2);
             mainCellTitle.setCellValue(title[0]);
@@ -430,11 +493,15 @@ public class CommonExport {
         hSSFFontHeader.setColor(HSSFColor.BLUE.index);
         cellStyleHeader.setFont(hSSFFontHeader);
 
-        for (int i = -1; i < headerAlign.size(); i++) {
+        for (int i = -1; i < headerAlign.size(); i++)
+        {
             Cell cellHeader = rowHeader.createCell(i + 1);
-            if (i == -1) {
+            if (i == -1)
+            {
                 cellHeader.setCellValue(MessageUtil.getResourceBundleMessage("datatable.header.stt"));
-            } else {
+            }
+            else
+            {
                 SimpleEntry<String, String> entry = headerAlign.get(i);
                 String[] header = entry.getKey().split("=");
                 String hd = header.length > 1 ? header[1] : header[0];
@@ -473,7 +540,8 @@ public class CommonExport {
         cellStyleCenter.setWrapText(false);
 
         //Data
-        if (lstDTO != null && !lstDTO.isEmpty()) {
+        if (lstDTO != null && !lstDTO.isEmpty())
+        {
             //init mapColumn
 //            Object firstRow = lstDTO.get(0);
 //            Map<String, DatapathObject> mapField = new HashMap<String, DatapathObject>();
@@ -486,34 +554,45 @@ public class CommonExport {
 //            }
 
             //fillData
-            for (int i = 0; i < lstDTO.size(); i++) {
+            for (int i = 0; i < lstDTO.size(); i++)
+            {
                 Row row = worksheet.createRow(i + startRow + 1);
-                for (int j = -1; j < headerAlign.size(); j++) {
+                for (int j = -1; j < headerAlign.size(); j++)
+                {
                     Cell cell = row.createCell(j + 1);
-                    if (j == -1) {
+                    if (j == -1)
+                    {
                         cell.setCellValue(i + 1);
                         cell.setCellStyle(cellStyleCenter);
-                    } else {
+                    }
+                    else
+                    {
                         SimpleEntry<String, String> entryHeader = headerAlign.get(j);
                         String[] header = entryHeader.getKey().split("=");
                         String align = entryHeader.getValue();
                         Object obj = lstDTO.get(i);
 
                         DatapathObject dObj = resolveDatapath(header[0], obj);
-                        try {
+                        try
+                        {
                             dObj.getField().setAccessible(true);
-                        } catch (Exception ex) {
+                        }
+                        catch (Exception ex)
+                        {
                             System.out.println(header[0] + "-" + header[1]);
                         }
                         Object value = dObj.getField().get(dObj.getParent());
                         cell.setCellValue(value == null ? "" : value.toString());
-                        if ("CENTER".equals(align)) {
+                        if ("CENTER".equals(align))
+                        {
                             cell.setCellStyle(cellStyleCenter);
                         }
-                        if ("LEFT".equals(align)) {
+                        if ("LEFT".equals(align))
+                        {
                             cell.setCellStyle(cellStyleLeft);
                         }
-                        if ("RIGHT".equals(align)) {
+                        if ("RIGHT".equals(align))
+                        {
                             cell.setCellStyle(cellStyleRight);
                         }
                     }
@@ -523,20 +602,24 @@ public class CommonExport {
         }
 
         //Set Width
-        for (int i = 0; i <= headerAlign.size(); i++) {
+        for (int i = 0; i <= headerAlign.size(); i++)
+        {
             worksheet.autoSizeColumn(i);
-            if (worksheet.getColumnWidth(i) > 20000) {
+            if (worksheet.getColumnWidth(i) > 20000)
+            {
                 worksheet.setColumnWidth(i, 20000);
             }
         }
     }
 
-    public static String getPathSaveFile(String fileNameOut, String extension) {
+    public static String getPathSaveFile(String fileNameOut, String extension)
+    {
         String pathOut;
         pathOut = FacesContext.getCurrentInstance().getExternalContext().getRequestContextPath()
                 + Config.PATH_OUT;
         File folderOut = new File(pathOut);
-        if (!folderOut.exists()) {
+        if (!folderOut.exists())
+        {
             folderOut.mkdir();
         }
         SimpleDateFormat dateFormat = new SimpleDateFormat();
@@ -551,9 +634,11 @@ public class CommonExport {
     }
 
     private static DatapathObject resolveDatapath(String path, Object parent) throws
-            IllegalArgumentException, IllegalAccessException {
+            IllegalArgumentException, IllegalAccessException
+    {
         String subString = path;
-        if (!subString.contains(".")) {
+        if (!subString.contains("."))
+        {
             //We haven reached the end of the path
             Field field = getField(subString, parent.getClass());
             return new DatapathObject(parent, field);
@@ -567,15 +652,21 @@ public class CommonExport {
                 field.get(parent));
     }
 
-    private static Field getField(String name, Class<?> parent) {
+    private static Field getField(String name, Class<?> parent)
+    {
         Field[] fields = parent.getDeclaredFields();
 
-        for (Field f : fields) {
+        for (Field f : fields)
+        {
             String current = f.getName();
-            if (current.equalsIgnoreCase(name)) {
-                try {
+            if (current.equalsIgnoreCase(name))
+            {
+                try
+                {
                     return parent.getDeclaredField(current);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
@@ -583,21 +674,25 @@ public class CommonExport {
         return null;
     }
 
-    static class DatapathObject {
+    static class DatapathObject
+    {
 
         private final Object parent;
         private final Field field;
 
-        public DatapathObject(Object parent, Field field) {
+        public DatapathObject(Object parent, Field field)
+        {
             this.parent = parent;
             this.field = field;
         }
 
-        public Object getParent() {
+        public Object getParent()
+        {
             return parent;
         }
 
-        public Field getField() {
+        public Field getField()
+        {
             return field;
         }
     }
@@ -605,14 +700,19 @@ public class CommonExport {
     //tuanpv
     public static File saveFileResultFromInputFile(int sheetIndex, int startRow, int startColumn,
                                                    InputStream fileTemplate, String fileNameOut, List<String> lstData,
-                                                   String header1, int headerRow1, String header2, int headerRow2) {
+                                                   String header1, int headerRow1, String header2, int headerRow2)
+    {
         String pathOut = getPathSaveFileExport(fileNameOut);
-        try {
+        try
+        {
 //            InputStream fileTemplate = new FileInputStream(pathTemplate);
             Workbook workbook = null;
-            if (fileNameOut.endsWith(".xls") || fileNameOut.endsWith(".XLS")) {
+            if (fileNameOut.endsWith(".xls") || fileNameOut.endsWith(".XLS"))
+            {
                 workbook = new HSSFWorkbook(fileTemplate);
-            } else if (fileNameOut.endsWith(".xlsx") || fileNameOut.endsWith(".XLSX")) {
+            }
+            else if (fileNameOut.endsWith(".xlsx") || fileNameOut.endsWith(".XLSX"))
+            {
                 workbook = new XSSFWorkbook(fileTemplate);
             }
             Sheet worksheet = workbook.getSheetAt(sheetIndex);
@@ -637,7 +737,8 @@ public class CommonExport {
             Cell cellValue = rowValue.getCell(0);
             CellStyle cellStyle = cellValue.getCellStyle();
 
-            for (int i = 0; i < lstData.size(); i++) {
+            for (int i = 0; i < lstData.size(); i++)
+            {
                 Row row = worksheet.getRow(i + startRow);
                 Cell cell = row.createCell(startColumn);
                 cell.setCellValue(lstData.get(i));
@@ -647,17 +748,22 @@ public class CommonExport {
 
             worksheet.autoSizeColumn(startColumn);
 
-            try {
+            try
+            {
 
                 FileOutputStream fileOut = new FileOutputStream(pathOut);
                 workbook.write(fileOut);
                 fileOut.flush();
                 fileOut.close();
-            } catch (IOException e) {
+            }
+            catch (IOException e)
+            {
                 e.printStackTrace();
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return new File(pathOut);

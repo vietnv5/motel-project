@@ -65,7 +65,8 @@
                                          style="color:green; font-weight: bold;font-size: 13px ">
                         </p:commandButton>
                         <p:spacer width="2px;"/>
-                        <p:commandButton icon="fa fa-trash" rendered="#{sessionUtil.getUrlDisplay('/document.action_delete_document')}"
+                        <p:commandButton icon="fa fa-trash"
+                                         rendered="#{sessionUtil.getUrlDisplay('/document.action_delete_document')}"
                                          actionListener="#{documentController.preDeleteDocument(objDocument)}"
                                          onclick="PF('deleteDocument').show()"
                                          update=""

@@ -46,67 +46,107 @@ import java.util.concurrent.Semaphore;
  *
  * <p>The object is named after cassette players which boast the feature "auto stop", meaning they stop automatically
  * once the cassette is finished.</p>
- * 
+ *
  * @author This source is copyright <a href="http://www.databasesandlife.com">Adrian Smith</a> and licensed under the LGPL 3.
  * @version $Revision: 2249 $
  */
-public class AutoStopThreadPool {
+public class AutoStopThreadPool
+{
 
     protected String threadNamePrefix;
     protected int workerThreadCount;
 
-    /** Initial number of permits is (1-threadCount); each thread calls release() on completion; exeute() waits for acquire() */
+    /**
+     * Initial number of permits is (1-threadCount); each thread calls release() on completion; exeute() waits for acquire()
+     */
     protected Semaphore completedSemaphore;
 
-    /** Tasks which have not been started yet */
+    /**
+     * Tasks which have not been started yet
+     */
     protected Queue<Runnable> notStartedTaskQueue = new LinkedList<Runnable>();
 
-    /** Counts the number of tasks which are either in notStartedTaskQueue OR are currently being executed */
+    /**
+     * Counts the number of tasks which are either in notStartedTaskQueue OR are currently being executed
+     */
     protected int notCompletedTaskCount = 0;
 
-    /** If not null, then a task has thrown an exception which should be rethrown by execute() */
+    /**
+     * If not null, then a task has thrown an exception which should be rethrown by execute()
+     */
     protected RuntimeException thrown = null;
 
-    protected class Worker implements Runnable {
-        public void run() {
-            try {
-                while (true) {
+    protected class Worker implements Runnable
+    {
+        public void run()
+        {
+            try
+            {
+                while (true)
+                {
                     Runnable nextTask;
-                    synchronized (AutoStopThreadPool.this) {
+                    synchronized (AutoStopThreadPool.this)
+                    {
                         nextTask = notStartedTaskQueue.poll();  // null if queue is empty
                     }
 
                     // If queue is empty then we can't start a new task;
                     //   If no task is running then no new tasks will ever be produced so shut down
                     //   If some tasks are sill running, they might produce new tasks so just wait and try again
-                    if (nextTask == null) {
-                        synchronized (AutoStopThreadPool.this) {
-                            if (notCompletedTaskCount == 0) break;
+                    if (nextTask == null)
+                    {
+                        synchronized (AutoStopThreadPool.this)
+                        {
+                            if (notCompletedTaskCount == 0)
+                            {
+                                break;
+                            }
                         }
 
-                        try { Thread.sleep(100); } // 0.1 s
-                        catch (InterruptedException e) { }
+                        try
+                        {
+                            Thread.sleep(100);
+                        } // 0.1 s
+                        catch (InterruptedException e)
+                        {
+                        }
                         continue;
                     }
 
-                    try {
+                    try
+                    {
                         nextTask.run();
                     }
-                    catch (RuntimeException e) { thrown = e; }
-                    catch (Exception e) { thrown = new RuntimeException(e); }
-                    finally {
-                        synchronized (AutoStopThreadPool.this) {
+                    catch (RuntimeException e)
+                    {
+                        thrown = e;
+                    }
+                    catch (Exception e)
+                    {
+                        thrown = new RuntimeException(e);
+                    }
+                    finally
+                    {
+                        synchronized (AutoStopThreadPool.this)
+                        {
                             notCompletedTaskCount--;
                         }
                     }
                 }
             }
-            catch (Throwable e) { thrown = new RuntimeException(e); } // Throwable ends while loop, e.g. out of memory
-            finally { completedSemaphore.release(); }
+            catch (Throwable e)
+            {
+                thrown = new RuntimeException(e);
+            } // Throwable ends while loop, e.g. out of memory
+            finally
+            {
+                completedSemaphore.release();
+            }
         }
     }
 
-    public AutoStopThreadPool(String name, int workerThreadCount) {
+    public AutoStopThreadPool(String name, int workerThreadCount)
+    {
         this.threadNamePrefix = name;
         this.workerThreadCount = workerThreadCount;
     }
@@ -115,25 +155,33 @@ public class AutoStopThreadPool {
      * Add this runnable to the queue of tasks to be executed.
      * It will only start executing when the <code>execute</code> method is called.
      */
-    public synchronized void addTask(Runnable r) {
+    public synchronized void addTask(Runnable r)
+    {
         notStartedTaskQueue.add(r);
         notCompletedTaskCount++;
     }
 
     /**
      * Starts the threads and execute all tasks, returning once they have all been completed.
+     *
      * @throws RuntimeException if a task has thrown an exception.
-     * (Regrettably checked exceptions cannot be safely or usefully thrown,
-     * <a href="http://www.databasesandlife.com/checked-exceptions-and-java-callables/" target=blank>more info</a>)
+     *                          (Regrettably checked exceptions cannot be safely or usefully thrown,
+     *                          <a href="http://www.databasesandlife.com/checked-exceptions-and-java-callables/" target=blank>more info</a>)
      */
-    public void execute() {
+    public void execute()
+    {
         completedSemaphore = new Semaphore(1 - workerThreadCount);
 
         for (int i = 0; i < workerThreadCount; i++)
-            new Thread(new Worker(), threadNamePrefix+"-"+i).start();
+        {
+            new Thread(new Worker(), threadNamePrefix + "-" + i).start();
+        }
 
         completedSemaphore.acquireUninterruptibly();
 
-        if (thrown != null) throw thrown;
+        if (thrown != null)
+        {
+            throw thrown;
+        }
     }
 }

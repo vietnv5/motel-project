@@ -4,9 +4,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
-    <p:dialog modal="true" header="Thanh toán" widgetVar="clientPaymentFinalDlg" width="80%" id="clientPaymentFinalId" height="600px">
+    <p:dialog modal="true" header="Thanh toán" widgetVar="clientPaymentFinalDlg" width="80%" id="clientPaymentFinalId"
+              height="600px">
 
         <h:form id="insertClientPaymentFinalForm">
             <div class="Card">
@@ -16,7 +17,7 @@
                             <p:inputText value="#{clientController.curClient.clientPayment.paymentCode}"
                                          id="grouppackcode" readonly="true" disabled="true"
                                          title="#{msg['memberPayment.paymentCode']}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['memberPayment.paymentCode']}</label>
@@ -28,7 +29,7 @@
                             <p:inputText value="#{authenticationController.user.userName}"
                                          readonly="true" disabled="true"
                                          title="#{msg['memberPayment.employee']}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['memberPayment.employee']}</label>
@@ -41,7 +42,7 @@
                             <p:inputNumber value="#{clientController.curClient.clientPayment.price}" decimalPlaces="0"
                                            id="priceId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
                                            title="#{msg['clientPayment.price']}"
-                                           >
+                            >
                             </p:inputNumber>
 
                             <label>#{msg['clientPayment.price']} </label>
@@ -50,10 +51,11 @@
                     </div>
                     <div class="Container25 ">
                         <span class="md-inputfield">
-                            <p:inputNumber value="#{clientController.curClient.clientPayment.totalDeposit}" decimalPlaces="0"
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.totalDeposit}"
+                                           decimalPlaces="0"
                                            id="totalDeposit" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
                                            title="#{msg['payment.totalDeposit']}"
-                                           >
+                            >
                             </p:inputNumber>
 
                             <label>#{msg['payment.totalDeposit']} </label>
@@ -66,7 +68,7 @@
                                            required="true" decimalPlaces="0"
                                            requiredMessage="#{msg['common.required'].replace('{0}',msg['membership.memberPayment.paymentValue'])}"
                                            title="#{msg['memberPayment.paymentValue']}"
-                                           >
+                            >
 
                                 <p:ajax update="priceId,debtId" process="@this"
                                         onstart="PF('block').show()" oncomplete="PF('block').hide()"
@@ -79,10 +81,11 @@
                     </div>
                     <div class="Container25 MarTop30">
                         <span class="md-inputfield">
-                            <p:inputNumber value="#{clientController.curClient.clientPayment.debt}" styleClass="boldText"
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.debt}"
+                                           styleClass="boldText"
                                            id="debtId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
                                            title="#{msg['payment.surplus']}" decimalPlaces="0"
-                                           >
+                            >
                             </p:inputNumber>
 
                             <label>#{msg['payment.surplus']} *</label>
@@ -96,7 +99,7 @@
                                              filter="true" filterMatchMode="contains" style="width: 135px;"
                                              required="#{false and clientController.curClient.clientPayment.debt lt 0}"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['memberPayment.reason'])}"
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
                                 <f:selectItems value="#{clientController.lstReason}" var="item" itemLabel="#{item.name}"
                                                itemValue="#{item.name}"/>
@@ -111,7 +114,7 @@
                             <p:inputTextarea value="#{clientController.curClient.clientPayment.description}"
                                              id="descriptionId" rows="1" style="width: 70%"
                                              title="#{msg['memberPayment.description']}"
-                                             >
+                            >
                             </p:inputTextarea>
                             <label>#{msg['memberPayment.description']} </label>
                         </span>
@@ -128,14 +131,17 @@
                                      value="In hóa đơn"
                                      title="In từ máy cá nhân"/>
 
-                    <p:commandButton value="#{msg['payment.button']}  &amp; Ngừng sử dụng" styleClass="GreenButton White"
+                    <p:commandButton value="#{msg['payment.button']}  &amp; Ngừng sử dụng"
+                                     styleClass="GreenButton White"
                                      update="@widgetVar(tblPayment),@widgetVar(growl),:insertClientForm,:insertClientPaymentFinalForm
                                      ,:clientForm,:customerCheckoutSearchForm, :cfImgFormLocal"
-                                     actionListener="#{clientController.clientPaymentFinal()}" process=":insertClientPaymentFinalForm"
+                                     actionListener="#{clientController.clientPaymentFinal()}"
+                                     process=":insertClientPaymentFinalForm"
                                      onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();">
                     </p:commandButton>
 
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
                                      onclick="PF('clientPaymentFinalDlg').hide()">
 
                     </p:commandButton>
@@ -144,26 +150,31 @@
             </div>
         </h:form>
         <h:form id="clientPaymentFinalForm">
-            <p:dataTable value="#{clientController.lstClientPaymentUsingPack}" var="obj2" widgetVar="tblClientPaymentFinal"
+            <p:dataTable value="#{clientController.lstClientPaymentUsingPack}" var="obj2"
+                         widgetVar="tblClientPaymentFinal"
                          rowIndexVar="r2" editable="true" editMode="cell" id="tblClientPaymentFinalId"
                          rows="10" paginator="true" paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
                          rowsPerPageTemplate="5,10,15,20,30,50"
-                         >
+            >
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
 
                         <h:outputText value="#{msg['view.header.clientPayment']}"/>
-                        <p:commandButton icon="fa fa-file-excel-o" ajax="false" styleClass="White BlueButton Fs14 MarTop5" rendered="false"
-                                         actionListener="#{commonUtilsController.attributeListener}" style="float: right">
+                        <p:commandButton icon="fa fa-file-excel-o" ajax="false"
+                                         styleClass="White BlueButton Fs14 MarTop5" rendered="false"
+                                         actionListener="#{commonUtilsController.attributeListener}"
+                                         style="float: right">
                             <f:attribute name="headerExport" value="Thông tin thanh toán"/>
-                            <p:dataExporter type="xls" target="tblClientPaymentFinalId" fileName="client" pageOnly="false"
+                            <p:dataExporter type="xls" target="tblClientPaymentFinalId" fileName="client"
+                                            pageOnly="false"
                                             postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                         </p:commandButton>
                     </div>
                 </f:facet>
-                <p:ajax event="cellEdit" listener="#{clientController.onCellClientPaymentUsingPackEdit}" update=":insertClientPaymentFinalForm:panelAddHealth3"/>
+                <p:ajax event="cellEdit" listener="#{clientController.onCellClientPaymentUsingPackEdit}"
+                        update=":insertClientPaymentFinalForm:panelAddHealth3"/>
                 <p:column headerText="#{msg['datatable.header.stt']}" width="10">
                     <h:outputText value="#{r2 + 1}"/>
                 </p:column>
@@ -171,7 +182,8 @@
                     <h:outputText value="#{obj2.paymentCode} "/>
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="150">
-                    <h:outputText value="#{obj2.clientUsePack.groupPack.groupPackName} (" rendered="#{obj2.clientUsePack.groupPack.groupPackName!=null}"/>
+                    <h:outputText value="#{obj2.clientUsePack.groupPack.groupPackName} ("
+                                  rendered="#{obj2.clientUsePack.groupPack.groupPackName!=null}"/>
 
                     <p:repeat value="#{obj2.clientUsePack.groupPack.packs}" var="p" varStatus="v">
                         <h:outputText value="#{p.packName}"/>
@@ -193,10 +205,12 @@
                     </h:outputText>
                     <h:outputText value=" VNĐ"/>
                 </p:column>
-                <p:column headerText="#{msg['clientPayment.status']}" width="60" >
+                <p:column headerText="#{msg['clientPayment.status']}" width="60">
                     <p:cellEditor rendered="#{obj2.type==1}">
-                        <f:facet name="output"><h:outputText value="#{obj2.statusName}"/></f:facet>
-                        <f:facet name="input" >
+                        <f:facet name="output">
+                            <h:outputText value="#{obj2.statusName}"/>
+                        </f:facet>
+                        <f:facet name="input">
                             <h:selectOneMenu value="#{obj2.status}" style="width:100%">
                                 <f:selectItem itemLabel="#{msg['payment.status0']}" itemValue="0"/>
                                 <f:selectItem itemLabel="#{msg['payment.status1']}" itemValue="1"/>
@@ -209,7 +223,8 @@
                     <h:outputText value="#{obj2.typeName}"/>
                 </p:column>
                 <p:column headerText="#{msg['memberPayment.createTime']}" width="100" sortBy="#{obj2.createTime}"
-                          ><h:outputText value="#{obj2.createTime}">
+                >
+                    <h:outputText value="#{obj2.createTime}">
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
                     </h:outputText>
                 </p:column>
@@ -251,17 +266,19 @@
                         </p:graphicImage>
                     </div>
                 </h:panelGroup>
-                <p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5" widgetVar="exportClientPayment"
+                <p:commandButton icon="fa fa-file-excel-o" styleClass="BlueButton Fs14 White Marleft5"
+                                 widgetVar="exportClientPayment"
                                  id="exportClientPaymentId"
                                  title="#{msg['view.dlg.export.obj']}"
                                  value="Tải file"
                                  onclick="PF('clientPaymentFinalDlgExport').hide();"
                                  update="@widgetVar(growl)"
                                  ajax="false"
-                                 >
+                >
                     <p:fileDownload value="#{clientController.fileExported}"/>
                 </p:commandButton>
-                <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
+                <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                 process="@this"
                                  onclick="PF('clientPaymentFinalDlgExport').hide()">
 
                 </p:commandButton>

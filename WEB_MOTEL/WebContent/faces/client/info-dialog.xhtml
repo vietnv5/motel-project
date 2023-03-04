@@ -4,9 +4,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
-    <p:dialog modal="true" header="#{msg['dialog.header.client.info']}" widgetVar="clientInfoDlg" width="80%"  height="600px">
+    <p:dialog modal="true" header="#{msg['dialog.header.client.info']}" widgetVar="clientInfoDlg" width="80%"
+              height="600px">
 
         <h:form id="insertClientForm">
             <div class="Container100 Responsive50">
@@ -17,13 +18,14 @@
                     <ui:include src="info-global.xhtml"/>
                     <ui:include src="info-clientUsePack.xhtml"/>
                     <p:tab title="#{msg['view.header.clientPayment']}">
-                        <p:dataTable value="#{clientController.curClient.clientPayments}" var="obj2" widgetVar="tblPayment"
+                        <p:dataTable value="#{clientController.curClient.clientPayments}" var="obj2"
+                                     widgetVar="tblPayment"
                                      rowIndexVar="r2"
                                      rows="10" paginator="true" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                                     rowsPerPageTemplate="5,10,15,20,30,50" 
-                                     >
+                                     rowsPerPageTemplate="5,10,15,20,30,50"
+                        >
                             <f:facet name="header">
                                 <h:outputText value="#{msg['view.header.clientPayment']}"/>
                             </f:facet>
@@ -48,13 +50,14 @@
                                 </h:outputText>
                                 <h:outputText value=" VNĐ"/>
                             </p:column>
-                            <p:column headerText="#{msg['membership.memberPayment.paymentValue']}" styleClass="TexAlRight"  width="100">
+                            <p:column headerText="#{msg['membership.memberPayment.paymentValue']}"
+                                      styleClass="TexAlRight" width="100">
                                 <h:outputText value="#{obj2.paymentValue}">
                                     <f:convertNumber pattern="#,###"/>
                                 </h:outputText>
                                 <h:outputText value=" VNĐ"/>
                             </p:column>
-                            <p:column headerText="#{msg['payment.guestDeposit']}" styleClass="TexAlRight"  width="100">
+                            <p:column headerText="#{msg['payment.guestDeposit']}" styleClass="TexAlRight" width="100">
                                 <h:outputText value="#{obj2.guestDeposit}">
                                     <f:convertNumber pattern="#,###"/>
                                 </h:outputText>
@@ -70,8 +73,10 @@
                                 <h:outputText value="#{obj2.typeName}"/>
                             </p:column>
 
-                            <p:column headerText="#{msg['memberPayment.createTime']}" width="100" sortBy="#{obj2.createTime}"
-                                      ><h:outputText value="#{obj2.createTime}">
+                            <p:column headerText="#{msg['memberPayment.createTime']}" width="100"
+                                      sortBy="#{obj2.createTime}"
+                            >
+                                <h:outputText value="#{obj2.createTime}">
                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
                                 </h:outputText>
                             </p:column>
@@ -90,31 +95,39 @@
 
                         </p:dataTable>
                         <p:outputPanel class="Container100 TexAlRight" id="memberPaymentPanel">
-                            <b> <h:outputText  value="Tổng công nợ: "/>
+                            <b>
+                                <h:outputText value="Tổng công nợ: "/>
                                 <h:outputText id="totalPaymentId" value="#{clientController.curClient.totalPayment}">
                                     <f:convertNumber pattern="#,###"/>
                                 </h:outputText>
                                 <h:outputText value=" VNĐ "/>
                             </b>
-                            <p:commandButton  value="Thanh toán " styleClass="GreenButton White" 
-                                              onclick="PF('blockDlg').show()" actionListener="#{clientController.preAddClientPaymentFinal()}"
-                                              oncomplete="PF('clientPaymentFinalDlg').show();PF('blockDlg').hide();" update=":clientPaymentFinalId"
-                                              title="Thanh toán"
-                                              />
-                            <p:commandButton  value="Ngừng sử dụng" styleClass="GreenButton White"  disabled="#{clientController.curClient.totalPayment!=0}"
-                                              onclick="PF('blockDlg').show()" actionListener="#{clientController.checkOutClient()}"
-                                              oncomplete="PF('blockDlg').hide();" update=":insertClientForm"
-                                              title="Thanh toán"
-                                              >
+                            <p:commandButton value="Thanh toán " styleClass="GreenButton White"
+                                             onclick="PF('blockDlg').show()"
+                                             actionListener="#{clientController.preAddClientPaymentFinal()}"
+                                             oncomplete="PF('clientPaymentFinalDlg').show();PF('blockDlg').hide();"
+                                             update=":clientPaymentFinalId"
+                                             title="Thanh toán"
+                            />
+                            <p:commandButton value="Ngừng sử dụng" styleClass="GreenButton White"
+                                             disabled="#{clientController.curClient.totalPayment!=0}"
+                                             onclick="PF('blockDlg').show()"
+                                             actionListener="#{clientController.checkOutClient()}"
+                                             oncomplete="PF('blockDlg').hide();" update=":insertClientForm"
+                                             title="Thanh toán"
+                            >
                                 <p:confirm icon="ui-icon-alert" header="Ngừng sử dụng"
-                                           message="Bạn chắc chắn ngừng sử dụng" >
+                                           message="Bạn chắc chắn ngừng sử dụng">
                                 </p:confirm>
                             </p:commandButton>
-                            <p:commandButton  value="Tất toán" styleClass="GreenButton White" disabled="#{clientController.curClient.totalPayment ge 0}"
-                                              onclick="PF('blockDlg').show()" actionListener="#{clientController.preAddLiquidate()}"
-                                              oncomplete="PF('clientLiquidateDlg').show();PF('blockDlg').hide();" update=":clientLiquidateDlgId"
-                                              title="Thanh toán" rendered="false"
-                                              />
+                            <p:commandButton value="Tất toán" styleClass="GreenButton White"
+                                             disabled="#{clientController.curClient.totalPayment ge 0}"
+                                             onclick="PF('blockDlg').show()"
+                                             actionListener="#{clientController.preAddLiquidate()}"
+                                             oncomplete="PF('clientLiquidateDlg').show();PF('blockDlg').hide();"
+                                             update=":clientLiquidateDlgId"
+                                             title="Thanh toán" rendered="false"
+                            />
                         </p:outputPanel>
                     </p:tab>
 
@@ -126,8 +139,8 @@
                                      rows="10" paginator="true" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                                     rowsPerPageTemplate="5,10,15,20,30,50" 
-                                     >
+                                     rowsPerPageTemplate="5,10,15,20,30,50"
+                        >
                             <f:facet name="header">
                                 <h:outputText value="#{msg['view.header.member.promotion']}"/>
                             </f:facet>
@@ -141,9 +154,10 @@
                                 <h:outputText value="#{objp.description}"/>
                             </p:column>
                             <p:column headerText="#{msg['datatable.header.promotion.value']}" styleClass="TexAlRight">
-                                <h:outputText value="#{objp.value}" />
+                                <h:outputText value="#{objp.value}"/>
                             </p:column>
-                            <p:column headerText="#{msg['datatable.header.promotion.createdate']}" styleClass="TexAlCenter">
+                            <p:column headerText="#{msg['datatable.header.promotion.createdate']}"
+                                      styleClass="TexAlCenter">
                                 <h:outputText value="#{objp.createDate}">
                                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </h:outputText>

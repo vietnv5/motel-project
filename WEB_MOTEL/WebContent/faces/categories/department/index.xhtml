@@ -11,16 +11,17 @@
             <div class="Card">
                 <p:panel id="panelAddDepartment" style="display: none">
 
-                    <p:outputPanel styleClass="Card" style="width: 50% !important; margin-left: 25%" >
-                        <p:outputPanel class="Container100 TexAlLeft" >
+                    <p:outputPanel styleClass="Card" style="width: 50% !important; margin-left: 25%">
+                        <p:outputPanel class="Container100 TexAlLeft">
 
                             <div class="Container100">
                                 <div class="Container33">
                                         <span class="md-inputfield">
-                                            <p:inputText value="#{departmentController.currentDepartment.departmentCode}"
-                                                         id="departmentCode"
-                                                         required="true"
-                                                         requiredMessage="Mã bộ phận là bắt buộc"
+                                            <p:inputText
+                                                    value="#{departmentController.currentDepartment.departmentCode}"
+                                                    id="departmentCode"
+                                                    required="true"
+                                                    requiredMessage="Mã bộ phận là bắt buộc"
                                             >
                                             </p:inputText>
 
@@ -30,10 +31,11 @@
                                 </div>
                                 <div class="Container33 ">
                                         <span class="md-inputfield">
-                                            <p:inputText value="#{departmentController.currentDepartment.departmentName}"
-                                                         id="departmentName"
-                                                         required="true"
-                                                         requiredMessage="Tên bộ phận là bắt buộc"
+                                            <p:inputText
+                                                    value="#{departmentController.currentDepartment.departmentName}"
+                                                    id="departmentName"
+                                                    required="true"
+                                                    requiredMessage="Tên bộ phận là bắt buộc"
                                             >
                                             </p:inputText>
 
@@ -44,12 +46,15 @@
                             </div>
 
                         </p:outputPanel>
-                        <p:outputPanel class="Container100 TexAlRight" >
+                        <p:outputPanel class="Container100 TexAlRight">
 
-                            <p:commandButton value="#{msg['button.save']}" icon="fa fa-save" styleClass="GreenButton White" process="panelAddDepartment"
-                                             actionListener="#{departmentController.saveOrUpdate}" update="panelAddDepartment:@child(0),@widgetVar(growl),@widgetVar(tableDepartmentWidget)" >
+                            <p:commandButton value="#{msg['button.save']}" icon="fa fa-save"
+                                             styleClass="GreenButton White" process="panelAddDepartment"
+                                             actionListener="#{departmentController.saveOrUpdate}"
+                                             update="panelAddDepartment:@child(0),@widgetVar(growl),@widgetVar(tableDepartmentWidget)">
                             </p:commandButton>
-                            <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton Black" process="@this"  >
+                            <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close"
+                                             styleClass="GrayButton Black" process="@this">
                                 <p:effect type="clip" event="click" for="panelAddDepartment" delay="1">
                                     <f:param name="mode" value="'hide'"/>
                                 </p:effect>
@@ -64,7 +69,8 @@
                              rows="20" paginator="true" paginatorPosition="bottom"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                              currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                             rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableDepartmentWidget"
+                             rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500"
+                             widgetVar="tableDepartmentWidget"
                              emptyMessage="#{msg['datatable.empty']}"
                              styleClass="Container100 NoPadding MarTop10"
 
@@ -74,7 +80,8 @@
                         <div class="Card NoPadding" style="background: transparent;">
                             <div class="Container20 TexAlLeft">
                                 <p:commandButton icon="fa fa-plus" actionListener="#{departmentController.preAdd}"
-                                                 styleClass="White BlueButton" update=":form:panelAddDepartment:@child(0)" process="@this"
+                                                 styleClass="White BlueButton"
+                                                 update=":form:panelAddDepartment:@child(0)" process="@this"
                                                  value="Thêm bộ phận">
                                     <p:effect type="clip" event="click" for=":form:panelAddDepartment" delay="1">
                                         <f:param name="mode" value="'show'"/>
@@ -117,30 +124,36 @@
                                               itemLabel="#{msg['common.INACTIVE']}"/>
                             </p:selectOneMenu>
                         </f:facet>
-                        <h:outputText value="#{dep.statusName}" />
+                        <h:outputText value="#{dep.statusName}"/>
                     </p:column>
 
                     <p:column headerText="#{msg['datatable.header.action']}" width="20" styleClass="TexAlRight">
-                        <p:commandButton icon="fa fa-edit" actionListener="#{departmentController.preEdit(dep)}" process="@widgetVar(tableDepartmentWidget)"
-                                         styleClass="White BlueButton" onclick="PF('block').show()" oncomplete="PF('block').hide()" update="@form:panelAddDepartment:@child(0)"
+                        <p:commandButton icon="fa fa-edit" actionListener="#{departmentController.preEdit(dep)}"
+                                         process="@widgetVar(tableDepartmentWidget)"
+                                         styleClass="White BlueButton" onclick="PF('block').show()"
+                                         oncomplete="PF('block').hide()" update="@form:panelAddDepartment:@child(0)"
                                          title="#{msg['button.edit']}">
-                            <p:effect type="clip" event="click" for="@form:panelAddDepartment"  delay="1">
+                            <p:effect type="clip" event="click" for="@form:panelAddDepartment" delay="1">
                                 <f:param name="mode" value="'show'"/>
                             </p:effect>
                         </p:commandButton>
                         <!--<p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" oncomplete="PF('deleteBranchPanel-#{cusIdx}').show('#{component.clientId}')">-->
 
                         <!--</p:commandButton>-->
-                        <p:overlayPanel modal="true" widgetVar="deleteBranchPanel-#{cusIdx}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                        <p:overlayPanel modal="true" widgetVar="deleteBranchPanel-#{cusIdx}" showEffect="scale"
+                                        hideEffect="fade" appendToBody="true"
                                         style="" dismissable="true" showCloseIcon="true" my="right top">
 
-                            <p:commandButton value="Xóa #{dep.departmentName}?" icon="fa fa-trash" oncomplete="PF('deleteBranchPanel-#{cusIdx}').hide()" process="@this"
-                                             styleClass="RedButton White Fs14" actionListener="#{departmentController.delete(dep)}" update="@widgetVar(tableDepartmentWidget)">
+                            <p:commandButton value="Xóa #{dep.departmentName}?" icon="fa fa-trash"
+                                             oncomplete="PF('deleteBranchPanel-#{cusIdx}').hide()" process="@this"
+                                             styleClass="RedButton White Fs14"
+                                             actionListener="#{departmentController.delete(dep)}"
+                                             update="@widgetVar(tableDepartmentWidget)">
 
                             </p:commandButton>
                         </p:overlayPanel>
 
-                        <p:tooltip position="left" ></p:tooltip>
+                        <p:tooltip position="left"></p:tooltip>
                         <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
                         <p:menuButton value="" styleClass="GreenButton Fs14 White" title="Lựa chọn" id="menuButtonId">
 

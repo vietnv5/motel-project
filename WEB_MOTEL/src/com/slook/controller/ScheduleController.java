@@ -28,6 +28,7 @@ import javax.faces.event.ActionEvent;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.*;
+
 import static org.omnifaces.util.Faces.getRequest;
 
 /**
@@ -35,7 +36,8 @@ import static org.omnifaces.util.Faces.getRequest;
  */
 @ManagedBean
 @ViewScoped
-public class ScheduleController implements Serializable {
+public class ScheduleController implements Serializable
+{
     ScheduleModel scheduleGym;
     private ScheduleEvent event = new DefaultScheduleEvent();
     GenericDaoServiceNewV2<Schedule, Long> scheduleService;
@@ -44,11 +46,14 @@ public class ScheduleController implements Serializable {
     CatPack currPack;
 
     @PostConstruct
-    public void onStart() {
-        scheduleService = new GenericDaoImplNewV2<Schedule, Long>() {
+    public void onStart()
+    {
+        scheduleService = new GenericDaoImplNewV2<Schedule, Long>()
+        {
         };
 
-        try {
+        try
+        {
             /*
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("branchName", "ASC");
@@ -61,17 +66,22 @@ public class ScheduleController implements Serializable {
             */
             CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
             Long branchId = null;
-            if (user != null && user.getEmployee() != null) {
+            if (user != null && user.getEmployee() != null)
+            {
                 branchId = user.getEmployee().getBranchId();
             }
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("branchName", "ASC");
-            currBranch = new GenericDaoImplNewV2<CatBranch, Long>() {
+            currBranch = new GenericDaoImplNewV2<CatBranch, Long>()
+            {
             }.findById(branchId);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
-          if (currBranch == null) {
+        if (currBranch == null)
+        {
             currBranch = new CatBranch();
         }
         currRoom = new CatRoom();
@@ -79,23 +89,29 @@ public class ScheduleController implements Serializable {
         loadSchedule();
     }
 
-    public List<CatPack> getPackInRoom(Long roomId) {
+    public List<CatPack> getPackInRoom(Long roomId)
+    {
         Map<String, Object> filter = new HashMap<>();
         filter.put("roomId", roomId);
 //        scheduleGym.getEvents()
-        try {
+        try
+        {
             scheduleService.findList(filter);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;
     }
 
-    public void loadSchedule() {
+    public void loadSchedule()
+    {
         scheduleGym = new LazyScheduleGym(scheduleService, currBranch, currRoom, currPack);
     }
 
-    public void onDateSelect(SelectEvent selectEvent) {
+    public void onDateSelect(SelectEvent selectEvent)
+    {
         Date dateSelected = (Date) selectEvent.getObject();
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(dateSelected);
@@ -109,28 +125,34 @@ public class ScheduleController implements Serializable {
         ((DefaultScheduleEvent) event).setData(schedule);
     }
 
-    public void onEventSelect(SelectEvent selectEvent) {
+    public void onEventSelect(SelectEvent selectEvent)
+    {
         event = (ScheduleEvent) selectEvent.getObject();
     }
 
 
-    public void onEventMove(ScheduleEntryMoveEvent event) {
+    public void onEventMove(ScheduleEntryMoveEvent event)
+    {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event moved", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
 
     }
 
-    public void onEventResize(ScheduleEntryResizeEvent event) {
+    public void onEventResize(ScheduleEntryResizeEvent event)
+    {
         FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Event resized", "Day delta:" + event.getDayDelta() + ", Minute delta:" + event.getMinuteDelta());
 
     }
 
-    public void onChangeView() {
+    public void onChangeView()
+    {
 //        System.out.println("kld");
     }
 
-    public void addEvent(ActionEvent actionEvent) {
+    public void addEvent(ActionEvent actionEvent)
+    {
 
-        try {
+        try
+        {
             String sqlCheckSchedule = "SELECT count(*)\n" +
                     "FROM SCHEDULE WHERE ROOM_ID = :roomId \n" +
                     "                    AND SCHEDULE_ID <> :scheduleId " +
@@ -144,94 +166,127 @@ public class ScheduleController implements Serializable {
             param.put("start", event.getStartDate());
             param.put("end", event.getEndDate());
             if (schedule.getScheduleId() != null)
+            {
                 param.put("scheduleId", schedule.getScheduleId());
+            }
             else
+            {
                 sqlCheckSchedule = sqlCheckSchedule.replace("AND SCHEDULE_ID <> :scheduleId", "");
+            }
 
             List<?> count = scheduleService.findListSQLWithMapParameters(null, sqlCheckSchedule, -1, -1, param);
-            if (!count.isEmpty() && ((BigDecimal) count.get(0)).longValue() == 0) {
+            if (!count.isEmpty() && ((BigDecimal) count.get(0)).longValue() == 0)
+            {
 //                schedule.setScheduleName(event.getTitle());
                 schedule.setStartDate(event.getStartDate());
                 schedule.setEndDate(event.getEndDate());
                 schedule.setRoom(null);
-                if (schedule.getEmployee() != null) schedule.setEmployeeId(schedule.getEmployee().getEmployeeId());
-                if (event.getId() == null) {
-                    try {
+                if (schedule.getEmployee() != null)
+                {
+                    schedule.setEmployeeId(schedule.getEmployee().getEmployeeId());
+                }
+                if (event.getId() == null)
+                {
+                    try
+                    {
                         scheduleService.save(schedule);
                         scheduleGym.addEvent(event);
                         MessageUtil.setInfoMessage("Thêm lịch thành công");
                         RequestContext.getCurrentInstance().execute("PF('eventDialog').hide();");
 
-                    } catch (AppException e) {
+                    }
+                    catch (AppException e)
+                    {
                         MessageUtil.setErrorMessage("Không thêm được lịch");
                         e.printStackTrace();
                     }
-                } else {
-                    try {
+                }
+                else
+                {
+                    try
+                    {
                         scheduleService.saveOrUpdate(schedule);
                         scheduleGym.updateEvent(event);
                         MessageUtil.setInfoMessage("Cập nhật lịch thành công");
                         RequestContext.getCurrentInstance().execute("PF('eventDialog').hide();");
-                    } catch (AppException e) {
+                    }
+                    catch (AppException e)
+                    {
                         MessageUtil.setErrorMessage("Không cập nhật được lịch");
                         e.printStackTrace();
                     }
                 }
                 event = new DefaultScheduleEvent();
-            } else {
+            }
+            else
+            {
                 MessageUtil.setErrorMessage("Lịch bị trùng");
             }
-        } catch (SysException e) {
+        }
+        catch (SysException e)
+        {
             e.printStackTrace();
             MessageUtil.setErrorMessage("Error");
         }
     }
 
-    public ScheduleModel getScheduleGym() {
+    public ScheduleModel getScheduleGym()
+    {
         return scheduleGym;
     }
 
-    public void setScheduleGym(ScheduleModel scheduleGym) {
+    public void setScheduleGym(ScheduleModel scheduleGym)
+    {
         this.scheduleGym = scheduleGym;
     }
 
-    public ScheduleEvent getEvent() {
+    public ScheduleEvent getEvent()
+    {
         return event;
     }
 
-    public void setEvent(ScheduleEvent event) {
+    public void setEvent(ScheduleEvent event)
+    {
         this.event = event;
     }
 
-    public GenericDaoServiceNewV2<Schedule, Long> getScheduleService() {
+    public GenericDaoServiceNewV2<Schedule, Long> getScheduleService()
+    {
         return scheduleService;
     }
 
-    public void setScheduleService(GenericDaoServiceNewV2<Schedule, Long> scheduleService) {
+    public void setScheduleService(GenericDaoServiceNewV2<Schedule, Long> scheduleService)
+    {
         this.scheduleService = scheduleService;
     }
 
-    public CatBranch getCurrBranch() {
+    public CatBranch getCurrBranch()
+    {
         return currBranch;
     }
 
-    public void setCurrBranch(CatBranch currBranch) {
+    public void setCurrBranch(CatBranch currBranch)
+    {
         this.currBranch = currBranch;
     }
 
-    public CatRoom getCurrRoom() {
+    public CatRoom getCurrRoom()
+    {
         return currRoom;
     }
 
-    public void setCurrRoom(CatRoom currRoom) {
+    public void setCurrRoom(CatRoom currRoom)
+    {
         this.currRoom = currRoom;
     }
 
-    public CatPack getCurrPack() {
+    public CatPack getCurrPack()
+    {
         return currPack;
     }
 
-    public void setCurrPack(CatPack currPack) {
+    public void setCurrPack(CatPack currPack)
+    {
         this.currPack = currPack;
     }
 }

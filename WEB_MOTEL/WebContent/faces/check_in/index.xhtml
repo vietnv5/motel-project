@@ -26,8 +26,8 @@
                                              oncomplete="PF('importDlg').show();PF('block').hide()" update=":importForm"
                                              actionListener="#{checkInController.preImport}"
                                              title="#{msg['button.import']}"
-                                    />
-                            
+                            />
+
                         </div>
                         <div class="Container60 Responsive50">
                             <h:outputText styleClass="Fs20" value="#{msg['datatable.header.checkIn']}"/>
@@ -58,7 +58,7 @@
                                      actionListener="#{checkInController.preEdit(checkIn)}"
                                      title="#{msg['button.edit']}"
                                      style="margin: 0 3px;"
-                            />
+                    />
                     <p:commandButton icon="fa fa-info-circle"
                                      styleClass="BlueButton Fs14 White"
                                      onclick="PF('block').show()"
@@ -67,7 +67,7 @@
                                      actionListener="#{checkInController.viewInfo(checkIn)}"
                                      title="#{msg['button.info']}"
                                      style="margin: 0 3px;"
-                            />
+                    />
                 </p:column>
 
                 <p:column headerText="#{msg['checkIn.checkInId']}" width="1" styleClass="TexAlCenter"

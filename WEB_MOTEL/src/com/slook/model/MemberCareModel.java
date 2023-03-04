@@ -11,28 +11,38 @@ import java.util.List;
 /**
  * Created by Antz01 on 06/06/2017.
  */
-public class MemberCareModel extends ListDataModel<MemberCare> implements SelectableDataModel<MemberCare> {
+public class MemberCareModel extends ListDataModel<MemberCare> implements SelectableDataModel<MemberCare>
+{
     protected GenericDaoServiceNewV2<MemberCare, Long> daoService;
 
-    public MemberCareModel() {
+    public MemberCareModel()
+    {
     }
 
-    public MemberCareModel(List<MemberCare> data) {
+    public MemberCareModel(List<MemberCare> data)
+    {
         super(data);
     }
 
     @Override
-    public Object getRowKey(MemberCare memberCare) {
+    public Object getRowKey(MemberCare memberCare)
+    {
         return memberCare.getMemberCareId();
     }
 
     @Override
-    public MemberCare getRowData(String s) {
+    public MemberCare getRowData(String s)
+    {
         MemberCare c = new MemberCare();
-        try {
-            daoService = new GenericDaoImplNewV2<MemberCare, Long>() {};
+        try
+        {
+            daoService = new GenericDaoImplNewV2<MemberCare, Long>()
+            {
+            };
             c = daoService.findById(Long.parseLong(s));
-        }catch (Exception e){
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return c;

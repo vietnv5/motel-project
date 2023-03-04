@@ -2,24 +2,24 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
-                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core" >
+                xmlns:f="http://xmlns.jcp.org/jsf/core" xmlns:c="http://java.sun.com/jsp/jstl/core">
 
     <div class="Card MarTop10">
         <h:form id="catPackForm">
 
             <p:outputPanel id="panelAddPack" style="display: none">
 
-                <p:outputPanel styleClass="Card" style="width: 90% !important; margin-left: 5%" >
-                    <p:outputPanel class="Container100 TexAlLeft" >
+                <p:outputPanel styleClass="Card" style="width: 90% !important; margin-left: 5%">
+                    <p:outputPanel class="Container100 TexAlLeft">
 
                         <div class="Container33">
                             <span class="md-inputfield">
                                 <p:inputText value="#{catGroupPackController.currPack.packCode}"
-                                             id="packcode"   readonly="true" disabled="true"
+                                             id="packcode" readonly="true" disabled="true"
                                              title="#{msg['datatable.header.pack.code']}"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.code'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['datatable.header.pack.code']} </label>
@@ -35,8 +35,9 @@
                                              title="#{msg['datatable.header.pack.name']}"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.name'])}"
-                                             >
-                                    <p:ajax event="blur" listener="#{catGroupPackController.currPack.createPackCode}" update="packcode"
+                                >
+                                    <p:ajax event="blur" listener="#{catGroupPackController.currPack.createPackCode}"
+                                            update="packcode"
                                             onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                                 </p:inputText>
 
@@ -50,26 +51,28 @@
                             <span class="title-top">
 
                                 <p:selectOneMenu id="serviceId" value="#{catGroupPackController.currPack.catService}"
-                                                 required="true"   filter="true" filterMatchMode="contains"  
+                                                 required="true" filter="true" filterMatchMode="contains"
                                                  converter="catServiceConverter" var="c" style="width: 135px;"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.service'])}"
-                                                 >
-                                    <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
-                                    <f:selectItems value="#{catGroupPackController.lstCatService}" var="item" itemLabel="#{item.serviceName}" 
-                                                   itemValue="#{item}"  />
+                                >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{catGroupPackController.lstCatService}" var="item"
+                                                   itemLabel="#{item.serviceName}"
+                                                   itemValue="#{item}"/>
 
                                     <p:column style="width:20%">
-                                        <h:outputText value="#{c.serviceCode}" />
+                                        <h:outputText value="#{c.serviceCode}"/>
                                     </p:column>
                                     <p:column>
-                                        <h:outputText value="#{c.serviceName}" />
+                                        <h:outputText value="#{c.serviceName}"/>
                                     </p:column>
                                     <p:column>
-                                        <h:outputText value="#{c.price}" />
+                                        <h:outputText value="#{c.price}"/>
                                     </p:column>
-                                    <p:ajax update="@this,pricePackId"  process="@this" event="change" 
+                                    <p:ajax update="@this,pricePackId" process="@this" event="change"
                                             onstart="PF('block').show()" oncomplete="PF('block').hide()"
-                                            listener="#{catGroupPackController.currPack.computingPrice}" />
+                                            listener="#{catGroupPackController.currPack.computingPrice}"/>
                                 </p:selectOneMenu>
 
                                 <label class="title-elem">#{msg['datatable.header.pack.service']} *</label>
@@ -77,7 +80,7 @@
                             <p:message for="serviceId"/>
                         </div>
                     </p:outputPanel>
-                    <p:outputPanel class="Container100 TexAlLeft" >
+                    <p:outputPanel class="Container100 TexAlLeft">
 
                         <div class="Container66  MarTop30">
                             <span class="md-inputfield">
@@ -86,7 +89,7 @@
                                                  title="#{msg['datatable.header.pack.description']}"
                                                  required="false"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.description'])}"
-                                                 >
+                                >
 
                                 </p:inputTextarea>
 
@@ -104,7 +107,7 @@
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.effect'])}"
                                                  title="#{msg['datatable.header.pack.effect']}"
                                                  style="width: 135px;"
-                                                 >
+                                >
                                     <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                     <f:selectItem itemLabel="#{msg['datatable.header.pack.effect1']}" itemValue="1"/>
                                     <f:selectItem itemLabel="#{msg['datatable.header.pack.effect2']}" itemValue="2"/>
@@ -118,7 +121,7 @@
                             <p:message for="effect"/>
                         </div>
                     </p:outputPanel>
-                    <p:outputPanel class="Container100 TexAlLeft" >
+                    <p:outputPanel class="Container100 TexAlLeft">
 
                         <div class="Container33 MarTop30">
                             <span class="title-top">
@@ -128,7 +131,7 @@
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.status'])}"
                                                  title="#{msg['datatable.header.pack.status']}"
                                                  style="width: 135px;"
-                                                 >
+                                >
                                     <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                     <f:selectItem itemLabel="#{msg['datatable.header.pack.status0']}" itemValue="0"/>
                                     <f:selectItem itemLabel="#{msg['datatable.header.pack.status1']}" itemValue="1"/>
@@ -144,8 +147,10 @@
 
                             <div class="Container40 TexAlLeft">
                                 <span class="title-top">
-                                    <p:selectBooleanCheckbox value="#{catGroupPackController.currPack.limitNumber}" style="margin-top: 3px" label="giới hạn số lần" title="Giới hạn số lần">
-                                        <p:ajax update="numberOfTimeId" 
+                                    <p:selectBooleanCheckbox value="#{catGroupPackController.currPack.limitNumber}"
+                                                             style="margin-top: 3px" label="giới hạn số lần"
+                                                             title="Giới hạn số lần">
+                                        <p:ajax update="numberOfTimeId"
                                                 onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                                     </p:selectBooleanCheckbox>
                                     <label>Giới hạn số lần</label>
@@ -154,9 +159,12 @@
                             <div class="Container60 TexAlLeft">
                                 <span class="md-inputfield">
                                     <p:inputNumber id="numberOfTimeId"
-                                                   value="#{catGroupPackController.currPack.numberOfTime}" style="width: 90%" placeholder="Số lần"
-                                                   disabled="#{!catGroupPackController.currPack.limitNumber}"  decimalPlaces="0"> 
-                                        <p:ajax update="@this,pricePackId" listener="#{catGroupPackController.currPack.computingPrice2}" />
+                                                   value="#{catGroupPackController.currPack.numberOfTime}"
+                                                   style="width: 90%" placeholder="Số lần"
+                                                   disabled="#{!catGroupPackController.currPack.limitNumber}"
+                                                   decimalPlaces="0">
+                                        <p:ajax update="@this,pricePackId"
+                                                listener="#{catGroupPackController.currPack.computingPrice2}"/>
                                     </p:inputNumber>
                                     <label>Số lần</label>
                                 </span>
@@ -169,7 +177,7 @@
                                                title="#{msg['datatable.header.group.pack.price']}"
                                                required="false"
                                                requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.group.pack.price'])}"
-                                               >
+                                >
                                 </p:inputNumber>
 
                                 <label>#{msg['datatable.header.group.pack.price']} *</label>
@@ -179,12 +187,15 @@
 
 
                     </p:outputPanel>
-                    <p:outputPanel class="Container100 TexAlRight" >
+                    <p:outputPanel class="Container100 TexAlRight">
 
-                        <p:commandButton value="#{msg['button.save']}" icon="fa fa-save" styleClass="GreenButton White" process="panelAddPack"
-                                         actionListener="#{catGroupPackController.saveCatPack}" update="panelAddPack:@child(0),@widgetVar(growl),@widgetVar(tablePackWidget)" >
+                        <p:commandButton value="#{msg['button.save']}" icon="fa fa-save" styleClass="GreenButton White"
+                                         process="panelAddPack"
+                                         actionListener="#{catGroupPackController.saveCatPack}"
+                                         update="panelAddPack:@child(0),@widgetVar(growl),@widgetVar(tablePackWidget)">
                         </p:commandButton>
-                        <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton Black" process="@this"  >
+                        <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close"
+                                         styleClass="GrayButton Black" process="@this">
                             <p:effect type="clip" event="click" for="panelAddPack" delay="1">
                                 <f:param name="mode" value="'hide'"/>
                             </p:effect>
@@ -206,13 +217,14 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
                         <div class="Container20 TexAlLeft">
                             <p:commandButton icon="fa fa-plus" actionListener="#{catGroupPackController.preAddCatPack}"
-                                             styleClass="White BlueButton" update=":catPackForm:panelAddPack:@child(0)" process="@this"
+                                             styleClass="White BlueButton" update=":catPackForm:panelAddPack:@child(0)"
+                                             process="@this"
                                              value="#{msg['view.button.add.pack']}">
                                 <p:effect type="clip" event="click" for=":catPackForm:panelAddPack" delay="1">
                                     <f:param name="mode" value="'show'"/>
@@ -226,43 +238,44 @@
 
                     </div>
                 </f:facet>
-                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()" update="@widgetVar(tablePackWidget)"/>
+                <p:ajax event="page" onstart="PF('block').show()" oncomplete="PF('block').hide()"
+                        update="@widgetVar(tablePackWidget)"/>
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          >
+                >
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
                 <p:column headerText="#{msg['datatable.header.pack.code']}" width="30"
-                          filterBy="#{pack.packCode}"  >
+                          filterBy="#{pack.packCode}">
                     <h:outputText value="#{pack.packCode}"/>
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.pack.name']}" width="50"
-                          filterBy="#{pack.packName}" >
+                          filterBy="#{pack.packName}">
                     <h:outputText value="#{pack.packName}"/>
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.pack.service']}" width="50"
-                          filterBy="#{pack.catService.serviceName}" >
+                          filterBy="#{pack.catService.serviceName}">
                     <h:outputText value="#{pack.catService.serviceName}"/>
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.pack.price']}" width="50"
-                          filterBy="#{pack.price-LIKE}"  style="text-align: right;">
+                          filterBy="#{pack.price-LIKE}" style="text-align: right;">
                     <h:outputText value="#{pack.price}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
                     <h:outputText value=" VNĐ"/>
                 </p:column>
                 <p:column headerText="Số lần" width="15" style="text-align: center"
-                          filterBy="#{pack.numberOfTime}" >
+                          filterBy="#{pack.numberOfTime}">
                     <h:outputText value="#{pack.numberOfTime}"/>
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.pack.description']}" width="50"
-                          filterBy="#{pack.description}" >
+                          filterBy="#{pack.description}">
                     <h:outputText value="#{pack.description}"/>
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.pack.effect']}" width="50"
-                          filterBy="#{pack.effect}" >
+                          filterBy="#{pack.effect}">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tablePackWidget').filter()">
                             <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""/>
@@ -281,7 +294,7 @@
                 </p:column>
 
                 <p:column headerText="#{msg['datatable.header.pack.status']}" width="50"
-                          filterBy="#{pack.status}" >
+                          filterBy="#{pack.status}">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tablePackWidget').filter()">
                             <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""/>
@@ -299,29 +312,34 @@
 
                 </p:column>
                 <p:column headerText="#{msg['datatable.header.action']}" width="20" styleClass="TexAlCenter"
-                          >
-                    <p:commandButton icon="fa fa-edit" actionListener="#{catGroupPackController.preEditCatPack(pack)}" process="@widgetVar(tablePackWidget)"
-                                     styleClass="White BlueButton" onclick="PF('block').show()" oncomplete="PF('block').hide()" update=":catPackForm:panelAddPack:@child(0)"
+                >
+                    <p:commandButton icon="fa fa-edit" actionListener="#{catGroupPackController.preEditCatPack(pack)}"
+                                     process="@widgetVar(tablePackWidget)"
+                                     styleClass="White BlueButton" onclick="PF('block').show()"
+                                     oncomplete="PF('block').hide()" update=":catPackForm:panelAddPack:@child(0)"
                                      title="#{msg['view.button.edit.pack']}">
-                        <p:effect type="clip" event="click" for=":catPackForm:panelAddPack"  delay="1">
+                        <p:effect type="clip" event="click" for=":catPackForm:panelAddPack" delay="1">
                             <f:param name="mode" value="'show'"/>
                         </p:effect>
                     </p:commandButton>
-                    <p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" oncomplete="PF('deletePackPanel-#{cusIdx}').show('#{component.clientId}')">
+                    <p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14"
+                                     oncomplete="PF('deletePackPanel-#{cusIdx}').show('#{component.clientId}')">
 
                     </p:commandButton>
-                    <p:overlayPanel modal="true" widgetVar="deletePackPanel-#{cusIdx}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                    <p:overlayPanel modal="true" widgetVar="deletePackPanel-#{cusIdx}" showEffect="scale"
+                                    hideEffect="fade" appendToBody="true"
                                     style="" dismissable="true" showCloseIcon="true" my="right top">
 
                         <p:commandButton value="Xóa #{pack.packName}?" icon="fa fa-trash" onstart="PF('block').show()"
-                                         oncomplete="PF('block').hide(),PF('deletePackPanel-#{cusIdx}').hide()" process="@this"
-                                         styleClass="RedButton White Fs14" actionListener="#{catGroupPackController.deleteCatPack(pack)}"
+                                         oncomplete="PF('block').hide(),PF('deletePackPanel-#{cusIdx}').hide()"
+                                         process="@this"
+                                         styleClass="RedButton White Fs14"
+                                         actionListener="#{catGroupPackController.deleteCatPack(pack)}"
                                          update="@widgetVar(tablePackWidget),@widgetVar(growl)">
 
                         </p:commandButton>
                     </p:overlayPanel>
                 </p:column>
-
 
 
             </p:dataTable>

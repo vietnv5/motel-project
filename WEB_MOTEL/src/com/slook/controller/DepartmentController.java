@@ -24,7 +24,8 @@ import java.util.List;
  */
 @ManagedBean
 @ViewScoped
-public class DepartmentController implements Serializable {
+public class DepartmentController implements Serializable
+{
 
     List<CatDepartment> departments;
     GenericDaoServiceNewV2 departmentService;
@@ -33,106 +34,141 @@ public class DepartmentController implements Serializable {
     private String oldObjectStr = null;
 
     @PostConstruct
-    public void onStart(){
-        departmentService = new GenericDaoImplNewV2<CatDepartment,Long>() {};
-        try {
+    public void onStart()
+    {
+        departmentService = new GenericDaoImplNewV2<CatDepartment, Long>()
+        {
+        };
+        try
+        {
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
-            order.put("departmentName","ASC");
-            departments = departmentService.findList(null,order);
+            order.put("departmentName", "ASC");
+            departments = departmentService.findList(null, order);
             lazyDepartment = new LazyDataModelBase<CatDepartment, Long>(departmentService);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         currentDepartment = new CatDepartment();
     }
 
-    public void preAdd(){
+    public void preAdd()
+    {
         currentDepartment = new CatDepartment();
         currentDepartment.setStatus(1l);
-        oldObjectStr=null;
+        oldObjectStr = null;
     }
 
-    public void saveOrUpdate(){
-        try {
+    public void saveOrUpdate()
+    {
+        try
+        {
             departmentService.saveOrUpdate(currentDepartment);
             //ghi log
             if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currentDepartment.toString()
                         , this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            }
             else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currentDepartment.toString()
                         , this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            }
             MessageUtil.setInfoMessageFromRes("info.save.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
-    public void preEdit(CatDepartment department){
+
+    public void preEdit(CatDepartment department)
+    {
         currentDepartment = department;
-        oldObjectStr=department.toString();
+        oldObjectStr = department.toString();
     }
 
-    public void delete(CatDepartment department){
-        try {
+    public void delete(CatDepartment department)
+    {
+        try
+        {
             departmentService.delete(department);
             LogActionController.writeLogAction(Constant.LOG_ACTION.DELETE, null, department.toString(), null, this.getClass().getSimpleName()
                     , (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             MessageUtil.setInfoMessageFromRes("info.delete.suceess");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.delete.unsuceess");
             e.printStackTrace();
         }
     }
 
-    public List<CatDepartment> getDepartments() {
+    public List<CatDepartment> getDepartments()
+    {
         return departments;
     }
 
-    public void setDepartments(List<CatDepartment> departments) {
+    public void setDepartments(List<CatDepartment> departments)
+    {
         this.departments = departments;
     }
 
-    public GenericDaoServiceNewV2 getDepartmentService() {
+    public GenericDaoServiceNewV2 getDepartmentService()
+    {
         return departmentService;
     }
 
-    public void setDepartmentService(GenericDaoServiceNewV2 departmentService) {
+    public void setDepartmentService(GenericDaoServiceNewV2 departmentService)
+    {
         this.departmentService = departmentService;
     }
 
-    public CatDepartment getCurrentDepartment() {
+    public CatDepartment getCurrentDepartment()
+    {
         return currentDepartment;
     }
 
-    public void setCurrentDepartment(CatDepartment currentDepartment) {
+    public void setCurrentDepartment(CatDepartment currentDepartment)
+    {
         this.currentDepartment = currentDepartment;
     }
 
-    public LazyDataModel<CatDepartment> getLazyDepartment() {
+    public LazyDataModel<CatDepartment> getLazyDepartment()
+    {
         return lazyDepartment;
     }
 
-    public void setLazyDepartment(LazyDataModel<CatDepartment> lazyDepartment) {
+    public void setLazyDepartment(LazyDataModel<CatDepartment> lazyDepartment)
+    {
         this.lazyDepartment = lazyDepartment;
     }
 
 
-    public void updateStatus(CatDepartment catDepartment, Long newStatus) {
-        try {
-            String oldStatus=catDepartment.toString();
+    public void updateStatus(CatDepartment catDepartment, Long newStatus)
+    {
+        try
+        {
+            String oldStatus = catDepartment.toString();
             catDepartment.setStatus(newStatus);
             departmentService.saveOrUpdate(catDepartment);
             LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldStatus, catDepartment.toString(), this.getClass().getSimpleName()
                     , (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             MessageUtil.setInfoMessageFromRes("info.save.success");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 

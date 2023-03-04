@@ -4,15 +4,15 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
-                    
+>
+
 
     <p:dialog modal="true" header="#{msg['customer.checkin']}" widgetVar="checkinDlg" width="30%" id="checkinDlgId">
 
 
         <h:form id="checkinForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
                     <div class=" Container100">
                         <span class="md-inputfield">
                             <p:inputText value="#{serviceTicketController.currServiceTicket.cardCode}"
@@ -20,7 +20,7 @@
                                          title="#{msg['client.cardCode']}"
                                          required="true"
                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['client.cardCode'])}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['client.cardCode']} *</label>
@@ -28,18 +28,21 @@
                         <p:message for="cardCodeId"/>
                     </div>
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlRight" >
+                <p:outputPanel class="Container100 TexAlRight">
 
-                    <p:commandButton value="#{msg['customer.checkin']}" styleClass="GreenButton White" update="@widgetVar(growl),:checkinServiceTicketForm,:checkinForm"
-                                     actionListener="#{serviceTicketController.checkin()}" process=":checkinForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();PF('checkinDlg').hide()"
-                                     >
+                    <p:commandButton value="#{msg['customer.checkin']}" styleClass="GreenButton White"
+                                     update="@widgetVar(growl),:checkinServiceTicketForm,:checkinForm"
+                                     actionListener="#{serviceTicketController.checkin()}" process=":checkinForm"
+                                     onstart="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('checkinDlg').hide()"
+                    >
                         <p:confirm icon="ui-icon-alert" header="#{msg['customer.checkin']}"
-                                   message="#{msg['title.confirm.checkin']}" >
+                                   message="#{msg['title.confirm.checkin']}">
                         </p:confirm>
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('checkinDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('checkinDlg').hide()">
 
                     </p:commandButton>
 
@@ -50,7 +53,9 @@
     </p:dialog>
 
     <p:confirmDialog global="true" closeOnEscape="true">
-        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
     </p:confirmDialog>
 </ui:composition>

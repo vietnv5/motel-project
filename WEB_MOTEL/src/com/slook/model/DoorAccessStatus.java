@@ -1,6 +1,6 @@
-/* 
-* Copyright 2011 Viettel Telecom. All rights reserved. 
-* VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms. 
+/*
+ * Copyright 2011 Viettel Telecom. All rights reserved.
+ * VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.slook.model;
 
@@ -11,7 +11,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
@@ -24,7 +26,8 @@ import javax.persistence.Transient;
  * @version: 1.0
  * @since: 1.0
  */
-public class DoorAccessStatus {
+public class DoorAccessStatus
+{
 
     private Long status;//1 ok,2 not ok
     private String cardCode;
@@ -36,29 +39,35 @@ public class DoorAccessStatus {
     private Long type;
 
     @Column(name = "STATUS", precision = 22, scale = 0)
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Column(name = "CARD_CODE", length = 100)
-    public String getCardCode() {
+    public String getCardCode()
+    {
         return cardCode;
     }
 
-    public void setCardCode(String cardCode) {
+    public void setCardCode(String cardCode)
+    {
         this.cardCode = cardCode;
     }
 
     @Column(name = "IP", length = 100)
-    public String getIp() {
+    public String getIp()
+    {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public void setIp(String ip)
+    {
         this.ip = ip;
     }
 
@@ -66,55 +75,67 @@ public class DoorAccessStatus {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getId() {
+    public Long getId()
+    {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Long id)
+    {
         this.id = id;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "update_Time", length = 11)
-    public Date getUpdateTime() {
+    public Date getUpdateTime()
+    {
         return updateTime;
     }
 
-    public void setUpdateTime(Date updateTime) {
+    public void setUpdateTime(Date updateTime)
+    {
         this.updateTime = updateTime;
     }
 
-    public DoorAccessStatus() {
+    public DoorAccessStatus()
+    {
     }
 
-    public DoorAccessStatus(Long id) {
+    public DoorAccessStatus(Long id)
+    {
         this.id = id;
     }
 
     @Transient
-    public String getResult() {
+    public String getResult()
+    {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(String result)
+    {
         this.result = result;
     }
 
     @Transient
-    public String getData() {
+    public String getData()
+    {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(String data)
+    {
         this.data = data;
     }
 
     @Column(name = "TYPE", precision = 22, scale = 0)
-    public Long getType() {
+    public Long getType()
+    {
         return type;
     }
 
-    public void setType(Long type) {
+    public void setType(Long type)
+    {
         this.type = type;
     }
 

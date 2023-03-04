@@ -4,10 +4,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
-    <p:dialog modal="true" widgetVar="contractDlg" width="70%" id="contractDlgId" >
+    <p:dialog modal="true" widgetVar="contractDlg" width="70%" id="contractDlgId">
         <f:facet name="header">
             <h:outputText value="#{msg['button.add']}" rendered="#{!contractController.isEdit }"/>
             <h:outputText value="#{msg['button.edit']}" rendered="#{contractController.isEdit}"/>
@@ -15,16 +15,16 @@
 
         <h:form id="contractForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
                     <div class="Container100 Responsive50">
                         <div class="Container25 Responsive50">
                             <span class="md-inputfield">
                                 <p:inputText value="#{contractController.currContract.contractCode}"
-                                             id="contractCode"  converter="trimConverter"
+                                             id="contractCode" converter="trimConverter"
                                              title="#{msg['contract.contractCode']}"
                                              required="true" maxlength="150"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.contractCode'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['contract.contractCode']} *</label>
@@ -35,11 +35,11 @@
                             <span class="title-top">
                                 <p:selectOneMenu value="#{contractController.currContract.homeId}" required="true"
                                                  id="homeId" style="width: 40%"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}" >
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.homeName'])}">
                                     <f:selectItems value="#{contractController.lstHome}" var="p"
                                                    itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
                                     <p:ajax event="change" listener="#{contractController.onChangeHome()}"
-                                             process="@this" 
+                                            process="@this"
                                             update="roomId"/>
                                 </p:selectOneMenu>
                                 <label class="title-elem">#{msg['home.homeName']} *</label>
@@ -50,10 +50,11 @@
                             <span class="title-top">
                                 <p:selectOneMenu value="#{contractController.currContract.roomId}" required="true"
                                                  id="roomId" style="width: 40%"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.roomName'])}" >
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.roomName'])}">
                                     <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                     <f:selectItems value="#{contractController.lstRoom}" var="p"
-                                                   itemLabel="#{p.roomName}  -  #{p.statusName}" itemValue="#{p.roomId}"/>
+                                                   itemLabel="#{p.roomName}  -  #{p.statusName}"
+                                                   itemValue="#{p.roomId}"/>
                                 </p:selectOneMenu>
                                 <label class="title-elem">#{msg['contract.roomName']} *</label>
                             </span>
@@ -62,8 +63,9 @@
                         <div class="Container25 Responsive50">
                             <span class="title-top">
                                 <p:selectOneMenu value="#{contractController.currContract.customerId}" required="true"
-                                                 id="customerId" style="width: 40%"  filter="true" filterMatchMode="contains" 
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.customerName'])}" >
+                                                 id="customerId" style="width: 40%" filter="true"
+                                                 filterMatchMode="contains"
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.customerName'])}">
                                     <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                     <f:selectItems value="#{contractController.lstCustomers}" var="p"
                                                    itemLabel="#{p.customerInfo}" itemValue="#{p.customerId}"/>
@@ -76,9 +78,12 @@
                     </div>
                     <div class="Container100 Responsive50 MarTop20">
                         <span class="title-top">
-                            <p:selectManyCheckbox id="lstServiceId" value="#{contractController.currContract.lstServiceId}" layout="grid" columns="5">
-                                <f:selectItems value="#{contractController.lstService}" var="city" itemLabel="#{city.serviceName}"
-                                               itemValue="#{city.serviceId}" />
+                            <p:selectManyCheckbox id="lstServiceId"
+                                                  value="#{contractController.currContract.lstServiceId}" layout="grid"
+                                                  columns="5">
+                                <f:selectItems value="#{contractController.lstService}" var="city"
+                                               itemLabel="#{city.serviceName}"
+                                               itemValue="#{city.serviceId}"/>
                             </p:selectManyCheckbox>
                             <label class="title-elem">#{msg['contract.service']} </label>
                         </span>
@@ -124,7 +129,7 @@
                                                required="false" decimalPlaces="0"
                                                requiredMessage="#{msg['common.required'].replace('{0}',msg['contract.deposit'])}"
                                                title="#{msg['contract.deposit']}"
-                                               >
+                                >
                                 </p:inputNumber>
 
                                 <label>#{msg['contract.deposit']} </label>
@@ -134,9 +139,9 @@
                         <div class=" Container100 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <p:inputText value="#{contractController.currContract.description}" style="width: 70%"
-                                             id="descriptionId"  converter="trimConverter" maxlength="200"
+                                             id="descriptionId" converter="trimConverter" maxlength="200"
                                              title="#{msg['contract.description']}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['contract.description']} </label>
@@ -147,17 +152,18 @@
 
 
                 </p:outputPanel>
- 
-                <p:outputPanel class="Container100 TexAlCenter" >
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                <p:outputPanel class="Container100 TexAlCenter">
+
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growl),:contractTableForm,:contractForm"
-                                     actionListener="#{contractController.onSaveOrUpdate()}" process=":contractForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{contractController.onSaveOrUpdate()}" process=":contractForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('contractDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('contractDlg').hide()">
 
                     </p:commandButton>
 
@@ -168,7 +174,9 @@
     </p:dialog>
 
     <p:confirmDialog global="true" closeOnEscape="true">
-        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
     </p:confirmDialog>
 </ui:composition>

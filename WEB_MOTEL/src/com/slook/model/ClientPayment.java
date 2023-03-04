@@ -1,6 +1,6 @@
-/* 
-* Copyright 2011 Viettel Telecom. All rights reserved. 
-* VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms. 
+/*
+ * Copyright 2011 Viettel Telecom. All rights reserved.
+ * VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.slook.model;
 
@@ -9,13 +9,16 @@ import com.slook.exception.SysException;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -26,6 +29,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
 import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 
@@ -37,7 +41,8 @@ import org.hibernate.annotations.LazyCollectionOption;
  * @version: 1.0
  * @since: 1.0
  */
-public class ClientPayment {
+public class ClientPayment
+{
 
     private Long employeeId;
     private Long price;
@@ -50,7 +55,7 @@ public class ClientPayment {
     private Long clientUsePackId;
     private Long paymentId;
     private Date createTime;
-//    private Long point;
+    //    private Long point;
     private String reason;
     private String paymentCode;
 
@@ -67,89 +72,107 @@ public class ClientPayment {
 
     private ClientUsePack clientUsePack;
 
-//    private Long numberPack;
+    //    private Long numberPack;
     private Long timesUsed;
     private Long statusTimeUsed;
     private String voucherCode;
 
     @Column(name = "EMPLOYEE_ID", precision = 22, scale = 0)
-    public Long getEmployeeId() {
+    public Long getEmployeeId()
+    {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(Long employeeId)
+    {
         this.employeeId = employeeId;
     }
 
     @Column(name = "PRICE", precision = 22, scale = 0)
-    public Long getPrice() {
+    public Long getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Long price)
+    {
         this.price = price;
     }
 
     @Column(name = "CAT_PROMOTION_ID", precision = 22, scale = 0)
-    public Long getCatPromotionId() {
+    public Long getCatPromotionId()
+    {
         return catPromotionId;
     }
 
-    public void setCatPromotionId(Long catPromotionId) {
+    public void setCatPromotionId(Long catPromotionId)
+    {
         this.catPromotionId = catPromotionId;
     }
 
     @Column(name = "VAT", length = 255)
-    public String getVat() {
+    public String getVat()
+    {
         return vat;
     }
 
-    public void setVat(String vat) {
+    public void setVat(String vat)
+    {
         this.vat = vat;
     }
 
     @Column(name = "DEBT", precision = 22, scale = 0)
-    public Long getDebt() {
+    public Long getDebt()
+    {
         return debt;
     }
 
-    public void setDebt(Long debt) {
+    public void setDebt(Long debt)
+    {
         this.debt = debt;
     }
 
     @Column(name = "PAYMENT_VALUE", precision = 22, scale = 0)
-    public Long getPaymentValue() {
+    public Long getPaymentValue()
+    {
         return paymentValue;
     }
 
-    public void setPaymentValue(Long paymentValue) {
+    public void setPaymentValue(Long paymentValue)
+    {
         this.paymentValue = paymentValue;
     }
 
     @Column(name = "CLIENT_ID", precision = 22, scale = 0)
-    public Long getClientId() {
+    public Long getClientId()
+    {
         return clientId;
     }
 
-    public void setClientId(Long clientId) {
+    public void setClientId(Long clientId)
+    {
         this.clientId = clientId;
     }
 
     @Column(name = "DESCRIPTION", length = 300)
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
     @Column(name = "CLIENT_USE_PACK_ID", precision = 22, scale = 0)
-    public Long getClientUsePackId() {
+    public Long getClientUsePackId()
+    {
         return clientUsePackId;
     }
 
-    public void setClientUsePackId(Long clientUsePackId) {
+    public void setClientUsePackId(Long clientUsePackId)
+    {
         this.clientUsePackId = clientUsePackId;
     }
 
@@ -157,25 +180,29 @@ public class ClientPayment {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "PAYMENT_ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getPaymentId() {
+    public Long getPaymentId()
+    {
         return paymentId;
     }
 
-    public void setPaymentId(Long paymentId) {
+    public void setPaymentId(Long paymentId)
+    {
         this.paymentId = paymentId;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "CREATE_TIME", length = 11)
-    public Date getCreateTime() {
+    public Date getCreateTime()
+    {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Date createTime)
+    {
         this.createTime = createTime;
     }
 
-//    @Column(name = "POINT", precision = 22, scale = 0)
+    //    @Column(name = "POINT", precision = 22, scale = 0)
 //    public Long getPoint() {
 //        return point;
 //    }
@@ -184,122 +211,151 @@ public class ClientPayment {
 //        this.point = point;
 //    }
     @Column(name = "REASON", length = 200)
-    public String getReason() {
+    public String getReason()
+    {
         return reason;
     }
 
-    public void setReason(String reason) {
+    public void setReason(String reason)
+    {
         this.reason = reason;
     }
 
     @Column(name = "PAYMENT_CODE", length = 30)
-    public String getPaymentCode() {
+    public String getPaymentCode()
+    {
         return paymentCode;
     }
 
-    public void setPaymentCode(String paymentCode) {
+    public void setPaymentCode(String paymentCode)
+    {
         this.paymentCode = paymentCode;
     }
 
     @Column(name = "TYPE", precision = 22, scale = 0)
-    public Long getType() {
+    public Long getType()
+    {
         return type;
     }
 
-    public void setType(Long type) {
+    public void setType(Long type)
+    {
         this.type = type;
     }
 
     @Column(name = "STATUS", precision = 22, scale = 0)
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Column(name = "guest_deposit", precision = 22, scale = 0)
-    public Long getGuestDeposit() {
+    public Long getGuestDeposit()
+    {
         return guestDeposit;
     }
 
-    public void setGuestDeposit(Long guestDeposit) {
+    public void setGuestDeposit(Long guestDeposit)
+    {
         this.guestDeposit = guestDeposit;
     }
 
-    public ClientPayment() {
+    public ClientPayment()
+    {
     }
 
-    public ClientPayment(Long paymentId) {
+    public ClientPayment(Long paymentId)
+    {
         this.paymentId = paymentId;
     }
 
     @Transient
-    public boolean getIsVAT() {
+    public boolean getIsVAT()
+    {
         return isVAT;
     }
 
-    public void setIsVAT(boolean isVAT) {
+    public void setIsVAT(boolean isVAT)
+    {
         this.isVAT = isVAT;
     }
 
     @Transient
-    public boolean getEditPrice() {
+    public boolean getEditPrice()
+    {
         return editPrice;
     }
 
-    public void setEditPrice(boolean editPrice) {
+    public void setEditPrice(boolean editPrice)
+    {
         this.editPrice = editPrice;
     }
 
     @Transient
-    public boolean getIsPromotion() {
+    public boolean getIsPromotion()
+    {
         return isPromotion;
     }
 
-    public void setIsPromotion(boolean isPromotion) {
+    public void setIsPromotion(boolean isPromotion)
+    {
         this.isPromotion = isPromotion;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @JoinColumn(name = "cat_promotion_id", insertable = false, updatable = false)
-    public CatPromotion getCatPromotion() {
+    public CatPromotion getCatPromotion()
+    {
         return catPromotion;
     }
 
-    public void setCatPromotion(CatPromotion catPromotion) {
+    public void setCatPromotion(CatPromotion catPromotion)
+    {
         this.catPromotion = catPromotion;
     }
 
     @Column(name = "total_deposit", precision = 22, scale = 0)
-    public Long getTotalDeposit() {
+    public Long getTotalDeposit()
+    {
         return totalDeposit;
     }
 
-    public void setTotalDeposit(Long totalDeposit) {
+    public void setTotalDeposit(Long totalDeposit)
+    {
         this.totalDeposit = totalDeposit;
     }
 
     @Transient
-    public ClientUsePack getClientUsePack() {
-        try {
-            if (clientUsePackId != null) {
-                clientUsePack = new GenericDaoImplNewV2<ClientUsePack, Long>() {
+    public ClientUsePack getClientUsePack()
+    {
+        try
+        {
+            if (clientUsePackId != null)
+            {
+                clientUsePack = new GenericDaoImplNewV2<ClientUsePack, Long>()
+                {
                 }.findById(clientUsePackId);
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             Logger.getLogger(ClientPayment.class.getName()).log(Level.SEVERE, null, ex);
         }
         return clientUsePack;
     }
 
-    public void setClientUsePack(ClientUsePack clientUsePack) {
+    public void setClientUsePack(ClientUsePack clientUsePack)
+    {
         this.clientUsePack = clientUsePack;
     }
 
-//
+    //
 //    public void createPaymentCode() {
 //
 //        String hqlCheckCode = "select count(*) from ClientPayment where paymentCode like ?||'-%'";
@@ -313,20 +369,24 @@ public class ClientPayment {
 //            paymentCode = code + "-" + (Long.valueOf(counts.get(0).toString()) + 1);
 //        }
 //    }
-    public void createPaymentCode(Long barchId) {
+    public void createPaymentCode(Long barchId)
+    {
 
         String hqlCheckCode = "select max(to_number( substr(PAYMENT_CODE,5))) from Client_Payment where payment_Code like ?||'%'";
         String code = Constant.PAYMENT_TYPE.CLIENT.toString();
         String barch = "000";
-        if (barchId != null) {
+        if (barchId != null)
+        {
             barch = barch + barchId.toString();
             code += barch.substring(barch.length() - 3);
         }
 
-        List<?> counts = new GenericDaoImplNewV2<CatPack, Long>() {
+        List<?> counts = new GenericDaoImplNewV2<CatPack, Long>()
+        {
         }.findListSQLAll(hqlCheckCode, code);
         String numberStr = "00000";
-        if (counts.size() > 0 && counts.get(0) != null) {
+        if (counts.size() > 0 && counts.get(0) != null)
+        {
             Long number = (Long.valueOf(counts.get(0).toString()) + 1);
             numberStr += number;
             numberStr = numberStr.substring(numberStr.length() - 5);
@@ -335,57 +395,73 @@ public class ClientPayment {
     }
 
     @Transient
-    public String getTypeName() {
-        if (type != null && type.equals(1l)) {
+    public String getTypeName()
+    {
+        if (type != null && type.equals(1l))
+        {
             typeName = MessageUtil.getResourceBundleMessage("payment.type1");
-        } else if (type != null && type.equals(2l)) {
+        }
+        else if (type != null && type.equals(2l))
+        {
             typeName = MessageUtil.getResourceBundleMessage("payment.type2");
         }
         return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    public void setTypeName(String typeName)
+    {
         this.typeName = typeName;
     }
 
     @Transient
-    public String getStatusName() {
-        if (Constant.CLIENT_PAYMENT.STATUS_NOT_USE.equals(status)) {
+    public String getStatusName()
+    {
+        if (Constant.CLIENT_PAYMENT.STATUS_NOT_USE.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("payment.status0");
-        } else if (Constant.CLIENT_PAYMENT.STATUS_USED.equals(status)) {
+        }
+        else if (Constant.CLIENT_PAYMENT.STATUS_USED.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("payment.status1");
         }
         return statusName;
     }
 
-    public void setStatusName(String statusName) {
+    public void setStatusName(String statusName)
+    {
         this.statusName = statusName;
     }
 
     @Column(name = "times_used", precision = 22, scale = 0)
-    public Long getTimesUsed() {
+    public Long getTimesUsed()
+    {
         return timesUsed;
     }
 
-    public void setTimesUsed(Long timesUsed) {
+    public void setTimesUsed(Long timesUsed)
+    {
         this.timesUsed = timesUsed;
     }
 
     @Column(name = "status_time_used", precision = 22, scale = 0)
-    public Long getStatusTimeUsed() {
+    public Long getStatusTimeUsed()
+    {
         return statusTimeUsed;
     }
 
-    public void setStatusTimeUsed(Long statusTimeUsed) {
+    public void setStatusTimeUsed(Long statusTimeUsed)
+    {
         this.statusTimeUsed = statusTimeUsed;
     }
 
     @Column(name = "voucher_code", length = 255)
-    public String getVoucherCode() {
+    public String getVoucherCode()
+    {
         return voucherCode;
     }
 
-    public void setVoucherCode(String voucherCode) {
+    public void setVoucherCode(String voucherCode)
+    {
         this.voucherCode = voucherCode;
     }
 

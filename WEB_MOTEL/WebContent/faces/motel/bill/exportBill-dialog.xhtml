@@ -4,37 +4,38 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
-    <p:dialog modal="true" widgetVar="billExportDlg" width="60%" id="billExportDlgId"   header="Xuất danh sách hóa đơn">
+    <p:dialog modal="true" widgetVar="billExportDlg" width="60%" id="billExportDlgId" header="Xuất danh sách hóa đơn">
 
         <h:form id="billExportForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
                     <div class="Container100 Responsive50">
                         <div class=" Container50 Responsive50">
                             <span class="title-top">
                                 <div class="Container10">
                                     <p:commandButton actionListener="#{billController.decrementMonth}" process="@this"
-                                                     id="navLeft" update="selectDateId" icon="ui-icon-triangle-1-w" />
+                                                     id="navLeft" update="selectDateId" icon="ui-icon-triangle-1-w"/>
                                 </div>
                                 <div class="Container60">
                                     <h:panelGroup class="tableView">
-                                        <p:calendar value="#{billController.selectedDate}" mode="inline" id="selectDateId" />
+                                        <p:calendar value="#{billController.selectedDate}" mode="inline"
+                                                    id="selectDateId"/>
                                     </h:panelGroup>
                                 </div>
                                 <div class="Container10">
-                                    <p:commandButton actionListener="#{billController.incrementMonth}"  process="@this"
-                                                     id="navRight" update="selectDateId" icon="ui-icon-triangle-1-e" />
+                                    <p:commandButton actionListener="#{billController.incrementMonth}" process="@this"
+                                                     id="navRight" update="selectDateId" icon="ui-icon-triangle-1-e"/>
                                 </div>
                                 <label class="title-elem">#{msg['electricWater.month']} </label>
                             </span>
                         </div>
                         <div class="Container25 Responsive50">
                             <span class="title-top">
-                                <p:selectOneMenu value="#{billController.homeId}" 
-                                                 id="homeId" style="width: 40%"  >
+                                <p:selectOneMenu value="#{billController.homeId}"
+                                                 id="homeId" style="width: 40%">
                                     <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                     <f:selectItems value="#{billController.lstHome}" var="p"
                                                    itemLabel="#{p.homeName}" itemValue="#{p.homeId}"/>
@@ -47,15 +48,16 @@
 
                 </p:outputPanel>
 
-                <p:outputPanel class="Container100 TexAlCenter" >
+                <p:outputPanel class="Container100 TexAlCenter">
 
-                    <p:commandButton value="Tải về" ajax="false"  process=":billExportForm" 
-                                     onclick="PrimeFaces.monitorDownload(start, stop);" 
-                                     icon="fa fa-download"  styleClass="White BlueButton Fs14 MarTop5" >
-                        <p:fileDownload value="#{billController.onExportBill()}" />
+                    <p:commandButton value="Tải về" ajax="false" process=":billExportForm"
+                                     onclick="PrimeFaces.monitorDownload(start, stop);"
+                                     icon="fa fa-download" styleClass="White BlueButton Fs14 MarTop5">
+                        <p:fileDownload value="#{billController.onExportBill()}"/>
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('billExportDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('billExportDlg').hide()">
 
                     </p:commandButton>
 

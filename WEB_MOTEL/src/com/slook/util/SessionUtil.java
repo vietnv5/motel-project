@@ -7,6 +7,7 @@ package com.slook.util;
 
 //import com.viettel.vsa.token.RoleToken;
 //import com.viettel.vsa.token.UserToken;
+
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
 import javax.servlet.http.HttpSession;
@@ -20,7 +21,8 @@ import javax.servlet.http.HttpSession;
  */
 @ManagedBean
 @RequestScoped
-public class SessionUtil extends SessionWrapper implements Constant {
+public class SessionUtil extends SessionWrapper implements Constant
+{
 
     private static final long serialVersionUID = -7313741895804416337L;
 
@@ -28,11 +30,18 @@ public class SessionUtil extends SessionWrapper implements Constant {
      * Lay gia tri menu default.
      */
     static SessionUtil sessionUtil;
-    public static SessionUtil getInstance(){
-        if(sessionUtil==null) sessionUtil=new SessionUtil();
+
+    public static SessionUtil getInstance()
+    {
+        if (sessionUtil == null)
+        {
+            sessionUtil = new SessionUtil();
+        }
         return sessionUtil;
     }
-    public static String getMenuDefault() {
+
+    public static String getMenuDefault()
+    {
         /*
 //		if (! Config._DEFAULT_URL.equals(""))
 //			return Config._DEFAULT_URL;
@@ -69,12 +78,15 @@ public class SessionUtil extends SessionWrapper implements Constant {
 
     }
 
-    public boolean isCreateAlarmConfig() {
+    public boolean isCreateAlarmConfig()
+    {
         return true;
     }
 
-    public boolean getConfigByKeyEQ(String key, String val) {
-        if (DataConfig.getConfigByKey(key) != null && DataConfig.getConfigByKey(key).equals(val)) {
+    public boolean getConfigByKeyEQ(String key, String val)
+    {
+        if (DataConfig.getConfigByKey(key) != null && DataConfig.getConfigByKey(key).equals(val))
+        {
             return true;
         }
         return false;

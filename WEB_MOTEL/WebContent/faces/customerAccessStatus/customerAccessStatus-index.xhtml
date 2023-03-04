@@ -17,11 +17,12 @@
                          rows="20" paginator="true" paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableCustomerAccessStatusWidget"
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500"
+                         widgetVar="tableCustomerAccessStatusWidget"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -38,20 +39,21 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          >
+                >
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
-                <p:column headerText="#{msg['customerAccessStatus.name']}" width="40" 
-                          filterBy="#{customerAccessStatus.name}" sortBy="#{customerAccessStatus.name}" >
+                <p:column headerText="#{msg['customerAccessStatus.name']}" width="40"
+                          filterBy="#{customerAccessStatus.name}" sortBy="#{customerAccessStatus.name}">
                     <h:outputText value="#{customerAccessStatus.name}"/>
                 </p:column>
                 <p:column headerText="#{msg['customerAccessStatus.cardCode']}" width="70"
-                          filterBy="#{customerAccessStatus.cardCode}" sortBy="#{customerAccessStatus.cardCode}" >
+                          filterBy="#{customerAccessStatus.cardCode}" sortBy="#{customerAccessStatus.cardCode}">
                     <h:outputText value="#{customerAccessStatus.cardCode}"/>
                 </p:column>
                 <p:column headerText="#{msg['customerAccessStatus.groupPackName']}" width="70"
-                          filterBy="#{customerAccessStatus.groupPackName}" sortBy="#{customerAccessStatus.groupPackName}" >
+                          filterBy="#{customerAccessStatus.groupPackName}"
+                          sortBy="#{customerAccessStatus.groupPackName}">
                     <h:outputText value="#{customerAccessStatus.groupPackName}"/>
                 </p:column>
                 <p:column headerText="#{msg['customerAccessStatus.roomName']}" width="70"
@@ -69,14 +71,14 @@
                                           itemLabel="#{msg['doorType.out']}"/>
                         </p:selectOneMenu>
                     </f:facet>
-                    <h:outputText value="#{customerAccessStatus.doorTypeName}" />
+                    <h:outputText value="#{customerAccessStatus.doorTypeName}"/>
                 </p:column>
                 <p:column headerText="#{msg['customerAccessStatus.machineName']}" width="70" visible="false"
                           filterBy="#{customerAccessStatus.machineName}" sortBy="#{customerAccessStatus.machineName}">
                     <h:outputText value="#{customerAccessStatus.machineName}"/>
                 </p:column>
                 <p:column headerText="#{msg['customerAccessStatus.ip']}" width="50"
-                          filterBy="#{customerAccessStatus.ip}"  sortBy="#{customerAccessStatus.ip}">
+                          filterBy="#{customerAccessStatus.ip}" sortBy="#{customerAccessStatus.ip}">
                     <h:outputText value="#{customerAccessStatus.ip}"/>
                 </p:column>
                 <p:column headerText="#{msg['customerAccessStatus.port']}" width="20" visible="false"
@@ -96,24 +98,27 @@
                                           itemLabel="#{msg['common.INACTIVE']}"/>
                         </p:selectOneMenu>
                     </f:facet>
-                    <h:outputText value="#{customerAccessStatus.accessStatusName}" />
+                    <h:outputText value="#{customerAccessStatus.accessStatusName}"/>
                 </p:column>
-                <p:column headerText="#{msg['customerAccessStatus.updateTime']}" width="50" 
+                <p:column headerText="#{msg['customerAccessStatus.updateTime']}" width="50"
                           sortBy="#{customerAccessStatus.updateTime}">
-                    <h:outputText value="#{customerAccessStatus.updateTime}"><f:convertDateTime
-                            pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                    <h:outputText value="#{customerAccessStatus.updateTime}">
+                        <f:convertDateTime
+                                pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="#{msg['datatable.header.action']}" width="30" styleClass="TexAlCenter">
-                    <p:tooltip position="left" for="refreshStatusId" value="Kích hoạt lại quyền truy cập" ></p:tooltip>
+                    <p:tooltip position="left" for="refreshStatusId" value="Kích hoạt lại quyền truy cập"></p:tooltip>
 
-                    <p:commandButton icon="fa fa-sign-in" actionListener="#{customerAccessStatusController.refreshUpdateAccessStatus(customerAccessStatus)}"
+                    <p:commandButton icon="fa fa-sign-in"
+                                     actionListener="#{customerAccessStatusController.refreshUpdateAccessStatus(customerAccessStatus)}"
                                      disabled="#{customerAccessStatus.accessStatus==1}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
                                      update=":customerAccessStatusForm" id="refreshStatusId"
-                                     title="Kích hoạt lại quyền truy cập" styleClass="White  Fs14 MarTop5" >
+                                     title="Kích hoạt lại quyền truy cập" styleClass="White  Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="Kích hoạt truy cập"
-                                   message="Bạn chắc chắn muốn kích hoạt quyền truy cập?" >
+                                   message="Bạn chắc chắn muốn kích hoạt quyền truy cập?">
                         </p:confirm>
                     </p:commandButton>
                 </p:column>
@@ -122,7 +127,6 @@
             </p:dataTable>
         </h:form>
         <!--</div>-->
-
 
 
     </ui:define>

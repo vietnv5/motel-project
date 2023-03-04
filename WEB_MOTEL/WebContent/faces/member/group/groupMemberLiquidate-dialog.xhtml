@@ -4,20 +4,22 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
-    <p:dialog modal="true" header="Tất toán" widgetVar="groupMemberLiquidateDlg" width="90%" id="groupMemberLiquidateDlgId">
+    <p:dialog modal="true" header="Tất toán" widgetVar="groupMemberLiquidateDlg" width="90%"
+              id="groupMemberLiquidateDlgId">
 
         <h:form id="insertGroupMemberLiquidateForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth3" >
+                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth3">
                     <div class="Container100">
                         <div class=" Container25">
                             <span class="md-inputfield">
-                                <p:inputText value="#{groupMemberController.curGroupMember.groupMemberPayment.paymentCode}"
-                                             id="grouppackcode" readonly="true" disabled="true"
-                                             title="#{msg['memberPayment.paymentCode']}"
-                                             >
+                                <p:inputText
+                                        value="#{groupMemberController.curGroupMember.groupMemberPayment.paymentCode}"
+                                        id="grouppackcode" readonly="true" disabled="true"
+                                        title="#{msg['memberPayment.paymentCode']}"
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['memberPayment.paymentCode']}</label>
@@ -29,7 +31,7 @@
                                 <p:inputText value="#{authenticationController.user.userName}"
                                              readonly="true" disabled="true"
                                              title="#{msg['memberPayment.employee']}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['memberPayment.employee']}</label>
@@ -38,25 +40,29 @@
                         <div class="Container25 ">
                             <span class="title-top">
 
-                                <p:selectOneMenu id="debtServiceId" value="#{groupMemberController.curGroupMember.groupMemberPayment.curDebt}"
-                                                 var="t" 
+                                <p:selectOneMenu id="debtServiceId"
+                                                 value="#{groupMemberController.curGroupMember.groupMemberPayment.curDebt}"
+                                                 var="t"
                                                  converter="vGroupMemberDebtPaymentConverter"
                                                  filter="true" filterMatchMode="contains" style="width: 135px;"
-                                                 >
-                                    <f:selectItem itemLabel="#{groupMemberController.debtAll.groupPackName}" itemValue="#{groupMemberController.debtAll}" noSelectionOption="true"/>
-                                    <f:selectItems value="#{groupMemberController.lstGroupMemberDebtPayments}" var="t" itemLabel="#{t.groupPackName}" itemValue="#{t}"/>
+                                >
+                                    <f:selectItem itemLabel="#{groupMemberController.debtAll.groupPackName}"
+                                                  itemValue="#{groupMemberController.debtAll}"
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{groupMemberController.lstGroupMemberDebtPayments}" var="t"
+                                                   itemLabel="#{t.groupPackName}" itemValue="#{t}"/>
                                     <p:column headerText="#{msg['datatable.header.pack.name']}">
-                                        <h:outputText value="#{t.groupPackName}" />
+                                        <h:outputText value="#{t.groupPackName}"/>
                                     </p:column>
                                     <p:column headerText="Nợ">
-                                        <h:outputText value="#{t.sumDept}" >
+                                        <h:outputText value="#{t.sumDept}">
                                             <f:convertNumber pattern="#,###"/>
                                         </h:outputText>
-                                        <h:outputText value=" VNĐ" />
+                                        <h:outputText value=" VNĐ"/>
                                     </p:column>
                                     <p:ajax update="priceId,debtId,reasonId" event="change"
                                             listener="#{groupMemberController.onchangeDebtPack()}"
-                                            />
+                                    />
                                 </p:selectOneMenu>
 
                                 <label class="title-elem">#{msg['memberPayment.packDebt']} </label>
@@ -66,10 +72,11 @@
 
                         <div class="Container25 ">
                             <span class="md-inputfield">
-                                <p:inputNumber value="#{groupMemberController.curGroupMember.groupMemberPayment.price}" decimalPlaces="0"
+                                <p:inputNumber value="#{groupMemberController.curGroupMember.groupMemberPayment.price}"
+                                               decimalPlaces="0"
                                                id="priceId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
                                                title="#{msg['memberPayment.debt']}"
-                                               >
+                                >
                                 </p:inputNumber>
 
                                 <label>#{msg['memberPayment.debt']} *</label>
@@ -80,16 +87,17 @@
                     <div class="Container100">
                         <div class="Container25 MarTop30">
                             <span class="md-inputfield">
-                                <p:inputNumber value="#{groupMemberController.curGroupMember.groupMemberPayment.paymentValue}"
-                                               id="paymentValueId" symbol=" VNĐ" symbolPosition="suffix"
-                                               required="true" decimalPlaces="0"
-                                               requiredMessage="#{msg['common.required'].replace('{0}',msg['membership.memberPayment.paymentValue'])}"
-                                               title="#{msg['memberPayment.paymentValue']}"
-                                               >
+                                <p:inputNumber
+                                        value="#{groupMemberController.curGroupMember.groupMemberPayment.paymentValue}"
+                                        id="paymentValueId" symbol=" VNĐ" symbolPosition="suffix"
+                                        required="true" decimalPlaces="0"
+                                        requiredMessage="#{msg['common.required'].replace('{0}',msg['membership.memberPayment.paymentValue'])}"
+                                        title="#{msg['memberPayment.paymentValue']}"
+                                >
 
-                                    <p:ajax update="priceId,debtId,reasonId"  process="@this" 
+                                    <p:ajax update="priceId,debtId,reasonId" process="@this"
                                             onstart="PF('block').show()" oncomplete="PF('block').hide()"
-                                            listener="#{groupMemberController.onChangeComputingLiquidate()}" />
+                                            listener="#{groupMemberController.onChangeComputingLiquidate()}"/>
                                 </p:inputNumber>
 
                                 <label>#{msg['membership.memberPayment.paymentValue']} *</label>
@@ -99,9 +107,10 @@
                         <div class="Container25 MarTop30">
                             <span class="md-inputfield">
                                 <p:inputNumber value="#{groupMemberController.curGroupMember.groupMemberPayment.debt}"
-                                               id="debtId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"  styleClass="boldText"
+                                               id="debtId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
+                                               styleClass="boldText"
                                                title="#{msg['payment.surplus']}" decimalPlaces="0"
-                                               >
+                                >
                                 </p:inputNumber>
 
                                 <label>#{msg['payment.surplus']} *</label>
@@ -111,14 +120,17 @@
                         <div class="Container25 MarTop30 ">
                             <span class="title-top">
 
-                                <p:selectOneMenu id="reasonId" value="#{groupMemberController.curGroupMember.groupMemberPayment.reason}"
+                                <p:selectOneMenu id="reasonId"
+                                                 value="#{groupMemberController.curGroupMember.groupMemberPayment.reason}"
                                                  filter="true" filterMatchMode="contains" style="width: 135px;"
                                                  required="#{groupMemberController.curGroupMember.groupMemberPayment.debt lt 0}"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['memberPayment.reason'])}"
-                                                 >
-                                    <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
-                                    <f:selectItems value="#{groupMemberController.lstReason}" var="item" itemLabel="#{item.name}" 
-                                                   itemValue="#{item.name}"  />
+                                >
+                                    <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
+                                                  noSelectionOption="true"/>
+                                    <f:selectItems value="#{groupMemberController.lstReason}" var="item"
+                                                   itemLabel="#{item.name}"
+                                                   itemValue="#{item.name}"/>
                                 </p:selectOneMenu>
 
                                 <label class="title-elem">#{msg['memberPayment.reason']} </label>
@@ -128,26 +140,29 @@
                     </div>
                     <div class="Container50  MarTop30">
                         <span class="md-inputfield">
-                            <p:inputTextarea value="#{groupMemberController.curGroupMember.groupMemberPayment.description}"
-                                             id="descriptionId" rows="1" style="width: 70%"
-                                             title="#{msg['memberPayment.description']}" 
-                                             >
+                            <p:inputTextarea
+                                    value="#{groupMemberController.curGroupMember.groupMemberPayment.description}"
+                                    id="descriptionId" rows="1" style="width: 70%"
+                                    title="#{msg['memberPayment.description']}"
+                            >
                             </p:inputTextarea>
                             <label>#{msg['memberPayment.description']} </label>
                         </span>
                         <p:message for="descriptionId"/>
                     </div>
-                </p:outputPanel>  
-                <p:outputPanel class="Container100 TexAlRight" >
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlRight">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(tblGroupMemberPayment),@widgetVar(growl),:insertGroupMemberForm,:insertGroupMemberLiquidateForm, :cfImgGroupMemberFormLocal"
-                                     actionListener="#{groupMemberController.liquidate()}" process=":insertGroupMemberLiquidateForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();"
-                                     >
+                                     actionListener="#{groupMemberController.liquidate()}"
+                                     process=":insertGroupMemberLiquidateForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('groupMemberLiquidateDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('groupMemberLiquidateDlg').hide()">
 
                     </p:commandButton>
 
@@ -156,7 +171,7 @@
         </h:form>
     </p:dialog>
     <style>
-        .boldText .ui-inputfield{
+        .boldText .ui-inputfield {
             font-weight: bold !important;
         }
     </style>

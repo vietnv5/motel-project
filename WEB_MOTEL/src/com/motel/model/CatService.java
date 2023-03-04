@@ -8,6 +8,7 @@ package com.motel.model;
 import com.slook.model.CatItemBO;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
+
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Basic;
@@ -26,7 +27,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author VietNV
  */
 @Entity
@@ -40,7 +40,8 @@ import javax.xml.bind.annotation.XmlTransient;
 //    , @NamedQuery(name = "Service.findByUnit", query = "SELECT s FROM Service s WHERE s.unit = :unit")
 //    , @NamedQuery(name = "Service.findByGroupUserId", query = "SELECT s FROM Service s WHERE s.groupUserId = :groupUserId")
 //    , @NamedQuery(name = "Service.findByDefaultStatus", query = "SELECT s FROM Service s WHERE s.defaultStatus = :defaultStatus")})
-public class CatService implements Serializable {
+public class CatService implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -71,140 +72,174 @@ public class CatService implements Serializable {
     private CatItemBO unitBO;
     @Transient
     private String defaultStatusStr;
-    
-    public CatService() {
+
+    public CatService()
+    {
     }
 
-    public CatService(Long serviceId) {
+    public CatService(Long serviceId)
+    {
         this.serviceId = serviceId;
     }
 
-    public Long getServiceId() {
+    public Long getServiceId()
+    {
         return serviceId;
     }
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(Long serviceId)
+    {
         this.serviceId = serviceId;
     }
 
-    public String getServiceName() {
+    public String getServiceName()
+    {
         return serviceName;
     }
 
-    public void setServiceName(String serviceName) {
+    public void setServiceName(String serviceName)
+    {
         this.serviceName = serviceName;
     }
 
-    public Long getPrice() {
+    public Long getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(Long price)
+    {
         this.price = price;
     }
 
-    public Long getUnit() {
+    public Long getUnit()
+    {
         return unit;
     }
 
-    public void setUnit(Long unit) {
+    public void setUnit(Long unit)
+    {
         this.unit = unit;
     }
 
-    public Long getGroupUserId() {
+    public Long getGroupUserId()
+    {
         return groupUserId;
     }
 
-    public void setGroupUserId(Long groupUserId) {
+    public void setGroupUserId(Long groupUserId)
+    {
         this.groupUserId = groupUserId;
     }
 
-    public Long getDefaultStatus() {
+    public Long getDefaultStatus()
+    {
         return defaultStatus;
     }
 
-    public void setDefaultStatus(Long defaultStatus) {
+    public void setDefaultStatus(Long defaultStatus)
+    {
         this.defaultStatus = defaultStatus;
     }
 
     @XmlTransient
-    public List<BillService> getBillServiceList() {
+    public List<BillService> getBillServiceList()
+    {
         return billServiceList;
     }
 
-    public void setBillServiceList(List<BillService> billServiceList) {
+    public void setBillServiceList(List<BillService> billServiceList)
+    {
         this.billServiceList = billServiceList;
     }
 
     @XmlTransient
-    public List<ContractService> getContractServiceList() {
+    public List<ContractService> getContractServiceList()
+    {
         return contractServiceList;
     }
 
-    public void setContractServiceList(List<ContractService> contractServiceList) {
+    public void setContractServiceList(List<ContractService> contractServiceList)
+    {
         this.contractServiceList = contractServiceList;
     }
 
-    public String getServiceCode() {
+    public String getServiceCode()
+    {
         return serviceCode;
     }
 
-    public void setServiceCode(String serviceCode) {
+    public void setServiceCode(String serviceCode)
+    {
         this.serviceCode = serviceCode;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (serviceId != null ? serviceId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CatService)) {
+        if (!(object instanceof CatService))
+        {
             return false;
         }
         CatService other = (CatService) object;
-        if ((this.serviceId == null && other.serviceId != null) || (this.serviceId != null && !this.serviceId.equals(other.serviceId))) {
+        if ((this.serviceId == null && other.serviceId != null) || (this.serviceId != null && !this.serviceId.equals(other.serviceId)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.Service[ serviceId=" + serviceId + " ]";
     }
 
-    public CatItemBO getUnitBO() {
+    public CatItemBO getUnitBO()
+    {
         return unitBO;
     }
 
-    public void setUnitBO(CatItemBO unitBO) {
+    public void setUnitBO(CatItemBO unitBO)
+    {
         this.unitBO = unitBO;
     }
 
-    public String getDefaultStatusStr() {
-          if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_ON.equals( defaultStatus)) {
+    public String getDefaultStatusStr()
+    {
+        if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_ON.equals(defaultStatus))
+        {
             defaultStatusStr = MessageUtil.getResourceBundleMessage("catService.defaultStatus.YES");
-        } else if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_OFF.equals( defaultStatus)) {
+        }
+        else if (Constant.CONTRACT_SERVICE.DEFAULT_STATUS_OFF.equals(defaultStatus))
+        {
             defaultStatusStr = MessageUtil.getResourceBundleMessage("catService.defaultStatus.NO");
         }
         return defaultStatusStr;
     }
 
-    public void setDefaultStatusStr(String defaultStatusStr) {
+    public void setDefaultStatusStr(String defaultStatusStr)
+    {
         this.defaultStatusStr = defaultStatusStr;
     }
-    
+
 }

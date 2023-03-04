@@ -21,7 +21,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
                          widgetVar="tableGroupUserWidget"
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -34,9 +34,10 @@
                                              update=":groupUserForm,groupUserDlgId"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['datatable.header.groupUser']}" />
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.groupUser']}"/>
                                 <p:dataExporter type="xls" target="tableHomeId" fileName="groupUser" pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
@@ -49,7 +50,7 @@
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableHomeId" trigger="toggler">
-                                <p:ajax event="toggle" listener="#{groupUserController.onToggler}" />
+                                <p:ajax event="toggle" listener="#{groupUserController.onToggler}"/>
                             </p:columnToggler>
                         </div>
 
@@ -59,19 +60,20 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          visible="#{groupUserController.columnVisibale[0]}" >
+                          visible="#{groupUserController.columnVisibale[0]}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
                 <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
                           visible="#{groupUserController.columnVisibale[1]}" styleClass="TexAlCenter">
-                    <p:tooltip position="top" ></p:tooltip>
+                    <p:tooltip position="top"></p:tooltip>
 
                     <p:commandButton icon="fa fa-edit" actionListener="#{groupUserController.preEdit(groupUser)}"
 
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('groupUserDlg').show()"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('groupUserDlg').show()"
                                      update=":groupUserForm,groupUserDlgId" id="updateHomeId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
 
@@ -79,7 +81,7 @@
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{groupUserController.onDelete(groupUser)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableHomeId "  disabled="#{groupUser.status==1}"
+                                     update="tableHomeId " disabled="#{groupUser.status==1}"
                                      title="Xóa" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                    message="#{msg['title.confirm.delete']}">
@@ -89,34 +91,34 @@
 
                 <p:column headerText="#{msg['groupUser.id']}" width="20" filterStyle="width:70%"
                           visible="#{groupUserController.columnVisibale[2]}"
-                          filterBy="#{groupUser.id-LIKE}" sortBy="#{groupUser.id}" >
+                          filterBy="#{groupUser.id-LIKE}" sortBy="#{groupUser.id}">
                     <h:outputText value="#{groupUser.id}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['groupUser.code']}" width="40"
                           visible="#{groupUserController.columnVisibale[3]}"
-                          filterBy="#{groupUser.code}" sortBy="#{groupUser.code}" >
+                          filterBy="#{groupUser.code}" sortBy="#{groupUser.code}">
                     <h:outputText value="#{groupUser.code}"/>
                 </p:column>
 
 
                 <p:column headerText="#{msg['groupUser.name']}" width="40"
                           visible="#{groupUserController.columnVisibale[4]}"
-                          filterBy="#{groupUser.name}" sortBy="#{groupUser.name}" >
+                          filterBy="#{groupUser.name}" sortBy="#{groupUser.name}">
                     <h:outputText value="#{groupUser.name}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['groupUser.maxNumberRoom']}" width="40"
-                          visible="#{groupUserController.columnVisibale[5]}" style="text-align: right;" 
-                          filterBy="#{groupUser.maxNumberRoom-LIKE}" sortBy="#{groupUser.maxNumberRoom}" >
+                          visible="#{groupUserController.columnVisibale[5]}" style="text-align: right;"
+                          filterBy="#{groupUser.maxNumberRoom-LIKE}" sortBy="#{groupUser.maxNumberRoom}">
                     <h:outputText value="#{groupUser.maxNumberRoom}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['groupUser.startTime']}" width="50" sortBy="#{groupUser.startTime}" 
+                <p:column headerText="#{msg['groupUser.startTime']}" width="50" sortBy="#{groupUser.startTime}"
                           visible="#{groupUserController.columnVisibale[6]}"
-                          filterBy="#{groupUser.startTime-BW}" >
-                    <f:facet name="filter" >
-                        <p:calendar pattern="dd/MM/yyyy" >
+                          filterBy="#{groupUser.startTime-BW}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tableGroupUserWidget').filter()"/>
                         </p:calendar>
                     </f:facet>
@@ -125,11 +127,11 @@
                     </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg['groupUser.endTime']}" width="50" sortBy="#{groupUser.endTime}" 
+                <p:column headerText="#{msg['groupUser.endTime']}" width="50" sortBy="#{groupUser.endTime}"
                           visible="#{groupUserController.columnVisibale[7]}"
-                          filterBy="#{groupUser.endTime-BW}" >
-                    <f:facet name="filter" >
-                        <p:calendar pattern="dd/MM/yyyy" >
+                          filterBy="#{groupUser.endTime-BW}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tableGroupUserWidget').filter()"/>
                         </p:calendar>
                     </f:facet>
@@ -137,13 +139,13 @@
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
-                
 
-                <p:column headerText="#{msg['groupUser.createTime']}" width="50" sortBy="#{groupUser.createTime}" 
+
+                <p:column headerText="#{msg['groupUser.createTime']}" width="50" sortBy="#{groupUser.createTime}"
                           visible="#{groupUserController.columnVisibale[8]}"
-                          filterBy="#{groupUser.createTime-BW}" >
-                    <f:facet name="filter" >
-                        <p:calendar pattern="dd/MM/yyyy" >
+                          filterBy="#{groupUser.createTime-BW}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tableGroupUserWidget').filter()"/>
                         </p:calendar>
                     </f:facet>
@@ -151,16 +153,16 @@
                         <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
                     </h:outputText>
                 </p:column>
-                
+
 
                 <p:column headerText="#{msg['groupUser.description']}" width="40"
                           visible="#{groupUserController.columnVisibale[9]}"
-                          filterBy="#{groupUser.description}" sortBy="#{groupUser.description}" >
+                          filterBy="#{groupUser.description}" sortBy="#{groupUser.description}">
                     <h:outputText value="#{groupUser.description}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['groupUser.status']}" width="40"
-                          visible="#{groupUserController.columnVisibale[10]}" 
+                          visible="#{groupUserController.columnVisibale[10]}"
                           filterBy="#{groupUser.status}" sortBy="#{groupUser.status}">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tableHomeWidget').filter()">

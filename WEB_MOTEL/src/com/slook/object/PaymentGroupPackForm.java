@@ -7,14 +7,15 @@ package com.slook.object;
 
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
+
 import java.util.Date;
 import javax.persistence.Transient;
 
 /**
- *
  * @author SLOOK. JSC on Nov 7, 2017 2:24:47 PM
  */
-public class PaymentGroupPackForm {
+public class PaymentGroupPackForm
+{
 
     private Long tongTien;
     private Long tongNo;
@@ -40,218 +41,272 @@ public class PaymentGroupPackForm {
     private String customerName;
     private String phoneNumber;
     private String keyCustomerId;
-    
+
     //THONG KE ky thuat vien
     private String keyServiceTicket;
     private String empTelephone;
     private Long jobTitleId;
     private String jobTitleName;
-    
 
-    public Long getTongTien() {
+
+    public Long getTongTien()
+    {
         return tongTien;
     }
 
-    public void setTongTien(Long tongTien) {
+    public void setTongTien(Long tongTien)
+    {
         this.tongTien = tongTien;
     }
 
-    public Long getTongNo() {
+    public Long getTongNo()
+    {
         return tongNo;
     }
 
-    public void setTongNo(Long tongNo) {
+    public void setTongNo(Long tongNo)
+    {
         this.tongNo = tongNo;
     }
 
-    public Long getDaNop() {
+    public Long getDaNop()
+    {
         return daNop;
     }
 
-    public void setDaNop(Long daNop) {
+    public void setDaNop(Long daNop)
+    {
         this.daNop = daNop;
     }
 
-    public String getGroupPackName() {
+    public String getGroupPackName()
+    {
         return groupPackName;
     }
 
-    public void setGroupPackName(String groupPackName) {
+    public void setGroupPackName(String groupPackName)
+    {
         this.groupPackName = groupPackName;
     }
 
-    public Long getGroupPackId() {
+    public Long getGroupPackId()
+    {
         return groupPackId;
     }
 
-    public void setGroupPackId(Long groupPackId) {
+    public void setGroupPackId(Long groupPackId)
+    {
         this.groupPackId = groupPackId;
     }
 
-    public Long getSoLuong() {
+    public Long getSoLuong()
+    {
         return soLuong;
     }
 
-    public void setSoLuong(Long soLuong) {
+    public void setSoLuong(Long soLuong)
+    {
         this.soLuong = soLuong;
     }
 
-    public Long getCustomerType() {
+    public Long getCustomerType()
+    {
         return customerType;
     }
 
-    public void setCustomerType(Long customerType) {
+    public void setCustomerType(Long customerType)
+    {
         this.customerType = customerType;
     }
 
-    public String getKey() {
+    public String getKey()
+    {
         key = groupPackId + "_" + (customerType != null ? customerType : "");
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(String key)
+    {
         this.key = key;
     }
 
     @Transient
-    public String getCustomerTypeName() {
-        if (Constant.CUSTOMER_CHECKIN.TYPE_CLIENT.equals(customerType)) {
+    public String getCustomerTypeName()
+    {
+        if (Constant.CUSTOMER_CHECKIN.TYPE_CLIENT.equals(customerType))
+        {
             customerTypeName = MessageUtil.getResourceBundleMessage("customerCheckin.type2");
-        } else if (Constant.CUSTOMER_CHECKIN.TYPE_MEMBER.equals(customerType)) {
+        }
+        else if (Constant.CUSTOMER_CHECKIN.TYPE_MEMBER.equals(customerType))
+        {
             customerTypeName = MessageUtil.getResourceBundleMessage("customerCheckin.type1");
-        } else if (Constant.CUSTOMER_CHECKIN.TYPE_GROUP_MEMBER.equals(customerType)) {
+        }
+        else if (Constant.CUSTOMER_CHECKIN.TYPE_GROUP_MEMBER.equals(customerType))
+        {
             customerTypeName = MessageUtil.getResourceBundleMessage("customerCheckin.type3");
         }
 
         return customerTypeName;
     }
 
-    public void setCustomerTypeName(String customerTypeName) {
+    public void setCustomerTypeName(String customerTypeName)
+    {
         this.customerTypeName = customerTypeName;
     }
 
-    public Long getEmployeeId() {
+    public Long getEmployeeId()
+    {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(Long employeeId)
+    {
         this.employeeId = employeeId;
     }
 
-    public String getEmployeeCode() {
+    public String getEmployeeCode()
+    {
         return employeeCode;
     }
 
-    public void setEmployeeCode(String employeeCode) {
+    public void setEmployeeCode(String employeeCode)
+    {
         this.employeeCode = employeeCode;
     }
 
-    public String getEmployeeName() {
+    public String getEmployeeName()
+    {
         return employeeName;
     }
 
-    public void setEmployeeName(String employeeName) {
+    public void setEmployeeName(String employeeName)
+    {
         this.employeeName = employeeName;
     }
 
-    public String getTelephone() {
+    public String getTelephone()
+    {
         return telephone;
     }
 
-    public void setTelephone(String telephone) {
+    public void setTelephone(String telephone)
+    {
         this.telephone = telephone;
     }
 
-    public String getKeyEmployeeId() {
+    public String getKeyEmployeeId()
+    {
         keyEmployeeId = "";
-        if (employeeId != null) {
+        if (employeeId != null)
+        {
             keyEmployeeId += employeeId;
         }
         keyEmployeeId += "_";
-        if (customerType != null) {
+        if (customerType != null)
+        {
             keyEmployeeId += customerType;
         }
         keyEmployeeId += "_";
-        if (groupPackId != null) {
+        if (groupPackId != null)
+        {
             keyEmployeeId += groupPackId;
         }
         return keyEmployeeId;
     }
 
-    public void setKeyEmployeeId(String keyEmployeeId) {
+    public void setKeyEmployeeId(String keyEmployeeId)
+    {
 
         this.keyEmployeeId = keyEmployeeId;
     }
 
-    public Long getCustomerId() {
+    public Long getCustomerId()
+    {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Long customerId)
+    {
         this.customerId = customerId;
     }
 
-    public String getCustomerName() {
+    public String getCustomerName()
+    {
         return customerName;
     }
 
-    public void setCustomerName(String customerName) {
+    public void setCustomerName(String customerName)
+    {
         this.customerName = customerName;
     }
 
-    public String getPhoneNumber() {
+    public String getPhoneNumber()
+    {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber)
+    {
         this.phoneNumber = phoneNumber;
     }
 
-    public String getKeyCustomerId() {
+    public String getKeyCustomerId()
+    {
         keyCustomerId = "";
-        if (customerId != null) {
+        if (customerId != null)
+        {
             keyCustomerId += customerId;
         }
         keyCustomerId += "_";
-        if (customerType != null) {
+        if (customerType != null)
+        {
             keyCustomerId += customerType;
         }
         return keyCustomerId;
     }
 
-    public void setKeyCustomerId(String keyCustomerId) {
+    public void setKeyCustomerId(String keyCustomerId)
+    {
         this.keyCustomerId = keyCustomerId;
     }
 
-    public String getKeyServiceTicket() {
+    public String getKeyServiceTicket()
+    {
         return keyServiceTicket;
     }
 
-    public void setKeyServiceTicket(String keyServiceTicket) {
+    public void setKeyServiceTicket(String keyServiceTicket)
+    {
         this.keyServiceTicket = keyServiceTicket;
     }
 
-    public String getEmpTelephone() {
+    public String getEmpTelephone()
+    {
         return empTelephone;
     }
 
-    public void setEmpTelephone(String empTelephone) {
+    public void setEmpTelephone(String empTelephone)
+    {
         this.empTelephone = empTelephone;
     }
 
-    public Long getJobTitleId() {
+    public Long getJobTitleId()
+    {
         return jobTitleId;
     }
 
-    public void setJobTitleId(Long jobTitleId) {
+    public void setJobTitleId(Long jobTitleId)
+    {
         this.jobTitleId = jobTitleId;
     }
 
-    public String getJobTitleName() {
+    public String getJobTitleName()
+    {
         return jobTitleName;
     }
 
-    public void setJobTitleName(String jobTitleName) {
+    public void setJobTitleName(String jobTitleName)
+    {
         this.jobTitleName = jobTitleName;
     }
 

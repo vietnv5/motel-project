@@ -18,7 +18,7 @@
                          rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200" widgetVar="tableOMWidget"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
-                    >
+            >
 
                 <!--Header-->
                 <f:facet name="header">
@@ -91,7 +91,7 @@
                                          oncomplete="PF('block').hide()"
                                          actionListener="#{objectMonitorController.unlockObject(vObjectMonitor)}"
                                          title="#{msg['button.unlock']}"
-                                />
+                        />
                     </p:outputPanel>
                     <p:outputPanel style="width: 100%; text-align:center"
                                    rendered="#{vObjectMonitor.status == 1}">
@@ -102,7 +102,7 @@
                                          oncomplete="PF('block').hide()"
                                          actionListener="#{objectMonitorController.lockObject(vObjectMonitor)}"
                                          title="#{msg['button.lock']}"
-                                />
+                        />
                     </p:outputPanel>
                 </p:column>
 
@@ -169,7 +169,7 @@
 
             <!--Output Panel-->
             <!--<p:outputPanel id="actionPanel" style="position: fixed;right: 25px; bottom: 30px;width: 45px;">-->
-                <!--<p:tooltip position="top"/>-->
+            <!--<p:tooltip position="top"/>-->
             <!--</p:outputPanel>-->
 
             <!--Loading dialog-->

@@ -27,26 +27,30 @@ import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 
-@WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD,
-		DispatcherType.INCLUDE, DispatcherType.ERROR }, urlPatterns = { "*" })
-public class UTF8Filter implements Filter {
+@WebFilter(dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD,
+        DispatcherType.INCLUDE, DispatcherType.ERROR}, urlPatterns = {"*"})
+public class UTF8Filter implements Filter
+{
 
-	public void doFilter(ServletRequest request, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-		HttpServletRequest req = (HttpServletRequest) request;
-		req.getSession();
-		
-		request.setCharacterEncoding("UTF-8");
-		resp.setCharacterEncoding("UTF-8");
-		chain.doFilter(request, resp);
-	}
+    public void doFilter(ServletRequest request, ServletResponse resp, FilterChain chain) throws IOException, ServletException
+    {
+        HttpServletRequest req = (HttpServletRequest) request;
+        req.getSession();
 
-	public void init(FilterConfig filterConfig) throws ServletException {
-		
-	}
-	
-	public void destroy() {
-		
-	}
+        request.setCharacterEncoding("UTF-8");
+        resp.setCharacterEncoding("UTF-8");
+        chain.doFilter(request, resp);
+    }
+
+    public void init(FilterConfig filterConfig) throws ServletException
+    {
+
+    }
+
+    public void destroy()
+    {
+
+    }
 
 
 }

@@ -9,16 +9,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.util.Date;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "GROUP_MEMBER_PROMOTION")
-public class GroupMemberPromotion {
+public class GroupMemberPromotion
+{
 
     private Long groupMemberId;
     private Date createDate;
@@ -32,48 +36,58 @@ public class GroupMemberPromotion {
     private Long groupMembershipId;
 
     @Column(name = "GROUP_MEMBER_ID", precision = 22, scale = 0)
-    public Long getGroupMemberId() {
+    public Long getGroupMemberId()
+    {
         return groupMemberId;
     }
 
-    public void setGroupMemberId(Long groupMemberId) {
+    public void setGroupMemberId(Long groupMemberId)
+    {
         this.groupMemberId = groupMemberId;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "CREATE_DATE", length = 7)
-    public Date getCreateDate() {
+    public Date getCreateDate()
+    {
         return createDate;
     }
 
-    public void setCreateDate(Date createDate) {
+    public void setCreateDate(Date createDate)
+    {
         this.createDate = createDate;
     }
 
     @Column(name = "DESCRIPTION", length = 300)
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
     @Column(name = "CAT_PROMOTION_ID", precision = 22, scale = 0)
-    public Long getCatPromotionId() {
+    public Long getCatPromotionId()
+    {
         return catPromotionId;
     }
 
-    public void setCatPromotionId(Long catPromotionId) {
+    public void setCatPromotionId(Long catPromotionId)
+    {
         this.catPromotionId = catPromotionId;
     }
 
     @Column(name = "GROUP_PACK_ID", precision = 22, scale = 0)
-    public Long getGroupPackId() {
+    public Long getGroupPackId()
+    {
         return groupPackId;
     }
 
-    public void setGroupPackId(Long groupPackId) {
+    public void setGroupPackId(Long groupPackId)
+    {
         this.groupPackId = groupPackId;
     }
 
@@ -81,61 +95,74 @@ public class GroupMemberPromotion {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "PROMOTION_ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getPromotionId() {
+    public Long getPromotionId()
+    {
         return promotionId;
     }
 
-    public void setPromotionId(Long promotionId) {
+    public void setPromotionId(Long promotionId)
+    {
         this.promotionId = promotionId;
     }
 
     @Column(name = "VALUE", precision = 22, scale = 2)
-    public Double getValue() {
+    public Double getValue()
+    {
         return value;
     }
 
-    public void setValue(Double value) {
+    public void setValue(Double value)
+    {
         this.value = value;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GROUP_MEMBER_ID", insertable = false, updatable = false)
-    public GroupMember getGroupMember() {
+    public GroupMember getGroupMember()
+    {
         return groupMember;
     }
 
-    public void setGroupMember(GroupMember groupMember) {
+    public void setGroupMember(GroupMember groupMember)
+    {
         this.groupMember = groupMember;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GROUP_PACK_ID", insertable = false, updatable = false)
-    public CatGroupPack getCatGroupPack() {
+    public CatGroupPack getCatGroupPack()
+    {
         return catGroupPack;
     }
 
-    public void setCatGroupPack(CatGroupPack catGroupPack) {
+    public void setCatGroupPack(CatGroupPack catGroupPack)
+    {
         this.catGroupPack = catGroupPack;
     }
 
-    public GroupMemberPromotion() {
+    public GroupMemberPromotion()
+    {
     }
 
-    public GroupMemberPromotion(Long promotionId) {
+    public GroupMemberPromotion(Long promotionId)
+    {
         this.promotionId = promotionId;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
-    
+
     @Column(name = "GROUP_MEMBERSHIP_ID", precision = 22, scale = 0)
-    public Long getGroupMembershipId() {
+    public Long getGroupMembershipId()
+    {
         return groupMembershipId;
     }
 
-    public void setGroupMembershipId(Long groupMembershipId) {
+    public void setGroupMembershipId(Long groupMembershipId)
+    {
         this.groupMembershipId = groupMembershipId;
     }
 

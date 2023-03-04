@@ -25,6 +25,7 @@ import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
 import com.slook.util.StringUtil;
 import com.slook.util.XMLEncoderDecoderExample;
+
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -37,16 +38,17 @@ import javax.faces.bean.ViewScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author VietNV Jun 7, 2018
  */
 @ManagedBean
 @ViewScoped
-public class AccountRegistrationController {
+public class AccountRegistrationController
+{
 
     protected static final Logger logger = LoggerFactory.getLogger(catUserController.class);
 
@@ -56,61 +58,75 @@ public class AccountRegistrationController {
     List<CatRole> lstRole;
     String oldPassword;
     private String oldObjectStr = null;
-// phan nhom nguoi dung
+    // phan nhom nguoi dung
     private boolean isEdit = false;
-// thong tin khoi tao
+    // thong tin khoi tao
     Home currHome = new Home();
 
     @PostConstruct
-    public void onStart() {
-        catUserService = new GenericDaoImplNewV2<CatUser, Long>() {
+    public void onStart()
+    {
+        catUserService = new GenericDaoImplNewV2<CatUser, Long>()
+        {
         };
         currCatUser = new CatUser();
-        catRoleService = new GenericDaoImplNewV2<CatRole, Long>() {
+        catRoleService = new GenericDaoImplNewV2<CatRole, Long>()
+        {
         };
 //        employeeService = new GenericDaoImplNewV2<Employee, Long>() {
 //        };
-        try {
+        try
+        {
 
             lstRole = catRoleService.findList();
 
             // su dung cho dk tai khoan
             preRegistrationAccount();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
 
     }
 
-    public boolean checkValidate() {
-        try {
-            if (StringUtil.isNotNullAndNullStr(currCatUser.getPhoneNumber())) {
+    public boolean checkValidate()
+    {
+        try
+        {
+            if (StringUtil.isNotNullAndNullStr(currCatUser.getPhoneNumber()))
+            {
 
                 Map<String, Object> filters = new HashMap<String, Object>();
                 filters.put("phoneNumber-EXAC_IGNORE_CASE", currCatUser.getPhoneNumber());
                 filters.put("status-NEQ", Constant.STATUS.DELETE);
-                if (currCatUser.getUserId() != null) {
+                if (currCatUser.getUserId() != null)
+                {
                     filters.put("userId-NEQ", currCatUser.getUserId());
                 }
                 List<CatUser> lst = catUserService.findList(filters);
-                if (!lst.isEmpty() && lst.size() > 0) {
+                if (!lst.isEmpty() && lst.size() > 0)
+                {
                     MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
                             MessageUtil.getResourceBundleMessage("customer.phone")
                     ));
                     return false;
                 }
             }
-            if (StringUtil.isNotNullAndNullStr(currCatUser.getEmail())) {
+            if (StringUtil.isNotNullAndNullStr(currCatUser.getEmail()))
+            {
 
                 Map<String, Object> filters = new HashMap<String, Object>();
                 filters.put("email-EXAC_IGNORE_CASE", currCatUser.getEmail());
                 filters.put("status-NEQ", Constant.STATUS.DELETE);
 
-                if (currCatUser.getUserId() != null) {
+                if (currCatUser.getUserId() != null)
+                {
                     filters.put("userId-NEQ", currCatUser.getUserId());
                 }
                 List<CatUser> lst = catUserService.findList(filters);
-                if (!lst.isEmpty() && lst.size() > 0) {
+                if (!lst.isEmpty() && lst.size() > 0)
+                {
                     MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
                             MessageUtil.getResourceBundleMessage("datatable.header.email")
                     ));
@@ -118,58 +134,76 @@ public class AccountRegistrationController {
                 }
             }
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
         return true;
     }
 
-    public void preRegistrationAccount() {
-        try {
+    public void preRegistrationAccount()
+    {
+        try
+        {
             isEdit = false;
             currCatUser = new CatUser();
             currCatUser.setStatus(1l);
             currCatUser.setGroupUser(new GroupUser());
             oldObjectStr = null;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void processRegistrationAccount(CatUser currCatUser) {
-        try {
-            if (currCatUser.getUserId() == null) {
+    public void processRegistrationAccount(CatUser currCatUser)
+    {
+        try
+        {
+            if (currCatUser.getUserId() == null)
+            {
 
-                if (currCatUser.getPassword() != null && !currCatUser.getPassword().equals(currCatUser.getConfirmPassword())) {
+                if (currCatUser.getPassword() != null && !currCatUser.getPassword().equals(currCatUser.getConfirmPassword()))
+                {
                     MessageUtil.setErrorMessage("Mật khẩu nhập chưa khớp!");
                     return;
                 }
                 // set role
                 String roleCfg = Constant.ROLE.CUSTOMER;
-                try {
+                try
+                {
                     roleCfg = DataConfig.getConfigByKey("ROLE_REGISTRATION");
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                 }
                 String ROLE_REGISTRATION = roleCfg != null ? roleCfg : Constant.ROLE.CUSTOMER;
                 List<CatRole> lsRole = lstRole.stream().filter(o -> ROLE_REGISTRATION.equalsIgnoreCase(o.getRoleCode())).collect(Collectors.toList());
-                if (lsRole != null && !lsRole.isEmpty()) {
+                if (lsRole != null && !lsRole.isEmpty())
+                {
                     currCatUser.setRoleId(lsRole.get(0).getRoleId());
                     currCatUser.setRole(lsRole.get(0));
                 }
 
                 GroupUser currGroupUser = new GroupUser();
-                if (currCatUser.getGroupUser() != null) {
+                if (currCatUser.getGroupUser() != null)
+                {
                     currGroupUser = currCatUser.getGroupUser();
                 }
                 //set thong tin mac dinh
                 currGroupUser.setCreateTime(new Date());
                 currGroupUser.setCode(DateTimeUtils.format(new Date(), "yyyyMMddHHmmss"));
                 long numRoomDefault = 10;
-                try {
+                try
+                {
                     String numRoomStr = DataConfig.getConfigByKey("MAX_NUMBER_ROOM_DEFAULT");
                     numRoomDefault = Long.valueOf(numRoomStr);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                 }
                 currGroupUser.setMaxNumberRoom(numRoomDefault);
                 currGroupUser.setStartTime(new Date());
@@ -191,20 +225,26 @@ public class AccountRegistrationController {
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             e.printStackTrace();
         }
     }
 
-    public void onCreateAccount() {
-        try {
-            if (StringUtil.isNullOrEmpty(currCatUser.getPhoneNumber()) && StringUtil.isNullOrEmpty(currCatUser.getEmail())) {
+    public void onCreateAccount()
+    {
+        try
+        {
+            if (StringUtil.isNullOrEmpty(currCatUser.getPhoneNumber()) && StringUtil.isNullOrEmpty(currCatUser.getEmail()))
+            {
                 MessageUtil.setErrorMessage("Cần phải nhập email hoặc số điện thoại!");
                 return;
             }
 
-            if (!checkValidate()) {
+            if (!checkValidate())
+            {
                 return;
             }
 
@@ -214,10 +254,13 @@ public class AccountRegistrationController {
             catUserService.saveOrUpdate(currCatUser);
             initDataDefault();
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, currCatUser.getUserName(), oldObjectStr, currCatUser.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -237,18 +280,23 @@ public class AccountRegistrationController {
             preRegistrationAccount();
             context.redirect(req.getContextPath() + defaultUrl);
 //            preAdd();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
     //tao cac thong tin khac
-    public void initDataDefault() {
-        try {
+    public void initDataDefault()
+    {
+        try
+        {
             // tao dich vu co ban
             List<CatService> lstCatService = (List) XMLEncoderDecoderExample.deserializeFromXMLObject(CatService.class);
-            for (CatService bo : lstCatService) {
+            for (CatService bo : lstCatService)
+            {
                 bo.setServiceId(null);
                 bo.setBillServiceList(null);
                 bo.setContractServiceList(null);
@@ -257,41 +305,50 @@ public class AccountRegistrationController {
             CatServiceServiceImpl.getInstance().saveOrUpdate(lstCatService);
             //tao phong mau
             List<Room> lstRoom = (List) XMLEncoderDecoderExample.deserializeFromXMLObject(Room.class);
-            for (Room bo : lstRoom) {
+            for (Room bo : lstRoom)
+            {
                 bo.setRoomId(null);
                 bo.setHomeId(currHome.getHomeId());
                 bo.setCustomerRoomList(null);
                 bo.setElectricWaterList(null);
             }
             RoomServiceImpl.getInstance().saveOrUpdate(lstRoom);
-            
-        } catch (Exception e) {
+
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
-            logger.error(e.getMessage(),e);
+            logger.error(e.getMessage(), e);
         }
     }
 
-    public CatUser getCurrCatUser() {
+    public CatUser getCurrCatUser()
+    {
         return currCatUser;
     }
 
-    public void setCurrCatUser(CatUser currCatUser) {
+    public void setCurrCatUser(CatUser currCatUser)
+    {
         this.currCatUser = currCatUser;
     }
 
-    public String getOldPassword() {
+    public String getOldPassword()
+    {
         return oldPassword;
     }
 
-    public void setOldPassword(String oldPassword) {
+    public void setOldPassword(String oldPassword)
+    {
         this.oldPassword = oldPassword;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
 

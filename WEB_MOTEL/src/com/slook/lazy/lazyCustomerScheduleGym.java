@@ -7,11 +7,13 @@ import com.slook.model.CustomerSchedule;
 import com.slook.model.CustomerSchedule;
 import com.slook.persistence.GenericDaoServiceNewV2;
 import com.slook.util.Constant;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultScheduleEvent;
 import org.primefaces.model.LazyScheduleModel;
@@ -21,20 +23,22 @@ import org.primefaces.model.LazyScheduleModel;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 /**
- *
  * @author VietNV
  */
-public class lazyCustomerScheduleGym extends LazyScheduleModel {
+public class lazyCustomerScheduleGym extends LazyScheduleModel
+{
 
     private GenericDaoServiceNewV2<CustomerSchedule, Long> scheduleService;
     CatBranch branch;
-//    CatRoom room;
+    //    CatRoom room;
 //    CatPack pack;
     Map<String, String> packStyles = new HashMap<>();
     Map<Long, String> mapStyle = new HashMap<>();
 
-    public lazyCustomerScheduleGym(GenericDaoServiceNewV2 scheduleService, CatBranch branch) {
+    public lazyCustomerScheduleGym(GenericDaoServiceNewV2 scheduleService, CatBranch branch)
+    {
         this.scheduleService = scheduleService;
         this.branch = branch;
 //        this.room = room;
@@ -47,18 +51,22 @@ public class lazyCustomerScheduleGym extends LazyScheduleModel {
 
     }
 
-    private lazyCustomerScheduleGym() {
+    private lazyCustomerScheduleGym()
+    {
         super();
     }
 
     @Override
-    public void loadEvents(Date start, Date end) {
+    public void loadEvents(Date start, Date end)
+    {
 
-        try {
+        try
+        {
 
             Map<String, Object> filter = new HashMap<>();
             filter.put("startTime", new Date[]{start, end});
-            if (branch != null && branch.getBranchId() != null && branch.getBranchId() > 0) {
+            if (branch != null && branch.getBranchId() != null && branch.getBranchId() > 0)
+            {
                 filter.put("branchId", branch.getBranchId());
             }
 //            if (room!=null && room.getRoomId()!=null){
@@ -74,17 +82,21 @@ public class lazyCustomerScheduleGym extends LazyScheduleModel {
             long i = 1;
             long j = 1;
 
-            for (CustomerSchedule schedule : schdules) {
-                if (!indexPack.containsKey(schedule.getCustomerId())) {
+            for (CustomerSchedule schedule : schdules)
+            {
+                if (!indexPack.containsKey(schedule.getCustomerId()))
+                {
                     indexPack.put(schedule.getCustomerId(), (i++ % 10) + 1);
                 }
 
-                if (!indexRoom.containsKey(schedule.getCustomerScheduleId())) {
+                if (!indexRoom.containsKey(schedule.getCustomerScheduleId()))
+                {
                     indexRoom.put(schedule.getCustomerScheduleId(), (j++ % 4) + 1);
                 }
             }
             packStyles.clear();
-            for (CustomerSchedule schedule : schdules) {
+            for (CustomerSchedule schedule : schdules)
+            {
                 DefaultScheduleEvent event = new DefaultScheduleEvent(schedule.getName(), schedule.getStartTime(), schedule.getEndTime(), schedule);
                 event.setTitle(schedule.getName() + " - " + schedule.getLstPackName());
 //                event.setStyleClass("Pack" + indexPack.get(schedule.getCustomerId()) + "Room" + indexRoom.get(schedule.getCustomerScheduleId()));
@@ -127,7 +139,9 @@ public class lazyCustomerScheduleGym extends LazyScheduleModel {
                 addEvent(event);
 
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 
@@ -135,11 +149,13 @@ public class lazyCustomerScheduleGym extends LazyScheduleModel {
 
     }
 
-    public Map<String, String> getPackStyles() {
+    public Map<String, String> getPackStyles()
+    {
         return packStyles;
     }
 
-    public void setPackStyles(Map<String, String> packStyles) {
+    public void setPackStyles(Map<String, String> packStyles)
+    {
         this.packStyles = packStyles;
     }
 }

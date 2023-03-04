@@ -101,7 +101,8 @@ import org.primefaces.model.Visibility;
  */
 @ManagedBean
 @ViewScoped
-public class ClientController {
+public class ClientController
+{
 
     private static final Logger logger = getLogger(ClientController.class);
 
@@ -139,21 +140,29 @@ public class ClientController {
     String billImgPath;
 
     @PostConstruct
-    public void onStart() {
-        catGroupPackService = new GenericDaoImplNewV2<CatGroupPack, Long>() {
+    public void onStart()
+    {
+        catGroupPackService = new GenericDaoImplNewV2<CatGroupPack, Long>()
+        {
         };
-        clientService = new GenericDaoImplNewV2<Client, Long>() {
+        clientService = new GenericDaoImplNewV2<Client, Long>()
+        {
         };
-        clientUsePackService = new GenericDaoImplNewV2<ClientUsePack, Long>() {
+        clientUsePackService = new GenericDaoImplNewV2<ClientUsePack, Long>()
+        {
         };
-        clientPaymentService = new GenericDaoImplNewV2<ClientPayment, Long>() {
+        clientPaymentService = new GenericDaoImplNewV2<ClientPayment, Long>()
+        {
         };
-        clientPromotionService = new GenericDaoImplNewV2<ClientPromotion, Long>() {
+        clientPromotionService = new GenericDaoImplNewV2<ClientPromotion, Long>()
+        {
         };
 
-        vClientUsedServiceService = new GenericDaoImplNewV2<V_ClientUsedService, Long>() {
+        vClientUsedServiceService = new GenericDaoImplNewV2<V_ClientUsedService, Long>()
+        {
         };
-        customerCheckinService = new GenericDaoImplNewV2<CustomerCheckin, Long>() {
+        customerCheckinService = new GenericDaoImplNewV2<CustomerCheckin, Long>()
+        {
         };
 
         Map<String, Object> filterDefault = new HashMap<String, Object>();
@@ -168,22 +177,28 @@ public class ClientController {
         lstReason.remove(0);
         Map<String, Object> filterCatPromotion = new HashMap();
         filterCatPromotion.put("status", 1l);
-        try {
-            lstCatPromotionsFull = (new GenericDaoImplNewV2<CatPromotion, Long>() {
+        try
+        {
+            lstCatPromotionsFull = (new GenericDaoImplNewV2<CatPromotion, Long>()
+            {
             }).findList(filterCatPromotion);
             lstCatPromotions = new ArrayList<>(lstCatPromotionsFull);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         columnVisibale = Arrays.asList(true, true, true, false, true,
                 false, true, false, true, true);
     }
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
-    private void removeTempImg() {
+    private void removeTempImg()
+    {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("previewProfile");
     }
 
@@ -250,7 +265,8 @@ public class ClientController {
     }
      */
 //////////
-    public void preAddClient() {
+    public void preAddClient()
+    {
         removeTempImg();
         curClient = new Client();
         curClient.setSex(MessageUtil.getKey("view.label.sexMale"));
@@ -261,7 +277,8 @@ public class ClientController {
         curClient.setStatus(Constant.CLIENT_STATUS.ACTIVE);
         //set chi nhanh mac dinh theo chi nhanh cua nhan vien dang nhap
         CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
-        if (user != null && user.getEmployee() != null) {
+        if (user != null && user.getEmployee() != null)
+        {
             curClient.setBranchId(user.getEmployee().getBranchId());
             //
             curClient.setEmployee(user.getEmployee());
@@ -274,8 +291,10 @@ public class ClientController {
 
     }
 
-    public void preEditClient(Client client) {
-        try {
+    public void preEditClient(Client client)
+    {
+        try
+        {
             curClient = clientService.findById(client.getClientId());
             oldObjectStr = client.toString();
 
@@ -312,38 +331,49 @@ public class ClientController {
             lazyVClientUsedServices = new LazyDataModelBase<>(vClientUsedServiceService, filterV, orderV);
 
             preAddClientUsePack();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         removeTempImg();
         isEdit = true;
     }
 
-    public void saveOrUpdateClientUsePack() {
-        try {
+    public void saveOrUpdateClientUsePack()
+    {
+        try
+        {
             ClientUsePack newClientUsePack = curClient.getNewClientUsePack();
             newClientUsePack.setClientId(curClient.getClientId());
             newClientUsePack.setStatus(1L);
             clientUsePackService.saveOrUpdate(newClientUsePack);
             curClient = clientService.findById(curClient.getClientId());
             //ghi log
-            if (oldObjectClientUsePackStr != null) {
+            if (oldObjectClientUsePackStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectClientUsePackStr, newClientUsePack.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectClientUsePackStr, newClientUsePack.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void deleteClientUsePack(ClientUsePack clientship) {
-        try {
+    public void deleteClientUsePack(ClientUsePack clientship)
+    {
+        try
+        {
             clientship.setStatus(Constant.MEMBER_STATUS.DELETE);
             clientUsePackService.saveOrUpdate(clientship);
 //            clientUsePackService.delete(clientship);
@@ -355,14 +385,18 @@ public class ClientController {
                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             deleteCustomerSchedulePack(clientship);//xoa bang lien quan
             MessageUtil.setInfoMessageFromRes("info.delete.suceess");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void onDelete(Client client) {
-        try {
+    public void onDelete(Client client)
+    {
+        try
+        {
             String old = client.toString();
             client.setStatus(Constant.MEMBER_STATUS.DELETE);
 
@@ -375,7 +409,8 @@ public class ClientController {
             cfg.setType(Constant.DATA_TYPE.EMPLOYEE);
             cfg.setMethod(Constant.METHOD.DELETE);
             cfg.setStatus(Constant.STATUS.IS_NOT_PUSH_DATA);
-            for (CatMachine catMachine : list) {
+            for (CatMachine catMachine : list)
+            {
                 // Template data response sang ws c# - userid (check_in_code)|name|so the|do uu tien|ip thiet bi
                 cfg.setContent("CLIENT_" + client.getClientId() + "|" + client.getName() + "|" + client.getCardCode() + "|1|" + catMachine.getIp());
                 cfgWsTimekeeperService.save(cfg);
@@ -384,34 +419,43 @@ public class ClientController {
                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 
             MessageUtil.setInfoMessageFromRes("info.delete.suceess");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             MessageUtil.setErrorMessageFromRes("error.delete.unsuceess");
         }
     }
 
-    public void saveOrUpdate() {
-        try {
-            if (curClient == null) {
+    public void saveOrUpdate()
+    {
+        try
+        {
+            if (curClient == null)
+            {
                 return;
             }
 
             Map<String, Object> filters = new HashMap<String, Object>();
             filters.put("cardCode-EXAC_IGNORE_CASE", curClient.getCardCode());
             filters.put("status", Constant.CLIENT_STATUS.ACTIVE);
-            if (curClient.getClientId() != null) {
+            if (curClient.getClientId() != null)
+            {
                 filters.put("clientId-NEQ", curClient.getClientId());
             }
             List<Client> lst = clientService.findList(filters);
-            if (!lst.isEmpty() && lst.size() > 0) {
+            if (!lst.isEmpty() && lst.size() > 0)
+            {
                 MessageUtil.setErrorMessage(MessageUtil.getResourceBundleMessage("client.cardCode.usingNow"));
                 return;
             }
 
-            if (Constant.CLIENT_STATUS.STOP.equals(curClient.getStatus())) {
+            if (Constant.CLIENT_STATUS.STOP.equals(curClient.getStatus()))
+            {
                 curClient.setRealEndTime(new Date());
             }
-            if (curClient.getEmployee() != null) {
+            if (curClient.getEmployee() != null)
+            {
                 curClient.setEmployeeId(curClient.getEmployee().getEmployeeId());
             }
             clientService.saveOrUpdate(curClient);
@@ -445,43 +489,56 @@ public class ClientController {
             }
              */
             //xoa khi cap nhat off
-            if (isEdit && Constant.CLIENT_STATUS.STOP.equals(curClient.getStatus())) {
+            if (isEdit && Constant.CLIENT_STATUS.STOP.equals(curClient.getStatus()))
+            {
                 CfgWsTimekeeper cfg = new CfgWsTimekeeper();
                 cfg.setInsertTime(new Date());
                 cfg.setType(Constant.DATA_TYPE.EMPLOYEE);
                 cfg.setMethod(Constant.METHOD.DELETE);
                 cfg.setStatus(Constant.STATUS.IS_NOT_PUSH_DATA);
-                for (CatMachine catMachine : list) {
+                for (CatMachine catMachine : list)
+                {
                     // Template data response sang ws c# - userid (check_in_code)|name|so the|do uu tien|ip thiet bi
                     cfg.setContent("CLIENT_" + curClient.getClientId() + "|" + curClient.getName() + "|" + curClient.getCardCode() + "|1|" + catMachine.getIp());
                     cfgWsTimekeeperService.save(cfg);
                 }
             }
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, curClient.getCardCode(), oldObjectStr, curClient.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, curClient.getCardCode(), oldObjectStr, curClient.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
-            if (!isEdit) {
+            if (!isEdit)
+            {
                 RequestContext.getCurrentInstance().execute("PF('tabViewClientInfo').select(1)");
-            } else {
+            }
+            else
+            {
                 RequestContext.getCurrentInstance().execute("PF('clientInfoDlg').hide();");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void paymentClientUsePack() {
-        try {
+    public void paymentClientUsePack()
+    {
+        try
+        {
             //validate
-            if (curClient.getClientPayment().getDebt() < 0 && StringUtil.isNullOrEmpty(curClient.getClientPayment().getReason())) {
+            if (curClient.getClientPayment().getDebt() < 0 && StringUtil.isNullOrEmpty(curClient.getClientPayment().getReason()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("memberPayment.reason")));
                 return;
@@ -492,7 +549,8 @@ public class ClientController {
             CatPromotion catPromotion = clientPayment.getCatPromotion();
             //km them thoi gian
             if (catPromotion != null && Constant.PROMOTION_TYPE.THEM_THOI_GIAN.equals(catPromotion.getType())
-                    && newClientUsePack.getEndDate() != null && catPromotion.getValue() != null) {
+                    && newClientUsePack.getEndDate() != null && catPromotion.getValue() != null)
+            {
                 Date date = newClientUsePack.getEndDate();
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
@@ -506,7 +564,8 @@ public class ClientController {
             newClientUsePack.setClientId(curClient.getClientId());
             newClientUsePack.setStatus(1L);
             // KIEM TRA NEU THE SU DUNG LAN DAU TRONG NGAY THI OFF TAT CAC O CAC MAY
-            if (Constant.CLIENT_STATUS.ACTIVE.equals(curClient.getStatus())) {
+            if (Constant.CLIENT_STATUS.ACTIVE.equals(curClient.getStatus()))
+            {
                 MemberController.initCheckOutAll(Constant.CUSTOMER_CHECKIN.TYPE_CLIENT, curClient.getClientId(), curClient.getCardCode());
             }
 
@@ -517,17 +576,22 @@ public class ClientController {
             //clientPayment
             clientPayment.setClientId(curClient.getClientId());
             clientPayment.setClientUsePackId(newClientUsePack.getClientUsePackId());
-            if (catPromotion != null) {
+            if (catPromotion != null)
+            {
                 clientPayment.setCatPromotionId(catPromotion.getCatPromotionId());
             }
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 clientPayment.setEmployeeId(((CatUser) getRequest().getSession().getAttribute("user")).getEmpId());
             }
             //cong no chi co gia trị am 
-            if (clientPayment.getDebt() > 0) {
+            if (clientPayment.getDebt() > 0)
+            {
                 clientPayment.setDebt(0l);
                 clientPayment.setGuestDeposit(clientPayment.getPrice());
-            } else {
+            }
+            else
+            {
                 clientPayment.setGuestDeposit(clientPayment.getPaymentValue());
 
             }
@@ -538,7 +602,8 @@ public class ClientController {
             clientPayment.setStatusTimeUsed(1l);
             clientPaymentService.saveOrUpdate(clientPayment);
             //clientPromotion
-            if (catPromotion != null && catPromotion.getCatPromotionId() != null) {
+            if (catPromotion != null && catPromotion.getCatPromotionId() != null)
+            {
 
                 ClientPromotion clientPromotion = new ClientPromotion();
                 clientPromotion.setClientId(curClient.getClientId());
@@ -558,11 +623,15 @@ public class ClientController {
             CatGroupPack catGroupPack = newClientUsePack.getGroupPack();
             List<ClientUsedService> lstMemberUsedServices = new ArrayList<ClientUsedService>();
 //            List<CatService> lstCatServices = new ArrayList<>();
-            try {
+            try
+            {
                 List<CatPack> lstCatPacks = catGroupPack.getPacks();
-                if (lstCatPacks != null) {
-                    for (CatPack bo : lstCatPacks) {
-                        if (bo != null && bo.getCatService() != null) {
+                if (lstCatPacks != null)
+                {
+                    for (CatPack bo : lstCatPacks)
+                    {
+                        if (bo != null && bo.getCatService() != null)
+                        {
                             CatServiceOld boService = bo.getCatService();
 
                             ClientUsedService mus = new ClientUsedService();
@@ -576,7 +645,8 @@ public class ClientController {
                             mus.setAvailable(bo.getNumberOfTime());
                             mus.setTotalNumber(bo.getNumberOfTime());
                             if (catPromotion != null && Constant.PROMOTION_TYPE.THEM_LUOT.equals(catPromotion.getType())
-                                    && mus.getAvailable() != null) {
+                                    && mus.getAvailable() != null)
+                            {
                                 mus.setAvailable(mus.getAvailable() + Math.round(catPromotion.getValue()));
                                 mus.setTotalNumber(mus.getAvailable() + Math.round(catPromotion.getValue()));
                             }
@@ -586,7 +656,8 @@ public class ClientController {
                 }
                 //tao user using service
 
-                GenericDaoImplNewV2 musService = new GenericDaoImplNewV2<ClientUsedService, Long>() {
+                GenericDaoImplNewV2 musService = new GenericDaoImplNewV2<ClientUsedService, Long>()
+                {
                 };
                 musService.saveOrUpdate(lstMemberUsedServices);
                 //tao thong tin check in
@@ -607,15 +678,20 @@ public class ClientController {
 //                filterMus.put("memberId", newClientUsePack.getMemberId());
 //                filterMus.put("membershipId", newClientUsePack.getMembershipId());
 //                filterMus.put("status", 1l);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
             curClient = clientService.findById(curClient.getClientId());
             //ghi log
-            if (oldObjectClientUsePackStr != null) {
+            if (oldObjectClientUsePackStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectClientUsePackStr, newClientUsePack.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectClientUsePackStr, newClientUsePack.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -628,21 +704,26 @@ public class ClientController {
             preEditClient(curClient);
             preAddClientUsePack();
             // show result
-            if (Constant.CONFIG.IS_LOCAL.equals(DataConfig.getConfigByKey("IS_LOCAL"))) {
+            if (Constant.CONFIG.IS_LOCAL.equals(DataConfig.getConfigByKey("IS_LOCAL")))
+            {
 
                 showResultAccessStatus(curClient.getCardCode());
                 RequestContext.getCurrentInstance().execute("PF('clientCheckinResultDlg').show();PF('tableClientCustomerAccessStatusWidget').filter();");
                 RequestContext.getCurrentInstance().update("@widgetVar('clientCheckinResultDlg')");
             }
 
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void computingPrice() {
-        try {
+    public void computingPrice()
+    {
+        try
+        {
 //            clientshipActionType = Constant.MEMBERSHIP_ACTION_TYPE.NEW;
             //set gia tri mac dinh neu la them moi
             curClient.setClientPayment(new ClientPayment());
@@ -652,7 +733,8 @@ public class ClientController {
 //        curClient.setStartTime(new Date());
             oldObjectClientUsePackStr = null;
 
-            if (curClient.getNewClientUsePack().getGroupPackId() == null) {
+            if (curClient.getNewClientUsePack().getGroupPackId() == null)
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("datatable.header.group.pack.name")));
                 return;
@@ -660,76 +742,104 @@ public class ClientController {
             CatGroupPack catGroupPack = catGroupPackService.findById(curClient.getNewClientUsePack().getGroupPackId());
             curClient.getNewClientUsePack().setGroupPack(catGroupPack);
             Long price = Math.round(catGroupPack.getPrice());
-            if (curClient.getNewClientUsePack().getNumberPack() > 1) {
+            if (curClient.getNewClientUsePack().getNumberPack() > 1)
+            {
                 price *= curClient.getNewClientUsePack().getNumberPack();
             }
             curClient.getClientPayment().setPrice(price);
-            if (StringUtil.isNullOrEmpty(curClient.getCardCode())) {
+            if (StringUtil.isNullOrEmpty(curClient.getCardCode()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("client.cardCode")));
-            } else {
+            }
+            else
+            {
                 RequestContext.getCurrentInstance().execute("PF('clientPaymentDlg').show();");
             }
 
-            try {
+            try
+            {
                 //set lai danh sach theo so luong goi
                 lstCatPromotions = new ArrayList<>();
-                for (CatPromotion bo : lstCatPromotionsFull) {
+                for (CatPromotion bo : lstCatPromotionsFull)
+                {
                     if (StringUtil.isNullOrEmpty(bo.getOperator()) || StringUtil.isNullOrEmpty(bo.getValueCompare())
-                            || CommonUtil.compareValue(String.valueOf(curClient.getNewClientUsePack().getNumberPack()), bo.getOperator(), bo.getValueCompare())) {
+                            || CommonUtil.compareValue(String.valueOf(curClient.getNewClientUsePack().getNumberPack()), bo.getOperator(), bo.getValueCompare()))
+                    {
                         lstCatPromotions.add(bo);
-                    };
+                    }
+                    ;
                 }
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 ex.printStackTrace();
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 // them dich vu khi dang su dung
 
-    public void preAddUsePack() {
-        try {
+    public void preAddUsePack()
+    {
+        try
+        {
             computingPrice();
             curClient.getClientPayment().setPaymentValue(0l);
             onChangeComputingPrice();
             curClient.getClientPayment().setReason(((Map<String, String>) CommonUtil.convertListToMap((List) lstReason, "code", "name")).get(Constant.CAT_ITEM.REASON_DEBT.USING_SERVICE));
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void onChangeComputingPrice() {
-        try {
+    public void onChangeComputingPrice()
+    {
+        try
+        {
             CatGroupPack catGroupPack = curClient.getNewClientUsePack().getGroupPack();
             Double price = catGroupPack.getPrice();
-            if (curClient.getNewClientUsePack().getNumberPack() > 1) {
+            if (curClient.getNewClientUsePack().getNumberPack() > 1)
+            {
                 price *= curClient.getNewClientUsePack().getNumberPack();
             }
             CatPromotion catPromotion = curClient.getClientPayment().getCatPromotion();
-            if (catPromotion != null && catPromotion.getValue() != null) {
-                if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType())) {
+            if (catPromotion != null && catPromotion.getValue() != null)
+            {
+                if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType()))
+                {
                     price = price - catPromotion.getValue();
-                } else if (Constant.PROMOTION_TYPE.GIAM_TIEN_PERCENT.equals(catPromotion.getType())) {
+                }
+                else if (Constant.PROMOTION_TYPE.GIAM_TIEN_PERCENT.equals(catPromotion.getType()))
+                {
                     price = price - price * catPromotion.getValue() / 100;
                 }
             }
-            if (curClient.getClientPayment().getIsVAT()) {
+            if (curClient.getClientPayment().getIsVAT())
+            {
                 price = price * 1.1;
             }
             curClient.getClientPayment().setPrice(Math.round(price));
 
-            if (curClient.getClientPayment().getPaymentValue() != null) {
+            if (curClient.getClientPayment().getPaymentValue() != null)
+            {
                 curClient.getClientPayment().setDebt(curClient.getClientPayment().getPaymentValue() - curClient.getClientPayment().getPrice());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void computinDebt() {
+    public void computinDebt()
+    {
         // lay tong cong no
         // goi huy van cong voi ban ghi tra lai tien cua khach
 //        String sqlDebt = "select sum(debt) debt from client_payment where client_id=:clientId and ( status=" + Constant.CLIENT_PAYMENT.STATUS_USED + " or status=" + Constant.CLIENT_PAYMENT.STATUS_NOT_USE + " )";
@@ -739,28 +849,38 @@ public class ClientController {
                 + " left join client_use_pack b on a.client_use_pack_id=b.client_use_pack_id \n"
                 + "   where a.client_id=:clientId and ( a.status=" + Constant.CLIENT_PAYMENT.STATUS_USED + " )";
         Session session = null;
-        try {
+        try
+        {
             session = HibernateUtil.openSession();
             SQLQuery sQLQuery = session.createSQLQuery(sqlDebt);
             sQLQuery.setParameter("clientId", curClient.getClientId());
             BigDecimal res = (BigDecimal) sQLQuery.list().get(0);
-            if (res != null) {
+            if (res != null)
+            {
                 Long debt = ((BigDecimal) sQLQuery.list().get(0)).longValue();
                 curClient.setTotalPayment(debt);
-            } else {
+            }
+            else
+            {
                 curClient.setTotalPayment(0l);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            if (session != null) {
+        }
+        finally
+        {
+            if (session != null)
+            {
                 session.close();
             }
         }
 
     }
 
-    public void preAddLiquidate() {
+    public void preAddLiquidate()
+    {
         //set gia tri mac dinh
         curClient.setClientPayment(new ClientPayment());
         curClient.getClientPayment().createPaymentCode(curClient.getBranchId());
@@ -768,18 +888,25 @@ public class ClientController {
         oldObjectClientUsePackStr = null;
     }
 
-    public void onChangeComputingLiquidate() {
-        try {
-            if (curClient.getClientPayment().getPaymentValue() != null) {
+    public void onChangeComputingLiquidate()
+    {
+        try
+        {
+            if (curClient.getClientPayment().getPaymentValue() != null)
+            {
                 curClient.getClientPayment().setDebt(curClient.getClientPayment().getPaymentValue() + curClient.getClientPayment().getPrice());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void liquidate() {
-        try {
+    public void liquidate()
+    {
+        try
+        {
             //clientPayment
             ClientPayment clientPayment = curClient.getClientPayment();
             clientPayment.setClientId(curClient.getClientId());
@@ -787,14 +914,18 @@ public class ClientController {
 //            if (clientPayment.getCatPromotion() != null) {
 //                clientPayment.setCatPromotionId(clientPayment.getCatPromotion().getCatPromotionId());
 //            }
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 clientPayment.setEmployeeId(((CatUser) getRequest().getSession().getAttribute("user")).getEmpId());
             }
             //cong no chi co gia trị duong la phan thu tien cua khach hang
-            if (clientPayment.getPaymentValue() <= -clientPayment.getPrice()) {
+            if (clientPayment.getPaymentValue() <= -clientPayment.getPrice())
+            {
                 clientPayment.setDebt(clientPayment.getPaymentValue());
                 clientPayment.setGuestDeposit(clientPayment.getPaymentValue());
-            } else {
+            }
+            else
+            {
                 clientPayment.setDebt(-clientPayment.getPrice());
                 clientPayment.setGuestDeposit(-clientPayment.getPrice());
             }
@@ -817,24 +948,32 @@ public class ClientController {
 
             preEditClient(curClient);
 //            computinDebt();
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void onChangeComputingClientPaymentFinal() {
-        try {
-            if (curClient.getClientPayment().getPaymentValue() != null) {
+    public void onChangeComputingClientPaymentFinal()
+    {
+        try
+        {
+            if (curClient.getClientPayment().getPaymentValue() != null)
+            {
                 curClient.getClientPayment().setDebt(curClient.getClientPayment().getPaymentValue()
                         + curClient.getClientPayment().getTotalDeposit() - curClient.getClientPayment().getPrice());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void preAddClientPaymentFinal() {
+    public void preAddClientPaymentFinal()
+    {
         //set gia tri mac dinh
         curClient.setClientPayment(new ClientPayment());
         curClient.getClientPayment().createPaymentCode(curClient.getBranchId());
@@ -865,11 +1004,14 @@ public class ClientController {
         }*/
         //Lay danh sach thong tin thanh toan cac goi dat coc
         lstClientPaymentUsingPack = new ArrayList();
-        if (curClient.getClientPayments() != null && curClient.getClientPayments().size() > 0) {
-            for (ClientPayment bo : curClient.getClientPayments()) {
+        if (curClient.getClientPayments() != null && curClient.getClientPayments().size() > 0)
+        {
+            for (ClientPayment bo : curClient.getClientPayments())
+            {
 //                if (Constant.CLIENT_PAYMENT.TYPE_DEPOSIT.equals(bo.getType())) {
 // bo qua cac goi da xoa
-                if (bo.getClientUsePack() != null && Constant.MEMBER_STATUS.DELETE.equals(bo.getClientUsePack().getStatus())) {
+                if (bo.getClientUsePack() != null && Constant.MEMBER_STATUS.DELETE.equals(bo.getClientUsePack().getStatus()))
+                {
                     continue;
                 }
                 lstClientPaymentUsingPack.add(bo);
@@ -878,35 +1020,46 @@ public class ClientController {
         }
         curClient.getClientPayment().setPrice(getTotalFromClientPayment(lstClientPaymentUsingPack, Constant.CLIENT_PAYMENT.FIELD_PRICE));
         curClient.getClientPayment().setTotalDeposit(getTotalFromClientPayment(lstClientPaymentUsingPack, Constant.CLIENT_PAYMENT.FIELD_DEPOSIT));
-        if (curClient.getTotalPayment() == null || curClient.getTotalPayment().equals(0l)) {
+        if (curClient.getTotalPayment() == null || curClient.getTotalPayment().equals(0l))
+        {
             curClient.getClientPayment().setPaymentValue(0l);
             onChangeComputingClientPaymentFinal();
         }
     }
 
-    public void onCellClientPaymentUsingPackEdit(CellEditEvent event) {
+    public void onCellClientPaymentUsingPackEdit(CellEditEvent event)
+    {
         Long oldValue = (Long) event.getOldValue();
         Long newValue = (Long) event.getNewValue();
 
-        if (newValue != null && !newValue.equals(oldValue)) {
+        if (newValue != null && !newValue.equals(oldValue))
+        {
             curClient.getClientPayment().setPrice(getTotalFromClientPayment(lstClientPaymentUsingPack, Constant.CLIENT_PAYMENT.FIELD_PRICE));
             onChangeComputingClientPaymentFinal();
         }
     }
 
-    public Long getTotalFromClientPayment(List<ClientPayment> lst, Long type) {
+    public Long getTotalFromClientPayment(List<ClientPayment> lst, Long type)
+    {
         Long res = 0l;
-        if (lst != null && lst.size() > 0) {
-            for (ClientPayment bo : lst) {
-                if (Constant.CLIENT_PAYMENT.STATUS_USED.equals(bo.getStatus())) {
+        if (lst != null && lst.size() > 0)
+        {
+            for (ClientPayment bo : lst)
+            {
+                if (Constant.CLIENT_PAYMENT.STATUS_USED.equals(bo.getStatus()))
+                {
                     if (Constant.CLIENT_PAYMENT.FIELD_PRICE.equals(type)
-                            && Constant.CLIENT_PAYMENT.TYPE_DEPOSIT.equals(bo.getType())) {
-                        if (bo.getPrice() != null) {
+                            && Constant.CLIENT_PAYMENT.TYPE_DEPOSIT.equals(bo.getType()))
+                    {
+                        if (bo.getPrice() != null)
+                        {
                             res += bo.getPrice();
                         }
                     }
-                    if (Constant.CLIENT_PAYMENT.FIELD_DEPOSIT.equals(type)) {
-                        if (bo.getGuestDeposit() != null) {
+                    if (Constant.CLIENT_PAYMENT.FIELD_DEPOSIT.equals(type))
+                    {
+                        if (bo.getGuestDeposit() != null)
+                        {
                             res += bo.getGuestDeposit();
                         }
                     }
@@ -916,10 +1069,13 @@ public class ClientController {
         return res;
     }
 
-    public void clientPaymentFinal() {
-        try {
+    public void clientPaymentFinal()
+    {
+        try
+        {
             //validate
-            if (curClient.getClientPayment().getDebt() < 0) {
+            if (curClient.getClientPayment().getDebt() < 0)
+            {
                 MessageUtil.setErrorMessage(MessageUtil.getResourceBundleMessage("payment.surplus") + " không được âm");
                 return;
             }
@@ -931,32 +1087,42 @@ public class ClientController {
             ClientPayment clientPayment = curClient.getClientPayment();
             clientPayment.setClientId(curClient.getClientId());
 
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 clientPayment.setEmployeeId(((CatUser) getRequest().getSession().getAttribute("user")).getEmpId());
             }
             //cong no chi co gia trị duong la phan thu tien cua khach hang
 
             // cong no moi
             Long debtNew = 0l;
-            if (lstClientPaymentUsingPack != null) {
-                for (ClientPayment bo : lstClientPaymentUsingPack) {
-                    if (bo.getDebt() == null || Constant.CLIENT_PAYMENT.STATUS_NOT_USE.equals(bo.getStatus())) {
+            if (lstClientPaymentUsingPack != null)
+            {
+                for (ClientPayment bo : lstClientPaymentUsingPack)
+                {
+                    if (bo.getDebt() == null || Constant.CLIENT_PAYMENT.STATUS_NOT_USE.equals(bo.getStatus()))
+                    {
                         continue; // bo qua loai thanh toan
                     }
                     debtNew += bo.getDebt();
                 }
             }
-            if (debtNew < 0) {
+            if (debtNew < 0)
+            {
                 clientPayment.setDebt(-debtNew);
-            } else {
+            }
+            else
+            {
                 clientPayment.setDebt(0l);
             }
             ///
 
-            if (clientPayment.getPaymentValue() <= (clientPayment.getPrice() - clientPayment.getTotalDeposit())) {
+            if (clientPayment.getPaymentValue() <= (clientPayment.getPrice() - clientPayment.getTotalDeposit()))
+            {
 //                clientPayment.setDebt(clientPayment.getPaymentValue());
                 clientPayment.setGuestDeposit(clientPayment.getPaymentValue());
-            } else {
+            }
+            else
+            {
                 /*if (clientPayment.getPrice() <= clientPayment.getTotalDeposit()) {//khach khong su dung dich vu
                     // cong no moi
                     Long debtNew = 0l;
@@ -1019,7 +1185,8 @@ public class ClientController {
 //                RequestContext.getCurrentInstance().update("@widgetVar('clientPaymentFinalDlgExport')");
 //                RequestContext.getCurrentInstance().execute("PF('clientPaymentFinalDlgExport').show();");
 //            }
-            if (billImgPath != null) {
+            if (billImgPath != null)
+            {
                 RequestContext.getCurrentInstance().update("@widgetVar('cfImgDlgLocal')");
                 RequestContext.getCurrentInstance().execute("PF('cfImgDlgLocal').show();");
 
@@ -1028,13 +1195,16 @@ public class ClientController {
 //            preAddClientUsePack();
 
             preEditClient(curClient);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void preAddClientUsePack() {
+    public void preAddClientUsePack()
+    {
         curClient.setNewClientUsePack(new ClientUsePack());
         curClient.getNewClientUsePack().setNumberPack(1L);
         //set gia tri mac dinh
@@ -1045,8 +1215,10 @@ public class ClientController {
         oldObjectClientUsePackStr = null;
     }
 
-    public void updateEndDate(SelectEvent event) {
-        try {
+    public void updateEndDate(SelectEvent event)
+    {
+        try
+        {
             Date date = (Date) event.getObject();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
@@ -1054,13 +1226,17 @@ public class ClientController {
             calendar.add(Calendar.DAY_OF_YEAR, groupPack.getAmong().intValue());
             Date endate = calendar.getTime();
             curClient.getNewClientUsePack().setEndDate(endate);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void updateDate(ValueChangeEvent event) {
-        try {
+    public void updateDate(ValueChangeEvent event)
+    {
+        try
+        {
             Long selectId = (Long) event.getNewValue();
             Date date = new Date();
             curClient.getNewClientUsePack().setJoinDate(date);
@@ -1070,12 +1246,15 @@ public class ClientController {
             calendar.add(Calendar.DAY_OF_YEAR, groupPack.getAmong().intValue());
             Date endate = calendar.getTime();
             curClient.getNewClientUsePack().setEndDate(endate);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void updateAccessCatMachine(Client client, ClientUsePack clientshipDel, String method) {
+    public void updateAccessCatMachine(Client client, ClientUsePack clientshipDel, String method)
+    {
         Map<String, Object> filterPay = new HashMap<>();
         filterPay.put("clientId", client.getClientId());
         filterPay.put("status", 1l);
@@ -1083,14 +1262,19 @@ public class ClientController {
         List<ClientUsePack> lstClientUsePacks;
         List<CatGroupPack> lstON = new ArrayList<>();
         List<CatGroupPack> lstOFF = new ArrayList<>();
-        if (clientshipDel != null && clientshipDel.getGroupPack() != null) {
+        if (clientshipDel != null && clientshipDel.getGroupPack() != null)
+        {
             lstOFF.add(clientshipDel.getGroupPack());
         }
-        try {
+        try
+        {
             lstClientUsePacks = clientUsePackService.findList(filterPay);
-            if (lstClientUsePacks != null) {
-                for (ClientUsePack bo : lstClientUsePacks) {
-                    if (bo.getGroupPack() != null) {
+            if (lstClientUsePacks != null)
+            {
+                for (ClientUsePack bo : lstClientUsePacks)
+                {
+                    if (bo.getGroupPack() != null)
+                    {
                         lstON.add(bo.getGroupPack());
                     }
                 }
@@ -1104,28 +1288,37 @@ public class ClientController {
             cfg.setType(Constant.DATA_TYPE.EMPLOYEE);
             cfg.setMethod(method);
             cfg.setStatus(Constant.STATUS.IS_NOT_PUSH_DATA);
-            for (CatMachine catMachine : lstCatMachineOff) {
+            for (CatMachine catMachine : lstCatMachineOff)
+            {
                 // Template data response sang ws c# - userid (check_in_code)|name|so the|do uu tien|ip thiet bi
                 cfg.setContent("CLIENT_" + client.getClientId() + "|" + client.getName() + "|" + client.getCardCode() + "|1|" + catMachine.getIp());
                 cfgWsTimekeeperService.save(cfg);
-                if (!lstIp.contains(catMachine.getIp())) {
+                if (!lstIp.contains(catMachine.getIp()))
+                {
                     lstIp.add(catMachine.getIp());
                 }
             }
 
             //goi ws online
-            if (Constant.METHOD.INSERT.equals(method)) {
+            if (Constant.METHOD.INSERT.equals(method))
+            {
                 CustomerAccessStatusController.callWSUpdateAccess(client.getCardCode(), lstIp, Constant.STATUS.ACTIVE, Constant.WS_C_METHOD.TYPE_CARD);
-            } else {
+            }
+            else
+            {
                 CustomerAccessStatusController.callWSUpdateAccess(client.getCardCode(), lstIp, Constant.STATUS.DISABLE, Constant.WS_C_METHOD.TYPE_CARD);
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
 
-    public void checkout() {
-        try {
+    public void checkout()
+    {
+        try
+        {
             //khi thuc hien checkout thi checkout toan bo cac ban ghi check in theo the deo cua khach hang cua khach hang
             Map<String, Object> filter = new HashMap<>();
             filter.put("cardCode", curClient.getCardCode());
@@ -1133,12 +1326,16 @@ public class ClientController {
             filter.put("status", Constant.CUSTOMER_CHECKIN.CHECKIN);
             filter.put("type", Constant.CUSTOMER_CHECKIN.TYPE_CLIENT);
             List<CustomerCheckin> lstCus = customerCheckinService.findList(filter);
-            if (lstCus != null && !lstCus.isEmpty()) {
-                for (CustomerCheckin bo : lstCus) {
+            if (lstCus != null && !lstCus.isEmpty())
+            {
+                for (CustomerCheckin bo : lstCus)
+                {
                     bo.setStatus(Constant.CUSTOMER_CHECKIN.CHECKOUT);
                     bo.setCheckoutTime(new Date());
                 }
-            } else {
+            }
+            else
+            {
                 MessageUtil.setErrorMessage("Không tồn tại thẻ đang sử dụng cho khách hàng!");
                 return;
             }
@@ -1147,14 +1344,17 @@ public class ClientController {
             MessageUtil.setInfoMessageFromRes("info.checkout.success");
 //            RequestContext.getCurrentInstance().execute("PF('checkoutDlg').hide();");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("info.checkout.unsuccess");
 
             e.printStackTrace();
         }
     }
 
-    public void updateAccessCatMachineOFFAll(Client client, String method) {
+    public void updateAccessCatMachineOFFAll(Client client, String method)
+    {
         Map<String, Object> filterPay = new HashMap<>();
         filterPay.put("clientId", client.getClientId());
         filterPay.put("status", 1l);
@@ -1165,11 +1365,15 @@ public class ClientController {
 //        if (clientshipDel != null && clientshipDel.getGroupPack() != null) {
 //            lstOFF.add(clientshipDel.getGroupPack());
 //        }
-        try {
+        try
+        {
             lstClientUsePacks = clientUsePackService.findList(filterPay);
-            if (lstClientUsePacks != null) {
-                for (ClientUsePack bo : lstClientUsePacks) {
-                    if (bo.getGroupPack() != null) {
+            if (lstClientUsePacks != null)
+            {
+                for (ClientUsePack bo : lstClientUsePacks)
+                {
+                    if (bo.getGroupPack() != null)
+                    {
                         lstON.add(bo.getGroupPack());
                     }
                 }
@@ -1183,25 +1387,31 @@ public class ClientController {
             cfg.setType(Constant.DATA_TYPE.EMPLOYEE);
             cfg.setMethod(method);
             cfg.setStatus(Constant.STATUS.IS_NOT_PUSH_DATA);
-            for (CatMachine catMachine : lstCatMachineOff) {
+            for (CatMachine catMachine : lstCatMachineOff)
+            {
                 // Template data response sang ws c# - userid (check_in_code)|name|so the|do uu tien|ip thiet bi
                 cfg.setContent("CLIENT_" + client.getClientId() + "|" + client.getName() + "|" + client.getCardCode() + "|1|" + catMachine.getIp());
                 cfgWsTimekeeperService.save(cfg);
-                if (!lstIp.contains(catMachine.getIp())) {
+                if (!lstIp.contains(catMachine.getIp()))
+                {
                     lstIp.add(catMachine.getIp());
                 }
             }
             CustomerAccessStatusController.callWSUpdateAccess(client.getCardCode(), lstIp, Constant.STATUS.DISABLE, Constant.WS_C_METHOD.TYPE_CARD);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
 
-    public void exportClientPayment() {
+    public void exportClientPayment()
+    {
         FileInputStream file = null;
         Workbook wbTemplate = null;
 
-        try {
+        try
+        {
             //lstClientPaymentUsingPack
 
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
@@ -1210,7 +1420,8 @@ public class ClientController {
             String desPath = File.separator + "resources" + File.separator + "exported" + File.separator + "clientPayment.xls";
             String des = ctx.getRealPath("/") + "resources" + File.separator + "exported" + File.separator + "clientPayment.xls";
 
-            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported")) {
+            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported"))
+            {
                 MessageUtil.setErrorMessage("Export thất bại (Tạo folder)");
                 fileExported = null;
                 return;
@@ -1230,10 +1441,13 @@ public class ClientController {
 //            file = new FileInputStream(ctx.getRealPath(des));
             file = new FileInputStream((des));
 
-            if (path.endsWith("xls")) {
+            if (path.endsWith("xls"))
+            {
                 wbTemplate = new HSSFWorkbook(file);
 
-            } else if (path.endsWith("xlsx")) {
+            }
+            else if (path.endsWith("xlsx"))
+            {
                 wbTemplate = WorkbookFactory.create(file);
 
             }
@@ -1248,9 +1462,12 @@ public class ClientController {
             Row referRow;
             int startRow = 6;
             ExcelWriterUtils excelWriterUtils = new ExcelWriterUtils();
-            if (lstClientPaymentUsingPack != null) {
-                for (ClientPayment bo : lstClientPaymentUsingPack) {
-                    if (!Constant.CLIENT_PAYMENT.TYPE_DEPOSIT.equals(bo.getType())) {
+            if (lstClientPaymentUsingPack != null)
+            {
+                for (ClientPayment bo : lstClientPaymentUsingPack)
+                {
+                    if (!Constant.CLIENT_PAYMENT.TYPE_DEPOSIT.equals(bo.getType()))
+                    {
                         continue;
                     }
                     int colRefer = 0;
@@ -1260,7 +1477,8 @@ public class ClientController {
                     referRow.createCell(colRefer++).setCellValue(bo.getPaymentCode());
                     referRow.getCell(colRefer - 1).setCellStyle(cellStyleBorder);
                     String groupPackName = "";
-                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null) {
+                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null)
+                    {
                         groupPackName = bo.getClientUsePack().getGroupPack().getGroupPackName();
                     }
                     referRow.createCell(colRefer++).setCellValue(groupPackName);
@@ -1303,26 +1521,33 @@ public class ClientController {
 //            fileExported = new DefaultStreamedContent(d, "application/pdf", "clientPayment.pdf");
 
             MessageUtil.setInfoMessage("Export thành công");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessage("Export thất bại");
             logger.error(e.getMessage(), e);
         }
     }
 
     //
-    public void showResultAccessStatus(String cardCode) {
+    public void showResultAccessStatus(String cardCode)
+    {
 
-        try {
+        try
+        {
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             Map<String, Object> filter = new HashMap<>();
             filter.put("cardCode-EXAC_IGNORE_CASE", cardCode);
             lazyDataCustomerAccessModel = new LazyDataModelBase<V_CustomerAccessStatus, Long>(VCustomerAccessStatusServiceImpl.getInstance(), filter, order);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void preActiveClientUsePack(ClientUsePack bo) {
+    public void preActiveClientUsePack(ClientUsePack bo)
+    {
         curClient.setNewClientUsePack(bo);
 
         //set gia tri mac dinh
@@ -1331,7 +1556,8 @@ public class ClientController {
         curClient.getClientPayment().createPaymentCode(curClient.getBranchId());
         oldObjectClientUsePackStr = null;
 
-        try {
+        try
+        {
             Long selectId = bo.getGroupPackId();
             Date date = new Date();
             curClient.getNewClientUsePack().setJoinDate(date);
@@ -1341,15 +1567,21 @@ public class ClientController {
             calendar.add(Calendar.DAY_OF_YEAR, groupPack.getAmong().intValue());
             Date endate = calendar.getTime();
             curClient.getNewClientUsePack().setEndDate(endate);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void deleteCustomerSchedulePack(ClientUsePack clientship) {
-        try {
-            if (Constant.CLIENT_USE_PACK.STATUS_SCHEDULE.equals(clientship.getStatus())) {
-                GenericDaoImplNewV2 cspService = new GenericDaoImplNewV2<CustomerSchedulePack, Long>() {
+    public void deleteCustomerSchedulePack(ClientUsePack clientship)
+    {
+        try
+        {
+            if (Constant.CLIENT_USE_PACK.STATUS_SCHEDULE.equals(clientship.getStatus()))
+            {
+                GenericDaoImplNewV2 cspService = new GenericDaoImplNewV2<CustomerSchedulePack, Long>()
+                {
                 };
                 Map<String, Object> filter = new HashMap<>();
                 filter.put("customerScheduleId", clientship.getCustomerScheduleId());
@@ -1362,19 +1594,25 @@ public class ClientController {
 
             }
 //            MessageUtil.setInfoMessageFromRes("info.delete.suceess");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
 //            MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void activeCustomerSchedule(ClientUsePack bo) throws AppException {
-        if (Constant.CLIENT_STATUS.RESERVE.equals(curClient.getStatus())) {
+    public void activeCustomerSchedule(ClientUsePack bo) throws AppException
+    {
+        if (Constant.CLIENT_STATUS.RESERVE.equals(curClient.getStatus()))
+        {
             curClient.setStatus(Constant.CLIENT_STATUS.ACTIVE);
             clientService.saveOrUpdate(curClient);
         }
-        if (bo.getCustomerScheduleId() != null && Constant.MEMBERSHIP_STATUS.STATUS_SCHEDULE.equals(bo.getStatus())) {
-            GenericDaoImplNewV2<CustomerSchedule, Long> csService = new GenericDaoImplNewV2<CustomerSchedule, Long>() {
+        if (bo.getCustomerScheduleId() != null && Constant.MEMBERSHIP_STATUS.STATUS_SCHEDULE.equals(bo.getStatus()))
+        {
+            GenericDaoImplNewV2<CustomerSchedule, Long> csService = new GenericDaoImplNewV2<CustomerSchedule, Long>()
+            {
             };
             CustomerSchedule c = csService.findById(bo.getCustomerScheduleId());
             c.setStatus(Constant.CUSTOMER_SCHEDULE.STATUS_ACTIVE);
@@ -1382,208 +1620,262 @@ public class ClientController {
         }
     }
 
-    public void completedCustomerSchedule(Long customerScheduleId) {
-        try {
-            if (customerScheduleId != null) {
-                GenericDaoImplNewV2<CustomerSchedule, Long> csService = new GenericDaoImplNewV2<CustomerSchedule, Long>() {
+    public void completedCustomerSchedule(Long customerScheduleId)
+    {
+        try
+        {
+            if (customerScheduleId != null)
+            {
+                GenericDaoImplNewV2<CustomerSchedule, Long> csService = new GenericDaoImplNewV2<CustomerSchedule, Long>()
+                {
                 };
                 CustomerSchedule c = csService.findById(customerScheduleId);
                 c.setStatus(Constant.CUSTOMER_SCHEDULE.STATUS_COMPLETED);
                 csService.saveOrUpdate(c);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 //<editor-fold defaultstate="collapsed" desc="get/set">
 
-    public LazyDataModel<V_CustomerAccessStatus> getLazyDataCustomerAccessModel() {
+    public LazyDataModel<V_CustomerAccessStatus> getLazyDataCustomerAccessModel()
+    {
         return lazyDataCustomerAccessModel;
     }
 
-    public void setLazyDataCustomerAccessModel(LazyDataModel<V_CustomerAccessStatus> lazyDataCustomerAccessModel) {
+    public void setLazyDataCustomerAccessModel(LazyDataModel<V_CustomerAccessStatus> lazyDataCustomerAccessModel)
+    {
         this.lazyDataCustomerAccessModel = lazyDataCustomerAccessModel;
     }
 
-    public boolean getIsAddUsePack() {
+    public boolean getIsAddUsePack()
+    {
         return isAddUsePack;
     }
 
-    public void setIsAddUsePack(boolean isAddUsePack) {
+    public void setIsAddUsePack(boolean isAddUsePack)
+    {
         this.isAddUsePack = isAddUsePack;
     }
 
-    public StreamedContent getFileExported() {
+    public StreamedContent getFileExported()
+    {
         return fileExported;
     }
 
-    public void setFileExported(StreamedContent fileExported) {
+    public void setFileExported(StreamedContent fileExported)
+    {
         this.fileExported = fileExported;
     }
 
-    public GenericDaoServiceNewV2<CustomerCheckin, Long> getCustomerCheckinService() {
+    public GenericDaoServiceNewV2<CustomerCheckin, Long> getCustomerCheckinService()
+    {
         return customerCheckinService;
     }
 
-    public void setCustomerCheckinService(GenericDaoServiceNewV2<CustomerCheckin, Long> customerCheckinService) {
+    public void setCustomerCheckinService(GenericDaoServiceNewV2<CustomerCheckin, Long> customerCheckinService)
+    {
         this.customerCheckinService = customerCheckinService;
     }
 
-    public LazyDataModel<Client> getLazyDataModel() {
+    public LazyDataModel<Client> getLazyDataModel()
+    {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<Client> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<Client> lazyDataModel)
+    {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public Client getSelectedClient() {
+    public Client getSelectedClient()
+    {
         return selectedClient;
     }
 
-    public void setSelectedClient(Client selectedClient) {
+    public void setSelectedClient(Client selectedClient)
+    {
         this.selectedClient = selectedClient;
     }
 
-    public Client getCurClient() {
+    public Client getCurClient()
+    {
         return curClient;
     }
 
-    public void setCurClient(Client curClient) {
+    public void setCurClient(Client curClient)
+    {
         this.curClient = curClient;
     }
 
-    public GenericDaoServiceNewV2<ClientUsePack, Long> getClientUsePackService() {
+    public GenericDaoServiceNewV2<ClientUsePack, Long> getClientUsePackService()
+    {
         return clientUsePackService;
     }
 
-    public void setClientUsePackService(GenericDaoServiceNewV2<ClientUsePack, Long> clientUsePackService) {
+    public void setClientUsePackService(GenericDaoServiceNewV2<ClientUsePack, Long> clientUsePackService)
+    {
         this.clientUsePackService = clientUsePackService;
     }
 
-    public GenericDaoServiceNewV2<ClientPayment, Long> getClientPaymentService() {
+    public GenericDaoServiceNewV2<ClientPayment, Long> getClientPaymentService()
+    {
         return clientPaymentService;
     }
 
-    public void setClientPaymentService(GenericDaoServiceNewV2<ClientPayment, Long> clientPaymentService) {
+    public void setClientPaymentService(GenericDaoServiceNewV2<ClientPayment, Long> clientPaymentService)
+    {
         this.clientPaymentService = clientPaymentService;
     }
 
-    public GenericDaoServiceNewV2<ClientPromotion, Long> getClientPromotionService() {
+    public GenericDaoServiceNewV2<ClientPromotion, Long> getClientPromotionService()
+    {
         return clientPromotionService;
     }
 
-    public void setClientPromotionService(GenericDaoServiceNewV2<ClientPromotion, Long> clientPromotionService) {
+    public void setClientPromotionService(GenericDaoServiceNewV2<ClientPromotion, Long> clientPromotionService)
+    {
         this.clientPromotionService = clientPromotionService;
     }
 
-    public GenericDaoServiceNewV2<CatGroupPack, Long> getCatGroupPackService() {
+    public GenericDaoServiceNewV2<CatGroupPack, Long> getCatGroupPackService()
+    {
         return catGroupPackService;
     }
 
-    public void setCatGroupPackService(GenericDaoServiceNewV2<CatGroupPack, Long> catGroupPackService) {
+    public void setCatGroupPackService(GenericDaoServiceNewV2<CatGroupPack, Long> catGroupPackService)
+    {
         this.catGroupPackService = catGroupPackService;
     }
 
-    public CfgWsTimekeeperServiceImpl getCfgWsTimekeeperService() {
+    public CfgWsTimekeeperServiceImpl getCfgWsTimekeeperService()
+    {
         return cfgWsTimekeeperService;
     }
 
-    public void setCfgWsTimekeeperService(CfgWsTimekeeperServiceImpl cfgWsTimekeeperService) {
+    public void setCfgWsTimekeeperService(CfgWsTimekeeperServiceImpl cfgWsTimekeeperService)
+    {
         this.cfgWsTimekeeperService = cfgWsTimekeeperService;
     }
 
-    public List<CatPromotion> getLstCatPromotions() {
+    public List<CatPromotion> getLstCatPromotions()
+    {
         return lstCatPromotions;
     }
 
-    public void setLstCatPromotions(List<CatPromotion> lstCatPromotions) {
+    public void setLstCatPromotions(List<CatPromotion> lstCatPromotions)
+    {
         this.lstCatPromotions = lstCatPromotions;
     }
 
-    public List<CatItemBO> getLstReason() {
+    public List<CatItemBO> getLstReason()
+    {
         return lstReason;
     }
 
-    public void setLstReason(List<CatItemBO> lstReason) {
+    public void setLstReason(List<CatItemBO> lstReason)
+    {
         this.lstReason = lstReason;
     }
 
-    public GenericDaoServiceNewV2<Client, Long> getClientService() {
+    public GenericDaoServiceNewV2<Client, Long> getClientService()
+    {
         return clientService;
     }
 
-    public void setClientService(GenericDaoServiceNewV2<Client, Long> clientService) {
+    public void setClientService(GenericDaoServiceNewV2<Client, Long> clientService)
+    {
         this.clientService = clientService;
     }
 
-    public String getOldObjectStr() {
+    public String getOldObjectStr()
+    {
         return oldObjectStr;
     }
 
-    public void setOldObjectStr(String oldObjectStr) {
+    public void setOldObjectStr(String oldObjectStr)
+    {
         this.oldObjectStr = oldObjectStr;
     }
 
-    public String getOldObjectClientUsePackStr() {
+    public String getOldObjectClientUsePackStr()
+    {
         return oldObjectClientUsePackStr;
     }
 
-    public void setOldObjectClientUsePackStr(String oldObjectClientUsePackStr) {
+    public void setOldObjectClientUsePackStr(String oldObjectClientUsePackStr)
+    {
         this.oldObjectClientUsePackStr = oldObjectClientUsePackStr;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
 
-    public GenericDaoServiceNewV2<V_ClientUsedService, Long> getvClientUsedServiceService() {
+    public GenericDaoServiceNewV2<V_ClientUsedService, Long> getvClientUsedServiceService()
+    {
         return vClientUsedServiceService;
     }
 
-    public void setvClientUsedServiceService(GenericDaoServiceNewV2<V_ClientUsedService, Long> vClientUsedServiceService) {
+    public void setvClientUsedServiceService(GenericDaoServiceNewV2<V_ClientUsedService, Long> vClientUsedServiceService)
+    {
         this.vClientUsedServiceService = vClientUsedServiceService;
     }
 
-    public LazyDataModel<V_ClientUsedService> getLazyVClientUsedServices() {
+    public LazyDataModel<V_ClientUsedService> getLazyVClientUsedServices()
+    {
         return lazyVClientUsedServices;
     }
 
-    public void setLazyVClientUsedServices(LazyDataModel<V_ClientUsedService> lazyVClientUsedServices) {
+    public void setLazyVClientUsedServices(LazyDataModel<V_ClientUsedService> lazyVClientUsedServices)
+    {
         this.lazyVClientUsedServices = lazyVClientUsedServices;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
 
-    public List<ClientPayment> getLstClientPaymentUsingPack() {
+    public List<ClientPayment> getLstClientPaymentUsingPack()
+    {
         return lstClientPaymentUsingPack;
     }
 
-    public void setLstClientPaymentUsingPack(List<ClientPayment> lstClientPaymentUsingPack) {
+    public void setLstClientPaymentUsingPack(List<ClientPayment> lstClientPaymentUsingPack)
+    {
         this.lstClientPaymentUsingPack = lstClientPaymentUsingPack;
     }
 
-    public String getDesPathImg() {
+    public String getDesPathImg()
+    {
         return desPathImg;
     }
 
-    public void setDesPathImg(String desPathImg) {
+    public void setDesPathImg(String desPathImg)
+    {
         this.desPathImg = desPathImg;
     }
 
-//</editor-fold>
-    public static void main(String[] args) {
-        try {
+    //</editor-fold>
+    public static void main(String[] args)
+    {
+        try
+        {
             String branchName = "GYM Hoằng Hóa";
             String date = "24/10/2017";
             String billCode = "BILL001";
@@ -1680,7 +1972,8 @@ public class ClientController {
             int itemStart = 330;
             int distince = 25;
             int idxStart = 0;
-            for (Map<String, String> iPack : lstPackage) {
+            for (Map<String, String> iPack : lstPackage)
+            {
                 // price
                 int priceX = im.getWidth() * 150 / 380;
                 int priceY = im.getHeight() * (itemStart + idxStart * distince) / 725;
@@ -1698,7 +1991,8 @@ public class ClientController {
 
                 // item
                 String itemStr = iPack.get("item");
-                if (itemStr.length() > 20) {
+                if (itemStr.length() > 20)
+                {
                     int itemX = im.getWidth() * 10 / 380;
                     int itemY = im.getHeight() * (itemStart + idxStart * distince) / 725;
                     gFullName.drawString(new String(itemStr.substring(0, 20)), itemX, itemY);
@@ -1707,7 +2001,9 @@ public class ClientController {
                     int itemX2 = im.getWidth() * 10 / 380;
                     int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 725;
                     gFullName.drawString(new String(itemStr.substring(21, itemStr.length())), itemX2, itemY2);
-                } else {
+                }
+                else
+                {
                     int itemX = im.getWidth() * 10 / 380;
                     int itemY = im.getHeight() * (itemStart + idxStart * distince) / 725;
                     gFullName.drawString(new String(iPack.get("item")), itemX, itemY);
@@ -1718,15 +2014,19 @@ public class ClientController {
 
             gFullName.dispose();
             ImageIO.write(im, "jpg", new File("D:\\vietnv\\image\\thanhpham_card.jpg"));
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void exportImageClientPayment() {
+    public void exportImageClientPayment()
+    {
 //        FileInputStream file = null;
 
-        try {
+        try
+        {
 
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String path = File.separator + "templates" + File.separator + "main_card.jpg";
@@ -1735,7 +2035,8 @@ public class ClientController {
             String des = ctx.getRealPath("/") + "resources" + File.separator + "exported" + File.separator + "clientPayment.jpg";
             desPathImg = desPath;
 
-            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported")) {
+            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported"))
+            {
                 MessageUtil.setErrorMessage("Export thất bại (Tạo folder)");
                 fileExported = null;
                 return;
@@ -1792,8 +2093,10 @@ public class ClientController {
             int itemStart = 330;
             int distince = 25;
             int idxStart = 0;
-            if (lstClientPaymentUsingPack != null) {
-                for (ClientPayment bo : lstClientPaymentUsingPack) {
+            if (lstClientPaymentUsingPack != null)
+            {
+                for (ClientPayment bo : lstClientPaymentUsingPack)
+                {
                     // price
                     int priceX = im.getWidth() * 150 / 380;
                     int priceY = im.getHeight() * (itemStart + idxStart * distince) / 725;
@@ -1812,10 +2115,12 @@ public class ClientController {
                     // item
 //                    String itemStr = iPack.get("item");
                     String groupPackName = "";
-                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null) {
+                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null)
+                    {
                         groupPackName = bo.getClientUsePack().getGroupPack().getGroupPackName();
                     }
-                    if (groupPackName.length() > 20) {
+                    if (groupPackName.length() > 20)
+                    {
                         int itemX = im.getWidth() * 10 / 380;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 725;
                         gFullName.drawString(new String(groupPackName.substring(0, 20)), itemX, itemY);
@@ -1824,7 +2129,9 @@ public class ClientController {
                         int itemX2 = im.getWidth() * 10 / 380;
                         int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 725;
                         gFullName.drawString(new String(groupPackName.substring(21, groupPackName.length())), itemX2, itemY2);
-                    } else {
+                    }
+                    else
+                    {
                         int itemX = im.getWidth() * 10 / 380;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 725;
                         gFullName.drawString(new String(groupPackName), itemX, itemY);
@@ -1907,7 +2214,9 @@ public class ClientController {
 //            fileExported = new DefaultStreamedContent(d, "application/pdf", "clientPayment.pdf");
 
             MessageUtil.setInfoMessage("Export thành công");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessage("Export thất bại");
             logger.error(e.getMessage(), e);
         }
@@ -1916,18 +2225,22 @@ public class ClientController {
     /**
      * onPrint: in anh
      */
-    public void onPrintBill() {
+    public void onPrintBill()
+    {
 //        billImgPath = generateBillImg();
 //        billImgPath = generateBillImgNew();
         billImgPath = ImageStreamerBill.generateBillImg(getObjectBillImg());
     }
 
-    public String callBillImgPath() {
+    public String callBillImgPath()
+    {
         return billImgPath;
     }
 
-    public String generateBillImg() {
-        try {
+    public String generateBillImg()
+    {
+        try
+        {
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String path = File.separator + "templates" + File.separator + "main_card.jpg";
 
@@ -1935,7 +2248,8 @@ public class ClientController {
             String des = ctx.getRealPath("/") + "resources" + File.separator + "exported" + File.separator + "clientPayment" + DateTimeUtils.format(new Date(), "yyyyMMddHHmm") + ".jpg";
             desPathImg = desPath;
 
-            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported")) {
+            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported"))
+            {
                 MessageUtil.setErrorMessage("Tạo folder thất bại");
                 fileExported = null;
                 return null;
@@ -1990,8 +2304,10 @@ public class ClientController {
             int itemStart = 330;
             int distince = 25;
             int idxStart = 0;
-            if (lstClientPaymentUsingPack != null) {
-                for (ClientPayment bo : lstClientPaymentUsingPack) {
+            if (lstClientPaymentUsingPack != null)
+            {
+                for (ClientPayment bo : lstClientPaymentUsingPack)
+                {
                     // price
                     int priceX = im.getWidth() * 150 / 380;
                     int priceY = im.getHeight() * (itemStart + idxStart * distince) / 725;
@@ -2010,10 +2326,12 @@ public class ClientController {
                     // item
 //                    String itemStr = iPack.get("item");
                     String groupPackName = "";
-                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null) {
+                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null)
+                    {
                         groupPackName = bo.getClientUsePack().getGroupPack().getGroupPackName();
                     }
-                    if (groupPackName.length() > 20) {
+                    if (groupPackName.length() > 20)
+                    {
                         int itemX = im.getWidth() * 10 / 380;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 725;
                         gFullName.drawString(new String(groupPackName.substring(0, 20)), itemX, itemY);
@@ -2022,7 +2340,9 @@ public class ClientController {
                         int itemX2 = im.getWidth() * 10 / 380;
                         int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 725;
                         gFullName.drawString(new String(groupPackName.substring(21, groupPackName.length())), itemX2, itemY2);
-                    } else {
+                    }
+                    else
+                    {
                         int itemX = im.getWidth() * 10 / 380;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 725;
                         gFullName.drawString(new String(groupPackName), itemX, itemY);
@@ -2036,29 +2356,36 @@ public class ClientController {
             ImageIO.write(im, "jpg", new File(des));
 
             return des;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return null;
     }
 
-    public String getBillImgPath() {
+    public String getBillImgPath()
+    {
         return billImgPath;
     }
 
-    public void setBillImgPath(String billImgPath) {
+    public void setBillImgPath(String billImgPath)
+    {
         this.billImgPath = billImgPath;
     }
 
-    public String generateBillImgNew() {
-        try {
+    public String generateBillImgNew()
+    {
+        try
+        {
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String path = File.separator + "templates" + File.separator + "payment_tmp_file.jpg";
 
             String desPath = File.separator + "resources" + File.separator + "exported" + File.separator + "clientPayment" + DateTimeUtils.format(new Date(), "yyyyMMddHHmm") + ".jpg";
             String des = ctx.getRealPath("/") + "resources" + File.separator + "exported" + File.separator + "clientPayment" + DateTimeUtils.format(new Date(), "yyyyMMddHHmm") + ".jpg";
 
-            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported")) {
+            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported"))
+            {
                 MessageUtil.setErrorMessage("Tạo folder thất bại");
                 fileExported = null;
                 return null;
@@ -2089,11 +2416,13 @@ public class ClientController {
 //            Long totalDept = 0l;
 
             CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
-            if (user != null && user.getEmployee() != null) {
+            if (user != null && user.getEmployee() != null)
+            {
                 employeeName = user.getEmployee().getEmployeeName();
 
             }
-            if (curClient.getName() != null) {
+            if (curClient.getName() != null)
+            {
                 customerName = curClient.getName();
             }
 
@@ -2102,12 +2431,14 @@ public class ClientController {
             Long custPay = 0l;//khach tra them
             //cong no chi co gia trị am 
             Long debt = clientPayment.getDebt();
-            if (clientPayment.getDebt() > 0) {
+            if (clientPayment.getDebt() > 0)
+            {
 //                paymentValue = clientPayment.getPrice();// khach le ko no
                 debt = 0l;
             }
             //lay gia trị duong
-            if (debt < 0) {
+            if (debt < 0)
+            {
                 debt = -debt;
             }
 //            if (clientPayment.getTotalDeposit() != null) {
@@ -2117,7 +2448,8 @@ public class ClientController {
 //                custPay += clientPayment.getPaymentValue();
 //            }
             custPay = clientPayment.getPrice();
-            if (custPay != null && clientPayment.getTotalDeposit() != null) {
+            if (custPay != null && clientPayment.getTotalDeposit() != null)
+            {
                 custPay = clientPayment.getPrice() - clientPayment.getTotalDeposit();
             }
 
@@ -2170,9 +2502,12 @@ public class ClientController {
 //            lstMemberPayments.add(clientPayment);
             Font oldFont = gFullName.getFont();
             gFullName.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 20));
-            if (lstClientPaymentUsingPack != null) {
-                for (ClientPayment bo : lstClientPaymentUsingPack) {
-                    if (bo.getType() != null && bo.getType().equals(2l)) {
+            if (lstClientPaymentUsingPack != null)
+            {
+                for (ClientPayment bo : lstClientPaymentUsingPack)
+                {
+                    if (bo.getType() != null && bo.getType().equals(2l))
+                    {
                         continue; // bo qua loai thanh toan
                     }                    // item
 //                    String itemStr = iPack.get("item");
@@ -2184,16 +2519,20 @@ public class ClientController {
 //                        price = catGroupPack.getPrice().longValue();
 //                        groupPackName = catGroupPack.getGroupPackName();
 //                    }
-                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null) {
+                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null)
+                    {
                         groupPackName = bo.getClientUsePack().getGroupPack().getGroupPackName();
                         price = bo.getClientUsePack().getGroupPack().getPrice().longValue();
                     }
                     // tinh tong vat
-                    if (StringUtil.isNotNull(bo.getVat()) && bo.getPrice() != null) {
+                    if (StringUtil.isNotNull(bo.getVat()) && bo.getPrice() != null)
+                    {
                         vatPrice += bo.getPrice() / 11;
 
                         discount += price - bo.getPrice() * 10 / 11;
-                    } else if (price != null && bo.getPrice() != null) {
+                    }
+                    else if (price != null && bo.getPrice() != null)
+                    {
                         discount += price - bo.getPrice();
                     }
                     // num
@@ -2211,11 +2550,15 @@ public class ClientController {
                     //KM
                     String desc = "";
                     CatPromotion catPromotion = bo.getCatPromotion();
-                    if (catPromotion != null && catPromotion.getValue() != null) {
+                    if (catPromotion != null && catPromotion.getValue() != null)
+                    {
 
-                        if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType())) {
+                        if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType()))
+                        {
                             desc = DataUtil.getStringNumber(catPromotion.getValue());
-                        } else {
+                        }
+                        else
+                        {
                             desc = catPromotion.getValue().toString();
 
                         }
@@ -2238,12 +2581,16 @@ public class ClientController {
 
 //                    Font fontOld=gFullName.getFont();
 //                    gFullName.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 10));
-                    if (bo.getClientUsePack() != null) {
+                    if (bo.getClientUsePack() != null)
+                    {
 
                         String hsd = DateTimeUtils.format(bo.getClientUsePack().getEndDate(), Constant.PATTERN.DATE_COMMON_YY);
-                        if (hsd.length() < 9) {
+                        if (hsd.length() < 9)
+                        {
                             gFullName.drawString(new String(hsd), endDateX, endDateY);
-                        } else {
+                        }
+                        else
+                        {
                             gFullName.drawString(new String(hsd.substring(0, 9)), endDateX, endDateY);
                             int h2 = im.getHeight() * (itemStart + (idxStart + 1) * distince - 2) / 2546;
                             gFullName.drawString(new String(hsd.substring(6, hsd.length())), endDateX, h2);
@@ -2253,14 +2600,16 @@ public class ClientController {
 //                    gFullName.setFont(fontOld);
 
                     // item
-                    if (groupPackName.length() > 12) {
+                    if (groupPackName.length() > 12)
+                    {
 
                         int itemX = im.getWidth() * 13 / 795;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 2546;
                         gFullName.drawString(new String(groupPackName.substring(0, 12)), itemX, itemY);
 
                         idxStart += 1;
-                        if (groupPackName.length() > 24) {
+                        if (groupPackName.length() > 24)
+                        {
                             int itemX2 = im.getWidth() * 12 / 795;
                             int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 2546;
                             gFullName.drawString(new String(groupPackName.substring(13, 24)), itemX2, itemY2);
@@ -2268,17 +2617,22 @@ public class ClientController {
                             idxStart += 1;
                             int itemY3 = im.getHeight() * (itemStart + idxStart * distince) / 2546;
                             gFullName.drawString(new String(groupPackName.substring(25, groupPackName.length())), itemX2, itemY3);
-                        } else {
+                        }
+                        else
+                        {
                             int itemX2 = im.getWidth() * 12 / 795;
                             int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 2546;
                             gFullName.drawString(new String(groupPackName.substring(13, groupPackName.length())), itemX2, itemY2);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         int itemX = im.getWidth() * 13 / 795;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 2546;
                         gFullName.drawString(new String(groupPackName), itemX, itemY);
                     }
-                    if (newidxStart > idxStart) {
+                    if (newidxStart > idxStart)
+                    {
                         idxStart = newidxStart;
                     }
 
@@ -2335,15 +2689,19 @@ public class ClientController {
             ImageIO.write(im, "jpg", new File(des));
 
             return des;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return null;
     }
 
-    public PrintPaymentForm getObjectBillImg() {
+    public PrintPaymentForm getObjectBillImg()
+    {
         PrintPaymentForm paymentForm = new PrintPaymentForm();
-        try {
+        try
+        {
 
             ClientPayment clientPayment = curClient.getClientPayment();
 
@@ -2360,11 +2718,13 @@ public class ClientController {
 //            Long totalDept = 0l;
 
             CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
-            if (user != null && user.getEmployee() != null) {
+            if (user != null && user.getEmployee() != null)
+            {
                 employeeName = user.getEmployee().getEmployeeName();
 
             }
-            if (curClient.getName() != null) {
+            if (curClient.getName() != null)
+            {
                 customerName = curClient.getName();
             }
 
@@ -2374,16 +2734,19 @@ public class ClientController {
             Long custPay = 0l;//khach tra them
             //cong no chi co gia trị am 
             Long debt = clientPayment.getDebt();
-            if (clientPayment.getDebt() > 0) {
+            if (clientPayment.getDebt() > 0)
+            {
 //                paymentValue = clientPayment.getPrice();// khach le ko no
                 debt = 0l;
             }
             //lay gia trị duong
-            if (debt < 0) {
+            if (debt < 0)
+            {
                 debt = -debt;
             }
             custPay = clientPayment.getPrice();
-            if (custPay != null && clientPayment.getTotalDeposit() != null) {
+            if (custPay != null && clientPayment.getTotalDeposit() != null)
+            {
                 custPay = clientPayment.getPrice() - clientPayment.getTotalDeposit();
             }
 
@@ -2401,9 +2764,12 @@ public class ClientController {
 //            lstMemberPayments.add(clientPayment);
             List<PaymentPackObj> lstPaymentPackObjs = new ArrayList<>();
 
-            if (lstClientPaymentUsingPack != null) {
-                for (ClientPayment bo : lstClientPaymentUsingPack) {
-                    if (bo.getType() != null && bo.getType().equals(Constant.PAYMENT_TYPE.THANH_TOAN_TRA_NO)) {
+            if (lstClientPaymentUsingPack != null)
+            {
+                for (ClientPayment bo : lstClientPaymentUsingPack)
+                {
+                    if (bo.getType() != null && bo.getType().equals(Constant.PAYMENT_TYPE.THANH_TOAN_TRA_NO))
+                    {
                         continue; // bo qua loai thanh toan
                     }
                     PaymentPackObj payPack = new PaymentPackObj();
@@ -2412,16 +2778,20 @@ public class ClientController {
                     // price dong gia
                     Long price = null;
                     String groupPackName = "";
-                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null) {
+                    if (bo.getClientUsePackId() != null && bo.getClientUsePack() != null && bo.getClientUsePack().getGroupPack() != null)
+                    {
                         groupPackName = bo.getClientUsePack().getGroupPack().getGroupPackName();
                         price = bo.getClientUsePack().getGroupPack().getPrice().longValue();
                     }
                     // tinh tong vat
-                    if (StringUtil.isNotNull(bo.getVat()) && bo.getPrice() != null) {
+                    if (StringUtil.isNotNull(bo.getVat()) && bo.getPrice() != null)
+                    {
                         vatPrice += bo.getPrice() / 11;
 
                         discount += price - bo.getPrice() * 10 / 11;
-                    } else if (price != null && bo.getPrice() != null) {
+                    }
+                    else if (price != null && bo.getPrice() != null)
+                    {
                         discount += price - bo.getPrice();
                     }
                     // num
@@ -2429,7 +2799,8 @@ public class ClientController {
                     payPack.setQuantity(numPack);
                     payPack.setPrice(price);
 
-                    if (price != null) {
+                    if (price != null)
+                    {
                         totalPrice += numPack * price;
                     }
                     //KM
@@ -2457,14 +2828,19 @@ public class ClientController {
             // khach tra
             paymentForm.setCustomerPay(custPay);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return paymentForm;
     }
-    public void checkOutClient() {
-        try {
-           
+
+    public void checkOutClient()
+    {
+        try
+        {
+
             curClient.setStatus(Constant.CLIENT_STATUS.STOP);
             curClient.setEndTime(new Date());
             clientService.saveOrUpdate(curClient);
@@ -2475,10 +2851,13 @@ public class ClientController {
             filterPay.put("endDate-GE", new Date());
             Long customerScheduleId = null;
             List<ClientUsePack> lstClientUsePacks = clientUsePackService.findList(filterPay);
-            if (lstClientUsePacks != null && lstClientUsePacks.size() > 0) {
-                for (ClientUsePack bo : lstClientUsePacks) {
+            if (lstClientUsePacks != null && lstClientUsePacks.size() > 0)
+            {
+                for (ClientUsePack bo : lstClientUsePacks)
+                {
                     bo.setStatus(Constant.CLIENT_USE_PACK.STATUS_STOP);
-                    if (bo.getCustomerScheduleId() != null) {
+                    if (bo.getCustomerScheduleId() != null)
+                    {
                         customerScheduleId = bo.getCustomerScheduleId();
                     }
                 }
@@ -2493,7 +2872,9 @@ public class ClientController {
             MessageUtil.setInfoMessageFromRes("info.save.success");
 
             preEditClient(curClient);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }

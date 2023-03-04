@@ -6,10 +6,10 @@
 
 
     <p:panel id="detailCustomerPaymentPanel" style="display: block;padding: 0px;margin: 0px;"
-             >
+    >
         <p:dataTable value="#{reportPaymentController.lazyCustomerPaymentDeltail}"
                      id="tableVCustomerPaymentDetail" rendered="#{reportPaymentController.showDetailTable}"
-                     lazy="true" var="customerPaymentDetail" rowKey="#{customerPaymentDetail.rowkey}" 
+                     lazy="true" var="customerPaymentDetail" rowKey="#{customerPaymentDetail.rowkey}"
                      rowIndexVar="cidx" editable="true" editMode="cell"
                      rows="10" paginator="true" paginatorPosition="bottom"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -32,8 +32,9 @@
                         <p:tooltip position="right"></p:tooltip>
                         <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
                                          actionListener="#{commonUtilsController.attributeListener}">
-                            <f:attribute name="headerExport" value="Thông tin chi tiết giao dịch" />
-                            <p:dataExporter type="xls" target="tableVCustomerPaymentDetail" fileName="CustomerPaymentDetail" pageOnly="false"
+                            <f:attribute name="headerExport" value="Thông tin chi tiết giao dịch"/>
+                            <p:dataExporter type="xls" target="tableVCustomerPaymentDetail"
+                                            fileName="CustomerPaymentDetail" pageOnly="false"
                                             postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                         </p:commandButton>
 
@@ -51,17 +52,20 @@
                 <h:outputText value="#{customerPaymentDetail.customerName}"/>
             </p:column>
 
-            <p:column headerText="#{msg['customerPaymentDetail.phoneNumber']}" width="100" sortBy="#{customerPaymentDetail.phoneNumber}"
+            <p:column headerText="#{msg['customerPaymentDetail.phoneNumber']}" width="100"
+                      sortBy="#{customerPaymentDetail.phoneNumber}"
                       filterBy="#{customerPaymentDetail.phoneNumber}" filterStyle="width:70%">
                 <h:outputText value="#{customerPaymentDetail.phoneNumber}"/>
             </p:column>
 
-            <p:column headerText="#{msg['customerPaymentDetail.groupPackName']}" width="100" sortBy="#{customerPaymentDetail.groupPackName}"
+            <p:column headerText="#{msg['customerPaymentDetail.groupPackName']}" width="100"
+                      sortBy="#{customerPaymentDetail.groupPackName}"
                       filterBy="#{customerPaymentDetail.groupPackName}" filterStyle="width:70%">
                 <h:outputText value="#{customerPaymentDetail.groupPackName}"/>
             </p:column>
 
-            <p:column headerText="#{msg['customerPaymentDetail.customerTypeName']}" width="100" sortBy="#{customerPaymentDetail.customerType}" visible="true"
+            <p:column headerText="#{msg['customerPaymentDetail.customerTypeName']}" width="100"
+                      sortBy="#{customerPaymentDetail.customerType}" visible="true"
                       filterBy="#{customerPaymentDetail.customerType}" filterStyle="width:70%">
                 <f:facet name="filter">
                     <p:selectOneMenu onchange="PF('tblWidgetVCustomerPaymentDetail').filter()" filter="true"
@@ -74,14 +78,15 @@
                 </f:facet>
                 <h:outputText value="#{customerPaymentDetail.customerTypeName}"/>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.employeeName']}" width="100" filterBy="#{customerPaymentDetail.employeeId}" 
+            <p:column headerText="#{msg['customerPaymentDetail.employeeName']}" width="100"
+                      filterBy="#{customerPaymentDetail.employeeId}"
 
-                      filterStyle="width:70%"  >
+                      filterStyle="width:70%">
                 <f:facet name="filter">
-                    <p:selectOneMenu                                   
-                        onchange="PF('tblWidgetVCustomerPaymentDetail').filter()"
-                        filter="true" filterMatchMode="contains"
-                        >
+                    <p:selectOneMenu
+                            onchange="PF('tblWidgetVCustomerPaymentDetail').filter()"
+                            filter="true" filterMatchMode="contains"
+                    >
                         <f:selectItem itemLabel="#{msg['label.choose']}" itemValue=""
                                       noSelectionOption="true"/>
                         <f:selectItems value="#{employeeController.allEmployees}" var="o"
@@ -93,21 +98,24 @@
                 </f:facet>
                 <h:outputText value="#{customerPaymentDetail.employeeName}"/>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.numberPack']}" width="50"  >
+            <p:column headerText="#{msg['customerPaymentDetail.numberPack']}" width="50">
                 <h:outputText value="#{customerPaymentDetail.numberPack}"/>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.createTime']}" width="100" sortBy="#{customerPaymentDetail.createTime}"
+            <p:column headerText="#{msg['customerPaymentDetail.createTime']}" width="100"
+                      sortBy="#{customerPaymentDetail.createTime}"
                       filterBy="#{customerPaymentDetail.createTime-BW}" filterStyle="width:70%">
-                <f:facet name="filter" >
-                    <p:calendar pattern="dd/MM/yyyy"  >
+                <f:facet name="filter">
+                    <p:calendar pattern="dd/MM/yyyy">
                         <p:ajax event="dateSelect" oncomplete="PF('tblWidgetVCustomerPaymentDetail').filter()"/>
                     </p:calendar>
                 </f:facet>
-                <h:outputText value="#{customerPaymentDetail.createTime}"><f:convertDateTime
-                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                <h:outputText value="#{customerPaymentDetail.createTime}">
+                    <f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
             </p:column>
 
-            <p:column headerText="#{msg['customerPaymentDetail.typeName']}" width="80" 
+            <p:column headerText="#{msg['customerPaymentDetail.typeName']}" width="80"
                       filterBy="#{customerPaymentDetail.type}" filterStyle="width:70%">
                 <f:facet name="filter">
                     <p:selectOneMenu onchange="PF('tblWidgetVCustomerPaymentDetail').filter()" filter="true"
@@ -119,39 +127,45 @@
                 </f:facet>
                 <h:outputText value="#{customerPaymentDetail.typeName}"/>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.joinDate']}" width="100" sortBy="#{customerPaymentDetail.joinDate}"
+            <p:column headerText="#{msg['customerPaymentDetail.joinDate']}" width="100"
+                      sortBy="#{customerPaymentDetail.joinDate}"
                       filterBy="#{customerPaymentDetail.joinDate-BW}" filterStyle="width:70%">
-                <f:facet name="filter" >
-                    <p:calendar pattern="dd/MM/yyyy"  >
+                <f:facet name="filter">
+                    <p:calendar pattern="dd/MM/yyyy">
                         <p:ajax event="dateSelect" oncomplete="PF('tblWidgetVCustomerPaymentDetail').filter()"/>
                     </p:calendar>
                 </f:facet>
-                <h:outputText value="#{customerPaymentDetail.joinDate}"><f:convertDateTime
-                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                <h:outputText value="#{customerPaymentDetail.joinDate}">
+                    <f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.endDate']}" width="100" sortBy="#{customerPaymentDetail.endDate}"
+            <p:column headerText="#{msg['customerPaymentDetail.endDate']}" width="100"
+                      sortBy="#{customerPaymentDetail.endDate}"
                       filterBy="#{customerPaymentDetail.endDate-BW}" filterStyle="width:70%">
-                <f:facet name="filter" >
-                    <p:calendar pattern="dd/MM/yyyy"  >
+                <f:facet name="filter">
+                    <p:calendar pattern="dd/MM/yyyy">
                         <p:ajax event="dateSelect" oncomplete="PF('tblWidgetVCustomerPaymentDetail').filter()"/>
                     </p:calendar>
                 </f:facet>
-                <h:outputText value="#{customerPaymentDetail.endDate}"><f:convertDateTime
-                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                <h:outputText value="#{customerPaymentDetail.endDate}">
+                    <f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.price']}" width="80" style="text-align: right"  >
+            <p:column headerText="#{msg['customerPaymentDetail.price']}" width="80" style="text-align: right">
                 <h:outputText value="#{customerPaymentDetail.price}">
                     <f:convertNumber pattern="#,###"/>
                 </h:outputText>
                 <h:outputText value=" VNĐ"/>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.danop']}" width="80" style="text-align: right"  >
+            <p:column headerText="#{msg['customerPaymentDetail.danop']}" width="80" style="text-align: right">
                 <h:outputText value="#{customerPaymentDetail.danop}">
                     <f:convertNumber pattern="#,###"/>
                 </h:outputText>
                 <h:outputText value=" VNĐ"/>
             </p:column>
-            <p:column headerText="#{msg['customerPaymentDetail.debt']}" width="80" style="text-align: right"  >
+            <p:column headerText="#{msg['customerPaymentDetail.debt']}" width="80" style="text-align: right">
                 <h:outputText value="#{customerPaymentDetail.debt}">
                     <f:convertNumber pattern="#,###"/>
                 </h:outputText>

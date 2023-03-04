@@ -14,13 +14,15 @@
 
             <!--vietnv start lich-->
             <div class=" Card Flex">
-                <div class="Container33 TexAlCenter" >
+                <div class="Container33 TexAlCenter">
                     <p:fieldset legend="#{msg['datatable.header.branch.name']}">
 
-                        <p:selectOneMenu  value="#{customerScheduleController.currBranch.branchId}" >
+                        <p:selectOneMenu value="#{customerScheduleController.currBranch.branchId}">
                             <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}"/>
-                            <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
-                            <p:ajax event="change" listener="#{customerScheduleController.loadSchedule}" update="@widgetVar(customerScheduleGym)"/>
+                            <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}"
+                                           itemValue="#{p.branchId}"/>
+                            <p:ajax event="change" listener="#{customerScheduleController.loadSchedule}"
+                                    update="@widgetVar(customerScheduleGym)"/>
                         </p:selectOneMenu>
                     </p:fieldset>
                 </div>
@@ -30,19 +32,23 @@
 
                     <h:panelGroup>
                         <div style="width: 25px; height: 25px; float: left" class="schedule"/>
-                        <h:outputText value="#{msg['customerSchedule.statusSchedule']}" style="line-height: 25px; margin-left: 5px"/>
+                        <h:outputText value="#{msg['customerSchedule.statusSchedule']}"
+                                      style="line-height: 25px; margin-left: 5px"/>
                     </h:panelGroup>
                     <h:panelGroup>
                         <div style="width: 25px; height: 25px; float: left" class="activeSchedule"/>
-                        <h:outputText value="#{msg['customerSchedule.statusActive']}" style="line-height: 25px; margin-left: 5px"/>
+                        <h:outputText value="#{msg['customerSchedule.statusActive']}"
+                                      style="line-height: 25px; margin-left: 5px"/>
                     </h:panelGroup>
                     <h:panelGroup>
                         <div style="width: 25px; height: 25px; float: left" class="completedSchedule"/>
-                        <h:outputText value="#{msg['customerSchedule.statusCompleted']}" style="line-height: 25px; margin-left: 5px"/>
+                        <h:outputText value="#{msg['customerSchedule.statusCompleted']}"
+                                      style="line-height: 25px; margin-left: 5px"/>
                     </h:panelGroup>
                     <h:panelGroup>
                         <div style="width: 25px; height: 25px; float: left" class="cancelSchedule"/>
-                        <h:outputText value="#{msg['customerSchedule.statusCancel']}" style="line-height: 25px; margin-left: 5px"/>
+                        <h:outputText value="#{msg['customerSchedule.statusCancel']}"
+                                      style="line-height: 25px; margin-left: 5px"/>
                     </h:panelGroup>
                     <!--                    <c:forEach items="# {customerScheduleController.scheduleGym.packStyles}" var="pack">
                         <h:panelGroup>
@@ -52,72 +58,79 @@
                     </c:forEach>-->
                 </h:panelGrid>
             </div>
-            <p:schedule widgetVar="customerScheduleGym" view="agendaWeek" value="#{customerScheduleController.scheduleGym}" timeZone="Asia/Ho_Chi_Minh" tooltip="true"
+            <p:schedule widgetVar="customerScheduleGym" view="agendaWeek"
+                        value="#{customerScheduleController.scheduleGym}" timeZone="Asia/Ho_Chi_Minh" tooltip="true"
                         allDaySlot="false">
-                <p:ajax event="dateSelect" listener="#{customerScheduleController.onDateSelect}" onstart="PF('block').show()" update="customerScheduleInsertForm" oncomplete="PF('widgetCustomerScheduleFormDlg').show();PF('block').hide()" />
-                <p:ajax event="eventSelect" listener="#{customerScheduleController.onEventSelect}" onstart="PF('block').show()" update="customerScheduleInsertForm" oncomplete="PF('widgetCustomerScheduleFormDlg').show();PF('block').hide()" />
-                <p:ajax event="eventMove" listener="#{customerScheduleController.onEventMove}"  />
-                <p:ajax event="eventResize" listener="#{customerScheduleController.onEventResize}"  />
-                <p:ajax event="viewChange" update=":customerScheduleForm:tip" listener="#{customerScheduleController.onChangeView}" />
+                <p:ajax event="dateSelect" listener="#{customerScheduleController.onDateSelect}"
+                        onstart="PF('block').show()" update="customerScheduleInsertForm"
+                        oncomplete="PF('widgetCustomerScheduleFormDlg').show();PF('block').hide()"/>
+                <p:ajax event="eventSelect" listener="#{customerScheduleController.onEventSelect}"
+                        onstart="PF('block').show()" update="customerScheduleInsertForm"
+                        oncomplete="PF('widgetCustomerScheduleFormDlg').show();PF('block').hide()"/>
+                <p:ajax event="eventMove" listener="#{customerScheduleController.onEventMove}"/>
+                <p:ajax event="eventResize" listener="#{customerScheduleController.onEventResize}"/>
+                <p:ajax event="viewChange" update=":customerScheduleForm:tip"
+                        listener="#{customerScheduleController.onChangeView}"/>
             </p:schedule>
             <!--vietnv end lich-->
 
             <!--vietnv form search-->
-<!--            <h:form id="searchForm">
-                <p:growl id="growlSearch" showDetail="true" showSummary="false" widgetVar="growl"/>
-                <p:blockUI block="@form:@parent:form" widgetVar="blockUiSearch" trigger="search"/>
-                <p:panel header="# {msg['label.search.info']}" style="text-align: left" styleClass="" toggleable="true" >
-                    <h:panelGrid columns="8" cellpadding="5" width="100%">
+            <!--            <h:form id="searchForm">
+                            <p:growl id="growlSearch" showDetail="true" showSummary="false" widgetVar="growl"/>
+                            <p:blockUI block="@form:@parent:form" widgetVar="blockUiSearch" trigger="search"/>
+                            <p:panel header="# {msg['label.search.info']}" style="text-align: left" styleClass="" toggleable="true" >
+                                <h:panelGrid columns="8" cellpadding="5" width="100%">
 
-                        <p:outputLabel value="Gói"/>
-                        <p:selectOneMenu id="newMembership"
-                                         value="# {memberController.curMember.newMembership.groupPackId}"
-                                         required="false"
-                                         title="# {msg['datatable.header.group.pack.name']}"
-                                         style="width: 143px !important"
-                                         >
-                            <f:selectItem itemLabel="# {msg['label.choose']}" noSelectionOption="true"/>
-                            <f:selectItems value="# {catGroupPackController.catGroupPacks}" var="c"
-                                           itemValue="# {c.groupPackId}" itemLabel="# {c.groupPackName}"/>
-                            <p:ajax event="itemSelect" update="joinDateMembership" />
-                        </p:selectOneMenu>
+                                    <p:outputLabel value="Gói"/>
+                                    <p:selectOneMenu id="newMembership"
+                                                     value="# {memberController.curMember.newMembership.groupPackId}"
+                                                     required="false"
+                                                     title="# {msg['datatable.header.group.pack.name']}"
+                                                     style="width: 143px !important"
+                                                     >
+                                        <f:selectItem itemLabel="# {msg['label.choose']}" noSelectionOption="true"/>
+                                        <f:selectItems value="# {catGroupPackController.catGroupPacks}" var="c"
+                                                       itemValue="# {c.groupPackId}" itemLabel="# {c.groupPackName}"/>
+                                        <p:ajax event="itemSelect" update="joinDateMembership" />
+                                    </p:selectOneMenu>
 
-                        <h:outputText value="Từ ngày" class="cd-text-required"/>
-                        <p:calendar id="fromDateSearchId" value="# {checkInController.fromDate}" pattern="dd/MM/yyyy"/>
+                                    <h:outputText value="Từ ngày" class="cd-text-required"/>
+                                    <p:calendar id="fromDateSearchId" value="# {checkInController.fromDate}" pattern="dd/MM/yyyy"/>
 
-                        <h:outputText value="Đến ngày" class="cd-text-required"/>
-                        <p:calendar id="toDateSearchId" value="# {checkInController.toDate}" pattern="dd/MM/yyyy"/>
-                    </h:panelGrid>
-                    <h:panelGrid width="100%" style="text-align: center">
-                        <p:commandButton id="search" onclick="PF('block').show()"
-                                         oncomplete="PF('block').hide();"
-                                         update="growlSearch,:form"
-                                         actionListener="# {checkInController.search}" value="Search"
-                                         icon="fa fa-search"/>
-                    </h:panelGrid>
-                </p:panel>
-            </h:form>-->
+                                    <h:outputText value="Đến ngày" class="cd-text-required"/>
+                                    <p:calendar id="toDateSearchId" value="# {checkInController.toDate}" pattern="dd/MM/yyyy"/>
+                                </h:panelGrid>
+                                <h:panelGrid width="100%" style="text-align: center">
+                                    <p:commandButton id="search" onclick="PF('block').show()"
+                                                     oncomplete="PF('block').hide();"
+                                                     update="growlSearch,:form"
+                                                     actionListener="# {checkInController.search}" value="Search"
+                                                     icon="fa fa-search"/>
+                                </h:panelGrid>
+                            </p:panel>
+                        </h:form>-->
 
 
             <!--<div class="Card">-->
-            <p:dataTable value="#{customerScheduleController.lazyDataModel}" 
+            <p:dataTable value="#{customerScheduleController.lazyDataModel}"
                          lazy="true" var="customerSchedule" rowKey="#{customerSchedule.customerScheduleId}"
                          rowIndexVar="cusIdx" widgetVar="widgetCustomerScheduleTbl" id="CustomerScheduleTblId"
                          rows="20" paginator="true" paginatorPosition="bottom"
                          paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                          currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" 
+                         rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
                         <div class="Container20 TexAlLeft">
-                            <p:commandButton icon="fa fa-plus-circle" actionListener="#{customerScheduleController.preAdd}"
+                            <p:commandButton icon="fa fa-plus-circle"
+                                             actionListener="#{customerScheduleController.preAdd}"
                                              styleClass="White OrangeButton" update=":customerScheduleFormDlgId"
                                              process="@this" onclick="PF('blockDlg').show()"
-                                             oncomplete="PF('widgetCustomerScheduleFormDlg').show();PF('blockDlg').hide();" 
+                                             oncomplete="PF('widgetCustomerScheduleFormDlg').show();PF('blockDlg').hide();"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
 
@@ -125,10 +138,10 @@
                         <div class="Container60 Responsive50">
                             <h:outputText styleClass="Fs20" value="#{msg['datatable.header.customerSchedule']}"/>
                         </div>
-                        <div class="Container20"  style="text-align: right;">
+                        <div class="Container20" style="text-align: right;">
                             <p:commandButton id="toggler" type="button"
-                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White" />
-                            <p:columnToggler datasource="CustomerScheduleTblId" trigger="toggler" >
+                                             style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                            <p:columnToggler datasource="CustomerScheduleTblId" trigger="toggler">
                             </p:columnToggler>
                         </div>
 
@@ -138,7 +151,7 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          >
+                >
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
@@ -154,10 +167,12 @@
                           filterBy="#{customerSchedule.sex}" visible="false">
                     <h:outputText value="#{customerSchedule.sex}"/>
                 </p:column>
-                <p:column headerText="#{msg['customerCheckin.type']}" width="50" sortBy="#{customerSchedule.customerType}"
+                <p:column headerText="#{msg['customerCheckin.type']}" width="50"
+                          sortBy="#{customerSchedule.customerType}"
                           filterBy="#{customerSchedule.customerType}" filterStyle="width:70%">
                     <f:facet name="filter">
-                        <p:selectOneMenu onchange="PF('widgetCustomerScheduleTbl').filter()" filter="true" filterMatchMode="contains">
+                        <p:selectOneMenu onchange="PF('widgetCustomerScheduleTbl').filter()" filter="true"
+                                         filterMatchMode="contains">
                             <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
                             <f:selectItem itemLabel="Hội viên" itemValue="1"/>
                             <f:selectItem itemLabel="Khách lẻ" itemValue="2"/>
@@ -166,22 +181,26 @@
                     <h:outputText value="#{customerSchedule.customerTypeName}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['customerSchedule.startTime']}" width="80" sortBy="#{customerSchedule.startTime}"
+                <p:column headerText="#{msg['customerSchedule.startTime']}" width="80"
+                          sortBy="#{customerSchedule.startTime}"
                           filterBy="#{customerSchedule.startTime-BW}" filterStyle="width:70%">
-                    <f:facet name="filter" >
+                    <f:facet name="filter">
                         <p:calendar pattern="dd/MM/yyyy" widgetVar="widInDate">
                             <p:ajax event="dateSelect" oncomplete="PF('widgetCustomerScheduleTbl').filter()"/>
                         </p:calendar>
                     </f:facet>
-                    <h:outputText value="#{customerSchedule.startTime}"><f:convertDateTime
-                            pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                    <h:outputText value="#{customerSchedule.startTime}">
+                        <f:convertDateTime
+                                pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="#{msg['catUser.status']}" width="40"
                           filterBy="#{customerSchedule.status}">
                     <f:facet name="filter">
-                        <p:selectOneMenu onchange="PF('widgetCustomerScheduleTbl').filter()"   filter="true" filterMatchMode="contains">
-                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true" />
+                        <p:selectOneMenu onchange="PF('widgetCustomerScheduleTbl').filter()" filter="true"
+                                         filterMatchMode="contains">
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                             <f:selectItem itemValue="1"
                                           itemLabel="#{msg['customerSchedule.statusSchedule']}"/>
                             <f:selectItem itemValue="2"
@@ -192,10 +211,10 @@
                                           itemLabel="#{msg['customerSchedule.statusCancel']}"/>
                         </p:selectOneMenu>
                     </f:facet>
-                    <h:outputText value="#{customerSchedule.statusName}" />
+                    <h:outputText value="#{customerSchedule.statusName}"/>
                 </p:column>
-                <p:column  headerText="#{msg['customerSchedule.service']}" width="60">
-                    <p:repeat value="#{customerSchedule.lstCustomerSchedulePack}" var="p" varStatus="v" >
+                <p:column headerText="#{msg['customerSchedule.service']}" width="60">
+                    <p:repeat value="#{customerSchedule.lstCustomerSchedulePack}" var="p" varStatus="v">
                         <h:outputText value="#{p.catGroupPack.groupPackName}"/>
                         <h:outputText value=", " rendered="#{!v.last}"/>
                     </p:repeat>
@@ -208,9 +227,11 @@
                           filterBy="#{customerSchedule.branchId}"
                           visible="false">
                     <f:facet name="filter">
-                        <p:selectOneMenu onchange="PF('widgetCustomerScheduleTbl').filter()"   filter="true" filterMatchMode="contains">
-                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true" />
-                            <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
+                        <p:selectOneMenu onchange="PF('widgetCustomerScheduleTbl').filter()" filter="true"
+                                         filterMatchMode="contains">
+                            <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
+                            <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}"
+                                           itemValue="#{p.branchId}"/>
                         </p:selectOneMenu>
                     </f:facet>
                     <h:outputText value="#{customerSchedule.catBranch.branchName}"/>
@@ -218,16 +239,18 @@
 
 
                 <p:column headerText="#{msg['datatable.header.action']}" width="30" styleClass="TexAlCenter">
-                    <p:commandButton icon="fa fa-info" actionListener="#{customerScheduleController.preEdit(customerSchedule)}"
+                    <p:commandButton icon="fa fa-info"
+                                     actionListener="#{customerScheduleController.preEdit(customerSchedule)}"
                                      process="@widgetVar(widgetCustomerScheduleTbl)"
                                      styleClass="White BlueButton" onclick="PF('block').show()"
-                                     oncomplete="PF('block').hide();PF('widgetCustomerScheduleFormDlg').show()" update=":customerScheduleFormDlgId"
+                                     oncomplete="PF('block').hide();PF('widgetCustomerScheduleFormDlg').show()"
+                                     update=":customerScheduleFormDlgId"
                                      title="#{msg['button.edit']}">
                     </p:commandButton>
 
-                    <p:commandButton icon="fa fa-trash" styleClass="White RedButton" 
+                    <p:commandButton icon="fa fa-trash" styleClass="White RedButton"
                                      oncomplete="PF('deleteRoomPanel-#{cusIdx}').show('#{component.clientId}')"
-                                     />
+                    />
                     <p:overlayPanel modal="true" widgetVar="deleteRoomPanel-#{cusIdx}" showEffect="scale"
                                     hideEffect="fade" appendToBody="true"
                                     style="" dismissable="true" showCloseIcon="true" my="right top">
@@ -240,25 +263,35 @@
 
                         </p:commandButton>
                     </p:overlayPanel>
-                    <p:tooltip position="left" ></p:tooltip>
+                    <p:tooltip position="left"></p:tooltip>
                     <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
-                    <p:menuButton value="" styleClass="GreenButton Fs14 White" id="menuButtonId" rendered="false" >
+                    <p:menuButton value="" styleClass="GreenButton Fs14 White" id="menuButtonId" rendered="false">
 
-                        <p:menuitem icon="fa fa-play-circle-o" actionListener="#{customerScheduleController.updateStatus(customerSchedule,2)}"
-                                    process="@widgetVar(widgetCustomerScheduleTbl)" rendered="#{customerSchedule.status lt 2}"  disabled="true"
+                        <p:menuitem icon="fa fa-play-circle-o"
+                                    actionListener="#{customerScheduleController.updateStatus(customerSchedule,2)}"
+                                    process="@widgetVar(widgetCustomerScheduleTbl)"
+                                    rendered="#{customerSchedule.status lt 2}" disabled="true"
                                     onclick="PF('block').show()" oncomplete="PF('block').hide()"
-                                    update="@widgetVar(widgetCustomerScheduleTbl)" value="#{msg['customerSchedule.statusActive']}">
+                                    update="@widgetVar(widgetCustomerScheduleTbl)"
+                                    value="#{msg['customerSchedule.statusActive']}">
                         </p:menuitem>
-                        <p:menuitem icon="fa fa-check-square" actionListener="#{customerScheduleController.updateStatus(customerSchedule,3)}"
-                                    process="@widgetVar(widgetCustomerScheduleTbl)"  rendered="#{customerSchedule.status lt 3}" disabled="true"
+                        <p:menuitem icon="fa fa-check-square"
+                                    actionListener="#{customerScheduleController.updateStatus(customerSchedule,3)}"
+                                    process="@widgetVar(widgetCustomerScheduleTbl)"
+                                    rendered="#{customerSchedule.status lt 3}" disabled="true"
                                     onclick="PF('block').show()" oncomplete="PF('block').hide()"
-                                    update="@widgetVar(widgetCustomerScheduleTbl)" value="#{msg['customerSchedule.statusCompleted']}">
+                                    update="@widgetVar(widgetCustomerScheduleTbl)"
+                                    value="#{msg['customerSchedule.statusCompleted']}">
                         </p:menuitem>
 
-                        <p:menuitem icon="fa fa-times" actionListener="#{customerScheduleController.preCancel(customerSchedule)}"
-                                    process="@widgetVar(widgetCustomerScheduleTbl)" disabled="#{customerSchedule.status ge 2 }"
-                                    onclick="PF('block').show()" 
-                                    oncomplete="PF('block').hide();PF('widgetCustomerScheduleFormDlg').show()" update=":customerScheduleFormDlgId,@widgetVar(widgetCustomerScheduleTbl)" value="#{msg['customerSchedule.statusCancel']}">
+                        <p:menuitem icon="fa fa-times"
+                                    actionListener="#{customerScheduleController.preCancel(customerSchedule)}"
+                                    process="@widgetVar(widgetCustomerScheduleTbl)"
+                                    disabled="#{customerSchedule.status ge 2 }"
+                                    onclick="PF('block').show()"
+                                    oncomplete="PF('block').hide();PF('widgetCustomerScheduleFormDlg').show()"
+                                    update=":customerScheduleFormDlgId,@widgetVar(widgetCustomerScheduleTbl)"
+                                    value="#{msg['customerSchedule.statusCancel']}">
                         </p:menuitem>
                         <p:menuitem icon="fa fa-trash"
                                     oncomplete="PF('deleteRoomPanel-#{cusIdx}').show('#{component.clientId}')"
@@ -277,199 +310,241 @@
         <ui:include src="customerSchedule-dialog.xhtml"/>
         <style type="text/css">
 
-            .fc-scroller{
+            .fc-scroller {
                 height: 100% !important;
             }
-            .fc-content{
+
+            .fc-content {
                 color: black !important;
             }
-            .Pack1Room1{
+
+            .Pack1Room1 {
                 background: #FFFF66 !important;
                 border-right: solid red 5px !important;
 
             }
-            .Pack2Room1{
+
+            .Pack2Room1 {
                 background: #66FF66 !important;
                 border-right: solid red 5px !important;
             }
-            .Pack3Room1{
+
+            .Pack3Room1 {
                 background: #FFCC66 !important;
                 border-right: solid red 5px !important;
             }
-            .Pack4Room1{
+
+            .Pack4Room1 {
                 background: #FF99CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack5Room1{
+
+            .Pack5Room1 {
                 background: #3399CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack6Room1{
+
+            .Pack6Room1 {
                 background: #3366CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack7Room1{
+
+            .Pack7Room1 {
                 background: #9933CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack8Room1{
+
+            .Pack8Room1 {
                 background: #3300FF !important;
                 border-right: solid red 5px !important;
             }
-            .Pack9Room1{
+
+            .Pack9Room1 {
                 background: #05c436 !important;
                 border-right: solid red 5px !important;
             }
-            .Pack10Room1{
+
+            .Pack10Room1 {
                 background: #666633 !important;
                 border-right: solid red 5px !important;
             }
 
-            .Pack1Room2{
+            .Pack1Room2 {
                 background: #FFFF66 !important;
                 border-right: solid blue 5px !important;
 
             }
-            .Pack2Room2{
+
+            .Pack2Room2 {
                 background: #66FF66 !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack3Room2{
+
+            .Pack3Room2 {
                 background: #FFCC66 !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack4Room2{
+
+            .Pack4Room2 {
                 background: #FF99CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack5Room2{
+
+            .Pack5Room2 {
                 background: #3399CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack6Room2{
+
+            .Pack6Room2 {
                 background: #3366CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack7Room2{
+
+            .Pack7Room2 {
                 background: #9933CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack8Room2{
+
+            .Pack8Room2 {
                 background: #3300FF !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack9Room2{
+
+            .Pack9Room2 {
                 background: #05c436 !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack10Room2{
+
+            .Pack10Room2 {
                 background: #666633 !important;
                 border-right: solid blue 5px !important;
             }
 
-            .Pack1Room3{
+            .Pack1Room3 {
                 background: #FFFF66 !important;
                 border-right: solid gray 5px !important;
 
             }
-            .Pack2Room3{
+
+            .Pack2Room3 {
                 background: #66FF66 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack3Room3{
+
+            .Pack3Room3 {
                 background: #FFCC66 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack4Room3{
+
+            .Pack4Room3 {
                 background: #FF99CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack5Room3{
+
+            .Pack5Room3 {
                 background: #3399CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack6Room3{
+
+            .Pack6Room3 {
                 background: #3366CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack7Room3{
+
+            .Pack7Room3 {
                 background: #9933CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack8Room3{
+
+            .Pack8Room3 {
                 background: #3300FF !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack9Room3{
+
+            .Pack9Room3 {
                 background: #05c436 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack10Room3{
+
+            .Pack10Room3 {
                 background: #666633 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack1Room4{
+
+            .Pack1Room4 {
                 background: #FFFF66 !important;
                 border-right: solid yellow 5px !important;
 
             }
-            .Pack2Room4{
+
+            .Pack2Room4 {
                 background: #66FF66 !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack3Room4{
+
+            .Pack3Room4 {
                 background: #FFCC66 !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack4Room4{
+
+            .Pack4Room4 {
                 background: #FF99CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack5Room4{
+
+            .Pack5Room4 {
                 background: #3399CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack6Room4{
+
+            .Pack6Room4 {
                 background: #3366CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack7Room4{
+
+            .Pack7Room4 {
                 background: #9933CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack8Room4{
+
+            .Pack8Room4 {
                 background: #3300FF !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack9Room4{
+
+            .Pack9Room4 {
                 background: #05c436 !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack10Room4{
+
+            .Pack10Room4 {
                 background: #666633 !important;
                 border-right: solid yellow 5px !important;
             }
 
-            .schedule{
-                background-color: #fff1da!important;
-                color: rgba(255,152,1,1);
+            .schedule {
+                background-color: #fff1da !important;
+                color: rgba(255, 152, 1, 1);
                 /*border: 1px solid #fff;*/
 
-                border-left:solid #FFCC66 5px !important;
+                border-left: solid #FFCC66 5px !important;
             }
-            .activeSchedule{
-                background-color: #eef7e3!important;
-                color: rgba(139,195,74,1);
+
+            .activeSchedule {
+                background-color: #eef7e3 !important;
+                color: rgba(139, 195, 74, 1);
                 /*border: 1px solid #fff;*/
-                border-left:solid #9CCC65 5px !important;
+                border-left: solid #9CCC65 5px !important;
             }
-            .completedSchedule{
-                background-color: #dff3f1!important;
-                color: rgba(38,166,154,1);
+
+            .completedSchedule {
+                background-color: #dff3f1 !important;
+                color: rgba(38, 166, 154, 1);
                 /*border: 1px solid #fff;*/
-                border-left:solid #00acac 5px !important;
+                border-left: solid #00acac 5px !important;
             }
-            .cancelSchedule{
+
+            .cancelSchedule {
                 background: #ffaac0 !important;
                 border-left: solid red 5px !important;
             }

@@ -10,17 +10,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author VietNV on Dec 22, 2017
  */
 @Scope("session")
 @Service(value = "catGroupPackService")
-public class CatGroupPackServiceImpl extends GenericDaoImplNewV2<CatGroupPack, Long> {
+public class CatGroupPackServiceImpl extends GenericDaoImplNewV2<CatGroupPack, Long>
+{
 
     private static CatGroupPackServiceImpl instance;
 
-    public static CatGroupPackServiceImpl getInstance() {
-        if (instance == null) {
+    public static CatGroupPackServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new CatGroupPackServiceImpl();
         }
 

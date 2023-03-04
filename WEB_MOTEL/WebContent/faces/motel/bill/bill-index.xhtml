@@ -21,7 +21,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -41,10 +41,11 @@
                                              update=":billExportForm" value="Tải hóa đơn"
                                              title="Tải hóa đơn">
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              title="#{msg['view.dlg.export.obj']}"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['datatable.header.bill']}" />
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.bill']}"/>
                                 <p:dataExporter type="xls" target="tableBillId" fileName="bill" pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
@@ -57,7 +58,7 @@
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableBillId" trigger="toggler">
-                                <p:ajax event="toggle" listener="#{billController.onToggler}" />
+                                <p:ajax event="toggle" listener="#{billController.onToggler}"/>
                             </p:columnToggler>
                         </div>
 
@@ -67,7 +68,7 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          visible="#{billController.columnVisibale[0]}" >
+                          visible="#{billController.columnVisibale[0]}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
@@ -76,26 +77,27 @@
                     <!--<p:tooltip position="top" ></p:tooltip>-->
 
                     <p:commandButton icon="fa fa-file-pdf-o" styleClass="BlueButton Fs14 White Marleft5"
-                                     title="In hóa đơn"   
+                                     title="In hóa đơn"
                                      onstart="PF('block').show()"
                                      oncomplete="PF('block').hide();"
                                      actionListener="#{billController.exportBillPdf(bill)}"
-                                     update="@widgetVar(growl),:showPdfForm"  process="@this" 
-                                     >
+                                     update="@widgetVar(growl),:showPdfForm" process="@this"
+                    >
                     </p:commandButton>
                     <p:spacer width="2px;"/>
 
                     <p:commandButton icon="fa fa-edit" actionListener="#{billController.preEdit(bill)}"
 
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('billDlg').show()"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('billDlg').show()"
                                      update=":billForm,billDlgId" id="updateBillId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{billController.onDelete(bill)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableBillId "  
+                                     update="tableBillId "
                                      title="Xóa" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                    message="#{msg['title.confirm.delete']}">
@@ -104,19 +106,22 @@
                 </p:column>
 
 
-
-                <p:column headerText="#{msg['room.roomName']}" width="50" 
+                <p:column headerText="#{msg['room.roomName']}" width="50"
                           visible="#{billController.columnVisibale[2]}"
                           filterBy="#{bill.room.roomName}" filterStyle="width:70%"
-                          ><h:outputText value="#{bill.room.roomName}"/></p:column>
-                <p:column headerText="#{msg['bill.billCode']}" width="40" 
+                >
+                    <h:outputText value="#{bill.room.roomName}"/>
+                </p:column>
+                <p:column headerText="#{msg['bill.billCode']}" width="40"
                           visible="#{billController.columnVisibale[3]}"
                           filterBy="#{bill.billCode}" filterStyle="width:70%"
-                          ><h:outputText value="#{bill.billCode}"/></p:column>
+                >
+                    <h:outputText value="#{bill.billCode}"/>
+                </p:column>
 
                 <p:column headerText="#{msg['bill.totalPrice']}" width="40"
-                          visible="#{billController.columnVisibale[4]}" style="text-align: right;" 
-                          filterBy="#{bill.totalPrice-LIKE}" >
+                          visible="#{billController.columnVisibale[4]}" style="text-align: right;"
+                          filterBy="#{bill.totalPrice-LIKE}">
                     <h:outputText value="#{bill.totalPrice}">
                         <f:convertNumber pattern="#,###"/>
                     </h:outputText>
@@ -124,11 +129,11 @@
                 </p:column>
 
                 <p:column headerText="#{msg['bill.paymentDate']}" width="40" style="text-align: center "
-                          filterStyle="width:70%" sortBy="#{bill.paymentDate}" 
+                          filterStyle="width:70%" sortBy="#{bill.paymentDate}"
                           visible="#{billController.columnVisibale[5]}"
-                          filterBy="#{bill.paymentDate-BW}" >
-                    <f:facet name="filter" >
-                        <p:calendar pattern="dd/MM/yyyy" >
+                          filterBy="#{bill.paymentDate-BW}">
+                    <f:facet name="filter">
+                        <p:calendar pattern="dd/MM/yyyy">
                             <p:ajax event="dateSelect" oncomplete="PF('tableBillWidget').filter()"/>
                         </p:calendar>
                     </f:facet>
@@ -136,13 +141,15 @@
                         <f:convertDateTime pattern="dd/MM/yyyy"/>
                     </h:outputText>
                 </p:column>
-                <p:column headerText="#{msg['bill.description']}" width="80" 
+                <p:column headerText="#{msg['bill.description']}" width="80"
                           visible="#{billController.columnVisibale[6]}"
                           filterBy="#{bill.description}" filterStyle="width:70%"
-                          ><h:outputText value="#{bill.description}"/></p:column>
+                >
+                    <h:outputText value="#{bill.description}"/>
+                </p:column>
                 <p:column headerText="#{msg['home.homeName']}" width="40"
                           visible="#{billController.columnVisibale[7]}"
-                          filterBy="#{bill.home.homeName}" sortBy="#{bill.home.homeName}" >
+                          filterBy="#{bill.home.homeName}" sortBy="#{bill.home.homeName}">
                     <h:outputText value="#{bill.home.homeName}"/>
                 </p:column>
             </p:dataTable>

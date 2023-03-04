@@ -19,7 +19,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
                          resizableColumns="false"
-                    >
+            >
 
                 <!--Header-->
                 <f:facet name="header">
@@ -38,11 +38,13 @@
                             </p:commandButton>
                         </div>
                         <script type="text/javascript">
-                            function start() {
+                            function start()
+                            {
                                 PF('block').show();
                             }
 
-                            function stop() {
+                            function stop()
+                            {
                                 PF('block').hide();
                             }
                         </script>

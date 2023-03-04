@@ -1,35 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <faces-config xmlns="http://java.sun.com/xml/ns/javaee"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 	http://java.sun.com/xml/ns/javaee/web-facesconfig_2_1.xsd"
-	version="2.1">
-	<application>
-		<!-- Config JSF2 with Spring 3 or Spring 4 -->
-		<el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+              version="2.1">
+    <application>
+        <!-- Config JSF2 with Spring 3 or Spring 4 -->
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
 
-		<locale-config>
-			<default-locale>vi_VN</default-locale>
-			<supported-locale>en_US</supported-locale>
-		</locale-config>
+        <locale-config>
+            <default-locale>vi_VN</default-locale>
+            <supported-locale>en_US</supported-locale>
+        </locale-config>
 
-		<!-- App resource -->
-		 <resource-bundle>
-			<base-name>com.slook.resource.AppMessages</base-name>
-			<var>msg</var>
-		</resource-bundle>
+        <!-- App resource -->
+        <resource-bundle>
+            <base-name>com.slook.resource.AppMessages</base-name>
+            <var>msg</var>
+        </resource-bundle>
 
-		<!-- Reset input ajax action. -->
-		<!-- <action-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</action-listener> -->
-	</application>
-	<managed-bean>
-		<managed-bean-name>currentDate</managed-bean-name>
-		<managed-bean-class>java.util.Date</managed-bean-class>
-		<managed-bean-scope>request</managed-bean-scope>
-	</managed-bean>
+        <!-- Reset input ajax action. -->
+        <!-- <action-listener>org.omnifaces.eventlistener.ResetInputAjaxActionListener</action-listener> -->
+    </application>
+    <managed-bean>
+        <managed-bean-name>currentDate</managed-bean-name>
+        <managed-bean-class>java.util.Date</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
 
-	<!-- Bat exception cua ajax. Dung trong truong hop session timeout. -->
-	<!-- <factory>
-		<exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
-	</factory> -->
+    <!-- Bat exception cua ajax. Dung trong truong hop session timeout. -->
+    <!-- <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory> -->
 </faces-config>

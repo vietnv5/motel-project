@@ -11,17 +11,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author SLOOK. JSC on Nov 3, 2017 2:55:49 PM
  */
 @Scope("session")
 @Service(value = "vCustomerCheckinActiveService")
-public class VCustomerCheckinActiveServiceImpl extends GenericDaoImplNewV2<V_CustomerCheckinActive, Long> {
- 
+public class VCustomerCheckinActiveServiceImpl extends GenericDaoImplNewV2<V_CustomerCheckinActive, Long>
+{
+
     private static VCustomerCheckinActiveServiceImpl instance;
 
-    public static VCustomerCheckinActiveServiceImpl getInstance() {
-        if (instance == null) {
+    public static VCustomerCheckinActiveServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new VCustomerCheckinActiveServiceImpl();
         }
         return instance;

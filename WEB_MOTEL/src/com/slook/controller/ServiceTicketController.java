@@ -22,6 +22,7 @@ import com.slook.persistence.VServiceTicketServiceImpl;
 import com.slook.util.Constant;
 import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -34,18 +35,19 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.Visibility;
 
 /**
- *
  * @author VietNV on Nov 30, 2017
  */
 @ManagedBean
 @ViewScoped
-public class ServiceTicketController {
+public class ServiceTicketController
+{
 
     GenericDaoImplNewV2<ServiceTicket, Long> serviceTicketService;
     LazyDataModel<V_ServiceTicket> lazyDataModel;
@@ -54,51 +56,66 @@ public class ServiceTicketController {
 
     private List<Boolean> columnVisibale = new ArrayList<>();
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
     @PostConstruct
-    public void onStart() {
+    public void onStart()
+    {
 
-        serviceTicketService = new GenericDaoImplNewV2<ServiceTicket, Long>() {
+        serviceTicketService = new GenericDaoImplNewV2<ServiceTicket, Long>()
+        {
         };
-        try {
+        try
+        {
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             order.put("status", Constant.ORDER.ASC);
             order.put("serviceTicketCode", Constant.ORDER.ASC);
             Map<String, Object> filter = new HashMap<>();
 
             lazyDataModel = new LazyDataModelBase<V_ServiceTicket, Long>(VServiceTicketServiceImpl.getInstance(), filter, order);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         columnVisibale = Arrays.asList(true, true, true, true, true, false,
-                 true, false, true, true, false,
-                 true, true, true
+                true, false, true, true, false,
+                true, true, true
         );
     }
 
-    public void preCheckin(V_ServiceTicket vServiceTicket) {
-        try {
+    public void preCheckin(V_ServiceTicket vServiceTicket)
+    {
+        try
+        {
             currServiceTicket = serviceTicketService.findById(vServiceTicket.getServiceTicketId());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         oldObjectStr = currServiceTicket.toString();
     }
 
-    public void checkin() {
-        try {
+    public void checkin()
+    {
+        try
+        {
             currServiceTicket.setUsedTime(new Date());
             currServiceTicket.setStatus(Constant.SERVICE_TICKET.STATUS_USED);
             serviceTicketService.saveOrUpdate(currServiceTicket);
 
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currServiceTicket.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currServiceTicket.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -106,7 +123,8 @@ public class ServiceTicketController {
             Membership membership = MembershipServiceImpl.getInstance().findById(currServiceTicket.getMembershipId());
             List<ServiceTicket> lstCheckinTicket = Arrays.asList(currServiceTicket);
             List<CustomerCheckin> lstCheckins = new ArrayList<>();
-            for (ServiceTicket checkinTicket : lstCheckinTicket) {
+            for (ServiceTicket checkinTicket : lstCheckinTicket)
+            {
                 CustomerCheckin cs = new CustomerCheckin();
                 cs.setCardCode(currServiceTicket.getCardCode());
                 cs.setCheckTime(new Date());
@@ -125,34 +143,48 @@ public class ServiceTicketController {
             filter.put("startDate-LE", new Date());
             filter.put("endDate-GE", DateTimeUtils.trunc(new Date()));
             List<MemberUsedService> lst = MemberUsedServiceServiceImpl.getInstance().findList(filter);
-            if (lst != null && lst.size() > 0) {
-                for (MemberUsedService bo : lst) {
-                    if (bo.getAvailable() != null && bo.getAvailable() >= lstCheckins.size()) {
+            if (lst != null && lst.size() > 0)
+            {
+                for (MemberUsedService bo : lst)
+                {
+                    if (bo.getAvailable() != null && bo.getAvailable() >= lstCheckins.size())
+                    {
                         bo.setAvailable(bo.getAvailable() - lstCheckins.size());
-                    } else if (bo.getTotalNumber() != null && bo.getTotalNumber() > 0) {
+                    }
+                    else if (bo.getTotalNumber() != null && bo.getTotalNumber() > 0)
+                    {
                         MessageUtil.setErrorMessage("Dịch vụ " + bo.getCatService().getServiceName() + " của gói không còn đủ lượt sử dụng");
                         return;
                     }
                     //luon ghi lai so luot su dung
-                    if (bo.getUsedNumber() == null) {
+                    if (bo.getUsedNumber() == null)
+                    {
                         bo.setUsedNumber(0l);
                     }
                     bo.setUsedNumber(bo.getUsedNumber() + lstCheckins.size());
 
                 }
                 // cap nhat thong tin chung cho goi
-                if (membership.getAvailable() != null && membership.getAvailable() > 0) {
+                if (membership.getAvailable() != null && membership.getAvailable() > 0)
+                {
                     membership.setAvailable(membership.getAvailable() - lstCheckins.size());
-                } else if (membership.getAvailable() != null && membership.getAvailable().equals(0l)) {
+                }
+                else if (membership.getAvailable() != null && membership.getAvailable().equals(0l))
+                {
                     MessageUtil.setErrorMessage("Gói đã hết lượt sử dụng");
                     return;
                 }
-                if (membership.getUsedNumber() == null) {
+                if (membership.getUsedNumber() == null)
+                {
                     membership.setUsedNumber(Long.valueOf(lstCheckins.size()));
-                } else {
+                }
+                else
+                {
                     membership.setUsedNumber(membership.getUsedNumber() + lstCheckins.size());
                 }
-            } else {
+            }
+            else
+            {
 
                 MessageUtil.setErrorMessage("Không có dịch vụ còn hiệu lực để sử dụng");
                 return;
@@ -160,7 +192,8 @@ public class ServiceTicketController {
 
             //cap nhat quyen vao may quet
             List<String> lstCardCode = new ArrayList<>();
-            for (CustomerCheckin customerCheckin : lstCheckins) {
+            for (CustomerCheckin customerCheckin : lstCheckins)
+            {
                 // KIEM TRA NEU THE SU DUNG LAN DAU TRONG NGAY THI OFF TAT CAC O CAC MAY
                 MemberController.initCheckOutAll(Constant.CUSTOMER_CHECKIN.TYPE_MEMBER, membership.getMemberId(), customerCheckin.getCardCode());
 
@@ -182,24 +215,32 @@ public class ServiceTicketController {
                 RequestContext.getCurrentInstance().execute("PF('checkinResultDlg').show();");
                 RequestContext.getCurrentInstance().update("@widgetVar('checkinResultDlg')");
             }*/
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void saveEmployeeService() {
-        try {
+    public void saveEmployeeService()
+    {
+        try
+        {
 
-            if (currServiceTicket.getEmployee() != null && currServiceTicket.getEmployee().getEmployeeId() != null) {
+            if (currServiceTicket.getEmployee() != null && currServiceTicket.getEmployee().getEmployeeId() != null)
+            {
                 currServiceTicket.setEmployeeId(currServiceTicket.getEmployee().getEmployeeId());
             }
             serviceTicketService.saveOrUpdate(currServiceTicket);
 
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currServiceTicket.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currServiceTicket.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -214,7 +255,9 @@ public class ServiceTicketController {
                 RequestContext.getCurrentInstance().execute("PF('checkinResultDlg').show();");
                 RequestContext.getCurrentInstance().update("@widgetVar('checkinResultDlg')");
             }*/
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
 
             MessageUtil.setErrorMessageFromRes("common.fail");
             e.printStackTrace();
@@ -222,43 +265,53 @@ public class ServiceTicketController {
     }
 
     //<editor-fold defaultstate="collapsed" desc="get/set">
-    public GenericDaoImplNewV2<ServiceTicket, Long> getServiceTicketService() {
+    public GenericDaoImplNewV2<ServiceTicket, Long> getServiceTicketService()
+    {
         return serviceTicketService;
     }
 
-    public void setServiceTicketService(GenericDaoImplNewV2<ServiceTicket, Long> serviceTicketService) {
+    public void setServiceTicketService(GenericDaoImplNewV2<ServiceTicket, Long> serviceTicketService)
+    {
         this.serviceTicketService = serviceTicketService;
     }
 
-    public LazyDataModel<V_ServiceTicket> getLazyDataModel() {
+    public LazyDataModel<V_ServiceTicket> getLazyDataModel()
+    {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<V_ServiceTicket> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<V_ServiceTicket> lazyDataModel)
+    {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public ServiceTicket getCurrServiceTicket() {
+    public ServiceTicket getCurrServiceTicket()
+    {
         return currServiceTicket;
     }
 
-    public void setCurrServiceTicket(ServiceTicket currServiceTicket) {
+    public void setCurrServiceTicket(ServiceTicket currServiceTicket)
+    {
         this.currServiceTicket = currServiceTicket;
     }
 
-    public String getOldObjectStr() {
+    public String getOldObjectStr()
+    {
         return oldObjectStr;
     }
 
-    public void setOldObjectStr(String oldObjectStr) {
+    public void setOldObjectStr(String oldObjectStr)
+    {
         this.oldObjectStr = oldObjectStr;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
     //</editor-fold>

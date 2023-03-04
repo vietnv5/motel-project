@@ -6,8 +6,10 @@ import com.slook.util.Constant;
 import com.slook.util.DataConfig;
 import com.slook.util.MessageUtil;
 import com.slook.util.StringUtil;
+
 import java.io.Serializable;
 import java.text.MessageFormat;
+
 import org.apache.log4j.Logger;
 
 import javax.faces.bean.ManagedBean;
@@ -29,37 +31,46 @@ import static org.omnifaces.util.Faces.getRequest;
  */
 @ViewScoped
 @ManagedBean
-public class AuthenticationController implements Constant, Serializable {
+public class AuthenticationController implements Constant, Serializable
+{
 
     private static final Logger logger = getLogger(AuthenticationController.class);
 
     private String userName;
     private String password;
     private CatUser user;
-//    @ManagedProperty(value = "#{catUserService}")
+    //    @ManagedProperty(value = "#{catUserService}")
     private CatUserServiceImpl catUserService;
     int TYPE_USERNAME = 0;
     int TYPE_EMAIL = 1;
     int TYPE_PHONE = 2;
 
-    public boolean authenticated() {
-        try {
+    public boolean authenticated()
+    {
+        try
+        {
             catUserService = new CatUserServiceImpl();
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Map sessionMap = context.getSessionMap();
             int typeAcount = checkTypeAcount(userName);
             Map<String, Object> filters = new HashMap<>();
-            if (typeAcount == TYPE_USERNAME) {
+            if (typeAcount == TYPE_USERNAME)
+            {
                 filters.put("userName-EXAC_IGNORE_CASE", userName);
-            } else if (typeAcount == TYPE_EMAIL) {
+            }
+            else if (typeAcount == TYPE_EMAIL)
+            {
                 filters.put("email-EXAC_IGNORE_CASE", userName);
-            } else if (typeAcount == TYPE_PHONE) {
+            }
+            else if (typeAcount == TYPE_PHONE)
+            {
                 filters.put("phoneNumber-EXAC_IGNORE_CASE", userName);
             }
             filters.put("password-EXAC", password);
             filters.put("status", Constant.STATUS.ACTIVE);
             List<CatUser> list = catUserService.findList(filters);
-            if (list != null && !list.isEmpty() && list.size() == 1) {
+            if (list != null && !list.isEmpty() && list.size() == 1)
+            {
                 user = list.get(0);
                 sessionMap.put("user", user);
                 sessionMap.put("authenticated", true);
@@ -72,47 +83,62 @@ public class AuthenticationController implements Constant, Serializable {
 //                sessionMap.put("authenticated", true);
 //                return true;
 //            }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
         return false;
     }
 
-    public int checkTypeAcount(String userName) {
+    public int checkTypeAcount(String userName)
+    {
         int type = TYPE_USERNAME;
-        if (userName == null) {
+        if (userName == null)
+        {
             return TYPE_USERNAME;
         }
-        if (userName.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")) {
+        if (userName.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$"))
+        {
             return TYPE_EMAIL;
         }
 
-        if (userName.matches("^[0-9\\-\\+]{4,25}$")) {
+        if (userName.matches("^[0-9\\-\\+]{4,25}$"))
+        {
             return TYPE_PHONE;
         }
 
         return type;
     }
 
-    public void login() {
-        try {
-            if (authenticated()) {
+    public void login()
+    {
+        try
+        {
+            if (authenticated())
+            {
                 FacesContext fc = FacesContext.getCurrentInstance();
                 HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 //                fc.getExternalContext().redirect(req.getContextPath() + PAGE._DEFAULT_URL);
                 String defaultUrl = DataConfig.getConfigByKey("DEFAULT_URL") != null
                         ? DataConfig.getConfigByKey("DEFAULT_URL") : PAGE._DEFAULT_URL;
                 fc.getExternalContext().redirect(req.getContextPath() + defaultUrl);
-            } else {
+            }
+            else
+            {
                 MessageUtil.setErrorMessage("Username or Password is not correct");
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
     }
 
-    public void logout() {
-        try {
+    public void logout()
+    {
+        try
+        {
             FacesContext fc = FacesContext.getCurrentInstance();
             HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
             fc.getExternalContext().redirect(req.getContextPath() + PAGE._LOGIN);
@@ -120,41 +146,51 @@ public class AuthenticationController implements Constant, Serializable {
             HttpSession httpSession = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
             httpSession.invalidate();
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
     }
 
-    public String getUserName() {
+    public String getUserName()
+    {
         return userName;
     }
 
-    public void setUserName(String userName) {
+    public void setUserName(String userName)
+    {
         this.userName = userName;
     }
 
-    public String getPassword() {
+    public String getPassword()
+    {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(String password)
+    {
         this.password = password;
     }
 
-    public CatUser getUser() {
+    public CatUser getUser()
+    {
 
         return (CatUser) getRequest().getSession().getAttribute("user");
     }
 
-    public void setUser(CatUser user) {
+    public void setUser(CatUser user)
+    {
         this.user = user;
     }
 
-    public CatUserServiceImpl getCatUserService() {
+    public CatUserServiceImpl getCatUserService()
+    {
         return catUserService;
     }
 
-    public void setCatUserService(CatUserServiceImpl catUserService) {
+    public void setCatUserService(CatUserServiceImpl catUserService)
+    {
         this.catUserService = catUserService;
     }
 

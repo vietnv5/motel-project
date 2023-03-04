@@ -6,16 +6,20 @@ import org.hibernate.criterion.Order;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderBy {
-    
+public class OrderBy
+{
+
     private List<Order> orders = new ArrayList<Order>();
-    
-    public void add(Order order) {
+
+    public void add(Order order)
+    {
         orders.add(order);
     }
-    
-    public void build(Criteria criteria) {
-        for(Order order : orders) {
+
+    public void build(Criteria criteria)
+    {
+        for (Order order : orders)
+        {
             criteria.addOrder(order);
         }
     }

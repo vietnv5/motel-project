@@ -8,6 +8,7 @@ package com.motel.model;
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -31,25 +32,25 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "contract")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Contract.findAll", query = "SELECT c FROM Contract c")
-    , @NamedQuery(name = "Contract.findByContractId", query = "SELECT c FROM Contract c WHERE c.contractId = :contractId")
-    , @NamedQuery(name = "Contract.findByContractCode", query = "SELECT c FROM Contract c WHERE c.contractCode = :contractCode")
-    , @NamedQuery(name = "Contract.findByHomeId", query = "SELECT c FROM Contract c WHERE c.homeId = :homeId")
-    , @NamedQuery(name = "Contract.findByRoomId", query = "SELECT c FROM Contract c WHERE c.roomId = :roomId")
-    , @NamedQuery(name = "Contract.findByStartTime", query = "SELECT c FROM Contract c WHERE c.startTime = :startTime")
-    , @NamedQuery(name = "Contract.findByEndTime", query = "SELECT c FROM Contract c WHERE c.endTime = :endTime")
-    , @NamedQuery(name = "Contract.findByDeposit", query = "SELECT c FROM Contract c WHERE c.deposit = :deposit")
-    , @NamedQuery(name = "Contract.findByDescription", query = "SELECT c FROM Contract c WHERE c.description = :description")
-    , @NamedQuery(name = "Contract.findByStatus", query = "SELECT c FROM Contract c WHERE c.status = :status")
-    , @NamedQuery(name = "Contract.findByCreateTime", query = "SELECT c FROM Contract c WHERE c.createTime = :createTime")})
-public class Contract implements Serializable {
+        @NamedQuery(name = "Contract.findAll", query = "SELECT c FROM Contract c")
+        , @NamedQuery(name = "Contract.findByContractId", query = "SELECT c FROM Contract c WHERE c.contractId = :contractId")
+        , @NamedQuery(name = "Contract.findByContractCode", query = "SELECT c FROM Contract c WHERE c.contractCode = :contractCode")
+        , @NamedQuery(name = "Contract.findByHomeId", query = "SELECT c FROM Contract c WHERE c.homeId = :homeId")
+        , @NamedQuery(name = "Contract.findByRoomId", query = "SELECT c FROM Contract c WHERE c.roomId = :roomId")
+        , @NamedQuery(name = "Contract.findByStartTime", query = "SELECT c FROM Contract c WHERE c.startTime = :startTime")
+        , @NamedQuery(name = "Contract.findByEndTime", query = "SELECT c FROM Contract c WHERE c.endTime = :endTime")
+        , @NamedQuery(name = "Contract.findByDeposit", query = "SELECT c FROM Contract c WHERE c.deposit = :deposit")
+        , @NamedQuery(name = "Contract.findByDescription", query = "SELECT c FROM Contract c WHERE c.description = :description")
+        , @NamedQuery(name = "Contract.findByStatus", query = "SELECT c FROM Contract c WHERE c.status = :status")
+        , @NamedQuery(name = "Contract.findByCreateTime", query = "SELECT c FROM Contract c WHERE c.createTime = :createTime")})
+public class Contract implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -99,190 +100,246 @@ public class Contract implements Serializable {
     @Transient
     private String statusName;
 
-    public Contract() {
+    public Contract()
+    {
     }
 
-    public Contract(Long contractId) {
+    public Contract(Long contractId)
+    {
         this.contractId = contractId;
     }
 
-    public Contract(Long contractId, Long homeId, Long roomId) {
+    public Contract(Long contractId, Long homeId, Long roomId)
+    {
         this.contractId = contractId;
         this.homeId = homeId;
         this.roomId = roomId;
     }
 
-    public Long getContractId() {
+    public Long getContractId()
+    {
         return contractId;
     }
 
-    public void setContractId(Long contractId) {
+    public void setContractId(Long contractId)
+    {
         this.contractId = contractId;
     }
 
-    public String getContractCode() {
+    public String getContractCode()
+    {
         return contractCode;
     }
 
-    public void setContractCode(String contractCode) {
+    public void setContractCode(String contractCode)
+    {
         this.contractCode = contractCode;
     }
 
-    public Long getHomeId() {
+    public Long getHomeId()
+    {
         return homeId;
     }
 
-    public void setHomeId(Long homeId) {
+    public void setHomeId(Long homeId)
+    {
         this.homeId = homeId;
     }
 
-    public Long getRoomId() {
+    public Long getRoomId()
+    {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(Long roomId)
+    {
         this.roomId = roomId;
     }
 
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Date startTime)
+    {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Date getEndTime()
+    {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Date endTime)
+    {
         this.endTime = endTime;
     }
 
-    public Long getDeposit() {
+    public Long getDeposit()
+    {
         return deposit;
     }
 
-    public void setDeposit(Long deposit) {
+    public void setDeposit(Long deposit)
+    {
         this.deposit = deposit;
     }
 
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public Date getCreateTime()
+    {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Date createTime)
+    {
         this.createTime = createTime;
     }
 
-    public Customer getCustomer() {
+    public Customer getCustomer()
+    {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Customer customer)
+    {
         this.customer = customer;
     }
 
     @XmlTransient
-    public List<ContractService> getContractServiceList() {
+    public List<ContractService> getContractServiceList()
+    {
         return contractServiceList;
     }
 
-    public void setContractServiceList(List<ContractService> contractServiceList) {
+    public void setContractServiceList(List<ContractService> contractServiceList)
+    {
         this.contractServiceList = contractServiceList;
     }
 
-    public Home getHome() {
+    public Home getHome()
+    {
         return home;
     }
 
-    public void setHome(Home home) {
+    public void setHome(Home home)
+    {
         this.home = home;
     }
 
-    public List<Long> getLstServiceId() {
+    public List<Long> getLstServiceId()
+    {
         return lstServiceId;
     }
 
-    public void setLstServiceId(List<Long> lstServiceId) {
+    public void setLstServiceId(List<Long> lstServiceId)
+    {
         this.lstServiceId = lstServiceId;
     }
 
-    public Long getCustomerId() {
+    public Long getCustomerId()
+    {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Long customerId)
+    {
         this.customerId = customerId;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.Contract[ contractId=" + contractId + " ]";
     }
 
-    public Room getRoom() {
+    public Room getRoom()
+    {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(Room room)
+    {
         this.room = room;
     }
 
-    public String getStatusName() {
-        if (Constant.CONTRACT.STATUS_ACTIVE.equals(status)) {
+    public String getStatusName()
+    {
+        if (Constant.CONTRACT.STATUS_ACTIVE.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("contract.status.STATUS_ACTIVE");
-        } else if (Constant.CONTRACT.STATUS_END.equals(status)) {
+        }
+        else if (Constant.CONTRACT.STATUS_END.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("contract.status.STATUS_END");
         }
         return statusName;
     }
 
-    public void setStatusName(String statusName) {
+    public void setStatusName(String statusName)
+    {
         this.statusName = statusName;
     }
 
-    public void createContractCode(Long groupUseId) {
+    public void createContractCode(Long groupUseId)
+    {
 
 //        String hqlCheckCode = "select count(*) from MemberPayment where paymentCode like ?||'%'";
 //        String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,-5),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
         String hqlCheckCode = "select max(CONVERT( substr(CONTRACT_CODE,INSTR(CONTRACT_CODE, '-')+1),UNSIGNED INTEGER)) from contract where CONTRACT_CODE like CONCAT(?,'%')";
         String code = "HD";
         String barch = "000";
-        if (groupUseId != null) {
-            if (groupUseId.toString().length() < 3) {
+        if (groupUseId != null)
+        {
+            if (groupUseId.toString().length() < 3)
+            {
                 barch = barch + groupUseId.toString();
                 code += barch.substring(barch.length() - 3);
-            } else {
+            }
+            else
+            {
                 code += groupUseId.toString();
             }
-        }else code+=barch;
+        }
+        else
+        {
+            code += barch;
+        }
 
-        List<?> counts = new GenericDaoImplNewV2<Contract, Long>() {
+        List<?> counts = new GenericDaoImplNewV2<Contract, Long>()
+        {
         }.findListSQLAll(hqlCheckCode, code);
         String numberStr = "00000";
-        if (counts.size() > 0 && counts.get(0) != null) {
+        if (counts.size() > 0 && counts.get(0) != null)
+        {
             Long number = (Long.valueOf(counts.get(0).toString()) + 1);
             numberStr += number;
             numberStr = numberStr.substring(numberStr.length() - 5);
-        }else numberStr = "00001";
+        }
+        else
+        {
+            numberStr = "00001";
+        }
         contractCode = code + "-" + numberStr;
     }
 

@@ -1,10 +1,10 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:f="http://java.sun.com/jsf/core"
-    xmlns:h="http://java.sun.com/jsf/html"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    xmlns:c="http://java.sun.com/jsp/jstl/core"
-    xmlns:p="http://primefaces.org/ui">
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:f="http://java.sun.com/jsf/core"
+        xmlns:h="http://java.sun.com/jsf/html"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+        xmlns:c="http://java.sun.com/jsp/jstl/core"
+        xmlns:p="http://primefaces.org/ui">
 
 
     <!-- LAYOUT TOPBAR COVER -->
@@ -14,21 +14,24 @@
                 <a id="logo" href="#{facesContext.externalContext.request.contextPath}/dashboard">
                     <!--<h:graphicImage name="images/ssl.png" library="olympos-layout"/>-->
                     <!--<h:graphicImage name="images/logo-gym.png" library="other"  style="height: 7.99rem;"/>-->
-                    <h:graphicImage name="images/logo-motel.png" library="other"  />
+                    <h:graphicImage name="images/logo-motel.png" library="other"/>
                 </a>
             </div>
             <div id="layout-topbar-right layout-wrapper">
 
-                <a id="menu-resize-btn" class="topbar-link Animated03 active"><h:graphicImage
-                        name="images/menu-resize-btn-icon.svg" library="olympos-layout"/></a>
+                <a id="menu-resize-btn" class="topbar-link Animated03 active">
+                    <h:graphicImage
+                            name="images/menu-resize-btn-icon.svg" library="olympos-layout"/>
+                </a>
                 <a id="mobile-menu-btn" class="topbar-link Animated03">
                     <h:graphicImage name="images/menu-btn-icon.svg"
                                     id="menu-btn-icon"
-                                    library="olympos-layout"/></a>
+                                    library="olympos-layout"/>
+                </a>
 
                 <span class="White Heading2">#{msg['page.title']}</span>
                 <!--<span class="White Heading3"-->
-                      <!--style="font-family: latoregular; font-size: 2.1rem; font-style: italic;">#{msg['page.title']}</span>-->
+                <!--style="font-family: latoregular; font-size: 2.1rem; font-style: italic;">#{msg['page.title']}</span>-->
 
 
                 <a id="user" class="topbar-link Animated03 Fright"><i class="icon-user7"></i></a>
@@ -40,7 +43,7 @@
                 </a>
                 <a id="support" href="#" class="topbar-link Animated03 Fright topbar-items">
                     <i class="topbar-icon material-icons animated swing fa fa-fw fa-phone-square Fs25"
-                       ></i>
+                    ></i>
                     <span class="topbar-badge animated rubberBand">1</span>
                     <span class="topbar-item-name">Supporters</span>
 
@@ -75,23 +78,24 @@
     <div class="info">
         <div class="fr" style="margin-right: 0px;">
             <h:form rendered="#{sessionScope.user!=null}" styleClass="TexAlRight">
-                <p:commandLink  style="text-decoration: unset;"
-                                styleClass="fa fa-info White Fs18 ElemCmd" value=" Thông tin cá nhân"
-                                 onclick="PF('block').show()" process="@this"
-                                 oncomplete="PF('block').hide();PF('infoCurrUserDlg').show()"
-                                 actionListener="#{catUserController.preShowInfoCurrUser()}"
-                                 update=":infoCurrUserForm"
-                                 title="My info" >
+                <p:commandLink style="text-decoration: unset;"
+                               styleClass="fa fa-info White Fs18 ElemCmd" value=" Thông tin cá nhân"
+                               onclick="PF('block').show()" process="@this"
+                               oncomplete="PF('block').hide();PF('infoCurrUserDlg').show()"
+                               actionListener="#{catUserController.preShowInfoCurrUser()}"
+                               update=":infoCurrUserForm"
+                               title="My info">
                 </p:commandLink>
-                <p:commandLink  style="text-decoration: unset;float: right;margin-top: 5px;"
-                                styleClass="fa fa-cog White Fs18 ElemCmd" value=" Đổi mật khẩu"
-                                 onclick="PF('block').show()" process="@this"
-                                 oncomplete="PF('block').hide();PF('changePassworDlg').show()"
-                                 actionListener="#{catUserController.preChangePassword()}"
-                                 update=":changePassworForm"
-                                 title="Change password" >
+                <p:commandLink style="text-decoration: unset;float: right;margin-top: 5px;"
+                               styleClass="fa fa-cog White Fs18 ElemCmd" value=" Đổi mật khẩu"
+                               onclick="PF('block').show()" process="@this"
+                               oncomplete="PF('block').hide();PF('changePassworDlg').show()"
+                               actionListener="#{catUserController.preChangePassword()}"
+                               update=":changePassworForm"
+                               title="Change password">
                 </p:commandLink>
-                <p:commandLink id="cmdLogout" actionListener="#{authenticationController.logout}" style="text-decoration: unset;float: right;margin-top: 5px;"
+                <p:commandLink id="cmdLogout" actionListener="#{authenticationController.logout}"
+                               style="text-decoration: unset;float: right;margin-top: 5px;"
                                styleClass="fa fa-sign-out White Fs18 ElemCmd" title="Sign out" value=" Đăng xuất">
                 </p:commandLink>
             </h:form>
@@ -99,7 +103,7 @@
     </div>
     <div class="support">
         <ul class="poseidon-menu fadeInDown">
-            
+
             <li role="menuitem" hidden="true">
                 <a href="mailto:thanhdt?Subject=[HUMAN RESOURCE] Support" class="topbar-message">
                     <span class="Fs16 Orange DispBlock">Hỗ trợ</span>
@@ -154,7 +158,9 @@
             });
 
         });
-        function submit2() {
+
+        function submit2()
+        {
             window.location = window.location;
             $('#flang').submit();
         }
@@ -320,9 +326,10 @@
         .support ul li {
             padding-bottom: 14px;
         }
+
         /*vietnv*/
         .LeadenTopbar #layout-topbar-cover {
-            background-color: #3366cc  !important;
+            background-color: #3366cc !important;
         }
     </style>
 </ui:composition>

@@ -9,16 +9,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.util.Date;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 @Entity
 @Table(name = "GROUP_MEMBERSHIP")
-public class GroupMembership {
+public class GroupMembership
+{
 
     private Long groupMemberId;
     private Long status;
@@ -30,20 +34,24 @@ public class GroupMembership {
     private CatGroupPack catGroupPack;
 
     @Column(name = "GROUP_MEMBER_ID", precision = 22, scale = 0)
-    public Long getGroupMemberId() {
+    public Long getGroupMemberId()
+    {
         return groupMemberId;
     }
 
-    public void setGroupMemberId(Long groupMemberId) {
+    public void setGroupMemberId(Long groupMemberId)
+    {
         this.groupMemberId = groupMemberId;
     }
 
     @Column(name = "STATUS", precision = 22, scale = 0)
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
@@ -51,72 +59,87 @@ public class GroupMembership {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "GROUP_MEMBERSHIP_ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getGroupMembershipId() {
+    public Long getGroupMembershipId()
+    {
         return groupMembershipId;
     }
 
-    public void setGroupMembershipId(Long groupMembershipId) {
+    public void setGroupMembershipId(Long groupMembershipId)
+    {
         this.groupMembershipId = groupMembershipId;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "JOIN_DATE", length = 7)
-    public Date getJoinDate() {
+    public Date getJoinDate()
+    {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(Date joinDate)
+    {
         this.joinDate = joinDate;
     }
 
     @Column(name = "GROUP_PACK_ID", precision = 22, scale = 0)
-    public Long getGroupPackId() {
+    public Long getGroupPackId()
+    {
         return groupPackId;
     }
 
-    public void setGroupPackId(Long groupPackId) {
+    public void setGroupPackId(Long groupPackId)
+    {
         this.groupPackId = groupPackId;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "FREEZE_TIME", length = 7)
-    public Date getFreezeTime() {
+    public Date getFreezeTime()
+    {
         return freezeTime;
     }
 
-    public void setFreezeTime(Date freezeTime) {
+    public void setFreezeTime(Date freezeTime)
+    {
         this.freezeTime = freezeTime;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "END_DATE", length = 7)
-    public Date getEndDate() {
+    public Date getEndDate()
+    {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Date endDate)
+    {
         this.endDate = endDate;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "GROUP_PACK_ID", insertable = false, updatable = false)
-    public CatGroupPack getCatGroupPack() {
+    public CatGroupPack getCatGroupPack()
+    {
         return catGroupPack;
     }
 
-    public void setCatGroupPack(CatGroupPack catGroupPack) {
+    public void setCatGroupPack(CatGroupPack catGroupPack)
+    {
         this.catGroupPack = catGroupPack;
     }
 
-    public GroupMembership() {
+    public GroupMembership()
+    {
     }
 
-    public GroupMembership(Long groupMembershipId) {
+    public GroupMembership(Long groupMembershipId)
+    {
         this.groupMembershipId = groupMembershipId;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 }

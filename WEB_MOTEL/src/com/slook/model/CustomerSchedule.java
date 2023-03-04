@@ -1,19 +1,22 @@
-/* 
-* Copyright 2011 Viettel Telecom. All rights reserved. 
-* VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms. 
+/*
+ * Copyright 2011 Viettel Telecom. All rights reserved.
+ * VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.slook.model;
 
 import com.slook.persistence.GenericDaoImplNewV2;
 import com.slook.util.Constant;
 import com.slook.util.MessageUtil;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -25,6 +28,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Transient;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -36,7 +40,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
  * @version: 1.0
  * @since: 1.0
  */
-public class CustomerSchedule {
+public class CustomerSchedule
+{
 
     private Date startTime;
     private Long status;
@@ -67,52 +72,62 @@ public class CustomerSchedule {
     private CatBranch catBranch;
     private Long employeeId;
     private Employee employeeSchedule;
-    
+
     @Temporal(TemporalType.DATE)
     @Column(name = "START_TIME", length = 11)
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Date startTime)
+    {
         this.startTime = startTime;
     }
 
     @Column(name = "STATUS", precision = 22, scale = 0)
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "END_TIME", length = 11)
-    public Date getEndTime() {
+    public Date getEndTime()
+    {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Date endTime)
+    {
         this.endTime = endTime;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "INSERT_TIME", length = 11)
-    public Date getInsertTime() {
+    public Date getInsertTime()
+    {
         return insertTime;
     }
 
-    public void setInsertTime(Date insertTime) {
+    public void setInsertTime(Date insertTime)
+    {
         this.insertTime = insertTime;
     }
 
     @Column(name = "EMP_ID", precision = 22, scale = 0)
-    public Long getEmpId() {
+    public Long getEmpId()
+    {
         return empId;
     }
 
-    public void setEmpId(Long empId) {
+    public void setEmpId(Long empId)
+    {
         this.empId = empId;
     }
 
@@ -120,76 +135,96 @@ public class CustomerSchedule {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "CUSTOMER_SCHEDULE_ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getCustomerScheduleId() {
+    public Long getCustomerScheduleId()
+    {
         return customerScheduleId;
     }
 
-    public void setCustomerScheduleId(Long customerScheduleId) {
+    public void setCustomerScheduleId(Long customerScheduleId)
+    {
         this.customerScheduleId = customerScheduleId;
     }
 
     @Column(name = "CUSTOMER_TYPE", precision = 22, scale = 0)
-    public Long getCustomerType() {
+    public Long getCustomerType()
+    {
         return customerType;
     }
 
-    public void setCustomerType(Long customerType) {
+    public void setCustomerType(Long customerType)
+    {
         this.customerType = customerType;
     }
 
     @Column(name = "CUSTOMER_ID", precision = 22, scale = 0)
-    public Long getCustomerId() {
+    public Long getCustomerId()
+    {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Long customerId)
+    {
         this.customerId = customerId;
     }
 
     @Column(name = "CODE", length = 50)
-    public String getCode() {
+    public String getCode()
+    {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(String code)
+    {
         this.code = code;
     }
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EMP_ID", referencedColumnName = "EMPLOYEE_ID", insertable = false, updatable = false)
-    public Employee getEmployee() {
+    public Employee getEmployee()
+    {
         return employee;
     }
 
-    public void setEmployee(Employee employee) {
+    public void setEmployee(Employee employee)
+    {
         this.employee = employee;
     }
 
     @Column(name = "DESCRIPTION", length = 750)
-    public String getDescription() {
+    public String getDescription()
+    {
         return description;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(String description)
+    {
         this.description = description;
     }
 
-    public CustomerSchedule() {
+    public CustomerSchedule()
+    {
     }
 
-    public CustomerSchedule(Long customerScheduleId) {
+    public CustomerSchedule(Long customerScheduleId)
+    {
         this.customerScheduleId = customerScheduleId;
     }
 
     @Transient
-    public List<CustomerSchedulePack> getLstCustomerSchedulePack() {
-        if (customerScheduleId != null && lstCustomerSchedulePack == null) {
-            try {
+    public List<CustomerSchedulePack> getLstCustomerSchedulePack()
+    {
+        if (customerScheduleId != null && lstCustomerSchedulePack == null)
+        {
+            try
+            {
                 Map<String, Object> filter = new HashMap<String, Object>();
                 filter.put("customerScheduleId", customerScheduleId);
-                lstCustomerSchedulePack = new GenericDaoImplNewV2<CustomerSchedulePack, Long>() {
+                lstCustomerSchedulePack = new GenericDaoImplNewV2<CustomerSchedulePack, Long>()
+                {
                 }.findList(filter);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
@@ -197,145 +232,184 @@ public class CustomerSchedule {
         return lstCustomerSchedulePack;
     }
 
-    public void setLstCustomerSchedulePack(List<CustomerSchedulePack> lstCustomerSchedulePack) {
+    public void setLstCustomerSchedulePack(List<CustomerSchedulePack> lstCustomerSchedulePack)
+    {
         this.lstCustomerSchedulePack = lstCustomerSchedulePack;
     }
 
     @Transient
-    public Member getMember() {
+    public Member getMember()
+    {
         return member;
     }
 
-    public void setMember(Member member) {
+    public void setMember(Member member)
+    {
         this.member = member;
     }
 
     @Transient
-    public List<Membership> getLstMembership() {
+    public List<Membership> getLstMembership()
+    {
         return lstMembership;
     }
 
-    public void setLstMembership(List<Membership> lstMembership) {
+    public void setLstMembership(List<Membership> lstMembership)
+    {
         this.lstMembership = lstMembership;
     }
 
     @Transient
-    public Client getClient() {
+    public Client getClient()
+    {
         return client;
     }
 
-    public void setClient(Client client) {
+    public void setClient(Client client)
+    {
         this.client = client;
     }
 
     @Transient
-    public List<ClientUsePack> getLstClientUsePack() {
+    public List<ClientUsePack> getLstClientUsePack()
+    {
         return lstClientUsePack;
     }
 
-    public void setLstClientUsePack(List<ClientUsePack> lstClientUsePack) {
+    public void setLstClientUsePack(List<ClientUsePack> lstClientUsePack)
+    {
         this.lstClientUsePack = lstClientUsePack;
     }
 
     @Transient
-    public String getStatusName() {
-        if (Constant.CUSTOMER_SCHEDULE.STATUS_SCHEDULE.equals(status)) {
+    public String getStatusName()
+    {
+        if (Constant.CUSTOMER_SCHEDULE.STATUS_SCHEDULE.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("customerSchedule.statusSchedule");
 
-        } else if (Constant.CUSTOMER_SCHEDULE.STATUS_ACTIVE.equals(status)) {
+        }
+        else if (Constant.CUSTOMER_SCHEDULE.STATUS_ACTIVE.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("customerSchedule.statusActive");
 
-        } else if (Constant.CUSTOMER_SCHEDULE.STATUS_COMPLETED.equals(status)) {
+        }
+        else if (Constant.CUSTOMER_SCHEDULE.STATUS_COMPLETED.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("customerSchedule.statusCompleted");
 
-        } else if (Constant.CUSTOMER_SCHEDULE.STATUS_CANCEL.equals(status)) {
+        }
+        else if (Constant.CUSTOMER_SCHEDULE.STATUS_CANCEL.equals(status))
+        {
             statusName = MessageUtil.getResourceBundleMessage("customerSchedule.statusCancel");
         }
 
         return statusName;
     }
 
-    public void setStatusName(String statusName) {
+    public void setStatusName(String statusName)
+    {
         this.statusName = statusName;
     }
 
     @Transient
-    public List<CatGroupPack> getLstCatGroupPacks() {
+    public List<CatGroupPack> getLstCatGroupPacks()
+    {
         return lstCatGroupPacks;
     }
 
-    public void setLstCatGroupPacks(List<CatGroupPack> lstCatGroupPacks) {
+    public void setLstCatGroupPacks(List<CatGroupPack> lstCatGroupPacks)
+    {
         this.lstCatGroupPacks = lstCatGroupPacks;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     @Column(name = "PHONE_NUMBER", length = 50)
-    public String getPhoneNumber() {
+    public String getPhoneNumber()
+    {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(String phoneNumber) {
+    public void setPhoneNumber(String phoneNumber)
+    {
         this.phoneNumber = phoneNumber;
     }
 
     @Column(name = "name", length = 50)
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
     @Column(name = "SEX", length = 50)
-    public String getSex() {
+    public String getSex()
+    {
         return sex;
     }
 
-    public void setSex(String sex) {
+    public void setSex(String sex)
+    {
         this.sex = sex;
     }
 
     @Basic
     @Column(name = "BRANCH_ID", nullable = true, precision = 0)
-    public Long getBranchId() {
+    public Long getBranchId()
+    {
         return branchId;
     }
 
-    public void setBranchId(Long branchId) {
+    public void setBranchId(Long branchId)
+    {
         this.branchId = branchId;
     }
 
     @Transient
-    public String getCustomerTypeName() {
-        if (Constant.CUSTOMER_CHECKIN.TYPE_CLIENT.equals(customerType)) {
+    public String getCustomerTypeName()
+    {
+        if (Constant.CUSTOMER_CHECKIN.TYPE_CLIENT.equals(customerType))
+        {
             customerTypeName = MessageUtil.getResourceBundleMessage("customerCheckin.type2");
-        } else if (Constant.CUSTOMER_CHECKIN.TYPE_MEMBER.equals(customerType)) {
+        }
+        else if (Constant.CUSTOMER_CHECKIN.TYPE_MEMBER.equals(customerType))
+        {
             customerTypeName = MessageUtil.getResourceBundleMessage("customerCheckin.type1");
         }
 
         return customerTypeName;
     }
 
-    public void setCustomerTypeName(String customerTypeName) {
+    public void setCustomerTypeName(String customerTypeName)
+    {
         this.customerTypeName = customerTypeName;
     }
 
     @Transient
-    public String getLstPackName() {
+    public String getLstPackName()
+    {
         getLstCustomerSchedulePack();//init
-        if (lstCustomerSchedulePack != null && lstCustomerSchedulePack.size() > 0) {
+        if (lstCustomerSchedulePack != null && lstCustomerSchedulePack.size() > 0)
+        {
             String name = "";
-            for (CustomerSchedulePack bo : lstCustomerSchedulePack) {
-                if (bo.getCatGroupPack() != null && bo.getCatGroupPack().getGroupPackName() != null) {
+            for (CustomerSchedulePack bo : lstCustomerSchedulePack)
+            {
+                if (bo.getCatGroupPack() != null && bo.getCatGroupPack().getGroupPackName() != null)
+                {
                     name += bo.getCatGroupPack().getGroupPackName() + ",";
                 }
             }
-            if (name.endsWith(",")) {
+            if (name.endsWith(","))
+            {
                 name = name.substring(0, name.length() - 1);
             }
             lstPackName = name;
@@ -343,42 +417,56 @@ public class CustomerSchedule {
         return lstPackName;
     }
 
-    public void setLstPackName(String lstPackName) {
+    public void setLstPackName(String lstPackName)
+    {
         this.lstPackName = lstPackName;
     }
 
     @Transient
-    public CatBranch getCatBranch() {
-        if(branchId!=null && catBranch==null){
-            try {
-                catBranch=new GenericDaoImplNewV2<CatBranch, Long>() {
+    public CatBranch getCatBranch()
+    {
+        if (branchId != null && catBranch == null)
+        {
+            try
+            {
+                catBranch = new GenericDaoImplNewV2<CatBranch, Long>()
+                {
                 }.findById(branchId);
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 e.printStackTrace();
             }
         }
         return catBranch;
     }
 
-    public void setCatBranch(CatBranch catBranch) {
+    public void setCatBranch(CatBranch catBranch)
+    {
         this.catBranch = catBranch;
     }
-   @Column(name = "EMPLOYEE_ID", nullable = true, precision = 0)
-    public Long getEmployeeId() {
+
+    @Column(name = "EMPLOYEE_ID", nullable = true, precision = 0)
+    public Long getEmployeeId()
+    {
         return employeeId;
     }
 
-    public void setEmployeeId(Long employeeId) {
+    public void setEmployeeId(Long employeeId)
+    {
         this.employeeId = employeeId;
     }
+
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "EMPLOYEE_ID", referencedColumnName = "EMPLOYEE_ID", insertable = false, updatable = false)
-    public Employee getEmployeeSchedule() {
+    public Employee getEmployeeSchedule()
+    {
         return employeeSchedule;
     }
 
-    public void setEmployeeSchedule(Employee employeeSchedule) {
+    public void setEmployeeSchedule(Employee employeeSchedule)
+    {
         this.employeeSchedule = employeeSchedule;
     }
-    
+
 }

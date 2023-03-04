@@ -4,7 +4,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
     <p:dialog modal="true" widgetVar="infoCurrUserDlg" width="70%" id="infoCurrUserDlgId" header="Thông tin cá nhân">
@@ -22,7 +22,7 @@
                                              title="#{msg['catUser.fullName']}"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.fullName'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['catUser.fullName']} *</label>
@@ -36,7 +36,7 @@
                                              title="#{msg['catUser.userName']}"
                                              required="false" readonly="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['catUser.userName'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['catUser.userName']} *</label>
@@ -44,14 +44,14 @@
                             <p:message for="userNameId"/>
                         </div>
 
-                        <div class="Container33 MarTop20 Responsive50 " >
+                        <div class="Container33 MarTop20 Responsive50 ">
                             <span class="title-top">
                                 <p:selectOneMenu value="#{catUserController.currCatUser.groupUserId}" required="false"
-                                                 filter="true" filterMatchMode="contains" 
+                                                 filter="true" filterMatchMode="contains"
                                                  id="groupUserId" style="width: 60%"
                                                  disabled="#{catUserController.groupUserId!=null and catUserController.groupUserId>0}"
 
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.groupUserId'])}" >
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['home.groupUserId'])}">
                                     <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
 
                                     <f:selectItems value="#{homeController.lstGroupUser}" var="p"
@@ -70,7 +70,7 @@
                                              required="false"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['customer.phone'])}"
                                              validatorMessage="#{msg['customer.phone']} không hơp lệ!">
-                                    <f:validateRegex  pattern="^[0-9]+$" />
+                                    <f:validateRegex pattern="^[0-9]+$"/>
                                 </p:inputText>
                                 <p:message for="phone"></p:message>
                                 <label>#{msg['customer.phone']} </label>
@@ -83,9 +83,9 @@
                                              required="false" maxlength="50" style="width: 80%"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.email'])}"
                                              validatorMessage="Email không hơp lệ!"
-                                             >
+                                >
                                     <f:validateRegex
-                                        pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+                                            pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$"/>
 
                                 </p:inputText>
 
@@ -97,9 +97,9 @@
 
                             <span class="title-top">
                                 <p:selectOneRadio id="sex" value="#{catUserController.currCatUser.sex}"
-                                                  required="false"                                                      
+                                                  required="false"
                                                   requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.sex'])}"
-                                                  >
+                                >
                                     <f:selectItem itemLabel="#{msg['view.label.sexMale']}"
                                                   itemValue="1"/>
                                     <f:selectItem itemLabel="#{msg['view.label.sexFemale']}"
@@ -114,13 +114,12 @@
                     <div class="Container100  Responsive50 ">
 
 
-
                         <div class=" Container33 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <p:inputText value="#{catUserController.currCatUser.address}" style="width: 80%"
-                                             id="addressId"  converter="trimConverter" maxlength="200"
+                                             id="addressId" converter="trimConverter" maxlength="200"
                                              title="#{msg['customer.address']}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['customer.address']} </label>
@@ -130,21 +129,21 @@
                         <div class=" Container33 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <p:inputText value="#{catUserController.currCatUser.job}" style="width: 80%"
-                                             id="jobId"  converter="trimConverter" maxlength="200"
+                                             id="jobId" converter="trimConverter" maxlength="200"
                                              title="#{msg['customer.job']}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['customer.job']} </label>
                             </span>
                             <p:message for="jobId"/>
                         </div>
-                                                <div class="Container33 Responsive50 MarTop20">
+                        <div class="Container33 Responsive50 MarTop20">
                             <span class="title-top">
                                 <p:calendar value="#{catUserController.currCatUser.birthDate}"
                                             locale="#{language.localeCode}"
                                             maxdate="#{currentDate}" styleClass="CalendarSearch"
-                                            id="birthDate" 
+                                            id="birthDate"
                                             showButtonPanel="true" style="width: calc(100% - 5px)"
                                             title="#{msg['customer.birthDate']}"
 
@@ -162,9 +161,9 @@
                         <div class=" Container100 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <p:inputText value="#{catUserController.currCatUser.description}" style="width: 80%"
-                                             id="descriptionId"  converter="trimConverter" maxlength="200"
+                                             id="descriptionId" converter="trimConverter" maxlength="200"
                                              title="#{msg['customer.description']}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['customer.description']} </label>
@@ -173,16 +172,18 @@
                         </div>
                     </div>
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlCenter" >
+                <p:outputPanel class="Container100 TexAlCenter">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growlInfoCurrUser),:infoCurrUserForm"
-                                     actionListener="#{catUserController.saveOrUpdateInfoCurrUser()}" process=":infoCurrUserForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{catUserController.saveOrUpdateInfoCurrUser()}"
+                                     process=":infoCurrUserForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('infoCurrUserDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('infoCurrUserDlg').hide()">
 
                     </p:commandButton>
 

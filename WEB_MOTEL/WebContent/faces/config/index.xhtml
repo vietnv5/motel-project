@@ -18,7 +18,7 @@
                          rowsPerPageTemplate="5,10,15,20,30,50,60,80,100,150,200,500" widgetVar="tableConfigAlarmWidget"
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
-            resizableColumns="true"
+                         resizableColumns="true"
             >
 
                 <!--Header-->
@@ -70,7 +70,7 @@
                                          oncomplete="PF('block').hide()"
                                          actionListener="#{alarmConfigController.unlockAlarmConfig(vAlarmConfig)}"
                                          title="#{msg['button.unlock']}"
-                                />
+                        />
                     </p:outputPanel>
                     <p:outputPanel style="width: 100%; text-align:center"
                                    rendered="#{vAlarmConfig.status == 1}">
@@ -81,7 +81,7 @@
                                          oncomplete="PF('block').hide()"
                                          actionListener="#{alarmConfigController.lockAlarmConfig(vAlarmConfig)}"
                                          title="#{msg['button.lock']}"
-                                />
+                        />
                     </p:outputPanel>
                 </p:column>
                 <!--alarmConfigId-->
@@ -214,7 +214,7 @@
                                  paginator="false"
                                  styleClass="Container100 NoPadding MarTop10"
                                  resizableColumns="true"
-                            >
+                    >
                         <!--day-->
                         <p:column headerText="#{msg['configObj.day']}" width="20">
                             <h:outputText id="day" value="#{configObj.day}"
@@ -251,7 +251,7 @@
                                  update=":form:growl,:form:editConfigObjDlg"
                                  actionListener="#{alarmConfigController.preEditConfigObj}"
                                  title="#{msg['button.edit']}"
-                        />
+                />
             </p:outputPanel>
 
             <!--Loading dialog-->
@@ -340,7 +340,7 @@
                                          update=":form:growl,:form:tableConfigAlarmId"
                                          actionListener="#{alarmConfigController.updateAlarmConfig}"
                                          title="#{msg['button.edit']}"
-                                />
+                        />
                     </div>
                     <div class="Container100 Responsive50" style="padding-top: 5px">
                         <p:dataTable value="#{alarmConfigController.listConfigObj}"
@@ -367,7 +367,7 @@
                                                    var="day"
                                                    itemLabel="#{day}"
                                                    itemValue="#{day}"
-                                            />
+                                    />
                                 </p:selectManyCheckbox>
                             </p:column>
 
@@ -401,31 +401,31 @@
                             <!--warning-->
                             <p:column headerText="#{msg['configObj.warning']}" width="6">
                                 <!--<p:cellEditor>-->
-                                    <!--<f:facet name="output">-->
-                                        <!--<h:outputText value="#{configObj.warning}"-->
-                                                      <!--title="#{msg['configObj.warning']}"/>-->
-                                    <!--</f:facet>-->
-                                    <!--<f:facet name="input">-->
-                                        <p:inputText value="#{configObj.warning}"
-                                                     title="#{msg['configObj.warning']}"
-                                                     style="width: 54% !important;"
-                                                />
-                                    <!--</f:facet>-->
+                                <!--<f:facet name="output">-->
+                                <!--<h:outputText value="#{configObj.warning}"-->
+                                <!--title="#{msg['configObj.warning']}"/>-->
+                                <!--</f:facet>-->
+                                <!--<f:facet name="input">-->
+                                <p:inputText value="#{configObj.warning}"
+                                             title="#{msg['configObj.warning']}"
+                                             style="width: 54% !important;"
+                                />
+                                <!--</f:facet>-->
                                 <!--</p:cellEditor>-->
                             </p:column>
                             <!--critical-->
                             <p:column headerText="#{msg['configObj.critical']}" width="6">
                                 <!--<p:cellEditor>-->
-                                    <!--<f:facet name="output">-->
-                                        <!--<h:outputText value="#{configObj.critical}"-->
-                                                      <!--title="#{msg['configObj.day']}"/>-->
-                                    <!--</f:facet>-->
-                                    <!--<f:facet name="input">-->
-                                        <p:inputText value="#{configObj.critical}"
-                                                     title="#{msg['configObj.critical']}"
-                                                     style="width: 54% !important;"
-                                                />
-                                    <!--</f:facet>-->
+                                <!--<f:facet name="output">-->
+                                <!--<h:outputText value="#{configObj.critical}"-->
+                                <!--title="#{msg['configObj.day']}"/>-->
+                                <!--</f:facet>-->
+                                <!--<f:facet name="input">-->
+                                <p:inputText value="#{configObj.critical}"
+                                             title="#{msg['configObj.critical']}"
+                                             style="width: 54% !important;"
+                                />
+                                <!--</f:facet>-->
                                 <!--</p:cellEditor>-->
                             </p:column>
                             <!--unitType-->
@@ -444,7 +444,7 @@
                                                  actionListener="#{alarmConfigController.deleteConfigObj(configObj)}"
                                                  title="#{msg['button.delete']}"
                                                  style="margin: 0 3px;"
-                                        />
+                                />
                                 <p:commandButton id="confirmConfigObj" icon="fa fa-check"
                                                  styleClass="BlueButton Fs14 White "
                                                  rendered="#{sessionUtil.createAlarmConfig}"
@@ -454,7 +454,7 @@
                                                  actionListener="#{alarmConfigController.autoGenConfigObj(idx)}"
                                                  title="#{msg['button.confirm']}"
                                                  style="margin: 0 3px;"
-                                        />
+                                />
                                 <!--<p:commandButton id="checkAll" icon="fa fa-check"-->
                                 <!--styleClass="GreenButton Fs14 White"-->
                                 <!--rendered="#{sessionUtil.createAlarmConfig}"-->

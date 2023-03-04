@@ -13,26 +13,31 @@ import javax.servlet.http.HttpServletRequestWrapper;
  * XSSRequestWrapper.java
  *
  * @author Nguyen Hai Ha (hanh45@viettel.com.vn)
- * @since Mar 24, 2014
  * @version 1.0.0
+ * @since Mar 24, 2014
  */
-public class XSSRequestWrapper extends HttpServletRequestWrapper {
+public class XSSRequestWrapper extends HttpServletRequestWrapper
+{
 
-    public XSSRequestWrapper(HttpServletRequest servletRequest) {
+    public XSSRequestWrapper(HttpServletRequest servletRequest)
+    {
         super(servletRequest);
     }
 
     @Override
-    public String[] getParameterValues(String parameter) {
+    public String[] getParameterValues(String parameter)
+    {
         String[] values = super.getParameterValues(parameter);
 
-        if (values == null) {
+        if (values == null)
+        {
             return null;
         }
 
         int count = values.length;
         String[] encodedValues = new String[count];
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < count; i++)
+        {
             encodedValues[i] = stripXSS(values[i]);
         }
 
@@ -40,20 +45,24 @@ public class XSSRequestWrapper extends HttpServletRequestWrapper {
     }
 
     @Override
-    public String getParameter(String parameter) {
+    public String getParameter(String parameter)
+    {
         String value = super.getParameter(parameter);
 
         return stripXSS(value);
     }
 
     @Override
-    public String getHeader(String name) {
+    public String getHeader(String name)
+    {
         String value = super.getHeader(name);
         return stripXSS(value);
     }
 
-    private String stripXSS(String value) {
-        if (value != null) {
+    private String stripXSS(String value)
+    {
+        if (value != null)
+        {
             // NOTE: It's highly recommended to use the ESAPI library and uncomment the following line to
             // avoid encoded attacks.
             // value = ESAPI.encoder().canonicalize(value);

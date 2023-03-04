@@ -8,28 +8,32 @@ package com.slook.util;
 import java.util.List;
 
 /**
- *
  * @author anhmv6
  */
-public class ExcelDTO {
+public class ExcelDTO
+{
 
     private List<SheetDTO> lstDataSheel;
 
-    public ExcelDTO() {
+    public ExcelDTO()
+    {
         //contructor
     }
 
-    public ExcelDTO(List<SheetDTO> lstDataSheel) {
+    public ExcelDTO(List<SheetDTO> lstDataSheel)
+    {
         this.lstDataSheel = lstDataSheel;
     }
 
-    public List<SheetDTO> getLstDataSheel() {
+    public List<SheetDTO> getLstDataSheel()
+    {
         return lstDataSheel;
     }
 
-    public void setLstDataSheel(List<SheetDTO> lstDataSheel) {
+    public void setLstDataSheel(List<SheetDTO> lstDataSheel)
+    {
         this.lstDataSheel = lstDataSheel;
     }
 
-    
+
 }

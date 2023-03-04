@@ -8,55 +8,67 @@ import java.util.List;
 /**
  * @author xuanh
  */
-public class RequestInputBO implements Serializable {
+public class RequestInputBO implements Serializable
+{
     private String code;
     private int compressData;
     private List<ParameterBO> params;
     private String query;
 
-    public RequestInputBO() {
+    public RequestInputBO()
+    {
         params = new ArrayList<ParameterBO>();
     }
 
-    public RequestInputBO(String code) {
+    public RequestInputBO(String code)
+    {
         params = new ArrayList<ParameterBO>();
         this.code = code;
     }
 
-    public RequestInputBO(String code, List<ParameterBO> params) {
+    public RequestInputBO(String code, List<ParameterBO> params)
+    {
         this.code = code;
         this.params = params;
     }
 
-    public String getCode() {
+    public String getCode()
+    {
         return code;
     }
 
-    public void setCode(String code) {
+    public void setCode(String code)
+    {
         this.code = code;
     }
 
-    public List<ParameterBO> getParams() {
+    public List<ParameterBO> getParams()
+    {
         return params;
     }
 
-    public void setParams(List<ParameterBO> params) {
+    public void setParams(List<ParameterBO> params)
+    {
         this.params = params;
     }
 
-    public int getCompressData() {
+    public int getCompressData()
+    {
         return compressData;
     }
 
-    public void setCompressData(int compressData) {
+    public void setCompressData(int compressData)
+    {
         this.compressData = compressData;
     }
 
-    public String getQuery() {
+    public String getQuery()
+    {
         return query;
     }
 
-    public void setQuery(String query) {
+    public void setQuery(String query)
+    {
         this.query = query;
     }
 }

@@ -39,7 +39,7 @@
                             </span>
                             <span class="title-top Container25 MarTop5">
                                 <p:inputNumber value="#{catPromotionController.catPromotionCurr.value}"
-                                               decimalPlaces="2"   symbolPosition="suffix" 
+                                               decimalPlaces="2" symbolPosition="suffix"
                                                symbol="#{catPromotionController.catPromotionCurr.type eq 2 ? ' %' 
                                                          : (catPromotionController.catPromotionCurr.type eq 3 ? ' VNĐ'
                                                          :(catPromotionController.catPromotionCurr.type eq 4 ? ' ngày':'') )}"
@@ -61,7 +61,7 @@
                                             required="true"
                                             requiredMessage="#{msg['common.required'].replace('{0}','Ngày bắt đầu')}"
                                             id="cStartTime"/>
-                                <label class="title-elem" >Ngày bắt đầu *</label>
+                                <label class="title-elem">Ngày bắt đầu *</label>
                                 <p:message for="cServiceDes"/>
                             </span>
                             <span class="title-top Container25 MarTop10">
@@ -93,25 +93,25 @@
                             </span>
                             <span class="title-top Container25 MarTop10">
 
-                                <p:selectOneMenu value="#{catPromotionController.catPromotionCurr.operator}" 
+                                <p:selectOneMenu value="#{catPromotionController.catPromotionCurr.operator}"
                                                  title="Điều kiện" id="comparisonOperatorId" style="width: 135px;">
 
-                                    <f:selectItems value="#{catPromotionController.lstComparisonOperator}" var="db" 
+                                    <f:selectItems value="#{catPromotionController.lstComparisonOperator}" var="db"
                                                    itemLabel="#{db.name}" itemValue="#{db.value}"></f:selectItems>
-                                    <p:ajax event="change"  update="individualThresholdId" 
+                                    <p:ajax event="change" update="individualThresholdId"
                                             listener="#{catPromotionController.changeComparisonOperator}"/>               
 
                                 </p:selectOneMenu>
                                 <label class="title-elem">Điều kiện áp dụng</label>
                             </span>
                             <span class="title-top Container25 MarTop10">
-                                <p:inputText label="Giá trị" maxlength="255" 
+                                <p:inputText label="Giá trị" maxlength="255"
                                              value="#{catPromotionController.catPromotionCurr.valueCompare}"
                                              converter="trimConverter" id="individualThresholdId">
-                                    <p:tooltip id="tooltipComparsionId" for="individualThresholdId" 
+                                    <p:tooltip id="tooltipComparsionId" for="individualThresholdId"
                                                value="#{catPromotionController.guide}" position="top"
                                                rendered="#{catPromotionController.guide!=null 
-                                                           and catPromotionController.guide!=''}" />
+                                                           and catPromotionController.guide!=''}"/>
                                 </p:inputText>
                                 <label class="title-elem">Số lượng</label>
                             </span>
@@ -122,7 +122,7 @@
                         <span class="title-top WidMoz" style="float: right;">
                             <p:commandButton value="#{msg['button.save']}" icon="fa fa-floppy-o"
                                              styleClass="GreenButton White"
-                                             onclick="PF('block').show()" oncomplete="PF('block').hide();" 
+                                             onclick="PF('block').show()" oncomplete="PF('block').hide();"
                                              actionListener="#{catPromotionController.onSaveOrUpdate}"
                                              update="@widgetVar(tblWidgetId),@widgetVar(growlCatPromotionWid),@form:panelCatPromotion:panelCatPromotionAdd"
                                              process="@form:panelCatPromotion">
@@ -188,18 +188,20 @@
                           headerText="#{msg['datatable.header.action']}" style="text-align:center;">
 
                     <p:tooltip position="left"/>
-                    <p:commandButton icon="fa fa-list-ul" actionListener="#{catPromotionController.preEditPromotionForPack(catPromotion)}"
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('promotionForPackDlg').show()"
+                    <p:commandButton icon="fa fa-list-ul"
+                                     actionListener="#{catPromotionController.preEditPromotionForPack(catPromotion)}"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('promotionForPackDlg').show()"
                                      update=":promotionForPackForm" id="updatePromotionForPackId" process="@this"
-                                     title="Gói hưởng khuyễn mại" styleClass="White  Fs14 MarTop5 YellowButton" >
+                                     title="Gói hưởng khuyễn mại" styleClass="White  Fs14 MarTop5 YellowButton">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
                     <p:commandButton
-                        title="Cập nhật" styleClass="Fs14 White GreenButton"
-                        icon="fa fa-edit" process="@widgetVar(tblWidgetId)"
-                        actionListener="#{catPromotionController.preEdit(catPromotion)}"
-                        style="color:green; font-weight: bold;font-size: 13px "
-                        update="@form:panelCatPromotion:panelCatPromotionAdd">
+                            title="Cập nhật" styleClass="Fs14 White GreenButton"
+                            icon="fa fa-edit" process="@widgetVar(tblWidgetId)"
+                            actionListener="#{catPromotionController.preEdit(catPromotion)}"
+                            style="color:green; font-weight: bold;font-size: 13px "
+                            update="@form:panelCatPromotion:panelCatPromotionAdd">
                         <p:effect type="clip" event="click" for="@form:panelCatPromotion" delay="0">
                             <f:param name="mode" value="'show'"/>
                         </p:effect>
@@ -262,8 +264,10 @@
                             <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
                         </p:calendar>
                     </f:facet>
-                    <h:outputText value="#{catPromotion.startDate}"><f:convertDateTime
-                            pattern="dd/MM/yyyy"/></h:outputText>
+                    <h:outputText value="#{catPromotion.startDate}">
+                        <f:convertDateTime
+                                pattern="dd/MM/yyyy"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="#{msg['table.catPromotion.end']}" width="20" sortBy="#{catPromotion.endDate}"
@@ -273,8 +277,10 @@
                             <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
                         </p:calendar>
                     </f:facet>
-                    <h:outputText value="#{catPromotion.endDate}"><f:convertDateTime
-                            pattern="dd/MM/yyyy"/></h:outputText>
+                    <h:outputText value="#{catPromotion.endDate}">
+                        <f:convertDateTime
+                                pattern="dd/MM/yyyy"/>
+                    </h:outputText>
                 </p:column>
 
                 <p:column headerText="#{msg['table.catPromotion.status']}" width="20" sortBy="#{catPromotion.status}"

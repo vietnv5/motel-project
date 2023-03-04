@@ -3,39 +3,47 @@ package com.slook.util;
 import java.io.OutputStream;
 
 /**
- *@author quanns2
+ * @author quanns2
  */
-public class Result {
+public class Result
+{
     Boolean isSuccessSent;
     String result;
     OutputStream out;
 
-    public Result() {
+    public Result()
+    {
         super();
         // TODO Auto-generated constructor stub
     }
 
-    public Boolean isSuccessSent() {
+    public Boolean isSuccessSent()
+    {
         return isSuccessSent;
     }
 
-    public void setSuccessSent(Boolean isSuccessSent) {
+    public void setSuccessSent(Boolean isSuccessSent)
+    {
         this.isSuccessSent = isSuccessSent;
     }
 
-    public String getResult() {
+    public String getResult()
+    {
         return result;
     }
 
-    public void setResult(String result) {
+    public void setResult(String result)
+    {
         this.result = result;
     }
 
-    public OutputStream getOut() {
+    public OutputStream getOut()
+    {
         return out;
     }
 
-    public void setOut(OutputStream out) {
+    public void setOut(OutputStream out)
+    {
         this.out = out;
     }
 

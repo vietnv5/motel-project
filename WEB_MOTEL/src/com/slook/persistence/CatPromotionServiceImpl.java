@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 
 @Scope("session")
 @Service(value = "catPromotionService")
-public class CatPromotionServiceImpl extends GenericDaoImplNewV2<CatPromotion, Long> {
+public class CatPromotionServiceImpl extends GenericDaoImplNewV2<CatPromotion, Long>
+{
 
     private static CatPromotionServiceImpl instance;
 
-    public static CatPromotionServiceImpl getInstance() {
-        if (instance == null) {
+    public static CatPromotionServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new CatPromotionServiceImpl();
         }
 

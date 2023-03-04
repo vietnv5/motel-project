@@ -8,36 +8,46 @@ package com.slook.converter;
 
 import com.slook.model.FunctionPath;
 import com.slook.persistence.FunctionPathServiceImpl;
+
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
 
 /**
- *
  * @author VietNV on Dec 19, 2017
  */
 @FacesConverter(value = "functionPathConverter")
-public class FunctionPathConverter  implements Converter {
+public class FunctionPathConverter implements Converter
+{
 
     @Override
-    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s) {
-        try {
+    public Object getAsObject(FacesContext facesContext, UIComponent uiComponent, String s)
+    {
+        try
+        {
             return FunctionPathServiceImpl.getInstance().findById(Long.valueOf(s));
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;
     }
 
     @Override
-    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o) {
-        try {
+    public String getAsString(FacesContext facesContext, UIComponent uiComponent, Object o)
+    {
+        try
+        {
 
-            if (o != null && o instanceof FunctionPath && ((FunctionPath) o).getFunctionPathId()!=null) {
+            if (o != null && o instanceof FunctionPath && ((FunctionPath) o).getFunctionPathId() != null)
+            {
                 return ((FunctionPath) o).getFunctionPathId().toString();
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;

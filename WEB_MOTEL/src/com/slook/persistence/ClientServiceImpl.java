@@ -7,12 +7,15 @@ import org.springframework.stereotype.Service;
 
 @Scope("session")
 @Service(value = "clientService")
-public class ClientServiceImpl extends GenericDaoImplNewV2<Client, Long> {
+public class ClientServiceImpl extends GenericDaoImplNewV2<Client, Long>
+{
 
     private static ClientServiceImpl instance;
 
-    public static ClientServiceImpl getInstance() {
-        if (instance == null) {
+    public static ClientServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new ClientServiceImpl();
         }
 

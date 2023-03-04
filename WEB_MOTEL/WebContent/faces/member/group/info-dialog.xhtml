@@ -4,28 +4,29 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
     <p:dialog modal="true" widgetVar="groupMemberInfoDlg" width="90%" maximizable="true" height="600px">
         <f:facet name="header">
-            <h:outputText value="#{msg['dialog.header.groupMember.info']}" />
+            <h:outputText value="#{msg['dialog.header.groupMember.info']}"/>
         </f:facet>
         <h:form id="insertGroupMemberForm">
             <div class="Container100 Responsive50">
 
                 <!--<div class="Container80 Responsive50">-->
                 <p:tabView widgetVar="tabViewGroupMemberInfo">
-                    <ui:include src="info-global-group.xhtml" />
+                    <ui:include src="info-global-group.xhtml"/>
 
                     <ui:include src="info-groupMembership.xhtml"/>
                     <p:tab title="#{msg['view.header.member.account']}">
-                        <p:dataTable value="#{groupMemberController.curGroupMember.groupMemberPayments}" var="obj2" widgetVar="tblGroupMemberPayment"
+                        <p:dataTable value="#{groupMemberController.curGroupMember.groupMemberPayments}" var="obj2"
+                                     widgetVar="tblGroupMemberPayment"
                                      rowIndexVar="r2"
                                      rows="10" paginator="true" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                                     rowsPerPageTemplate="5,10,15,20,30,50" 
-                                     >
+                                     rowsPerPageTemplate="5,10,15,20,30,50"
+                        >
                             <f:facet name="header">
                                 <h:outputText value="#{msg['view.header.member.account']}"/>
                             </f:facet>
@@ -44,7 +45,8 @@
                                 </h:outputText>
                                 <h:outputText value=" VNĐ"/>
                             </p:column>
-                            <p:column headerText="#{msg['membership.memberPayment.paymentValue']}" styleClass="TexAlRight"  width="100">
+                            <p:column headerText="#{msg['membership.memberPayment.paymentValue']}"
+                                      styleClass="TexAlRight" width="100">
                                 <h:outputText value="#{obj2.paymentValue}">
                                     <f:convertNumber pattern="#,###"/>
                                 </h:outputText>
@@ -59,8 +61,10 @@
                             <p:column headerText="#{msg['payment.type']}" width="100">
                                 <h:outputText value="#{obj2.typeName}"/>
                             </p:column>
-                            <p:column headerText="#{msg['memberPayment.createTime']}" width="100" sortBy="#{obj2.createTime}"
-                                      ><h:outputText value="#{obj2.createTime}">
+                            <p:column headerText="#{msg['memberPayment.createTime']}" width="100"
+                                      sortBy="#{obj2.createTime}"
+                            >
+                                <h:outputText value="#{obj2.createTime}">
                                     <f:convertDateTime pattern="dd/MM/yyyy HH:mm:ss"/>
                                 </h:outputText>
                             </p:column>
@@ -73,17 +77,22 @@
 
                         </p:dataTable>
                         <p:outputPanel class="Container100 TexAlRight" id="groupMemberPaymentPanel">
-                            <b> <h:outputText  value="Tổng công nợ: "/>
-                                <h:outputText id="totalPaymentId" value="#{groupMemberController.curGroupMember.totalPayment}">
+                            <b>
+                                <h:outputText value="Tổng công nợ: "/>
+                                <h:outputText id="totalPaymentId"
+                                              value="#{groupMemberController.curGroupMember.totalPayment}">
                                     <f:convertNumber pattern="#,###"/>
                                 </h:outputText>
                                 <h:outputText value=" VNĐ "/>
                             </b>
-                            <p:commandButton  value="Tất toán" styleClass="GreenButton White" disabled="#{groupMemberController.curGroupMember.totalPayment gt 0}"
-                                              onclick="PF('blockDlg').show()" actionListener="#{groupMemberController.preAddLiquidate()}"
-                                              oncomplete="PF('groupMemberLiquidateDlg').show();PF('blockDlg').hide();" update=":groupMemberLiquidateDlgId"
-                                              title="Tất toán"
-                                              />
+                            <p:commandButton value="Tất toán" styleClass="GreenButton White"
+                                             disabled="#{groupMemberController.curGroupMember.totalPayment gt 0}"
+                                             onclick="PF('blockDlg').show()"
+                                             actionListener="#{groupMemberController.preAddLiquidate()}"
+                                             oncomplete="PF('groupMemberLiquidateDlg').show();PF('blockDlg').hide();"
+                                             update=":groupMemberLiquidateDlgId"
+                                             title="Tất toán"
+                            />
                         </p:outputPanel>
                     </p:tab>
                     <p:tab title="#{msg['view.header.member.promotion']}">
@@ -92,8 +101,8 @@
                                      rows="10" paginator="true" paginatorPosition="bottom"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                                     rowsPerPageTemplate="5,10,15,20,30,50" 
-                                     >
+                                     rowsPerPageTemplate="5,10,15,20,30,50"
+                        >
                             <f:facet name="header">
                                 <h:outputText value="#{msg['view.header.member.promotion']}"/>
                             </f:facet>
@@ -107,9 +116,10 @@
                                 <h:outputText value="#{objp.description}"/>
                             </p:column>
                             <p:column headerText="#{msg['datatable.header.promotion.value']}" styleClass="TexAlRight">
-                                <h:outputText value="#{objp.value}" />
+                                <h:outputText value="#{objp.value}"/>
                             </p:column>
-                            <p:column headerText="#{msg['datatable.header.promotion.createdate']}" styleClass="TexAlCenter">
+                            <p:column headerText="#{msg['datatable.header.promotion.createdate']}"
+                                      styleClass="TexAlCenter">
                                 <h:outputText value="#{objp.createDate}">
                                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                                 </h:outputText>

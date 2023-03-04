@@ -5,10 +5,12 @@ package com.slook.util;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+
 import com.motel.model.CatService;
 import com.motel.model.Room;
 import com.slook.persistence.CatServiceServiceImpl;
 import com.slook.persistence.RoomServiceImpl;
+
 import java.beans.ExceptionListener;
 import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
@@ -21,16 +23,18 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *
  * @author VietNV Jun 10, 2018
  */
-public class XMLEncoderDecoderExample {
+public class XMLEncoderDecoderExample
+{
 
     static String pathFile = "resources/datas/";
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException
+    {
         pathFile = "WebContent/resources/datas1/";
-        try {
+        try
+        {
             Map<String, Object> filter = new HashMap<>();
             filter.put("status-NEQ", Constant.STATUS.DELETE);
             filter.put("groupUserId", 1L);
@@ -39,10 +43,13 @@ public class XMLEncoderDecoderExample {
             serializeToXMLObject(lstService, pathFile);
             List lstRes = (List) deserializeFromXMLObject(CatService.class, pathFile);
             System.out.println("lstRes:" + lstRes.size());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
-        try {
+        try
+        {
             Map<String, Object> filter = new HashMap<>();
             filter.put("status-NEQ", Constant.STATUS.DELETE);
             filter.put("home.groupUserId", 1L);
@@ -51,24 +58,33 @@ public class XMLEncoderDecoderExample {
             serializeToXMLObject(lstService, pathFile);
             List lstRes = (List) deserializeFromXMLObject(Room.class, pathFile);
             System.out.println("lstRes room:" + lstRes.size());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private static void serializeToXMLObject(Object settings, String pathFile) throws IOException {
+    private static void serializeToXMLObject(Object settings, String pathFile) throws IOException
+    {
         String fileName = "settings.xml";
-        if (settings instanceof List) {
-            if (settings != null && !((List) settings).isEmpty()) {
+        if (settings instanceof List)
+        {
+            if (settings != null && !((List) settings).isEmpty())
+            {
                 fileName = ((List) settings).get(0).getClass().getSimpleName() + ".xml";
-            } else {
+            }
+            else
+            {
                 fileName = settings.getClass().getName() + ".xml";
             }
         }
         FileOutputStream fos = new FileOutputStream(pathFile + fileName);
         XMLEncoder encoder = new XMLEncoder(fos);
-        encoder.setExceptionListener(new ExceptionListener() {
-            public void exceptionThrown(Exception e) {
+        encoder.setExceptionListener(new ExceptionListener()
+        {
+            public void exceptionThrown(Exception e)
+            {
                 System.out.println("Exception! :" + e.toString());
             }
         });
@@ -77,9 +93,10 @@ public class XMLEncoderDecoderExample {
         fos.close();
     }
 
-    public static Object deserializeFromXMLObject(Class clazz, String pathFile) throws IOException {
+    public static Object deserializeFromXMLObject(Class clazz, String pathFile) throws IOException
+    {
         String fileName = clazz.getSimpleName() + ".xml";
-        FileInputStream fis = new FileInputStream(pathFile+File.separator + fileName);
+        FileInputStream fis = new FileInputStream(pathFile + File.separator + fileName);
         XMLDecoder decoder = new XMLDecoder(fis);
         Object decodedSettings = decoder.readObject();
         decoder.close();
@@ -87,11 +104,13 @@ public class XMLEncoderDecoderExample {
         return decodedSettings;
     }
 
-    private static void serializeToXMLObject(Object settings) throws IOException {
+    private static void serializeToXMLObject(Object settings) throws IOException
+    {
         serializeToXMLObject(settings, Util.getRealPath(pathFile));
     }
 
-    public static Object deserializeFromXMLObject(Class clazz) throws IOException {
+    public static Object deserializeFromXMLObject(Class clazz) throws IOException
+    {
         return deserializeFromXMLObject(clazz, Util.getRealPath(pathFile));
     }
 }

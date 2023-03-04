@@ -1,184 +1,208 @@
 /**
  * Created by xuanh on 4/23/2017.
  */
-(function(a) {
-    if (a.PrimeFaces) {
+(function (a) {
+    if (a.PrimeFaces)
+    {
         a.PrimeFaces
             .debug("PrimeFaces already loaded, ignoring duplicate execution.");
         return
     }
     var b = {
-        escapeClientId : function(c) {
+        escapeClientId: function (c) {
             return "#" + c.replace(/:/g, "\\:")
         },
-        cleanWatermarks : function() {
+        cleanWatermarks: function () {
             $.watermark.hideAll()
         },
-        showWatermarks : function() {
+        showWatermarks: function () {
             $.watermark.showAll()
         },
-        getWidgetById : function(e) {
-            for ( var d in b.widgets) {
+        getWidgetById: function (e) {
+            for (var d in b.widgets)
+            {
                 var c = b.widgets[d];
-                if (c && c.id === e) {
+                if (c && c.id === e)
+                {
                     return c
                 }
             }
             return null
         },
-        addSubmitParam : function(d, f) {
+        addSubmitParam: function (d, f) {
             var e = $(this.escapeClientId(d));
-            for ( var c in f) {
+            for (var c in f)
+            {
                 e.append('<input type="hidden" name="' + c + '" value="' + f[c]
                     + '" class="ui-submit-param"/>')
             }
             return this
         },
-        submit : function(e, d) {
+        submit: function (e, d) {
             var c = $(this.escapeClientId(e));
-            if (d) {
+            if (d)
+            {
                 c.attr("target", d)
             }
             c.submit().children("input.ui-submit-param").remove()
         },
-        attachBehaviors : function(d, c) {
-            $.each(c, function(f, e) {
-                d.bind(f, function(g) {
+        attachBehaviors: function (d, c) {
+            $.each(c, function (f, e) {
+                d.bind(f, function (g) {
                     e.call(d, g)
                 })
             })
         },
-        getCookie : function(c) {
+        getCookie: function (c) {
             return $.cookie(c)
         },
-        setCookie : function(d, e, c) {
+        setCookie: function (d, e, c) {
             $.cookie(d, e, c)
         },
-        deleteCookie : function(d, c) {
+        deleteCookie: function (d, c) {
             $.removeCookie(d, c)
         },
-        cookiesEnabled : function() {
+        cookiesEnabled: function () {
             var c = (navigator.cookieEnabled) ? true : false;
-            if (typeof navigator.cookieEnabled === "undefined" && !c) {
+            if (typeof navigator.cookieEnabled === "undefined" && !c)
+            {
                 document.cookie = "testcookie";
                 c = (document.cookie.indexOf("testcookie") !== -1) ? true
                     : false
             }
             return (c)
         },
-        skinInput : function(c) {
-            c.hover(function() {
+        skinInput: function (c) {
+            c.hover(function () {
                 $(this).addClass("ui-state-hover")
-            }, function() {
+            }, function () {
                 $(this).removeClass("ui-state-hover")
-            }).focus(function() {
+            }).focus(function () {
                 $(this).addClass("ui-state-focus")
-            }).blur(function() {
+            }).blur(function () {
                 $(this).removeClass("ui-state-focus")
             });
             c.attr("role", "textbox").attr("aria-disabled", c.is(":disabled"))
                 .attr("aria-readonly", c.prop("readonly"));
-            if (c.is("textarea")) {
+            if (c.is("textarea"))
+            {
                 c.attr("aria-multiline", true)
             }
             return this
         },
-        skinButton : function(c) {
-            c.mouseover(function() {
+        skinButton: function (c) {
+            c.mouseover(function () {
                 var e = $(this);
-                if (!c.prop("disabled")) {
+                if (!c.prop("disabled"))
+                {
                     e.addClass("ui-state-hover")
                 }
-            }).mouseout(function() {
+            }).mouseout(function () {
                 $(this).removeClass("ui-state-active ui-state-hover")
-            }).mousedown(function() {
+            }).mousedown(function () {
                 var e = $(this);
-                if (!c.prop("disabled")) {
+                if (!c.prop("disabled"))
+                {
                     e.addClass("ui-state-active").removeClass("ui-state-hover")
                 }
             }).mouseup(
-                function() {
+                function () {
                     $(this).removeClass("ui-state-active").addClass(
                         "ui-state-hover")
-                }).focus(function() {
+                }).focus(function () {
                 $(this).addClass("ui-state-focus")
-            }).blur(function() {
+            }).blur(function () {
                 $(this).removeClass("ui-state-focus ui-state-active")
             }).keydown(
-                function(f) {
+                function (f) {
                     if (f.which === $.ui.keyCode.SPACE
                         || f.which === $.ui.keyCode.ENTER
-                        || f.which === $.ui.keyCode.NUMPAD_ENTER) {
+                        || f.which === $.ui.keyCode.NUMPAD_ENTER)
+                    {
                         $(this).addClass("ui-state-active")
                     }
-                }).keyup(function() {
+                }).keyup(function () {
                 $(this).removeClass("ui-state-active")
             });
             var d = c.attr("role");
-            if (!d) {
+            if (!d)
+            {
                 c.attr("role", "button")
             }
             c.attr("aria-disabled", c.prop("disabled"));
             return this
         },
-        skinSelect : function(c) {
-            c.mouseover(function() {
+        skinSelect: function (c) {
+            c.mouseover(function () {
                 var d = $(this);
-                if (!d.hasClass("ui-state-focus")) {
+                if (!d.hasClass("ui-state-focus"))
+                {
                     d.addClass("ui-state-hover")
                 }
-            }).mouseout(function() {
+            }).mouseout(function () {
                 $(this).removeClass("ui-state-hover")
             }).focus(
-                function() {
+                function () {
                     $(this).addClass("ui-state-focus").removeClass(
                         "ui-state-hover")
-                }).blur(function() {
+                }).blur(function () {
                 $(this).removeClass("ui-state-focus ui-state-hover")
             });
             return this
         },
-        isIE : function(c) {
+        isIE: function (c) {
             return b.env.isIE(c)
         },
-        info : function(c) {
-            if (this.logger) {
+        info: function (c) {
+            if (this.logger)
+            {
                 this.logger.info(c)
             }
         },
-        debug : function(c) {
-            if (this.logger) {
+        debug: function (c) {
+            if (this.logger)
+            {
                 this.logger.debug(c)
             }
         },
-        warn : function(c) {
-            if (this.logger) {
+        warn: function (c) {
+            if (this.logger)
+            {
                 this.logger.warn(c)
             }
-            if (b.isDevelopmentProjectStage() && a.console) {
+            if (b.isDevelopmentProjectStage() && a.console)
+            {
                 console.log(c)
             }
         },
-        error : function(c) {
-            if (this.logger) {
+        error: function (c) {
+            if (this.logger)
+            {
                 this.logger.error(c)
             }
-            if (b.isDevelopmentProjectStage() && a.console) {
+            if (b.isDevelopmentProjectStage() && a.console)
+            {
                 console.log(c)
             }
         },
-        isDevelopmentProjectStage : function() {
+        isDevelopmentProjectStage: function () {
             return b.settings.projectStage === "Development"
         },
-        setCaretToEnd : function(d) {
-            if (d) {
+        setCaretToEnd: function (d) {
+            if (d)
+            {
                 d.focus();
                 var e = d.value.length;
-                if (e > 0) {
-                    if (d.setSelectionRange) {
+                if (e > 0)
+                {
+                    if (d.setSelectionRange)
+                    {
                         d.setSelectionRange(0, e)
-                    } else {
-                        if (d.createTextRange) {
+                    }
+                    else
+                    {
+                        if (d.createTextRange)
+                        {
                             var c = d.createTextRange();
                             c.collapse(true);
                             c.moveEnd("character", 1);
@@ -189,11 +213,13 @@
                 }
             }
         },
-        changeTheme : function(g) {
-            if (g && g !== "") {
+        changeTheme: function (g) {
+            if (g && g !== "")
+            {
                 var h = $('link[href*="' + b.RESOURCE_IDENTIFIER
                     + '/theme.css"]');
-                if (h.length === 0) {
+                if (h.length === 0)
+                {
                     h = $('link[href*="' + b.RESOURCE_IDENTIFIER
                         + '=theme.css"]')
                 }
@@ -202,132 +228,177 @@
                 h.attr("href", c)
             }
         },
-        escapeRegExp : function(c) {
+        escapeRegExp: function (c) {
             return this.escapeHTML(c.replace(/([.?*+^$[\]\\(){}|-])/g, "\\$1"))
         },
-        escapeHTML : function(c) {
+        escapeHTML: function (c) {
             return c.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g,
                 "&gt;")
         },
-        clearSelection : function() {
-            if (a.getSelection) {
-                if (a.getSelection().empty) {
+        clearSelection: function () {
+            if (a.getSelection)
+            {
+                if (a.getSelection().empty)
+                {
                     a.getSelection().empty()
-                } else {
-                    if (a.getSelection().removeAllRanges) {
+                }
+                else
+                {
+                    if (a.getSelection().removeAllRanges)
+                    {
                         a.getSelection().removeAllRanges()
                     }
                 }
-            } else {
-                if (document.selection && document.selection.empty) {
-                    try {
+            }
+            else
+            {
+                if (document.selection && document.selection.empty)
+                {
+                    try
+                    {
                         document.selection.empty()
-                    } catch (c) {
+                    }
+                    catch (c)
+                    {
                     }
                 }
             }
         },
-        getSelection : function() {
+        getSelection: function () {
             var c = "";
-            if (a.getSelection) {
+            if (a.getSelection)
+            {
                 c = a.getSelection()
-            } else {
-                if (document.getSelection) {
+            }
+            else
+            {
+                if (document.getSelection)
+                {
                     c = document.getSelection()
-                } else {
-                    if (document.selection) {
+                }
+                else
+                {
+                    if (document.selection)
+                    {
                         c = document.selection.createRange().text
                     }
                 }
             }
             return c
         },
-        hasSelection : function() {
+        hasSelection: function () {
             return this.getSelection().length > 0
         },
-        cw : function(d, e, c) {
+        cw: function (d, e, c) {
             this.createWidget(d, e, c)
         },
-        createWidget : function(d, f, c) {
+        createWidget: function (d, f, c) {
             c.widgetVar = f;
-            if (this.widget[d]) {
+            if (this.widget[d])
+            {
                 var e = this.widgets[f];
-                if (e && (e.constructor === this.widget[d])) {
+                if (e && (e.constructor === this.widget[d]))
+                {
                     e.refresh(c)
-                } else {
+                }
+                else
+                {
                     this.widgets[f] = new this.widget[d](c);
-                    if (this.settings.legacyWidgetNamespace) {
+                    if (this.settings.legacyWidgetNamespace)
+                    {
                         a[f] = this.widgets[f]
                     }
                 }
-            } else {
+            }
+            else
+            {
                 b.error("Widget not available: " + d)
             }
         },
-        getFacesResource : function(f, e, c) {
-            if (f.indexOf("/") === 0) {
+        getFacesResource: function (f, e, c) {
+            if (f.indexOf("/") === 0)
+            {
                 f = f.substring(1, f.length)
             }
             var d = $('script[src*="/' + b.RESOURCE_IDENTIFIER + '/core.js"]')
                 .attr("src");
-            if (!d) {
+            if (!d)
+            {
                 d = $('script[src*="' + b.RESOURCE_IDENTIFIER + '=core.js"]')
                     .attr("src")
             }
             d = d.replace("core.js", f);
             d = d.replace("ln=primefaces", "ln=" + e);
-            if (c) {
+            if (c)
+            {
                 var h = new RegExp("[?&]v=([^&]*)").exec(d)[1];
                 d = d.replace("v=" + h, "v=" + c)
             }
             var g = a.location.protocol + "//" + a.location.host;
             return d.indexOf(g) >= 0 ? d : g + d
         },
-        inArray : function(c, e) {
-            for (var d = 0; d < c.length; d++) {
-                if (c[d] === e) {
+        inArray: function (c, e) {
+            for (var d = 0; d < c.length; d++)
+            {
+                if (c[d] === e)
+                {
                     return true
                 }
             }
             return false
         },
-        isNumber : function(c) {
+        isNumber: function (c) {
             return typeof c === "number" && isFinite(c)
         },
-        getScript : function(c, d) {
+        getScript: function (c, d) {
             $.ajax({
-                type : "GET",
-                url : c,
-                success : d,
-                dataType : "script",
-                cache : true,
-                async : false
+                type: "GET",
+                url: c,
+                success: d,
+                dataType: "script",
+                cache: true,
+                async: false
             })
         },
-        focus : function(e, d) {
+        focus: function (e, d) {
             var c = ":not(:submit):not(:button):input:visible:enabled[name]";
-            setTimeout(function() {
-                if (e) {
+            setTimeout(function () {
+                if (e)
+                {
                     var i = $(b.escapeClientId(e));
-                    if (i.is(c)) {
+                    if (i.is(c))
+                    {
                         i.focus()
-                    } else {
+                    }
+                    else
+                    {
                         i.find(c).eq(0).focus()
                     }
-                } else {
-                    if (d) {
+                }
+                else
+                {
+                    if (d)
+                    {
                         $(b.escapeClientId(d)).find(c).eq(0).focus()
-                    } else {
+                    }
+                    else
+                    {
                         var h = $(c), g = h.eq(0);
-                        if (g.is(":radio")) {
+                        if (g.is(":radio"))
+                        {
                             var f = $(':radio[name="' + g.attr("name") + '"]')
                                 .filter(":checked");
-                            if (f.length) {
+                            if (f.length)
+                            {
                                 f.focus()
-                            } else {
+                            }
+                            else
+                            {
                                 g.focus()
                             }
-                        } else {
+                        }
+                        else
+                        {
                             g.focus()
                         }
                     }
@@ -335,15 +406,19 @@
             }, 50);
             b.customFocus = true
         },
-        monitorDownload : function(d, c) {
-            if (this.cookiesEnabled()) {
-                if (d) {
+        monitorDownload: function (d, c) {
+            if (this.cookiesEnabled())
+            {
+                if (d)
+                {
                     d()
                 }
-                a.downloadMonitor = setInterval(function() {
+                a.downloadMonitor = setInterval(function () {
                     var e = b.getCookie("primefaces.download");
-                    if (e === "true") {
-                        if (c) {
+                    if (e === "true")
+                    {
+                        if (c)
+                        {
                             c()
                         }
                         clearInterval(a.downloadMonitor);
@@ -352,58 +427,67 @@
                 }, 250)
             }
         },
-        scrollTo : function(d) {
+        scrollTo: function (d) {
             var c = $(b.escapeClientId(d)).offset();
             $("html,body").animate({
-                scrollTop : c.top,
-                scrollLeft : c.left
+                scrollTop: c.top,
+                scrollLeft: c.left
             }, {
-                easing : "easeInCirc"
+                easing: "easeInCirc"
             }, 1000)
         },
-        scrollInView : function(d, g) {
-            if (g.length === 0) {
+        scrollInView: function (d, g) {
+            if (g.length === 0)
+            {
                 return
             }
             var j = parseFloat(d.css("borderTopWidth")) || 0, f = parseFloat(d
-                    .css("paddingTop")) || 0, h = g.offset().top
+                .css("paddingTop")) || 0, h = g.offset().top
                 - d.offset().top - j - f, c = d.scrollTop(), e = d.height(), i = g
                 .outerHeight(true);
-            if (h < 0) {
+            if (h < 0)
+            {
                 d.scrollTop(c + h)
-            } else {
-                if ((h + i) > e) {
+            }
+            else
+            {
+                if ((h + i) > e)
+                {
                     d.scrollTop(c + h - e + i)
                 }
             }
         },
-        calculateScrollbarWidth : function() {
-            if (!this.scrollbarWidth) {
-                if (b.env.browser.msie) {
+        calculateScrollbarWidth: function () {
+            if (!this.scrollbarWidth)
+            {
+                if (b.env.browser.msie)
+                {
                     var e = $('<textarea cols="10" rows="2"></textarea>').css({
-                        position : "absolute",
-                        top : -1000,
-                        left : -1000
+                        position: "absolute",
+                        top: -1000,
+                        left: -1000
                     }).appendTo("body"), d = $(
                         '<textarea cols="10" rows="2" style="overflow: hidden;"></textarea>')
                         .css({
-                            position : "absolute",
-                            top : -1000,
-                            left : -1000
+                            position: "absolute",
+                            top: -1000,
+                            left: -1000
                         }).appendTo("body");
                     this.scrollbarWidth = e.width() - d.width();
                     e.add(d).remove()
-                } else {
+                }
+                else
+                {
                     var c = $("<div />").css({
-                        width : 100,
-                        height : 100,
-                        overflow : "auto",
-                        position : "absolute",
-                        top : -1000,
-                        left : -1000
+                        width: 100,
+                        height: 100,
+                        overflow: "auto",
+                        position: "absolute",
+                        top: -1000,
+                        left: -1000
                     }).prependTo("body").append("<div />").find("div").css({
-                        width : "100%",
-                        height : 200
+                        width: "100%",
+                        height: 200
                     });
                     this.scrollbarWidth = 100 - c.width();
                     c.parent().remove()
@@ -411,14 +495,20 @@
             }
             return this.scrollbarWidth
         },
-        bcn : function(d, e, g) {
-            if (g) {
-                for (var c = 0; c < g.length; c++) {
+        bcn: function (d, e, g) {
+            if (g)
+            {
+                for (var c = 0; c < g.length; c++)
+                {
                     var f = g[c].call(d, e);
-                    if (f === false) {
-                        if (e.preventDefault) {
+                    if (f === false)
+                    {
+                        if (e.preventDefault)
+                        {
                             e.preventDefault()
-                        } else {
+                        }
+                        else
+                        {
                             e.returnValue = false
                         }
                         break
@@ -426,141 +516,154 @@
                 }
             }
         },
-        bcnu : function(e, f, d) {
-            if (d) {
-                for (var c = 0; c < d.length; c++) {
+        bcnu: function (e, f, d) {
+            if (d)
+            {
+                for (var c = 0; c < d.length; c++)
+                {
                     var g = d[c].call(this, e, f);
-                    if (g === false) {
+                    if (g === false)
+                    {
                         break
                     }
                 }
             }
         },
-        openDialog : function(c) {
+        openDialog: function (c) {
             b.dialog.DialogHandler.openDialog(c)
         },
-        closeDialog : function(c) {
+        closeDialog: function (c) {
             b.dialog.DialogHandler.closeDialog(c)
         },
-        showMessageInDialog : function(c) {
+        showMessageInDialog: function (c) {
             b.dialog.DialogHandler.showMessageInDialog(c)
         },
-        confirm : function(c) {
+        confirm: function (c) {
             b.dialog.DialogHandler.confirm(c)
         },
-        deferredRenders : [],
-        addDeferredRender : function(e, c, d) {
+        deferredRenders: [],
+        addDeferredRender: function (e, c, d) {
             this.deferredRenders.push({
-                widget : e,
-                container : c,
-                callback : d
+                widget: e,
+                container: c,
+                callback: d
             })
         },
-        removeDeferredRenders : function(e) {
-            for (var d = (this.deferredRenders.length - 1); d >= 0; d--) {
+        removeDeferredRenders: function (e) {
+            for (var d = (this.deferredRenders.length - 1); d >= 0; d--)
+            {
                 var c = this.deferredRenders[d];
-                if (c.widget === e) {
+                if (c.widget === e)
+                {
                     this.deferredRenders.splice(d, 1)
                 }
             }
         },
-        invokeDeferredRenders : function(c) {
+        invokeDeferredRenders: function (c) {
             var g = [];
-            for (var f = 0; f < this.deferredRenders.length; f++) {
+            for (var f = 0; f < this.deferredRenders.length; f++)
+            {
                 var d = this.deferredRenders[f];
-                if (d.container === c) {
+                if (d.container === c)
+                {
                     var h = d.callback.call();
-                    if (h) {
+                    if (h)
+                    {
                         g.push(d.widget)
                     }
                 }
             }
-            for (var e = 0; e < g.length; e++) {
+            for (var e = 0; e < g.length; e++)
+            {
                 this.removeDeferredRenders(g[e])
             }
         },
-        getLocaleSettings : function() {
-            if (!this.localeSettings) {
+        getLocaleSettings: function () {
+            if (!this.localeSettings)
+            {
                 var c = b.settings.locale;
                 this.localeSettings = b.locales[c];
-                if (!this.localeSettings) {
+                if (!this.localeSettings)
+                {
                     this.localeSettings = b.locales[c.split("_")[0]];
-                    if (!this.localeSettings) {
+                    if (!this.localeSettings)
+                    {
                         this.localeSettings = b.locales.en_US
                     }
                 }
             }
             return this.localeSettings
         },
-        getAriaLabel : function(d) {
+        getAriaLabel: function (d) {
             var c = this.getLocaleSettings()["aria"];
             return (c && c[d]) ? c[d] : b.locales.en_US["aria"][d]
         },
-        zindex : 1000,
-        customFocus : false,
-        detachedWidgets : [],
-        PARTIAL_REQUEST_PARAM : "javax.faces.partial.ajax",
-        PARTIAL_UPDATE_PARAM : "javax.faces.partial.render",
-        PARTIAL_PROCESS_PARAM : "javax.faces.partial.execute",
-        PARTIAL_SOURCE_PARAM : "javax.faces.source",
-        BEHAVIOR_EVENT_PARAM : "javax.faces.behavior.event",
-        PARTIAL_EVENT_PARAM : "javax.faces.partial.event",
-        RESET_VALUES_PARAM : "primefaces.resetvalues",
-        IGNORE_AUTO_UPDATE_PARAM : "primefaces.ignoreautoupdate",
-        SKIP_CHILDREN_PARAM : "primefaces.skipchildren",
-        VIEW_STATE : "javax.faces.ViewState",
-        CLIENT_WINDOW : "javax.faces.ClientWindow",
-        VIEW_ROOT : "javax.faces.ViewRoot",
-        CLIENT_ID_DATA : "primefaces.clientid",
-        RESOURCE_IDENTIFIER : "javax.faces.resource",
-        VERSION : "${project.version}"
+        zindex: 1000,
+        customFocus: false,
+        detachedWidgets: [],
+        PARTIAL_REQUEST_PARAM: "javax.faces.partial.ajax",
+        PARTIAL_UPDATE_PARAM: "javax.faces.partial.render",
+        PARTIAL_PROCESS_PARAM: "javax.faces.partial.execute",
+        PARTIAL_SOURCE_PARAM: "javax.faces.source",
+        BEHAVIOR_EVENT_PARAM: "javax.faces.behavior.event",
+        PARTIAL_EVENT_PARAM: "javax.faces.partial.event",
+        RESET_VALUES_PARAM: "primefaces.resetvalues",
+        IGNORE_AUTO_UPDATE_PARAM: "primefaces.ignoreautoupdate",
+        SKIP_CHILDREN_PARAM: "primefaces.skipchildren",
+        VIEW_STATE: "javax.faces.ViewState",
+        CLIENT_WINDOW: "javax.faces.ClientWindow",
+        VIEW_ROOT: "javax.faces.ViewRoot",
+        CLIENT_ID_DATA: "primefaces.clientid",
+        RESOURCE_IDENTIFIER: "javax.faces.resource",
+        VERSION: "${project.version}"
     };
     b.settings = {};
     b.util = {};
     b.widgets = {};
     b.locales = {
-        en_US : {
-            closeText : "Close",
-            prevText : "Previous",
-            nextText : "Next",
-            monthNames : [ "January", "February", "March", "April", "May",
+        en_US: {
+            closeText: "Close",
+            prevText: "Previous",
+            nextText: "Next",
+            monthNames: ["January", "February", "March", "April", "May",
                 "June", "July", "August", "September", "October",
-                "November", "December" ],
-            monthNamesShort : [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
-                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ],
-            dayNames : [ "Sunday", "Monday", "Tuesday", "Wednesday",
-                "Thursday", "Friday", "Saturday" ],
-            dayNamesShort : [ "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" ],
-            dayNamesMin : [ "S", "M", "T", "W ", "T", "F ", "S" ],
-            weekHeader : "Week",
-            firstDay : 0,
-            isRTL : false,
-            showMonthAfterYear : false,
-            yearSuffix : "",
-            timeOnlyTitle : "Only Time",
-            timeText : "Time",
-            hourText : "Hour",
-            minuteText : "Minute",
-            secondText : "Second",
-            currentText : "Current Date",
-            ampm : false,
-            month : "Month",
-            week : "Week",
-            day : "Day",
-            allDayText : "All Day",
-            aria : {
-                "paginator.PAGE" : "Page {0}",
-                "calendar.BUTTON" : "Show Calendar",
-                "datatable.sort.ASC" : "activate to sort column ascending",
-                "datatable.sort.DESC" : "activate to sort column descending",
-                "columntoggler.CLOSE" : "Close"
+                "November", "December"],
+            monthNamesShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+            dayNames: ["Sunday", "Monday", "Tuesday", "Wednesday",
+                "Thursday", "Friday", "Saturday"],
+            dayNamesShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
+            dayNamesMin: ["S", "M", "T", "W ", "T", "F ", "S"],
+            weekHeader: "Week",
+            firstDay: 0,
+            isRTL: false,
+            showMonthAfterYear: false,
+            yearSuffix: "",
+            timeOnlyTitle: "Only Time",
+            timeText: "Time",
+            hourText: "Hour",
+            minuteText: "Minute",
+            secondText: "Second",
+            currentText: "Current Date",
+            ampm: false,
+            month: "Month",
+            week: "Week",
+            day: "Day",
+            allDayText: "All Day",
+            aria: {
+                "paginator.PAGE": "Page {0}",
+                "calendar.BUTTON": "Show Calendar",
+                "datatable.sort.ASC": "activate to sort column ascending",
+                "datatable.sort.DESC": "activate to sort column descending",
+                "columntoggler.CLOSE": "Close"
             }
         }
     };
     b.locales.en = b.locales.en_US;
-    PF = function(d) {
+    PF = function (d) {
         var c = b.widgets[d];
-        if (!c) {
+        if (!c)
+        {
             b.error("Widget for var '" + d + "' not available!")
         }
         return c
@@ -568,11 +671,11 @@
     a.PrimeFaces = b
 })(window);
 PrimeFaces.env = {
-    mobile : false,
-    touch : false,
-    ios : false,
-    browser : null,
-    init : function() {
+    mobile: false,
+    touch: false,
+    ios: false,
+    browser: null,
+    init: function () {
         this.mobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
             .test(window.navigator.userAgent);
         this.touch = "ontouchstart" in window
@@ -580,12 +683,15 @@ PrimeFaces.env = {
         this.ios = /iPhone|iPad|iPod/i.test(window.navigator.userAgent);
         this.resolveUserAgent()
     },
-    resolveUserAgent : function() {
-        if ($.browser) {
+    resolveUserAgent: function () {
+        if ($.browser)
+        {
             this.browser = $.browser
-        } else {
+        }
+        else
+        {
             var a, d;
-            jQuery.uaMatch = function(h) {
+            jQuery.uaMatch = function (h) {
                 h = h.toLowerCase();
                 var g = /(opr)[\/]([\w.]+)/.exec(h)
                     || /(chrome)[ \/]([\w.]+)/.exec(h)
@@ -602,41 +708,49 @@ PrimeFaces.env = {
                     || /(win)/.exec(h) || /(mac)/.exec(h)
                     || /(linux)/.exec(h) || /(cros)/i.exec(h) || [];
                 return {
-                    browser : g[3] || g[1] || "",
-                    version : g[2] || "0",
-                    platform : f[0] || ""
+                    browser: g[3] || g[1] || "",
+                    version: g[2] || "0",
+                    platform: f[0] || ""
                 }
             };
             a = jQuery.uaMatch(window.navigator.userAgent);
             d = {};
-            if (a.browser) {
+            if (a.browser)
+            {
                 d[a.browser] = true;
                 d.version = a.version;
                 d.versionNumber = parseInt(a.version)
             }
-            if (a.platform) {
+            if (a.platform)
+            {
                 d[a.platform] = true
             }
-            if (d.android || d.ipad || d.iphone || d["windows phone"]) {
+            if (d.android || d.ipad || d.iphone || d["windows phone"])
+            {
                 d.mobile = true
             }
-            if (d.cros || d.mac || d.linux || d.win) {
+            if (d.cros || d.mac || d.linux || d.win)
+            {
                 d.desktop = true
             }
-            if (d.chrome || d.opr || d.safari) {
+            if (d.chrome || d.opr || d.safari)
+            {
                 d.webkit = true
             }
-            if (d.rv) {
+            if (d.rv)
+            {
                 var e = "msie";
                 a.browser = e;
                 d[e] = true
             }
-            if (d.opr) {
+            if (d.opr)
+            {
                 var c = "opera";
                 a.browser = c;
                 d[c] = true
             }
-            if (d.safari && d.android) {
+            if (d.safari && d.android)
+            {
                 var b = "android";
                 a.browser = b;
                 d[b] = true
@@ -647,49 +761,52 @@ PrimeFaces.env = {
             $.browser = d
         }
     },
-    isIE : function(a) {
+    isIE: function (a) {
         return (a === undefined) ? this.browser.msie
             : (this.browser.msie && parseInt(this.browser.version, 10) === a)
     },
-    isLtIE : function(a) {
+    isLtIE: function (a) {
         return (this.browser.msie) ? parseInt(this.browser.version, 10) < a
             : false
     },
-    isCanvasSupported : function() {
+    isCanvasSupported: function () {
         var a = document.createElement("canvas");
         return !!(a.getContext && a.getContext("2d"))
     }
 };
 PrimeFaces.env.init();
 PrimeFaces.AB_MAPPING = {
-    s : "source",
-    f : "formId",
-    p : "process",
-    u : "update",
-    e : "event",
-    a : "async",
-    g : "global",
-    d : "delay",
-    t : "timeout",
-    sc : "skipChildren",
-    iau : "ignoreAutoUpdate",
-    ps : "partialSubmit",
-    psf : "partialSubmitFilter",
-    rv : "resetValues",
-    fi : "fragmentId",
-    fu : "fragmentUpdate",
-    pa : "params",
-    onst : "onstart",
-    oner : "onerror",
-    onsu : "onsuccess",
-    onco : "oncomplete"
+    s: "source",
+    f: "formId",
+    p: "process",
+    u: "update",
+    e: "event",
+    a: "async",
+    g: "global",
+    d: "delay",
+    t: "timeout",
+    sc: "skipChildren",
+    iau: "ignoreAutoUpdate",
+    ps: "partialSubmit",
+    psf: "partialSubmitFilter",
+    rv: "resetValues",
+    fi: "fragmentId",
+    fu: "fragmentUpdate",
+    pa: "params",
+    onst: "onstart",
+    oner: "onerror",
+    onsu: "onsuccess",
+    onco: "oncomplete"
 };
-PrimeFaces.ab = function(a, c) {
-    for ( var b in a) {
-        if (!a.hasOwnProperty(b)) {
+PrimeFaces.ab = function (a, c) {
+    for (var b in a)
+    {
+        if (!a.hasOwnProperty(b))
+        {
             continue
         }
-        if (this.AB_MAPPING[b]) {
+        if (this.AB_MAPPING[b])
+        {
             a[this.AB_MAPPING[b]] = a[b];
             delete a[b]
         }
@@ -697,58 +814,70 @@ PrimeFaces.ab = function(a, c) {
     PrimeFaces.ajax.Request.handle(a, c)
 };
 PrimeFaces.ajax = {
-    VIEW_HEAD : "javax.faces.ViewHead",
-    VIEW_BODY : "javax.faces.ViewBody",
-    Utils : {
-        loadStylesheets : function(b) {
-            for (var a = 0; a < b.length; a++) {
+    VIEW_HEAD: "javax.faces.ViewHead",
+    VIEW_BODY: "javax.faces.ViewBody",
+    Utils: {
+        loadStylesheets: function (b) {
+            for (var a = 0; a < b.length; a++)
+            {
                 $("head").append(
                     '<link type="text/css" rel="stylesheet" href="' + b[a]
                     + '" />')
             }
         },
-        loadScripts : function(b) {
-            var a = function() {
+        loadScripts: function (b) {
+            var a = function () {
                 var c = b.shift();
-                if (c) {
+                if (c)
+                {
                     PrimeFaces.getScript(c, a)
                 }
             };
             a()
         },
-        getContent : function(c) {
+        getContent: function (c) {
             var b = "";
-            for (var a = 0; a < c.childNodes.length; a++) {
+            for (var a = 0; a < c.childNodes.length; a++)
+            {
                 b += c.childNodes[a].nodeValue
             }
             return b
         },
-        updateFormStateInput : function(b, g, h) {
+        updateFormStateInput: function (b, g, h) {
             var e = $.trim(g);
             var a = null;
-            if (h && h.pfSettings && h.pfSettings.portletForms) {
+            if (h && h.pfSettings && h.pfSettings.portletForms)
+            {
                 a = $(h.pfSettings.portletForms)
-            } else {
+            }
+            else
+            {
                 a = $("form")
             }
             var j = "";
-            if (h && h.pfArgs && h.pfArgs.parameterNamespace) {
+            if (h && h.pfArgs && h.pfArgs.parameterNamespace)
+            {
                 j = h.pfArgs.parameterNamespace
             }
-            for (var d = 0; d < a.length; d++) {
+            for (var d = 0; d < a.length; d++)
+            {
                 var c = a.eq(d);
-                if (c.attr("method") === "post") {
+                if (c.attr("method") === "post")
+                {
                     var f = c.children("input[name='" + j + b + "']");
-                    if (f.length > 0) {
+                    if (f.length > 0)
+                    {
                         f.val(e)
-                    } else {
+                    }
+                    else
+                    {
                         c.append('<input type="hidden" name="' + j + b
                             + '" value="' + e + '" autocomplete="off" />')
                     }
                 }
             }
         },
-        updateHead : function(d) {
+        updateHead: function (d) {
             var b = $.ajaxSetup()["cache"];
             $.ajaxSetup()["cache"] = true;
             var a = new RegExp("<head[^>]*>", "gi").exec(d)[0];
@@ -756,35 +885,53 @@ PrimeFaces.ajax = {
             $("head").html(d.substring(c, d.lastIndexOf("</head>")));
             $.ajaxSetup()["cache"] = b
         },
-        updateBody : function(b) {
+        updateBody: function (b) {
             var c = new RegExp("<body[^>]*>", "gi").exec(b)[0];
             var a = b.indexOf(c) + c.length;
             $("body").html(b.substring(a, b.lastIndexOf("</body>")))
         },
-        updateElement : function(d, b, c) {
-            if (d.indexOf(PrimeFaces.VIEW_STATE) !== -1) {
+        updateElement: function (d, b, c) {
+            if (d.indexOf(PrimeFaces.VIEW_STATE) !== -1)
+            {
                 PrimeFaces.ajax.Utils.updateFormStateInput(
                     PrimeFaces.VIEW_STATE, b, c)
-            } else {
-                if (d.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1) {
+            }
+            else
+            {
+                if (d.indexOf(PrimeFaces.CLIENT_WINDOW) !== -1)
+                {
                     PrimeFaces.ajax.Utils.updateFormStateInput(
                         PrimeFaces.CLIENT_WINDOW, b, c)
-                } else {
-                    if (d === PrimeFaces.VIEW_ROOT) {
+                }
+                else
+                {
+                    if (d === PrimeFaces.VIEW_ROOT)
+                    {
                         var a = PrimeFaces.ajax.Utils;
                         window.PrimeFaces = null;
                         a.updateHead(b);
                         a.updateBody(b)
-                    } else {
-                        if (d === PrimeFaces.ajax.VIEW_HEAD) {
+                    }
+                    else
+                    {
+                        if (d === PrimeFaces.ajax.VIEW_HEAD)
+                        {
                             PrimeFaces.ajax.Utils.updateHead(b)
-                        } else {
-                            if (d === PrimeFaces.ajax.VIEW_BODY) {
+                        }
+                        else
+                        {
+                            if (d === PrimeFaces.ajax.VIEW_BODY)
+                            {
                                 PrimeFaces.ajax.Utils.updateBody(b)
-                            } else {
-                                if (d === $("head")[0].id) {
+                            }
+                            else
+                            {
+                                if (d === $("head")[0].id)
+                                {
                                     PrimeFaces.ajax.Utils.updateHead(b)
-                                } else {
+                                }
+                                else
+                                {
                                     $(PrimeFaces.escapeClientId(d))
                                         .replaceWith(b)
                                 }
@@ -795,145 +942,180 @@ PrimeFaces.ajax = {
             }
         }
     },
-    Queue : {
-        delays : {},
-        requests : new Array(),
-        xhrs : new Array(),
-        offer : function(a) {
-            if (a.delay) {
+    Queue: {
+        delays: {},
+        requests: new Array(),
+        xhrs: new Array(),
+        offer: function (a) {
+            if (a.delay)
+            {
                 var b = null, d = this, b = (typeof (a.source) === "string") ? a.source
-                    : $(a.source).attr("id"), c = function() {
-                    return setTimeout(function() {
+                    : $(a.source).attr("id"), c = function () {
+                    return setTimeout(function () {
                         d.requests.push(a);
-                        if (d.requests.length === 1) {
+                        if (d.requests.length === 1)
+                        {
                             PrimeFaces.ajax.Request.send(a)
                         }
                     }, a.delay)
                 };
-                if (this.delays[b]) {
+                if (this.delays[b])
+                {
                     clearTimeout(this.delays[b].timeout);
                     this.delays[b].timeout = c()
-                } else {
+                }
+                else
+                {
                     this.delays[b] = {
-                        timeout : c()
+                        timeout: c()
                     }
                 }
-            } else {
+            }
+            else
+            {
                 this.requests.push(a);
-                if (this.requests.length === 1) {
+                if (this.requests.length === 1)
+                {
                     PrimeFaces.ajax.Request.send(a)
                 }
             }
         },
-        poll : function() {
-            if (this.isEmpty()) {
+        poll: function () {
+            if (this.isEmpty())
+            {
                 return null
             }
             var b = this.requests.shift(), a = this.peek();
-            if (a) {
+            if (a)
+            {
                 PrimeFaces.ajax.Request.send(a)
             }
             return b
         },
-        peek : function() {
-            if (this.isEmpty()) {
+        peek: function () {
+            if (this.isEmpty())
+            {
                 return null
             }
             return this.requests[0]
         },
-        isEmpty : function() {
+        isEmpty: function () {
             return this.requests.length === 0
         },
-        addXHR : function(a) {
+        addXHR: function (a) {
             this.xhrs.push(a)
         },
-        removeXHR : function(b) {
+        removeXHR: function (b) {
             var a = $.inArray(b, this.xhrs);
-            if (a > -1) {
+            if (a > -1)
+            {
                 this.xhrs.splice(a, 1)
             }
         },
-        abortAll : function() {
-            for (var a = 0; a < this.xhrs.length; a++) {
+        abortAll: function () {
+            for (var a = 0; a < this.xhrs.length; a++)
+            {
                 this.xhrs[a].abort()
             }
             this.xhrs = new Array();
             this.requests = new Array()
         }
     },
-    Request : {
-        handle : function(a, b) {
+    Request: {
+        handle: function (a, b) {
             a.ext = b;
-            if (PrimeFaces.settings.earlyPostParamEvaluation) {
+            if (PrimeFaces.settings.earlyPostParamEvaluation)
+            {
                 a.earlyPostParams = PrimeFaces.ajax.Request
                     .collectEarlyPostParams(a)
             }
-            if (a.async) {
+            if (a.async)
+            {
                 PrimeFaces.ajax.Request.send(a)
-            } else {
+            }
+            else
+            {
                 PrimeFaces.ajax.Queue.offer(a)
             }
         },
-        collectEarlyPostParams : function(a) {
+        collectEarlyPostParams: function (a) {
             var b;
             var c;
-            if (typeof (a.source) === "string") {
+            if (typeof (a.source) === "string")
+            {
                 c = $(PrimeFaces.escapeClientId(a.source))
-            } else {
+            }
+            else
+            {
                 c = $(a.source)
             }
-            if (c.is(":input") && c.is(":not(:button)")) {
+            if (c.is(":input") && c.is(":not(:button)"))
+            {
                 b = [];
                 b.push({
-                    name : c.attr("name"),
-                    value : c.is(":checkbox") ? c.is(":checked") : c.val()
+                    name: c.attr("name"),
+                    value: c.is(":checkbox") ? c.is(":checked") : c.val()
                 })
-            } else {
+            }
+            else
+            {
                 b = c.find(":input").serializeArray();
                 b = b.concat(c.find("input[type=checkbox]:not(:checked)").map(
-                    function() {
+                    function () {
                         var d = $(this);
                         return {
-                            name : d.attr("name"),
-                            value : d.is(":checked")
+                            name: d.attr("name"),
+                            value: d.is(":checked")
                         }
                     }).get())
             }
             return b
         },
-        send : function(e) {
+        send: function (e) {
             PrimeFaces.debug("Initiating ajax request.");
             PrimeFaces.customFocus = false;
             var o = (e.global === true || e.global === undefined) ? true
                 : false, b = null, f = null;
-            if (e.onstart) {
+            if (e.onstart)
+            {
                 var u = e.onstart.call(this, e);
-                if (u === false) {
+                if (u === false)
+                {
                     PrimeFaces
                         .debug("Ajax request cancelled by onstart callback.");
-                    if (!e.async) {
+                    if (!e.async)
+                    {
                         PrimeFaces.ajax.Queue.poll()
                     }
                     return false
                 }
             }
-            if (e.ext && e.ext.onstart) {
+            if (e.ext && e.ext.onstart)
+            {
                 e.ext.onstart.call(this, e)
             }
-            if (o) {
+            if (o)
+            {
                 $(document).trigger("pfAjaxStart")
             }
-            if (typeof (e.source) === "string") {
+            if (typeof (e.source) === "string")
+            {
                 f = e.source
-            } else {
+            }
+            else
+            {
                 f = $(e.source).attr("id")
             }
-            if (e.formId) {
+            if (e.formId)
+            {
                 b = PrimeFaces.expressions.SearchExpressionFacade
                     .resolveComponentsAsSelector(e.formId)
-            } else {
+            }
+            else
+            {
                 b = $(PrimeFaces.escapeClientId(f)).closest("form");
-                if (b.length === 0) {
+                if (b.length === 0)
+                {
                     b = $("form").eq(0)
                 }
             }
@@ -941,7 +1123,8 @@ PrimeFaces.ajax = {
             var v = b.attr("action"), t = b
                 .children("input[name*='javax.faces.encodedURL']"), g = [];
             var n = null;
-            if (t.length > 0) {
+            if (t.length > 0)
+            {
                 n = 'form[action="' + v + '"]';
                 v = t.val()
             }
@@ -951,89 +1134,119 @@ PrimeFaces.ajax = {
                 PrimeFaces.PARTIAL_REQUEST_PARAM, true, m);
             PrimeFaces.ajax.Request.addParam(g,
                 PrimeFaces.PARTIAL_SOURCE_PARAM, f, m);
-            if (e.resetValues) {
+            if (e.resetValues)
+            {
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.RESET_VALUES_PARAM, true, m)
             }
-            if (e.ignoreAutoUpdate) {
+            if (e.ignoreAutoUpdate)
+            {
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.IGNORE_AUTO_UPDATE_PARAM, true, m)
             }
-            if (e.skipChildren === false) {
+            if (e.skipChildren === false)
+            {
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.SKIP_CHILDREN_PARAM, false, m)
             }
             var s = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(e,
                 "process");
-            if (e.fragmentId) {
+            if (e.fragmentId)
+            {
                 s.push(e.fragmentId)
             }
             var a = "@none";
-            if (s.length > 0) {
+            if (s.length > 0)
+            {
                 a = s.join(" ")
-            } else {
+            }
+            else
+            {
                 var j = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(e,
                     "process");
                 j = $.trim(j);
-                if (j === "") {
+                if (j === "")
+                {
                     a = "@all"
                 }
             }
-            if (a !== "@none") {
+            if (a !== "@none")
+            {
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.PARTIAL_PROCESS_PARAM, a, m)
             }
             var d = PrimeFaces.ajax.Request.resolveComponentsForAjaxCall(e,
                 "update");
-            if (e.fragmentId && e.fragmentUpdate) {
+            if (e.fragmentId && e.fragmentUpdate)
+            {
                 d.push(e.fragmentId)
             }
-            if (d.length > 0) {
+            if (d.length > 0)
+            {
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.PARTIAL_UPDATE_PARAM, d.join(" "), m)
             }
-            if (e.event) {
+            if (e.event)
+            {
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.BEHAVIOR_EVENT_PARAM, e.event, m);
                 var l = e.event;
-                if (e.event === "valueChange") {
+                if (e.event === "valueChange")
+                {
                     l = "change"
-                } else {
-                    if (e.event === "action") {
+                }
+                else
+                {
+                    if (e.event === "action")
+                    {
                         l = "click"
                     }
                 }
                 PrimeFaces.ajax.Request.addParam(g,
                     PrimeFaces.PARTIAL_EVENT_PARAM, l, m)
-            } else {
+            }
+            else
+            {
                 PrimeFaces.ajax.Request.addParam(g, f, f, m)
             }
-            if (e.params) {
+            if (e.params)
+            {
                 PrimeFaces.ajax.Request.addParams(g, e.params, m)
             }
-            if (e.ext && e.ext.params) {
+            if (e.ext && e.ext.params)
+            {
                 PrimeFaces.ajax.Request.addParams(g, e.ext.params, m)
             }
-            if (e.partialSubmit && a.indexOf("@all") === -1) {
+            if (e.partialSubmit && a.indexOf("@all") === -1)
+            {
                 var p = false, h = e.partialSubmitFilter || ":input";
-                if (a.indexOf("@none") === -1) {
-                    for (var q = 0; q < s.length; q++) {
+                if (a.indexOf("@none") === -1)
+                {
+                    for (var q = 0; q < s.length; q++)
+                    {
                         var k = $(PrimeFaces.escapeClientId(s[q]));
                         var w = null;
-                        if (k.is("form")) {
+                        if (k.is("form"))
+                        {
                             w = k.serializeArray();
                             p = true
-                        } else {
-                            if (k.is(":input")) {
+                        }
+                        else
+                        {
+                            if (k.is(":input"))
+                            {
                                 w = k.serializeArray()
-                            } else {
+                            }
+                            else
+                            {
                                 w = k.find(h).serializeArray()
                             }
                         }
                         $.merge(g, w)
                     }
                 }
-                if (!p) {
+                if (!p)
+                {
                     PrimeFaces.ajax.Request.addParamFromInput(g,
                         PrimeFaces.VIEW_STATE, b, m);
                     PrimeFaces.ajax.Request.addParamFromInput(g,
@@ -1043,14 +1256,18 @@ PrimeFaces.ajax = {
                     PrimeFaces.ajax.Request
                         .addParamFromInput(g, "dspwid", b, m)
                 }
-            } else {
+            }
+            else
+            {
                 $.merge(g, b.serializeArray())
             }
             if (PrimeFaces.settings.earlyPostParamEvaluation
-                && e.earlyPostParams) {
-                $.each(e.earlyPostParams, function(i, x) {
-                    g = $.grep(g, function(z, y) {
-                        if (z.name === x.name) {
+                && e.earlyPostParams)
+            {
+                $.each(e.earlyPostParams, function (i, x) {
+                    g = $.grep(g, function (z, y) {
+                        if (z.name === x.name)
+                        {
                             return false
                         }
                         return true
@@ -1061,141 +1278,171 @@ PrimeFaces.ajax = {
             var c = $.param(g);
             PrimeFaces.debug("Post Data:" + c);
             var r = {
-                url : v,
-                type : "POST",
-                cache : false,
-                dataType : "xml",
-                data : c,
-                portletForms : n,
-                source : e.source,
-                global : false,
-                beforeSend : function(x, i) {
+                url: v,
+                type: "POST",
+                cache: false,
+                dataType: "xml",
+                data: c,
+                portletForms: n,
+                source: e.source,
+                global: false,
+                beforeSend: function (x, i) {
                     x.setRequestHeader("Faces-Request", "partial/ajax");
                     x.pfSettings = i;
                     x.pfArgs = {};
-                    if (o) {
-                        $(document).trigger("pfAjaxSend", [ x, this ])
+                    if (o)
+                    {
+                        $(document).trigger("pfAjaxSend", [x, this])
                     }
                 },
-                error : function(y, i, x) {
-                    if (e.onerror) {
+                error: function (y, i, x) {
+                    if (e.onerror)
+                    {
                         e.onerror.call(this, y, i, x)
                     }
-                    if (e.ext && e.ext.onerror) {
+                    if (e.ext && e.ext.onerror)
+                    {
                         e.ext.onerror.call(this, y, i, x)
                     }
-                    if (o) {
-                        $(document).trigger("pfAjaxError", [ y, this, x ])
+                    if (o)
+                    {
+                        $(document).trigger("pfAjaxError", [y, this, x])
                     }
                     PrimeFaces.error("Request return with error:" + i + ".")
                 },
-                success : function(y, i, z) {
+                success: function (y, i, z) {
                     PrimeFaces.debug("Response received succesfully.");
                     var x;
-                    if (e.onsuccess) {
+                    if (e.onsuccess)
+                    {
                         x = e.onsuccess.call(this, y, i, z)
                     }
-                    if (e.ext && e.ext.onsuccess && !x) {
+                    if (e.ext && e.ext.onsuccess && !x)
+                    {
                         x = e.ext.onsuccess.call(this, y, i, z)
                     }
-                    if (o) {
-                        $(document).trigger("pfAjaxSuccess", [ z, this ])
+                    if (o)
+                    {
+                        $(document).trigger("pfAjaxSuccess", [z, this])
                     }
-                    if (x) {
+                    if (x)
+                    {
                         return
-                    } else {
+                    }
+                    else
+                    {
                         PrimeFaces.ajax.Response.handle(y, i, z)
                     }
                     PrimeFaces.debug("DOM is updated.")
                 },
-                complete : function(x, i) {
-                    if (e.oncomplete) {
+                complete: function (x, i) {
+                    if (e.oncomplete)
+                    {
                         e.oncomplete.call(this, x, i, x.pfArgs)
                     }
-                    if (e.ext && e.ext.oncomplete) {
+                    if (e.ext && e.ext.oncomplete)
+                    {
                         e.ext.oncomplete.call(this, x, i, x.pfArgs)
                     }
-                    if (o) {
-                        $(document).trigger("pfAjaxComplete", [ x, this ])
+                    if (o)
+                    {
+                        $(document).trigger("pfAjaxComplete", [x, this])
                     }
                     PrimeFaces.debug("Response completed.");
                     PrimeFaces.ajax.Queue.removeXHR(x);
-                    if (!e.async) {
+                    if (!e.async)
+                    {
                         PrimeFaces.ajax.Queue.poll()
                     }
                 }
             };
-            if (e.timeout) {
+            if (e.timeout)
+            {
                 r.timeout = e.timeout
             }
             PrimeFaces.ajax.Queue.addXHR($.ajax(r))
         },
-        resolveExpressionsForAjaxCall : function(a, b) {
+        resolveExpressionsForAjaxCall: function (a, b) {
             var c = "";
-            if (a[b]) {
+            if (a[b])
+            {
                 c += a[b]
             }
-            if (a.ext && a.ext[b]) {
+            if (a.ext && a.ext[b])
+            {
                 c += " " + a.ext[b]
             }
             return c
         },
-        resolveComponentsForAjaxCall : function(a, b) {
+        resolveComponentsForAjaxCall: function (a, b) {
             var c = PrimeFaces.ajax.Request.resolveExpressionsForAjaxCall(a, b);
             return PrimeFaces.expressions.SearchExpressionFacade
                 .resolveComponents(c)
         },
-        addParam : function(d, a, c, b) {
-            if (b || !a.indexOf(b) === 0) {
+        addParam: function (d, a, c, b) {
+            if (b || !a.indexOf(b) === 0)
+            {
                 d.push({
-                    name : b + a,
-                    value : c
+                    name: b + a,
+                    value: c
                 })
-            } else {
+            }
+            else
+            {
                 d.push({
-                    name : a,
-                    value : c
+                    name: a,
+                    value: c
                 })
             }
         },
-        addParams : function(e, a, c) {
-            for (var b = 0; b < a.length; b++) {
+        addParams: function (e, a, c) {
+            for (var b = 0; b < a.length; b++)
+            {
                 var d = a[b];
-                if (c && !d.name.indexOf(c) === 0) {
+                if (c && !d.name.indexOf(c) === 0)
+                {
                     d.name = c + d.name
                 }
                 e.push(d)
             }
         },
-        addParamFromInput : function(f, b, c, e) {
+        addParamFromInput: function (f, b, c, e) {
             var a = null;
-            if (e) {
+            if (e)
+            {
                 a = c.children("input[name*='" + b + "']")
-            } else {
+            }
+            else
+            {
                 a = c.children("input[name='" + b + "']")
             }
-            if (a && a.length > 0) {
+            if (a && a.length > 0)
+            {
                 var d = a.val();
                 PrimeFaces.ajax.Request.addParam(f, b, d, e)
             }
         },
-        extractParameterNamespace : function(c) {
+        extractParameterNamespace: function (c) {
             var a = c.children("input[name*='" + PrimeFaces.VIEW_STATE + "']");
-            if (a && a.length > 0) {
+            if (a && a.length > 0)
+            {
                 var b = a[0].name;
-                if (b.length > PrimeFaces.VIEW_STATE.length) {
+                if (b.length > PrimeFaces.VIEW_STATE.length)
+                {
                     return b.substring(0, b.indexOf(PrimeFaces.VIEW_STATE))
                 }
             }
             return null
         }
     },
-    Response : {
-        handle : function(h, e, m, b) {
+    Response: {
+        handle: function (h, e, m, b) {
             var n = h.getElementsByTagName("partial-response")[0];
-            for (var g = 0; g < n.childNodes.length; g++) {
+            for (var g = 0; g < n.childNodes.length; g++)
+            {
                 var a = n.childNodes[g];
-                switch (a.nodeName) {
+                switch (a.nodeName)
+                {
                     case "redirect":
                         PrimeFaces.ajax.ResponseProcessor.doRedirect(a);
                         break;
@@ -1204,12 +1451,15 @@ PrimeFaces.ajax = {
                         var k = c.attr("id");
                         var f;
                         if (c.length > 0 && c.is("input")
-                            && $.isFunction($.fn.getSelection)) {
+                            && $.isFunction($.fn.getSelection))
+                        {
                             f = c.getSelection()
                         }
-                        for (var d = 0; d < a.childNodes.length; d++) {
+                        for (var d = 0; d < a.childNodes.length; d++)
+                        {
                             var l = a.childNodes[d];
-                            switch (l.nodeName) {
+                            switch (l.nodeName)
+                            {
                                 case "update":
                                     PrimeFaces.ajax.ResponseProcessor.doUpdate(l, m, b);
                                     break;
@@ -1245,20 +1495,24 @@ PrimeFaces.ajax = {
                 }
             }
         },
-        handleReFocus : function(d, b) {
+        handleReFocus: function (d, b) {
             if (PrimeFaces.customFocus === false && d
-                && d !== $(document.activeElement).attr("id")) {
+                && d !== $(document.activeElement).attr("id"))
+            {
                 var c = $(PrimeFaces.escapeClientId(d));
-                var a = function() {
+                var a = function () {
                     c.focus();
-                    if (b && b.start) {
+                    if (b && b.start)
+                    {
                         c.setSelection(b.start, b.end)
                     }
                 };
-                if (c.length) {
+                if (c.length)
+                {
                     a();
-                    setTimeout(function() {
-                        if (!c.is(":focus")) {
+                    setTimeout(function () {
+                        if (!c.is(":focus"))
+                        {
                             a()
                         }
                     }, 50)
@@ -1266,17 +1520,23 @@ PrimeFaces.ajax = {
             }
             PrimeFaces.customFocus = false
         },
-        destroyDetachedWidgets : function() {
-            for (var a = 0; a < PrimeFaces.detachedWidgets.length; a++) {
+        destroyDetachedWidgets: function () {
+            for (var a = 0; a < PrimeFaces.detachedWidgets.length; a++)
+            {
                 var d = PrimeFaces.detachedWidgets[a];
                 var b = PF(d);
-                if (b) {
-                    if (b.isDetached()) {
+                if (b)
+                {
+                    if (b.isDetached())
+                    {
                         PrimeFaces.widgets[d] = null;
                         b.destroy();
-                        try {
+                        try
+                        {
                             delete b
-                        } catch (c) {
+                        }
+                        catch (c)
+                        {
                         }
                     }
                 }
@@ -1284,119 +1544,155 @@ PrimeFaces.ajax = {
             PrimeFaces.detachedWidgets = []
         }
     },
-    ResponseProcessor : {
-        doRedirect : function(b) {
-            try {
+    ResponseProcessor: {
+        doRedirect: function (b) {
+            try
+            {
                 window.location.assign(b.getAttribute("url"))
-            } catch (a) {
+            }
+            catch (a)
+            {
                 PrimeFaces.warn("Error redirecting to URL: "
                     + b.getAttribute("url"))
             }
         },
-        doUpdate : function(c, d, a) {
+        doUpdate: function (c, d, a) {
             var e = c.getAttribute("id"), b = PrimeFaces.ajax.Utils
                 .getContent(c);
-            if (a && a.widget && a.widget.id === e) {
+            if (a && a.widget && a.widget.id === e)
+            {
                 a.handle.call(a.widget, b)
-            } else {
+            }
+            else
+            {
                 PrimeFaces.ajax.Utils.updateElement(e, b, d)
             }
         },
-        doEval : function(b) {
+        doEval: function (b) {
             var a = b.textContent || b.innerText || b.text;
             $.globalEval(a)
         },
-        doExtension : function(d, e) {
-            if (e) {
+        doExtension: function (d, e) {
+            if (e)
+            {
                 if (d.getAttribute("ln") === "primefaces"
-                    && d.getAttribute("type") === "args") {
+                    && d.getAttribute("type") === "args")
+                {
                     var c = d.textContent || d.innerText || d.text;
-                    if (e.pfArgs) {
+                    if (e.pfArgs)
+                    {
                         var b = $.parseJSON(c);
-                        for ( var a in b) {
+                        for (var a in b)
+                        {
                             e.pfArgs[a] = b[a]
                         }
-                    } else {
+                    }
+                    else
+                    {
                         e.pfArgs = $.parseJSON(c)
                     }
                 }
             }
         },
-        doError : function(a, b) {
+        doError: function (a, b) {
         },
-        doDelete : function(a) {
+        doDelete: function (a) {
             var b = a.getAttribute("id");
             $(PrimeFaces.escapeClientId(b)).remove()
         },
-        doInsert : function(d) {
-            if (!d.childNodes) {
+        doInsert: function (d) {
+            if (!d.childNodes)
+            {
                 return false
             }
-            for (var b = 0; b < d.childNodes.length; b++) {
+            for (var b = 0; b < d.childNodes.length; b++)
+            {
                 var a = d.childNodes[b];
                 var f = a.getAttribute("id");
                 var e = $(PrimeFaces.escapeClientId(f));
                 var c = PrimeFaces.ajax.Utils.getContent(a);
-                if (a.nodeName === "after") {
+                if (a.nodeName === "after")
+                {
                     $(c).insertAfter(e)
-                } else {
-                    if (a.nodeName === "before") {
+                }
+                else
+                {
+                    if (a.nodeName === "before")
+                    {
                         $(c).insertBefore(e)
                     }
                 }
             }
         },
-        doAttributes : function(c) {
-            if (!c.childNodes) {
+        doAttributes: function (c) {
+            if (!c.childNodes)
+            {
                 return false
             }
             var g = c.getAttribute("id");
             var f = $(PrimeFaces.escapeClientId(g));
-            for (var b = 0; b < c.childNodes.length; b++) {
+            for (var b = 0; b < c.childNodes.length; b++)
+            {
                 var d = c.childNodes[b];
                 var a = d.getAttribute("name");
                 var e = d.getAttribute("value");
-                if (!a) {
+                if (!a)
+                {
                     return
                 }
-                if (!e || e === null) {
+                if (!e || e === null)
+                {
                     e = ""
                 }
                 f.attr(a, e)
             }
         }
     },
-    AjaxRequest : function(a, b) {
+    AjaxRequest: function (a, b) {
         return PrimeFaces.ajax.Request.handle(a, b)
     }
 };
 PrimeFaces.expressions = {};
 PrimeFaces.expressions.SearchExpressionFacade = {
-    resolveComponentsAsSelector : function(c) {
+    resolveComponentsAsSelector: function (c) {
         var a = PrimeFaces.expressions.SearchExpressionFacade
             .splitExpressions(c);
         var e = $();
-        if (a) {
-            for (var b = 0; b < a.length; ++b) {
+        if (a)
+        {
+            for (var b = 0; b < a.length; ++b)
+            {
                 var g = $.trim(a[b]);
-                if (g.length > 0) {
-                    if (g == "@none" || g == "@all") {
+                if (g.length > 0)
+                {
+                    if (g == "@none" || g == "@all")
+                    {
                         continue
                     }
-                    if (g.indexOf("@") == -1) {
+                    if (g.indexOf("@") == -1)
+                    {
                         e = e.add($(document.getElementById(g)))
-                    } else {
-                        if (g.indexOf("@widgetVar(") == 0) {
+                    }
+                    else
+                    {
+                        if (g.indexOf("@widgetVar(") == 0)
+                        {
                             var f = g.substring(11, g.length - 1);
                             var d = PrimeFaces.widgets[f];
-                            if (d) {
+                            if (d)
+                            {
                                 e = e.add($(document.getElementById(d.id)))
-                            } else {
+                            }
+                            else
+                            {
                                 PrimeFaces.error('Widget for widgetVar "' + f
                                     + '" not avaiable')
                             }
-                        } else {
-                            if (g.indexOf("@(") == 0) {
+                        }
+                        else
+                        {
+                            if (g.indexOf("@(") == 0)
+                            {
                                 e = e.add($(g.substring(2, g.length - 1)))
                             }
                         }
@@ -1406,36 +1702,53 @@ PrimeFaces.expressions.SearchExpressionFacade = {
         }
         return e
     },
-    resolveComponents : function(l) {
+    resolveComponents: function (l) {
         var k = PrimeFaces.expressions.SearchExpressionFacade
             .splitExpressions(l), c = [];
-        if (k) {
-            for (var g = 0; g < k.length; ++g) {
+        if (k)
+        {
+            for (var g = 0; g < k.length; ++g)
+            {
                 var m = $.trim(k[g]);
-                if (m.length > 0) {
-                    if (m.indexOf("@") == -1 || m == "@none" || m == "@all") {
-                        if (!PrimeFaces.inArray(c, m)) {
+                if (m.length > 0)
+                {
+                    if (m.indexOf("@") == -1 || m == "@none" || m == "@all")
+                    {
+                        if (!PrimeFaces.inArray(c, m))
+                        {
                             c.push(m)
                         }
-                    } else {
-                        if (m.indexOf("@widgetVar(") == 0) {
+                    }
+                    else
+                    {
+                        if (m.indexOf("@widgetVar(") == 0)
+                        {
                             var d = m.substring(11, m.length - 1), h = PrimeFaces.widgets[d];
-                            if (h) {
-                                if (!PrimeFaces.inArray(c, h.id)) {
+                            if (h)
+                            {
+                                if (!PrimeFaces.inArray(c, h.id))
+                                {
                                     c.push(h.id)
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 PrimeFaces.error('Widget for widgetVar "' + d
                                     + '" not avaiable')
                             }
-                        } else {
-                            if (m.indexOf("@(") == 0) {
+                        }
+                        else
+                        {
+                            if (m.indexOf("@(") == 0)
+                            {
                                 var b = $(m.substring(2, m.length - 1));
-                                for (var e = 0; e < b.length; e++) {
+                                for (var e = 0; e < b.length; e++)
+                                {
                                     var f = $(b[e]), a = f
                                             .data(PrimeFaces.CLIENT_ID_DATA)
                                         || f.attr("id");
-                                    if (!PrimeFaces.inArray(c, a)) {
+                                    if (!PrimeFaces.inArray(c, a))
+                                    {
                                         c.push(a)
                                     }
                                 }
@@ -1447,25 +1760,32 @@ PrimeFaces.expressions.SearchExpressionFacade = {
         }
         return c
     },
-    splitExpressions : function(f) {
-        if (PrimeFaces.isIE(7)) {
+    splitExpressions: function (f) {
+        if (PrimeFaces.isIE(7))
+        {
             f = f.split("")
         }
         var e = [];
         var b = "";
         var a = 0;
-        for (var d = 0; d < f.length; d++) {
+        for (var d = 0; d < f.length; d++)
+        {
             var g = f[d];
-            if (g === "(") {
+            if (g === "(")
+            {
                 a++
             }
-            if (g === ")") {
+            if (g === ")")
+            {
                 a--
             }
-            if ((g === " " || g === ",") && a === 0) {
+            if ((g === " " || g === ",") && a === 0)
+            {
                 e.push(b);
                 b = ""
-            } else {
+            }
+            else
+            {
                 b += g
             }
         }
@@ -1473,21 +1793,22 @@ PrimeFaces.expressions.SearchExpressionFacade = {
         return e
     }
 };
-(function() {
-    var a = false, b = /xyz/.test(function() {
+(function () {
+    var a = false, b = /xyz/.test(function () {
         xyz
     }) ? /\b_super\b/ : /.*/;
-    this.Class = function() {
+    this.Class = function () {
     };
-    Class.extend = function(g) {
+    Class.extend = function (g) {
         var f = this.prototype;
         a = true;
         var e = new this();
         a = false;
-        for ( var d in g) {
+        for (var d in g)
+        {
             e[d] = typeof g[d] == "function" && typeof f[d] == "function"
-            && b.test(g[d]) ? (function(h, i) {
-                return function() {
+            && b.test(g[d]) ? (function (h, i) {
+                return function () {
                     var k = this._super;
                     this._super = f[h];
                     var j = i.apply(this, arguments);
@@ -1496,11 +1817,15 @@ PrimeFaces.expressions.SearchExpressionFacade = {
                 }
             })(d, g[d]) : g[d]
         }
-        function c() {
-            if (!a && this.init) {
+
+        function c()
+        {
+            if (!a && this.init)
+            {
                 this.init.apply(this, arguments)
             }
         }
+
         c.prototype = e;
         c.prototype.constructor = c;
         c.extend = arguments.callee;
@@ -1509,73 +1834,83 @@ PrimeFaces.expressions.SearchExpressionFacade = {
 })();
 PrimeFaces.widget = {};
 PrimeFaces.widget.BaseWidget = Class.extend({
-    init : function(a) {
+    init: function (a) {
         this.cfg = a;
         this.id = a.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.jq = $(this.jqId);
         this.widgetVar = a.widgetVar;
         $(this.jqId + "_s").remove();
-        if (this.widgetVar) {
+        if (this.widgetVar)
+        {
             var b = this;
-            this.jq.on("remove", function() {
+            this.jq.on("remove", function () {
                 PrimeFaces.detachedWidgets.push(b.widgetVar)
             })
         }
     },
-    refresh : function(a) {
+    refresh: function (a) {
         return this.init(a)
     },
-    destroy : function() {
+    destroy: function () {
         PrimeFaces.debug("Destroyed detached widget: " + this.widgetVar)
     },
-    isDetached : function() {
+    isDetached: function () {
         return document.getElementById(this.id) === null
     },
-    getJQ : function() {
+    getJQ: function () {
         return this.jq
     },
-    removeScriptElement : function(a) {
+    removeScriptElement: function (a) {
         $(PrimeFaces.escapeClientId(a) + "_s").remove()
     }
 });
 PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
-    renderDeferred : function() {
-        if (this.jq.is(":visible")) {
+    renderDeferred: function () {
+        if (this.jq.is(":visible"))
+        {
             this._render();
             this.postRender()
-        } else {
+        }
+        else
+        {
             var a = this.jq.closest(".ui-hidden-container"), b = this;
-            if (a.length) {
-                this.addDeferredRender(this.id, a, function() {
+            if (a.length)
+            {
+                this.addDeferredRender(this.id, a, function () {
                     return b.render()
                 })
             }
         }
     },
-    render : function() {
-        if (this.jq.is(":visible")) {
+    render: function () {
+        if (this.jq.is(":visible"))
+        {
             this._render();
             this.postRender();
             return true
-        } else {
+        }
+        else
+        {
             return false
         }
     },
-    _render : function() {
+    _render: function () {
         throw "Unsupported Operation"
     },
-    postRender : function() {
+    postRender: function () {
     },
-    destroy : function() {
+    destroy: function () {
         this._super();
         PrimeFaces.removeDeferredRenders(this.id)
     },
-    addDeferredRender : function(b, a, d) {
+    addDeferredRender: function (b, a, d) {
         PrimeFaces.addDeferredRender(b, a.attr("id"), d);
-        if (a.is(":hidden")) {
+        if (a.is(":hidden"))
+        {
             var c = this.jq.closest(".ui-hidden-container");
-            if (c.length) {
+            if (c.length)
+            {
                 this.addDeferredRender(b, a.parent().closest(
                     ".ui-hidden-container"), d)
             }
@@ -1583,76 +1918,87 @@ PrimeFaces.widget.DeferredWidget = PrimeFaces.widget.BaseWidget.extend({
     }
 });
 PrimeFaces.widget.AjaxStatus = PrimeFaces.widget.BaseWidget.extend({
-    init : function(a) {
+    init: function (a) {
         this._super(a);
         this.bind()
     },
-    bind : function() {
+    bind: function () {
         var b = $(document), a = this;
-        b.on("pfAjaxStart", function() {
+        b.on("pfAjaxStart", function () {
             a.trigger("start", arguments)
-        }).on("pfAjaxError", function() {
+        }).on("pfAjaxError", function () {
             a.trigger("error", arguments)
-        }).on("pfAjaxSuccess", function() {
+        }).on("pfAjaxSuccess", function () {
             a.trigger("success", arguments)
-        }).on("pfAjaxComplete", function() {
+        }).on("pfAjaxComplete", function () {
             a.trigger("complete", arguments)
         });
         this.bindToStandard()
     },
-    trigger : function(b, a) {
+    trigger: function (b, a) {
         var c = this.cfg[b];
-        if (c) {
+        if (c)
+        {
             c.apply(document, a)
         }
         this.jq.children().hide().filter(this.jqId + "_" + b).show()
     },
-    bindToStandard : function() {
-        if (window.jsf && window.jsf.ajax) {
+    bindToStandard: function () {
+        if (window.jsf && window.jsf.ajax)
+        {
             var a = $(document);
-            jsf.ajax.addOnEvent(function(b) {
-                if (b.status === "begin") {
+            jsf.ajax.addOnEvent(function (b) {
+                if (b.status === "begin")
+                {
                     a.trigger("pfAjaxStart", arguments)
-                } else {
-                    if (b.status === "complete") {
+                }
+                else
+                {
+                    if (b.status === "complete")
+                    {
                         a.trigger("pfAjaxSuccess", arguments)
-                    } else {
-                        if (b.status === "success") {
+                    }
+                    else
+                    {
+                        if (b.status === "success")
+                        {
                             a.trigger("pfAjaxComplete", arguments)
                         }
                     }
                 }
             });
-            jsf.ajax.addOnError(function(b) {
+            jsf.ajax.addOnError(function (b) {
                 a.trigger("pfAjaxError", arguments)
             })
         }
     }
 });
 PrimeFaces.widget.Poll = PrimeFaces.widget.BaseWidget.extend({
-    init : function(a) {
+    init: function (a) {
         this.cfg = a;
         this.id = this.cfg.id;
         this.active = false;
-        if (this.cfg.autoStart) {
+        if (this.cfg.autoStart)
+        {
             this.start()
         }
     },
-    refresh : function(a) {
-        if (this.isActive()) {
+    refresh: function (a) {
+        if (this.isActive())
+        {
             this.stop()
         }
         this.init(a)
     },
-    start : function() {
+    start: function () {
         this.timer = setInterval(this.cfg.fn, (this.cfg.frequency * 1000));
         this.active = true
     },
-    stop : function() {
+    stop: function () {
         clearInterval(this.timer);
         this.active = false
     },
-    isActive : function() {
+    isActive: function () {
         return this.active
     }
 });

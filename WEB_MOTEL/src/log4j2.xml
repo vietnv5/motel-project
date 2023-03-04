@@ -17,14 +17,14 @@
 
         <!-- log action appender -->
         <RollingFile name="com.slook.filter.ActionLogFilter"
-                fileName="../logs/logAction/logAction.log"
-                filePattern="../logs/logAction/${com.slook}-%d{MM-dd-yyyy}-%i.log"
-                append="true"
-                >
+                     fileName="../logs/logAction/logAction.log"
+                     filePattern="../logs/logAction/${com.slook}-%d{MM-dd-yyyy}-%i.log"
+                     append="true"
+        >
             <PatternLayout pattern="%m%n"/>
             <Policies>
-            <TimeBasedTriggeringPolicy/>
-            <SizeBasedTriggeringPolicy size="200 MB"/>
+                <TimeBasedTriggeringPolicy/>
+                <SizeBasedTriggeringPolicy size="200 MB"/>
             </Policies>
         </RollingFile>
 

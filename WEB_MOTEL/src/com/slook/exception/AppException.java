@@ -7,38 +7,40 @@ package com.slook.exception;
 
 /**
  * Application exception (for checked exception)
- * 
+ *
  * @author hanh
- * 
  */
-public class AppException extends Exception {
+public class AppException extends Exception
+{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     *
+     */
+    private static final long serialVersionUID = 1L;
 
-	/**
-	 * Constructor
-	 * 
-	 * @param str
-	 *            a string that explains what the exception condition is
-	 */
-	public AppException(String str) {
-		super(str);
-	}
+    /**
+     * Constructor
+     *
+     * @param str a string that explains what the exception condition is
+     */
+    public AppException(String str)
+    {
+        super(str);
+    }
 
-	/**
-	 * Default constructor. Takes no arguments
-	 */
-	public AppException() {
-		super();
-	}
+    /**
+     * Default constructor. Takes no arguments
+     */
+    public AppException()
+    {
+        super();
+    }
 
-	/**
-	 * Constructor.
-	 */
-	public AppException(AppException ae) {
-		super(ae.getMessage());
-	}
+    /**
+     * Constructor.
+     */
+    public AppException(AppException ae)
+    {
+        super(ae.getMessage());
+    }
 }

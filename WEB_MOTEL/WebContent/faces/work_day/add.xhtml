@@ -17,38 +17,38 @@
                 <p:outputLabel value="#{msg['employee.empCode']}" for="empCode"/>
                 <p:inputText id="empCode" value="#{workDayController.empWorkDay.employee.empCode}"/>
 
-                <p:outputLabel value="#{msg['workDay.workType']}" />
+                <p:outputLabel value="#{msg['workDay.workType']}"/>
                 <p:selectOneMenu onchange="" valueChangeListener="#{workDayController.handleChangeWorkTypes}">>
-                                <f:selectItem itemLabel="#{workDayController.empWorkDay.workType}"
-                                              itemValue="#{workDayController.empWorkDay.workType}"/>
-                                <f:selectItem itemLabel="X8"
-                                              itemValue="X8"/>
-                                <f:selectItem itemLabel="OFF"
-                                              itemValue="OFF"/>
-                                <f:selectItem itemLabel="OM"
-                                              itemValue="OM"/>
-                                <f:selectItem itemLabel="TS"
-                                              itemValue="TS"/>
-                                <f:selectItem itemLabel="R"
-                                              itemValue="R"/>
-                                <f:selectItem itemLabel="Ro"
-                                              itemValue="Ro"/>
-                                <f:selectItem itemLabel="P"
-                                              itemValue="P"/>
-                                <f:selectItem itemLabel="CT"
-                                              itemValue="CT"/>
-                                <f:selectItem itemLabel="NL"
-                                              itemValue="NL"/>
-                                <f:selectItem itemLabel="V"
-                                              itemValue="V"/>
-                                <f:selectItem itemLabel="Vo"
-                                              itemValue="Vo"/>
-                                <f:selectItem itemLabel="OT"
-                                              itemValue="OT"/>
-                                <f:selectItem itemLabel="ERR"
-                                              itemValue="ERR"/>
-                            </p:selectOneMenu>
-                
+                    <f:selectItem itemLabel="#{workDayController.empWorkDay.workType}"
+                                  itemValue="#{workDayController.empWorkDay.workType}"/>
+                    <f:selectItem itemLabel="X8"
+                                  itemValue="X8"/>
+                    <f:selectItem itemLabel="OFF"
+                                  itemValue="OFF"/>
+                    <f:selectItem itemLabel="OM"
+                                  itemValue="OM"/>
+                    <f:selectItem itemLabel="TS"
+                                  itemValue="TS"/>
+                    <f:selectItem itemLabel="R"
+                                  itemValue="R"/>
+                    <f:selectItem itemLabel="Ro"
+                                  itemValue="Ro"/>
+                    <f:selectItem itemLabel="P"
+                                  itemValue="P"/>
+                    <f:selectItem itemLabel="CT"
+                                  itemValue="CT"/>
+                    <f:selectItem itemLabel="NL"
+                                  itemValue="NL"/>
+                    <f:selectItem itemLabel="V"
+                                  itemValue="V"/>
+                    <f:selectItem itemLabel="Vo"
+                                  itemValue="Vo"/>
+                    <f:selectItem itemLabel="OT"
+                                  itemValue="OT"/>
+                    <f:selectItem itemLabel="ERR"
+                                  itemValue="ERR"/>
+                </p:selectOneMenu>
+
 
                 <p:outputLabel value="#{msg['workDay.value']}" for="value"/>
                 <p:inputText id="value" value="#{workDayController.empWorkDay.value}"/>
@@ -67,7 +67,7 @@
                              update=":form:growl,:form:tblId, :addForm"
                              actionListener="#{workDayController.save}"
                              title="#{workDayController.isUpdate() ? msg['label.edit'] : msg['label.add']}"
-                    />
+            />
         </div>
     </h:form>
 </p:dialog>

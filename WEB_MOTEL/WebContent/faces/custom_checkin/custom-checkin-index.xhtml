@@ -30,13 +30,14 @@
 
                         </div>
                         <div class="Container60 Responsive50 TexAlCenter">
-                                <h:outputText styleClass="Fs18" value="THÊM DỊCH VỤ"/>
+                            <h:outputText styleClass="Fs18" value="THÊM DỊCH VỤ"/>
                         </div>
                         <div class="Container20" style="text-align: right;">
 
-                            <p:commandButton styleClass="OrangeButton Fs14 White" icon="fa fa-refresh"  title="refresh"
-                                             onclick="PF('block').show()" oncomplete="PF('block').hide();" update=":customerCheckinSearchForm"
-                                             />
+                            <p:commandButton styleClass="OrangeButton Fs14 White" icon="fa fa-refresh" title="refresh"
+                                             onclick="PF('block').show()" oncomplete="PF('block').hide();"
+                                             update=":customerCheckinSearchForm"
+                            />
 
                             <p:commandButton id="toggler" type="button" style="float:right" icon="fa fa-sliders"
                                              styleClass="Fs14 White"/>
@@ -47,7 +48,8 @@
                     </div>
 
                 </f:facet>
-                <p:ajax event="rowSelect" listener="#{vCustomerCheckinActiveController.onRowSelect}" update="@form:groupCustomCheckIn" />
+                <p:ajax event="rowSelect" listener="#{vCustomerCheckinActiveController.onRowSelect}"
+                        update="@form:groupCustomCheckIn"/>
                 <p:column headerText="#{msg['datatable.header.stt']}" width="15" style="text-align: center">
                     <h:outputText value="#{idx +1 }"/>
                 </p:column>
@@ -74,69 +76,78 @@
                     <h:outputText value="#{customCheckin.typeName}"/>
                 </p:column>
 
-                <p:column headerText="#{msg['customerCheckin.checkinTime']}" width="100" sortBy="#{customCheckin.checkTime}"
+                <p:column headerText="#{msg['customerCheckin.checkinTime']}" width="100"
+                          sortBy="#{customCheckin.checkTime}"
                           filterBy="#{customCheckin.checkTime-BW}" filterStyle="width:70%">
-                    <f:facet name="filter" >
+                    <f:facet name="filter">
                         <p:calendar pattern="dd/MM/yyyy" widgetVar="widInDate">
                             <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
                         </p:calendar>
                     </f:facet>
-                    <h:outputText value="#{customCheckin.checkTime}"><f:convertDateTime
-                            pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                    <h:outputText value="#{customCheckin.checkTime}">
+                        <f:convertDateTime
+                                pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
                 </p:column>
 
-                <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100" sortBy="#{customCheckin.checkoutTime}"
+                <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100"
+                          sortBy="#{customCheckin.checkoutTime}"
                           visible="false"
                           filterBy="#{customCheckin.checkoutTime-BW}" filterStyle="width:70%">
-                    <f:facet name="filter" >
+                    <f:facet name="filter">
                         <p:calendar pattern="dd/MM/yyyy" widgetVar="widOutDate">
                             <p:ajax event="dateSelect" oncomplete="PF('tblWidgetId').filter()"/>
                         </p:calendar>
                     </f:facet>
-                    <h:outputText value="#{customCheckin.checkoutTime}"><f:convertDateTime
-                            pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                    <h:outputText value="#{customCheckin.checkoutTime}">
+                        <f:convertDateTime
+                                pattern="dd/MM/yyyy HH:mm:ss"/>
+                    </h:outputText>
                 </p:column>
 
 
-                <p:column headerText="#{msg['customerCheckin.groupName']}" width="100" sortBy="#{customCheckin.groupMemberName}"
+                <p:column headerText="#{msg['customerCheckin.groupName']}" width="100"
+                          sortBy="#{customCheckin.groupMemberName}"
                           filterBy="#{customCheckin.groupMemberName}" filterStyle="width:70%">
                     <h:outputText value="#{customCheckin.groupMemberName}"/>
                 </p:column>
 
-                <p:column headerText="Trạng thái" width="100"  >
-                    
-                    <h:outputText value="#{customCheckin.statusName}" style=" font-weight: bold; color: #{customCheckin.status==1 ? '#00aeef':'gray'}"/>
+                <p:column headerText="Trạng thái" width="100">
+
+                    <h:outputText value="#{customCheckin.statusName}"
+                                  style=" font-weight: bold; color: #{customCheckin.status==1 ? '#00aeef':'gray'}"/>
                 </p:column>
                 <p:column headerText="Hành động" width="120" style="text-align: center">
                     <p:commandButton styleClass="BlueButton Fs14 White" icon="fa fa-plus" value="Thêm dịch vụ"
                                      onclick="PF('block').show()" oncomplete="PF('block').hide();"
-                                     disabled="#{customCheckin.status==2}" rendered="#{customCheckin.type==2}" >
-                        <p:ajax event="click" listener="#{clientController.setIsAddUsePack(true)}" />
+                                     disabled="#{customCheckin.status==2}" rendered="#{customCheckin.type==2}">
+                        <p:ajax event="click" listener="#{clientController.setIsAddUsePack(true)}"/>
                         <p:ajax event="click" update="@widgetVar(clientInfoDlg)"
                                 oncomplete="PF('clientInfoDlg').show();PF('tabViewClientInfo').select(1);"
-                                listener="#{clientController.preEditClient(vCustomerCheckinActiveController.getClient(customCheckin))}" 
-                                />
+                                listener="#{clientController.preEditClient(vCustomerCheckinActiveController.getClient(customCheckin))}"
+                        />
                     </p:commandButton>
                     <p:commandButton styleClass="BlueButton Fs14 White" icon="fa fa-plus" value="Thêm dịch vụ"
-                                     actionListener="#{vCustomerCheckinActiveController.preShowGroupTable(customCheckin)}" 
+                                     actionListener="#{vCustomerCheckinActiveController.preShowGroupTable(customCheckin)}"
                                      update="@form:groupCustomCheckIn"
                                      onclick="PF('block').show();" oncomplete="PF('block').hide();"
-                                     rendered="#{customCheckin.type==1}" 
+                                     rendered="#{customCheckin.type==1}"
                                      disabled="#{customCheckin.status==2}">
-                        <p:ajax event="click" listener="#{memberController.setIsAddUsePack(true)}" />
-                        <p:ajax event="click" listener="#{memberController.preEditMember(vCustomerCheckinActiveController.getMember(customCheckin))}" 
+                        <p:ajax event="click" listener="#{memberController.setIsAddUsePack(true)}"/>
+                        <p:ajax event="click"
+                                listener="#{memberController.preEditMember(vCustomerCheckinActiveController.getMember(customCheckin))}"
                                 update="@widgetVar(memberInfoDlg)"
                                 oncomplete="PF('memberInfoDlg').show(), PF('tabViewMemberInfo').select(1);"/>
                     </p:commandButton>
 
                 </p:column>
             </p:dataTable>
-            
+
             <p:panel id="groupCustomCheckIn" style="display: block;padding: 0px;margin: 0px;"
                      visible="#{vCustomerCheckinActiveController.showGroupTable}">
                 <p:dataTable value="#{vCustomerCheckinActiveController.lazyCheckInGroup}"
                              id="tableVCustomCheckinGroup" rendered="#{vCustomerCheckinActiveController.showGroupTable}"
-                             lazy="true" var="customCheckinx" rowKey="#{customCheckinx.id}" 
+                             lazy="true" var="customCheckinx" rowKey="#{customCheckinx.id}"
                              rowIndexVar="cidx" editable="true" editMode="cell"
                              rows="10" paginator="true" paginatorPosition="bottom"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -147,10 +158,11 @@
                     <f:facet name="header">
                         <div class="Card NoPadding" style="background: transparent;">
                             <div class="Container100 Responsive50 TexAlCenter">
-                                <p:commandButton styleClass="RedButton Fs14 White" icon="fa fa-times" style="float: left"
-                                                     actionListener="#{vCustomerCheckinActiveController.closeGroupTable}"
-                                                     update="@form:groupCustomCheckIn">
-                                    </p:commandButton>
+                                <p:commandButton styleClass="RedButton Fs14 White" icon="fa fa-times"
+                                                 style="float: left"
+                                                 actionListener="#{vCustomerCheckinActiveController.closeGroupTable}"
+                                                 update="@form:groupCustomCheckIn">
+                                </p:commandButton>
 
                                 <h:outputText styleClass="Fs18" value="CÁC THÀNH VIÊN TRONG NHÓM"/>
                             </div>
@@ -172,7 +184,8 @@
                         <h:outputText value="#{customCheckinx.name}"/>
                     </p:column>
 
-                    <p:column headerText="#{msg['customerCheckin.type']}" width="100" sortBy="#{customCheckinx.type}" visible="false"
+                    <p:column headerText="#{msg['customerCheckin.type']}" width="100" sortBy="#{customCheckinx.type}"
+                              visible="false"
                               filterBy="#{customCheckinx.type}" filterStyle="width:70%">
                         <f:facet name="filter">
                             <p:selectOneMenu onchange="PF('tblWidgetIdGroup').filter()" filter="true"
@@ -185,31 +198,38 @@
                         <h:outputText value="#{customCheckinx.typeName}"/>
                     </p:column>
 
-                    <p:column headerText="#{msg['customerCheckin.checkinTime']}" width="100" sortBy="#{customCheckinx.checkTime}"
+                    <p:column headerText="#{msg['customerCheckin.checkinTime']}" width="100"
+                              sortBy="#{customCheckinx.checkTime}"
                               filterBy="#{customCheckinx.checkTime-BW}" filterStyle="width:70%">
-                        <f:facet name="filter" >
+                        <f:facet name="filter">
                             <p:calendar pattern="dd/MM/yyyy" widgetVar="widInTime">
                                 <p:ajax event="dateSelect" oncomplete="PF('tblWidgetIdGroup').filter()"/>
                             </p:calendar>
                         </f:facet>
-                        <h:outputText value="#{customCheckinx.checkTime}"><f:convertDateTime
-                                pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                        <h:outputText value="#{customCheckinx.checkTime}">
+                            <f:convertDateTime
+                                    pattern="dd/MM/yyyy HH:mm:ss"/>
+                        </h:outputText>
                     </p:column>
 
-                    <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100" sortBy="#{customCheckinx.checkoutTime}"
+                    <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100"
+                              sortBy="#{customCheckinx.checkoutTime}"
                               visible="true"
                               filterBy="#{customCheckinx.checkoutTime}" filterStyle="width:70%">
-                        <f:facet name="filter" >
+                        <f:facet name="filter">
                             <p:calendar pattern="dd/MM/yyyy" widgetVar="widOutTime">
                                 <p:ajax event="dateSelect" oncomplete="PF('tblWidgetIdGroup').filter()"/>
                             </p:calendar>
                         </f:facet>
-                        <h:outputText value="#{customCheckinx.checkoutTime}"><f:convertDateTime
-                                pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                        <h:outputText value="#{customCheckinx.checkoutTime}">
+                            <f:convertDateTime
+                                    pattern="dd/MM/yyyy HH:mm:ss"/>
+                        </h:outputText>
                     </p:column>
 
 
-                    <p:column headerText="#{msg['customerCheckin.groupName']}" width="100" sortBy="#{customCheckinx.groupMemberName}"
+                    <p:column headerText="#{msg['customerCheckin.groupName']}" width="100"
+                              sortBy="#{customCheckinx.groupMemberName}"
                               filterBy="#{customCheckinx.groupMemberName}" filterStyle="width:70%">
                         <h:outputText value="#{customCheckinx.groupMemberName}"/>
                     </p:column>
@@ -225,7 +245,8 @@
 
                             </p:selectOneMenu>
                         </f:facet>
-                        <h:outputText value="#{customCheckinx.statusName}"  style=" font-weight: bold; color: #{customCheckinx.status==1 ? '#00aeef':'gray'}"/>
+                        <h:outputText value="#{customCheckinx.statusName}"
+                                      style=" font-weight: bold; color: #{customCheckinx.status==1 ? '#00aeef':'gray'}"/>
                     </p:column>
                 </p:dataTable>
             </p:panel>
@@ -260,8 +281,8 @@
         <ui:include src="../member/info/showPaymentPdf-dialog.xhtml"></ui:include>
         <ui:include src="../member/info/editPaymentTime-dialog.xhtml"></ui:include>
         <!--tao doi tuong gia-->
-        <p:tabView id='tabViewMain' style="display: none" >
-            <p:tab title="#{msg['datatable.header.member']}" id='tabMemberId'> 
+        <p:tabView id='tabViewMain' style="display: none">
+            <p:tab title="#{msg['datatable.header.member']}" id='tabMemberId'>
 
                 <h:form id="form">
 
@@ -270,16 +291,16 @@
             </p:tab>
 
         </p:tabView>
-<!--form gia de goi update-->
+        <!--form gia de goi update-->
         <h:form id="customerCheckoutSearchForm">
-            
+
         </h:form>
     </ui:define>
     <style>
-        .oldColor{
+        .oldColor {
             background-color: #00aeef !important;
-             background-image:none;
+            background-image: none;
         }
-        
+
     </style>
 </ui:composition>

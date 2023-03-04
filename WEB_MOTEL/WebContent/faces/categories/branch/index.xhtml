@@ -141,7 +141,7 @@
                                               itemLabel="#{msg['common.INACTIVE']}"/>
                             </p:selectOneMenu>
                         </f:facet>
-                        <h:outputText value="#{branch.statusName}" />
+                        <h:outputText value="#{branch.statusName}"/>
                     </p:column>
                     <p:column headerText="#{msg['datatable.header.action']}" width="20" styleClass="TexAlRight">
 
@@ -163,7 +163,6 @@
                                         style="" dismissable="true" showCloseIcon="true" my="right top">
 
 
-
                             <p:commandButton value="Xóa #{branch.branchName}?" icon="fa fa-trash"
                                              oncomplete="PF('deleteBranchPanel-#{cusIdx}').hide()" process="@this"
                                              styleClass="RedButton White Fs14"
@@ -172,9 +171,9 @@
 
                             </p:commandButton>
                         </p:overlayPanel>
-                        <p:tooltip position="left" ></p:tooltip>
+                        <p:tooltip position="left"></p:tooltip>
                         <p:tooltip position="right" for="menuButtonId" value="Lựa chọn"></p:tooltip>
-                        <p:menuButton value="" styleClass="GreenButton Fs14 White"  title="Lựa chọn" id="menuButtonId">
+                        <p:menuButton value="" styleClass="GreenButton Fs14 White" title="Lựa chọn" id="menuButtonId">
 
                             <p:menuitem icon="fa fa-pause" actionListener="#{branchController.updateStatus(branch,2)}"
                                         process="@widgetVar(tableBranchWidget)"

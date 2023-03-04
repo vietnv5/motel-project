@@ -9,11 +9,13 @@ import com.slook.util.DataUtil;
 import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
 import com.slook.util.StringUtil;
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
+
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
@@ -32,7 +34,9 @@ import java.util.Date;
 import java.util.Map;
 import javax.imageio.ImageIO;
 import javax.servlet.ServletContext;
+
 import org.apache.log4j.Logger;
+
 import static org.apache.log4j.Logger.getLogger;
 
 /**
@@ -40,65 +44,88 @@ import static org.apache.log4j.Logger.getLogger;
  */
 @ManagedBean(name = "imageStreamerBill")
 @ApplicationScoped
-public class ImageStreamerBill {
+public class ImageStreamerBill
+{
 
     private static final Logger logger = getLogger(ImageStreamerBill.class);
 
     @PostConstruct
-    public void init() {
+    public void init()
+    {
     }
 
-    public StreamedContent getImage() throws IOException {
-        try {
+    public StreamedContent getImage() throws IOException
+    {
+        try
+        {
             FacesContext context = FacesContext.getCurrentInstance();
             Map<String, String> params = context.getExternalContext().getRequestParameterMap();
 
-            if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE)
+            {
                 return new DefaultStreamedContent();
-            } else {
+            }
+            else
+            {
                 String imgPath = params.get("imgPath");
                 Path path = Paths.get(imgPath);
                 byte[] buf = Files.readAllBytes(path);
                 return new DefaultStreamedContent(new ByteArrayInputStream(buf));
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return new DefaultStreamedContent();
     }
 
-    public static void drawStringMultiLine(Graphics2D g, String text, int lineWidth, int x, int y) {
+    public static void drawStringMultiLine(Graphics2D g, String text, int lineWidth, int x, int y)
+    {
         FontMetrics m = g.getFontMetrics();
-        if (m.stringWidth(text) < lineWidth) {
+        if (m.stringWidth(text) < lineWidth)
+        {
             g.drawString(text, x, y);
-        } else {
+        }
+        else
+        {
             String[] words = text.split(" ");
             String currentLine = words[0];
-            for (int i = 1; i < words.length; i++) {
-                if (m.stringWidth(currentLine + words[i]) < lineWidth) {
+            for (int i = 1; i < words.length; i++)
+            {
+                if (m.stringWidth(currentLine + words[i]) < lineWidth)
+                {
                     currentLine += " " + words[i];
-                } else {
+                }
+                else
+                {
                     g.drawString(currentLine, x, y);
                     y += m.getHeight();
                     currentLine = words[i];
                 }
             }
-            if (currentLine.trim().length() > 0) {
+            if (currentLine.trim().length() > 0)
+            {
                 g.drawString(currentLine, x, y);
             }
         }
     }
 
-    public static String descProm(CatPromotion catPromotion) {
+    public static String descProm(CatPromotion catPromotion)
+    {
         String desc = "";
-        if (catPromotion != null && catPromotion.getValue() != null) {
+        if (catPromotion != null && catPromotion.getValue() != null)
+        {
 
-            if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType())) {
+            if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType()))
+            {
                 desc = DataUtil.getStringNumber(catPromotion.getValue());
-            } else 
-            if (Constant.PROMOTION_TYPE.THEM_THOI_GIAN.equals(catPromotion.getType())) {
+            }
+            else if (Constant.PROMOTION_TYPE.THEM_THOI_GIAN.equals(catPromotion.getType()))
+            {
                 desc = DataUtil.getStringNumber(catPromotion.getValue());
-            } else 
+            }
+            else
             {
                 desc = catPromotion.getValue().toString();
             }
@@ -113,27 +140,36 @@ public class ImageStreamerBill {
         return desc;
     }
 
-    public static String generateBillImg(PrintPaymentForm printForm) {
-        try {
+    public static String generateBillImg(PrintPaymentForm printForm)
+    {
+        try
+        {
             ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext();
             String path = File.separator + "templates" + File.separator + "payment_v2.jpg";
 
             String outputName = "";
-            if (Constant.PAYMENT_TYPE.CLIENT.equals(printForm.getCustomerType())) {
+            if (Constant.PAYMENT_TYPE.CLIENT.equals(printForm.getCustomerType()))
+            {
                 outputName = "clientPayment";
-            } else if (Constant.PAYMENT_TYPE.MEMBER.equals(printForm.getCustomerType())) {
+            }
+            else if (Constant.PAYMENT_TYPE.MEMBER.equals(printForm.getCustomerType()))
+            {
                 outputName = "memberPayment";
-            } else if (Constant.PAYMENT_TYPE.GROUP_MEMBER.equals(printForm.getCustomerType())) {
+            }
+            else if (Constant.PAYMENT_TYPE.GROUP_MEMBER.equals(printForm.getCustomerType()))
+            {
                 outputName = "groupMemberPayment";
             }
             String endCode = DateTimeUtils.format(new Date(), "yyMMddHHmmss");
-            if (StringUtil.isNotNull(printForm.getPaymentCode())) {
+            if (StringUtil.isNotNull(printForm.getPaymentCode()))
+            {
                 endCode = printForm.getPaymentCode();
             }
             String desPath = File.separator + "resources" + File.separator + "exported" + File.separator + outputName + endCode + ".jpg";
             String des = ctx.getRealPath("/") + "resources" + File.separator + "exported" + File.separator + outputName + endCode + ".jpg";
 
-            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported")) {
+            if (!CommonUtil.makeDirectory(ctx.getRealPath("/") + "resources" + File.separator + "exported"))
+            {
                 MessageUtil.setErrorMessage("Tạo folder thất bại");
                 return null;
             }
@@ -188,8 +224,10 @@ public class ImageStreamerBill {
 
             Font oldFont = gFullName.getFont();
             gFullName.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, 27));
-            if (printForm.getLstPaymentPackObjs() != null) {
-                for (PaymentPackObj bo : printForm.getLstPaymentPackObjs()) {
+            if (printForm.getLstPaymentPackObjs() != null)
+            {
+                for (PaymentPackObj bo : printForm.getLstPaymentPackObjs())
+                {
 
                     // num
                     int numX = im.getWidth() * 200 / 798;
@@ -228,14 +266,16 @@ public class ImageStreamerBill {
                      */
                     // item
                     String groupPackName = bo.getGroupPackName() != null ? bo.getGroupPackName() : "";
-                    if (groupPackName.length() > 12) {
+                    if (groupPackName.length() > 12)
+                    {
 
                         int itemX = im.getWidth() * 5 / 798;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 3290;
                         gFullName.drawString(new String(groupPackName.substring(0, 12)), itemX, itemY);
 
                         idxStart += 1;
-                        if (groupPackName.length() > 24) {
+                        if (groupPackName.length() > 24)
+                        {
                             int itemX2 = im.getWidth() * 12 / 798;
                             int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 3290;
                             gFullName.drawString(new String(groupPackName.substring(13, 24)), itemX2, itemY2);
@@ -243,12 +283,16 @@ public class ImageStreamerBill {
                             idxStart += 1;
                             int itemY3 = im.getHeight() * (itemStart + idxStart * distince) / 3290;
                             gFullName.drawString(new String(groupPackName.substring(25, groupPackName.length())), itemX2, itemY3);
-                        } else {
+                        }
+                        else
+                        {
                             int itemX2 = im.getWidth() * 12 / 798;
                             int itemY2 = im.getHeight() * (itemStart + idxStart * distince) / 3290;
                             gFullName.drawString(new String(groupPackName.substring(13, groupPackName.length())), itemX2, itemY2);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         int itemX = im.getWidth() * 13 / 798;
                         int itemY = im.getHeight() * (itemStart + idxStart * distince) / 3290;
                         gFullName.drawString(new String(groupPackName), itemX, itemY);
@@ -319,8 +363,10 @@ public class ImageStreamerBill {
 //            int distince2 = 50;//17
             int idxStart2 = 0;
 
-            if (printForm.getLstPaymentPackObjs() != null) {
-                for (PaymentPackObj bo : printForm.getLstPaymentPackObjs()) {
+            if (printForm.getLstPaymentPackObjs() != null)
+            {
+                for (PaymentPackObj bo : printForm.getLstPaymentPackObjs())
+                {
                     //hsd
                     int endDateX = im.getWidth() * 570 / 798;
                     int endDateY = im.getHeight() * (itemStart2 + idxStart2 * distince) / 3290;
@@ -338,14 +384,16 @@ public class ImageStreamerBill {
 
                     // item
                     String groupPackName = bo.getGroupPackName() != null ? bo.getGroupPackName() : "";
-                    if (groupPackName.length() > 35) {
+                    if (groupPackName.length() > 35)
+                    {
 
                         int itemX = im.getWidth() * 13 / 798;
                         int itemY = im.getHeight() * (itemStart2 + idxStart2 * distince) / 3290;
                         gFullName.drawString(new String(groupPackName.substring(0, 35)), itemX, itemY);
 
                         idxStart2 += 1;
-                        if (groupPackName.length() > 70) {
+                        if (groupPackName.length() > 70)
+                        {
                             int itemX2 = im.getWidth() * 12 / 798;
                             int itemY2 = im.getHeight() * (itemStart2 + idxStart2 * distince) / 3290;
                             gFullName.drawString(new String(groupPackName.substring(36, 70)), itemX2, itemY2);
@@ -353,12 +401,16 @@ public class ImageStreamerBill {
                             idxStart2 += 1;
                             int itemY3 = im.getHeight() * (itemStart2 + idxStart2 * distince) / 3290;
                             gFullName.drawString(new String(groupPackName.substring(71, groupPackName.length())), itemX2, itemY3);
-                        } else {
+                        }
+                        else
+                        {
                             int itemX2 = im.getWidth() * 12 / 798;
                             int itemY2 = im.getHeight() * (itemStart2 + idxStart2 * distince) / 3290;
                             gFullName.drawString(new String(groupPackName.substring(36, groupPackName.length())), itemX2, itemY2);
                         }
-                    } else {
+                    }
+                    else
+                    {
                         int itemX = im.getWidth() * 13 / 798;
                         int itemY = im.getHeight() * (itemStart2 + idxStart2 * distince) / 3290;
                         gFullName.drawString(new String(groupPackName), itemX, itemY);
@@ -375,7 +427,9 @@ public class ImageStreamerBill {
             ImageIO.write(im, "jpg", new File(des));
 
             return des;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return null;

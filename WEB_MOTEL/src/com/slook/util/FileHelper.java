@@ -10,22 +10,30 @@ import java.io.OutputStream;
 import static org.apache.log4j.Logger.getLogger;
 
 
-public class FileHelper {
+public class FileHelper
+{
 
     private static final Logger logger = getLogger(FileHelper.class);
+
     /**
      * Su dung cho primefaces.
      */
-    public static String uploadFile(String folderStore, UploadedFile fileUpload, String fileName) {
+    public static String uploadFile(String folderStore, UploadedFile fileUpload, String fileName)
+    {
         if (fileUpload == null)
+        {
             return "FALSE";
+        }
 
         OutputStream outputStream;
-        try {
+        try
+        {
             outputStream = getOutputStream(folderStore, fileName);
             outputStream.write(fileUpload.getContents());
             outputStream.close();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
             return "FALSE";
         }
@@ -36,18 +44,23 @@ public class FileHelper {
     /**
      * Get output stream
      */
-    public static OutputStream getOutputStream(String folderStore, String fileName) {
+    public static OutputStream getOutputStream(String folderStore, String fileName)
+    {
         OutputStream outputStream = null;
-        try {
+        try
+        {
             File fileToCreate = new File(folderStore);
-            if (!fileToCreate.exists()) {
+            if (!fileToCreate.exists())
+            {
 
                 fileToCreate.mkdirs();
             }
 
             fileToCreate = new File(folderStore, fileName);
             outputStream = new FileOutputStream(fileToCreate);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
 
@@ -57,16 +70,22 @@ public class FileHelper {
     /**
      * Remove file
      */
-    public static Boolean removeFile(String folderStore) {
-        try {
+    public static Boolean removeFile(String folderStore)
+    {
+        try
+        {
             File fileToRemove = new File(folderStore);
-            if (fileToRemove.exists()) {
+            if (fileToRemove.exists())
+            {
 
-                if (fileToRemove.delete()) {
+                if (fileToRemove.delete())
+                {
 
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
         return false;

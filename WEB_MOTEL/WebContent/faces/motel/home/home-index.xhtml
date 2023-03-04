@@ -21,7 +21,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
 
-                         >
+            >
                 <!--Header-->
                 <f:facet name="header">
                     <div class="Card NoPadding" style="background: transparent;">
@@ -34,9 +34,10 @@
                                              update=":homeForm,homeDlgId"
                                              title="#{msg['button.add']}">
                             </p:commandButton>
-                            <p:commandButton icon="fa fa-download" ajax="false" styleClass="White BlueButton Fs14 MarTop5"
+                            <p:commandButton icon="fa fa-download" ajax="false"
+                                             styleClass="White BlueButton Fs14 MarTop5"
                                              actionListener="#{commonUtilsController.attributeListener}">
-                                <f:attribute name="headerExport" value="#{msg['datatable.header.home']}" />
+                                <f:attribute name="headerExport" value="#{msg['datatable.header.home']}"/>
                                 <p:dataExporter type="xls" target="tableHomeId" fileName="home" pageOnly="false"
                                                 postProcessor="#{commonUtilsController.postProcessXLSHeader}"/>
                             </p:commandButton>
@@ -49,7 +50,7 @@
                             <p:commandButton id="toggler" type="button"
                                              style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
                             <p:columnToggler datasource="tableHomeId" trigger="toggler">
-                                <p:ajax event="toggle" listener="#{homeController.onToggler}" />
+                                <p:ajax event="toggle" listener="#{homeController.onToggler}"/>
                             </p:columnToggler>
                         </div>
 
@@ -59,19 +60,20 @@
                 <p:ajax event="filter" onstart="PF('block').show()" oncomplete="PF('block').hide()"/>
                 <!--STT-->
                 <p:column headerText="#{msg['datatable.header.stt']}" width="5" styleClass="TexAlCenter"
-                          visible="#{homeController.columnVisibale[0]}" >
+                          visible="#{homeController.columnVisibale[0]}">
                     <h:outputText value="#{cusIdx +1 }"/>
                 </p:column>
 
                 <p:column headerText="#{msg['datatable.header.action']}" width="25" exportable="false"
                           visible="#{homeController.columnVisibale[1]}" styleClass="TexAlCenter">
-                    <p:tooltip position="top" ></p:tooltip>
+                    <p:tooltip position="top"></p:tooltip>
 
                     <p:commandButton icon="fa fa-edit" actionListener="#{homeController.preEdit(home)}"
 
-                                     onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();PF('homeDlg').show()"
+                                     onclick="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('homeDlg').show()"
                                      update=":homeForm,homeDlgId" id="updateHomeId"
-                                     title="Cập nhật" styleClass="White  Fs14 MarTop5" >
+                                     title="Cập nhật" styleClass="White  Fs14 MarTop5">
                     </p:commandButton>
                     <p:spacer width="2px;"/>
 
@@ -79,7 +81,7 @@
                     <p:commandButton icon="fa fa-trash"
                                      actionListener="#{homeController.onDelete(home)}"
                                      onclick="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
-                                     update="tableHomeId "  disabled="#{home.status==1}"
+                                     update="tableHomeId " disabled="#{home.status==1}"
                                      title="Xóa" styleClass="White RedButton Fs14 MarTop5">
                         <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                    message="#{msg['title.confirm.delete']}">
@@ -90,25 +92,25 @@
 
                 <p:column headerText="#{msg['home.homeName']}" width="40"
                           visible="#{homeController.columnVisibale[2]}"
-                          filterBy="#{home.homeName}" sortBy="#{home.homeName}" >
+                          filterBy="#{home.homeName}" sortBy="#{home.homeName}">
                     <h:outputText value="#{home.homeName}"/>
                 </p:column>
 
 
                 <p:column headerText="#{msg['home.address']}" width="40"
                           visible="#{homeController.columnVisibale[3]}"
-                          filterBy="#{home.address}" sortBy="#{home.address}" >
+                          filterBy="#{home.address}" sortBy="#{home.address}">
                     <h:outputText value="#{home.address}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['home.description']}" width="40"
                           visible="#{homeController.columnVisibale[4]}"
-                          filterBy="#{home.description}" sortBy="#{home.description}" >
+                          filterBy="#{home.description}" sortBy="#{home.description}">
                     <h:outputText value="#{home.description}"/>
                 </p:column>
 
                 <p:column headerText="#{msg['home.status']}" width="40"
-                          visible="#{homeController.columnVisibale[5]}" 
+                          visible="#{homeController.columnVisibale[5]}"
                           filterBy="#{home.status}" sortBy="#{home.status}">
                     <f:facet name="filter">
                         <p:selectOneMenu onchange="PF('tableHomeWidget').filter()">
@@ -119,9 +121,10 @@
                     </f:facet>
                     <h:outputText value="#{home.statusName}"/>
                 </p:column>
-                <p:column headerText="#{msg['home.groupUserId']}" width="20" exportable="#{homeController.columnVisibale[6]}"
+                <p:column headerText="#{msg['home.groupUserId']}" width="20"
+                          exportable="#{homeController.columnVisibale[6]}"
                           visible="#{homeController.columnVisibale[6]}"
-                          filterBy="#{home.groupUserId}" sortBy="#{home.groupUserId}" >
+                          filterBy="#{home.groupUserId}" sortBy="#{home.groupUserId}">
                     <h:outputText value="#{home.groupUserId}"/>
                 </p:column>
 

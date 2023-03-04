@@ -8,6 +8,7 @@
 package com.slook.filter;
 
 //import com.viettel.vsa.token.UserToken;
+
 import org.apache.log4j.Logger;
 
 import javax.servlet.*;
@@ -22,14 +23,16 @@ import java.util.Enumeration;
 /**
  * @author dungvv8
  */
-public class ActionLogFilter implements Filter {
+public class ActionLogFilter implements Filter
+{
 
     private static final Logger logger = Logger.getLogger(ActionLogFilter.class);
     private static final String SYS_NAME = "AOM";
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+            throws IOException, ServletException
+    {
         String ip = "";
         Date startTime = null;
         Date endTime = null;
@@ -39,17 +42,19 @@ public class ActionLogFilter implements Filter {
         String className = "";
         String param = "";
         String clientKpiId = "";
-        String description= "";
+        String description = "";
         Long duration = 0L;
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss.SSS");
         String requestId = "";
         HttpSession session = null;
 //        UserToken vsaUserToken = null;
 
-        try {
+        try
+        {
             //set characterEncoding UTF-8
             request.setCharacterEncoding("UTF-8");
-            if (request instanceof HttpServletRequest) {
+            if (request instanceof HttpServletRequest)
+            {
                 HttpServletRequest hRequest = (HttpServletRequest) request;
                 clientKpiId = hRequest.getHeader("VTS-KPIID");
                 session = hRequest.getSession();
@@ -58,7 +63,8 @@ public class ActionLogFilter implements Filter {
 //                    userName = vsaUserToken.getUserName();
 //                }
                 ip = hRequest.getHeader("X-ClientIP");
-                if (ip == null || ip.isEmpty()) {
+                if (ip == null || ip.isEmpty())
+                {
                     ip = hRequest.getRemoteAddr();
                 }
                 path = hRequest.getServerName() + ":" + hRequest.getServerPort();
@@ -66,12 +72,15 @@ public class ActionLogFilter implements Filter {
                 param = getAllParameter(hRequest);
                 String[] methods = uri.split("!");
                 String[] tmp = uri.split("/");
-                if (tmp.length > 2) {
+                if (tmp.length > 2)
+                {
                     uri = "/" + tmp[2];
                 }
-                if (methods.length > 1) {
+                if (methods.length > 1)
+                {
                     String[] method = methods[1].split("\\.");
-                    if (method.length > 0) {
+                    if (method.length > 0)
+                    {
                         className = className + "." + method[0];
                     }
                 }
@@ -88,9 +97,12 @@ public class ActionLogFilter implements Filter {
             endTime = new Date();
             duration = endTime.getTime() - startTime.getTime();
 
-        } finally {
+        }
+        finally
+        {
             String checkDuration = "";
-            if (duration > 10000) {
+            if (duration > 10000)
+            {
                 checkDuration = "CHAM";
             }
 
@@ -103,41 +115,52 @@ public class ActionLogFilter implements Filter {
         }
     }
 
-    private static String getAllParameter(HttpServletRequest req) {
+    private static String getAllParameter(HttpServletRequest req)
+    {
         StringBuilder params = new StringBuilder();
-        try {
+        try
+        {
             Enumeration parameterNames = req.getParameterNames();
-            while (parameterNames.hasMoreElements()) {
+            while (parameterNames.hasMoreElements())
+            {
                 String paramName = (String) parameterNames.nextElement();
 
-                if(!"javax.faces.ViewState".equals(paramName)){
+                if (!"javax.faces.ViewState".equals(paramName))
+                {
                     params.append(paramName).append(":");
 
                     String[] paramValues = req.getParameterValues(paramName);
                     int length = paramValues.length;
-                    for (int i = 0; i < length; i++) {
+                    for (int i = 0; i < length; i++)
+                    {
                         String paramValue = paramValues[i];
-                        if (paramValue != null) {
+                        if (paramValue != null)
+                        {
                             paramValue = paramValue.replaceAll("\n", " ");
                         }
                         params.append(paramValue).append(";");
                     }
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
-        if (params.length() > 1) {
+        if (params.length() > 1)
+        {
             params.deleteCharAt(params.length() - 1);
         }
         return params.toString();
     }
 
     @Override
-    public void init(FilterConfig fc) throws ServletException {
+    public void init(FilterConfig fc) throws ServletException
+    {
     }
 
     @Override
-    public void destroy() {
+    public void destroy()
+    {
     }
 }

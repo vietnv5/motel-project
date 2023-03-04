@@ -4,10 +4,10 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
-    <p:dialog modal="true" widgetVar="catServiceDlg" width="50%" id="catServiceDlgId" >
+    <p:dialog modal="true" widgetVar="catServiceDlg" width="50%" id="catServiceDlgId">
         <f:facet name="header">
             <h:outputText value="#{msg['button.add']}" rendered="#{!catServiceController.isEdit }"/>
             <h:outputText value="#{msg['button.edit']}" rendered="#{catServiceController.isEdit}"/>
@@ -15,53 +15,54 @@
 
         <h:form id="catServiceForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
-                        <div class="Container100 Responsive50">
-                            <div class="Container50 Responsive50 MarTop20">
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
+                    <div class="Container100 Responsive50">
+                        <div class="Container50 Responsive50 MarTop20">
                                 <span class="md-inputfield">
                                     <p:inputText value="#{catServiceController.currService.serviceName}"
-                                                 id="serviceName"  converter="trimConverter"
+                                                 id="serviceName" converter="trimConverter"
                                                  title="#{msg['catService.serviceName']}"
                                                  required="true" maxlength="150"
                                                  requiredMessage="#{msg['common.required'].replace('{0}',msg['catService.serviceName'])}"
-                                                 >
+                                    >
                                     </p:inputText>
 
                                     <label>#{msg['catService.serviceName']} *</label>
                                 </span>
-                                <p:message for="serviceName"></p:message>
-                            </div>
-                            <div class="Container50 Responsive50 MarTop20">
+                            <p:message for="serviceName"></p:message>
+                        </div>
+                        <div class="Container50 Responsive50 MarTop20">
                                 <span class="md-inputfield">
                                     <p:inputNumber value="#{catServiceController.currService.price}"
                                                    id="price" symbol=" VNĐ" symbolPosition="suffix"
                                                    required="true" decimalPlaces="0"
                                                    requiredMessage="#{msg['common.required'].replace('{0}',msg['catService.price'])}"
                                                    title="#{msg['room.price']}"
-                                                   >
+                                    >
                                     </p:inputNumber>
 
                                     <label>#{msg['catService.price']} *</label>
                                 </span>
-                                <p:message for="price"/>
-                            </div>
-                            <div class=" Container50 Responsive50 MarTop20">
+                            <p:message for="price"/>
+                        </div>
+                        <div class=" Container50 Responsive50 MarTop20">
                                 <span class="title-top">
-                                    <p:selectOneMenu value="#{catServiceController.currService.defaultStatus}" required="true"
+                                    <p:selectOneMenu value="#{catServiceController.currService.defaultStatus}"
+                                                     required="true"
                                                      id="defaultStatus"
-                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['room.status'])}" >
+                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['room.status'])}">
                                         <f:selectItem itemValue="0" itemLabel="#{msg['catService.defaultStatus.NO']}"/>
                                         <f:selectItem itemValue="1" itemLabel="#{msg['catService.defaultStatus.YES']}"/>
                                     </p:selectOneMenu>
                                     <label class="title-elem">#{msg['catService.defaultStatus']}</label>
                                 </span>
-                                <p:message for="defaultStatus"/>
-                            </div>
-                            <div class=" Container50 Responsive50 MarTop20">
+                            <p:message for="defaultStatus"/>
+                        </div>
+                        <div class=" Container50 Responsive50 MarTop20">
                                 <span class="title-top">
                                     <p:selectOneMenu value="#{catServiceController.currService.unit}" required="true"
                                                      id="unit" style="width: 40%"
-                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['catService.unit'])}" >
+                                                     requiredMessage="#{msg['common.required'].replace('{0}',msg['catService.unit'])}">
                                         <f:selectItems value="#{catServiceController.listUnit}" var="p"
                                                        itemLabel="#{p.name}" itemValue="#{p.itemId}"/>
 
@@ -69,22 +70,23 @@
                                     </p:selectOneMenu>
                                     <label class="title-elem">#{msg['catService.unit']} *</label>
                                 </span>
-                                <p:message for="unit"/>
-                            </div>                            
+                            <p:message for="unit"/>
                         </div>
+                    </div>
 
 
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlCenter" >
+                <p:outputPanel class="Container100 TexAlCenter">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growl),:catServiceTableForm,:catServiceForm"
-                                     actionListener="#{catServiceController.onSaveOrUpdate()}" process=":catServiceForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{catServiceController.onSaveOrUpdate()}" process=":catServiceForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('catServiceDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('catServiceDlg').hide()">
 
                     </p:commandButton>
 
@@ -95,7 +97,9 @@
     </p:dialog>
 
     <p:confirmDialog global="true" closeOnEscape="true">
-        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
     </p:confirmDialog>
 </ui:composition>

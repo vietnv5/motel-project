@@ -23,7 +23,8 @@ import static org.apache.log4j.Logger.getLogger;
  * @version 1.0
  * @sin Jul 29, 2016
  */
-public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel<T> {
+public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel<T>
+{
 
     private static final Logger logger = getLogger(LazyDataModelBase.class);
 
@@ -33,53 +34,66 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
     private LinkedHashMap<String, String> orders;
     private Map<String, Object> currFilters;
     private Map<String, Object> initFilters;
-    
+
     protected Map<String, Object> sqlRes;
 
-    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService) {
+    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService)
+    {
         this.daoService = daoService;
     }
 
-    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService, Map<String, Object> filters, LinkedHashMap<String, String> orders) {
+    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService, Map<String, Object> filters, LinkedHashMap<String, String> orders)
+    {
 
         this.daoService = daoService;
         initFilterOrder(filters, orders);
     }
 
-    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService, Object... filtersOrOrders) {
+    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService, Object... filtersOrOrders)
+    {
 
-        if (daoService != null) {
+        if (daoService != null)
+        {
             this.daoService = daoService;
         }
         initFilterOrder(filtersOrOrders);
     }
 
     @SuppressWarnings("unchecked")
-    private void initFilterOrder(Object... filtersOrOrders) {
+    private void initFilterOrder(Object... filtersOrOrders)
+    {
         // TODO Auto-generated method stub
-        if (filtersOrOrders != null) {
-            switch (filtersOrOrders.length) {
+        if (filtersOrOrders != null)
+        {
+            switch (filtersOrOrders.length)
+            {
                 case 1:
-                    if (filtersOrOrders[0] instanceof Map<?, ?>) {
+                    if (filtersOrOrders[0] instanceof Map<?, ?>)
+                    {
                         filters = (Map<String, Object>) filtersOrOrders[0];
                     }
                     break;
                 case 2:
-                    if (filtersOrOrders[0] != null && filtersOrOrders[0] instanceof Map<?, ?>) {
+                    if (filtersOrOrders[0] != null && filtersOrOrders[0] instanceof Map<?, ?>)
+                    {
                         filters = (Map<String, Object>) filtersOrOrders[0];
                     }
-                    if (filtersOrOrders[1] != null && filtersOrOrders[1] instanceof Map<?, ?>) {
+                    if (filtersOrOrders[1] != null && filtersOrOrders[1] instanceof Map<?, ?>)
+                    {
                         orders = (LinkedHashMap<String, String>) filtersOrOrders[1];
                     }
                     break;
                 case 3:
-                    if (filtersOrOrders[0] != null && filtersOrOrders[0] instanceof Map<?, ?>) {
+                    if (filtersOrOrders[0] != null && filtersOrOrders[0] instanceof Map<?, ?>)
+                    {
                         filters = (Map<String, Object>) filtersOrOrders[0];
                     }
-                    if (filtersOrOrders[1] != null && filtersOrOrders[1] instanceof Map<?, ?>) {
+                    if (filtersOrOrders[1] != null && filtersOrOrders[1] instanceof Map<?, ?>)
+                    {
                         sqlRes = (Map<String, Object>) filtersOrOrders[1];
                     }
-                    if (filtersOrOrders[2] != null && filtersOrOrders[2] instanceof Map<?, ?>) {
+                    if (filtersOrOrders[2] != null && filtersOrOrders[2] instanceof Map<?, ?>)
+                    {
                         orders = (LinkedHashMap<String, String>) filtersOrOrders[2];
                     }
                     break;
@@ -92,11 +106,13 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
     }
 
     @Override
-    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters) {
+    public List<T> load(int first, int pageSize, String sortField, SortOrder sortOrder, Map<String, Object> filters)
+    {
 //        try {
         // TODO Auto-generated method stub
         List<SortMeta> multiSortMeta = new ArrayList<SortMeta>();
-        if (sortField != null) {
+        if (sortField != null)
+        {
             multiSortMeta.add(new SortMeta(null, sortField, sortOrder, null));
         }
         return load(first, pageSize, multiSortMeta, filters);
@@ -111,31 +127,41 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
 
     @SuppressWarnings("unchecked")
     @Override
-    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters) {
+    public List<T> load(int first, int pageSize, List<SortMeta> multiSortMeta, Map<String, Object> filters)
+    {
 
-        if (filters == null) {
+        if (filters == null)
+        {
             filters = new HashMap<String, Object>();
         }
         List<T> data = new ArrayList<T>();
         int dataSize = 0;
-        try {
-            if (initFilters != null) {
+        try
+        {
+            if (initFilters != null)
+            {
                 filters.putAll(initFilters);
                 initFilters.clear();
             }
 
             //add filter mac dinh this.filters
-            if (this.filters != null) {
+            if (this.filters != null)
+            {
 //				filters.putAll(this.filters);
                 //dungvv8
-                for (Map.Entry<String, Object> entry : this.filters.entrySet()) {
+                for (Map.Entry<String, Object> entry : this.filters.entrySet())
+                {
                     String field = entry.getKey();
                     //Lan dau load se lay tat ca filter ke ca filter key default
-                    if (firstLoad) {
+                    if (firstLoad)
+                    {
                         filters.put(field, entry.getValue());
-                    } else {
+                    }
+                    else
+                    {
                         //Lan load sau hoac sang trang se khong lay filter co key default
-                        if (!field.contains("DEFAULT") || first > 0) {
+                        if (!field.contains("DEFAULT") || first > 0)
+                        {
                             filters.put(field, entry.getValue());
                         }
                     }
@@ -145,30 +171,39 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
             }
             //dungvv8
             //trim space filter
-            for (Map.Entry<String, Object> entry : filters.entrySet()) {
-                if (entry.getValue() != null && entry.getValue() instanceof String) {
+            for (Map.Entry<String, Object> entry : filters.entrySet())
+            {
+                if (entry.getValue() != null && entry.getValue() instanceof String)
+                {
                     filters.put(entry.getKey(), String.valueOf(entry.getValue()).trim());
                 }
             }
             //add sort mac dinh
             LinkedHashMap<String, String> sorter = null;
-            if (this.orders != null) {
+            if (this.orders != null)
+            {
                 sorter = new LinkedHashMap<String, String>();
-                for (Iterator<String> iterator = this.orders.keySet().iterator(); iterator.hasNext();) {
+                for (Iterator<String> iterator = this.orders.keySet().iterator(); iterator.hasNext(); )
+                {
                     String field = iterator.next();
                     String value = this.orders.get(field);
                     sorter.put(field, value);
                 }
             }
-            if (multiSortMeta != null) {
-                for (SortMeta sortMeta : multiSortMeta) {
+            if (multiSortMeta != null)
+            {
+                for (SortMeta sortMeta : multiSortMeta)
+                {
                     String sortField = sortMeta.getSortField();
                     SortOrder sortOrder = sortMeta.getSortOrder();
-                    if (sortField != null) {
-                        if (sorter == null) {
+                    if (sortField != null)
+                    {
+                        if (sorter == null)
+                        {
                             sorter = new LinkedHashMap<String, String>();
                         }
-                        switch (sortOrder) {
+                        switch (sortOrder)
+                        {
                             case ASCENDING:
                                 sorter.put(sortField, "ASC");
                                 break;
@@ -184,10 +219,12 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
                 }
             }
 
-            if (this.filters != null && this.filters.get("OR_1") != null) {
+            if (this.filters != null && this.filters.get("OR_1") != null)
+            {
                 Set<T> data2 = new HashSet<>();
                 Set<T> data3 = new HashSet<>();
-                for (Iterator<String> iterator = this.filters.keySet().iterator(); iterator.hasNext();) {
+                for (Iterator<String> iterator = this.filters.keySet().iterator(); iterator.hasNext(); )
+                {
                     Map<String, Object> filterOr = new HashMap<String, Object>(filters);
                     String field = iterator.next();
                     Map<String, String> value = (Map<String, String>) this.filters.get(field);
@@ -197,23 +234,33 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
                 }
                 data = new ArrayList<>(data2);
                 dataSize = data3.size();
-            } else {
+            }
+            else
+            {
                 this.currFilters = filters;
-                if (filters.get("search") != null) {
+                if (filters.get("search") != null)
+                {
 
-                } else {
-                    if (this.sqlRes == null || this.sqlRes.isEmpty()) {
+                }
+                else
+                {
+                    if (this.sqlRes == null || this.sqlRes.isEmpty())
+                    {
 
                         data = daoService.findList(first, pageSize, filters, sorter);
                         dataSize = daoService.count2(filters);
-                    } else {
+                    }
+                    else
+                    {
                         data = daoService.findList(first, pageSize, filters, sqlRes, sorter);
                         dataSize = daoService.count2(filters, sqlRes);
 
                     }
                 }
             }
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
 
@@ -222,26 +269,33 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
     }
 
     @Override
-    public T getRowData(String rowKey) {
+    public T getRowData(String rowKey)
+    {
         T object = null;
-        try {
+        try
+        {
             object = daoService.findById((PK) rowKey);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
 
         return (T) object;
     }
 
-    public Map<String, Object> getFilters() {
+    public Map<String, Object> getFilters()
+    {
         return filters;
     }
 
-    public void setFilters(Map<String, Object> filters) {
+    public void setFilters(Map<String, Object> filters)
+    {
         this.filters = filters;
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         //		filter.put("deptReportId", "6892");
 //		filtersOrOrders.put("OR_1", filter );
 //		filter = new HashMap<>();
@@ -258,24 +312,29 @@ public class LazyDataModelBase<T, PK extends Serializable> extends LazyDataModel
 
     }
 
-    public Map<String, Object> getCurrFilters() {
+    public Map<String, Object> getCurrFilters()
+    {
         return currFilters;
     }
 
-    public void setCurrFilters(Map<String, Object> currFilters) {
+    public void setCurrFilters(Map<String, Object> currFilters)
+    {
         this.currFilters = currFilters;
     }
 
-    public Map<String, Object> getInitFilters() {
+    public Map<String, Object> getInitFilters()
+    {
         return initFilters;
     }
 
-    public void setInitFilters(Map<String, Object> initFilters) {
+    public void setInitFilters(Map<String, Object> initFilters)
+    {
         this.initFilters = initFilters;
     }
 
     //        vietnv14 add start
-    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService, Map<String, Object> filters, Map<String, Object> sqlRes, LinkedHashMap<String, String> orders) {
+    public LazyDataModelBase(GenericDaoServiceNewV2<T, PK> daoService, Map<String, Object> filters, Map<String, Object> sqlRes, LinkedHashMap<String, String> orders)
+    {
 
         this.daoService = daoService;
         initFilterOrder(filters, sqlRes, orders);

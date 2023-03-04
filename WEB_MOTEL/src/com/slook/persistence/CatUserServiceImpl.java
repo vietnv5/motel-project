@@ -11,5 +11,6 @@ import java.io.Serializable;
  */
 @Service(value = "catUserService")
 @Scope("session")
-public class CatUserServiceImpl extends GenericDaoImplNewV2<CatUser, Serializable> {
+public class CatUserServiceImpl extends GenericDaoImplNewV2<CatUser, Serializable>
+{
 }

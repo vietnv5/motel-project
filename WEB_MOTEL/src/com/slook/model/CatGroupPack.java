@@ -25,7 +25,8 @@ import static javax.persistence.GenerationType.SEQUENCE;
  */
 @Entity
 @Table(name = "CAT_GROUP_PACK")
-public class CatGroupPack {
+public class CatGroupPack
+{
 
     List<CatPack> packs = new ArrayList<>(0);
     List<CatPack> pack2s = new ArrayList<>(0);
@@ -59,39 +60,48 @@ public class CatGroupPack {
     @Column(name = "GROUP_PACK_ID", nullable = false, precision = 0)
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @SequenceGenerator(name = "generator", sequenceName = "GROUP_PACK_SEQ", allocationSize = 1)
-    public Long getGroupPackId() {
+    public Long getGroupPackId()
+    {
         return groupPackId;
     }
 
-    public void setGroupPackId(Long groupPackId) {
+    public void setGroupPackId(Long groupPackId)
+    {
         this.groupPackId = groupPackId;
     }
 
     @Basic
     @Column(name = "GROUP_PACK_NAME", nullable = true, length = 50)
-    public String getGroupPackName() {
+    public String getGroupPackName()
+    {
         return groupPackName;
     }
 
-    public void setGroupPackName(String groupPackName) {
+    public void setGroupPackName(String groupPackName)
+    {
         this.groupPackName = groupPackName;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) {
+    public boolean equals(Object o)
+    {
+        if (this == o)
+        {
             return true;
         }
-        if (o == null || getClass() != o.getClass()) {
+        if (o == null || getClass() != o.getClass())
+        {
             return false;
         }
 
         CatGroupPack that = (CatGroupPack) o;
 
-        if (groupPackId != null ? !groupPackId.equals(that.groupPackId) : that.groupPackId != null) {
+        if (groupPackId != null ? !groupPackId.equals(that.groupPackId) : that.groupPackId != null)
+        {
             return false;
         }
-        if (groupPackName != null ? !groupPackName.equals(that.groupPackName) : that.groupPackName != null) {
+        if (groupPackName != null ? !groupPackName.equals(that.groupPackName) : that.groupPackName != null)
+        {
             return false;
         }
 
@@ -99,7 +109,8 @@ public class CatGroupPack {
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int result = groupPackId != null ? groupPackId.hashCode() : 0;
         result = 31 * result + (groupPackName != null ? groupPackName.hashCode() : 0);
         return result;
@@ -108,104 +119,124 @@ public class CatGroupPack {
     @ManyToMany(fetch = FetchType.EAGER)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @JoinTable(name = "GROUP_HAS_PACK", joinColumns = {
-        @JoinColumn(name = "GROUP_PACK_ID", nullable = false, updatable = false)},
+            @JoinColumn(name = "GROUP_PACK_ID", nullable = false, updatable = false)},
             inverseJoinColumns = {
-                @JoinColumn(name = "PACK_ID",
-                        nullable = false, updatable = false)})
+                    @JoinColumn(name = "PACK_ID",
+                            nullable = false, updatable = false)})
 //    @Transient
-    public List<CatPack> getPacks() {
+    public List<CatPack> getPacks()
+    {
         return packs;
     }
 
-    public void setPacks(List<CatPack> packs) {
+    public void setPacks(List<CatPack> packs)
+    {
         this.packs = packs;
     }
 
     @Basic
     @Column(name = "PRICE")
-    public Double getPrice() {
+    public Double getPrice()
+    {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(Double price)
+    {
         this.price = price;
     }
 
     @Basic
     @Column(name = "AMONG")
-    public Long getAmong() {
+    public Long getAmong()
+    {
         return among;
     }
 
-    public void setAmong(Long among) {
+    public void setAmong(Long among)
+    {
         this.among = among;
     }
 
     @Transient
-    public List<CatPack> getPack2s() {
+    public List<CatPack> getPack2s()
+    {
         return pack2s;
     }
 
-    public void setPack2s(List<CatPack> pack2s) {
+    public void setPack2s(List<CatPack> pack2s)
+    {
         this.pack2s = pack2s;
     }
 
     @Basic
     @Column(name = "GROUP_PACK_CODE")
-    public String getGroupPackCode() {
+    public String getGroupPackCode()
+    {
         return groupPackCode;
     }
 
-    public void setGroupPackCode(String groupPackCode) {
+    public void setGroupPackCode(String groupPackCode)
+    {
         this.groupPackCode = groupPackCode;
     }
 
     @Basic
     @Column(name = "STATUS")
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Basic
     @Column(name = "DATE_START_PROVIDE")
-    public Date getDateStartProvide() {
+    public Date getDateStartProvide()
+    {
         return dateStartProvide;
     }
 
-    public void setDateStartProvide(Date createDate) {
+    public void setDateStartProvide(Date createDate)
+    {
         this.dateStartProvide = createDate;
     }
 
     @Column(name = "DATE_END_PROVIDE")
-    public Date getDateEndProvide() {
+    public Date getDateEndProvide()
+    {
         return dateEndProvide;
     }
 
-    public void setDateEndProvide(Date dateEndProvide) {
+    public void setDateEndProvide(Date dateEndProvide)
+    {
         this.dateEndProvide = dateEndProvide;
     }
 
     @Basic
     @Column(name = "TAG")
-    public String getTag() {
+    public String getTag()
+    {
         return tag;
     }
 
-    public void setTag(String tag) {
+    public void setTag(String tag)
+    {
         this.tag = tag;
     }
 
     @Basic
     @Column(name = "CREATE_BY")
-    public String getCreateBy() {
+    public String getCreateBy()
+    {
         return createBy;
     }
 
-    public void setCreateBy(String createBy) {
+    public void setCreateBy(String createBy)
+    {
         this.createBy = createBy;
     }
 
@@ -213,33 +244,40 @@ public class CatGroupPack {
     @Fetch(FetchMode.SELECT)
     @LazyCollection(LazyCollectionOption.EXTRA)
     @JoinTable(name = "GROUP_PACK_ROOM", joinColumns = {
-        @JoinColumn(name = "GROUP_PACK_ID", nullable = false, updatable = false)},
+            @JoinColumn(name = "GROUP_PACK_ID", nullable = false, updatable = false)},
             inverseJoinColumns = {
-                @JoinColumn(name = "ROOM_ID",
-                        nullable = false, updatable = false)})
-    public List<CatRoom> getRooms() {
+                    @JoinColumn(name = "ROOM_ID",
+                            nullable = false, updatable = false)})
+    public List<CatRoom> getRooms()
+    {
         return rooms;
     }
 
-    public void setRooms(List<CatRoom> rooms) {
+    public void setRooms(List<CatRoom> rooms)
+    {
         this.rooms = rooms;
     }
 
     @Transient
-    public List<CatRoom> getRoom2s() {
+    public List<CatRoom> getRoom2s()
+    {
         return room2s;
     }
 
-    public void setRoom2s(List<CatRoom> room2s) {
+    public void setRoom2s(List<CatRoom> room2s)
+    {
         this.room2s = room2s;
     }
 
-    public void computingPrice() {
+    public void computingPrice()
+    {
         price = 0.0;
         List<GroupHasPack> groupHasPackTemps = new ArrayList<>(groupHasPack2s);
         groupHasPack2s.clear();
-        for (CatPack pack2 : pack2s) {
-            if (pack2.getPrice() != null) {
+        for (CatPack pack2 : pack2s)
+        {
+            if (pack2.getPrice() != null)
+            {
                 price += pack2.getPrice();
             }
             GroupHasPack groupHasPack = new GroupHasPack();
@@ -247,8 +285,10 @@ public class CatGroupPack {
             groupHasPack.setPackId(pack2.getPackId());
             groupHasPack.setPack(pack2);
 
-            for (GroupHasPack hasPack : groupHasPackTemps) {
-                if (hasPack.getPackId().equals(pack2.getPackId())) {
+            for (GroupHasPack hasPack : groupHasPackTemps)
+            {
+                if (hasPack.getPackId().equals(pack2.getPackId()))
+                {
                     groupHasPack.setSale(hasPack.getSale());
                     groupHasPack.setSaleType(hasPack.getSaleType());
                     groupHasPack.setPromotionPack2(hasPack.isPromotionPack2());
@@ -259,16 +299,22 @@ public class CatGroupPack {
         }
     }
 
-    public void computingPrice2() {
+    public void computingPrice2()
+    {
         price = 0.0;
-        for (GroupHasPack groupHasPack2 : groupHasPack2s) {
-            if (groupHasPack2.isPromotionPack2()) {
+        for (GroupHasPack groupHasPack2 : groupHasPack2s)
+        {
+            if (groupHasPack2.isPromotionPack2())
+            {
                 continue;
             }
             price += groupHasPack2.getPack().getPrice();
-            if (groupHasPack2.getSaleType() != null && groupHasPack2.getSaleType().equals(1L)) {
+            if (groupHasPack2.getSaleType() != null && groupHasPack2.getSaleType().equals(1L))
+            {
                 price -= groupHasPack2.getSale() * groupHasPack2.getPack().getPrice() / 100;
-            } else if (groupHasPack2.getSaleType() != null && groupHasPack2.getSaleType().equals(1L)) {
+            }
+            else if (groupHasPack2.getSaleType() != null && groupHasPack2.getSaleType().equals(1L))
+            {
                 price -= groupHasPack2.getSale();
             }
         }
@@ -278,12 +324,16 @@ public class CatGroupPack {
 
     }
 
-    public void computingDay() {
-        try {
+    public void computingDay()
+    {
+        try
+        {
             DateTime date1 = new DateTime(dateStartProvide.getTime());
             DateTime date2 = new DateTime(dateEndProvide.getTime());
             among = Long.valueOf(Days.daysBetween(date1, date2).getDays());
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
@@ -291,22 +341,26 @@ public class CatGroupPack {
     @Fetch(FetchMode.SELECT)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "groupPackId")
     @LazyCollection(LazyCollectionOption.EXTRA)
-    public List<PromotionGroupPack> getPromotionGroupPacks() {
+    public List<PromotionGroupPack> getPromotionGroupPacks()
+    {
         return promotionGroupPacks;
     }
 
-    public void setPromotionGroupPacks(List<PromotionGroupPack> promotionGroupPacks) {
+    public void setPromotionGroupPacks(List<PromotionGroupPack> promotionGroupPacks)
+    {
         this.promotionGroupPacks = promotionGroupPacks;
     }
 
     @Fetch(FetchMode.SELECT)
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "groupPackId")
     @LazyCollection(LazyCollectionOption.EXTRA)
-    public List<GroupHasPack> getGroupHasPacks() {
+    public List<GroupHasPack> getGroupHasPacks()
+    {
         return groupHasPacks;
     }
 
-    public void setGroupHasPacks(List<GroupHasPack> groupHasPacks) {
+    public void setGroupHasPacks(List<GroupHasPack> groupHasPacks)
+    {
 //        packs=new ArrayList<>(0);
 //        for (GroupHasPack i : groupHasPacks) {
 //            if(i.getPack()!=null)
@@ -316,71 +370,93 @@ public class CatGroupPack {
     }
 
     @Transient
-    public List<GroupHasPack> getGroupHasPack2s() {
+    public List<GroupHasPack> getGroupHasPack2s()
+    {
         return groupHasPack2s;
     }
 
-    public void setGroupHasPack2s(List<GroupHasPack> groupHasPack2s) {
+    public void setGroupHasPack2s(List<GroupHasPack> groupHasPack2s)
+    {
         this.groupHasPack2s = groupHasPack2s;
     }
 
-    public void createGroupPackCode() {
+    public void createGroupPackCode()
+    {
         String code = Util.createCode(groupPackName);
         String hqlCheckCode = "select count(*) from CatGroupPack where groupPackCode like ?||'-%'";
-        if (code.isEmpty()) {
+        if (code.isEmpty())
+        {
             return;
         }
-        List<?> counts = new GenericDaoImplNewV2<CatGroupPack, Long>() {
+        List<?> counts = new GenericDaoImplNewV2<CatGroupPack, Long>()
+        {
         }.findListAll(hqlCheckCode, code);
-        if (counts.size() > 0) {
+        if (counts.size() > 0)
+        {
             groupPackCode = code + "-" + (Long.valueOf(counts.get(0).toString()) + 1);
         }
     }
 
     @Column(name = "BONUS_DAY")
-    public Long getBonusDay() {
+    public Long getBonusDay()
+    {
         return bonusDay;
     }
 
-    public void setBonusDay(Long bonusDay) {
+    public void setBonusDay(Long bonusDay)
+    {
         this.bonusDay = bonusDay;
     }
 
     @Column
-    public Double getSale() {
+    public Double getSale()
+    {
         return sale;
     }
 
-    public void setSale(Double sale) {
+    public void setSale(Double sale)
+    {
         this.sale = sale;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return ReflectionToStringBuilder.toString(this, ToStringStyle.MULTI_LINE_STYLE);
     }
 
     @Transient
-    public boolean getEditPrice() {
+    public boolean getEditPrice()
+    {
         return editPrice;
     }
 
-    public void setEditPrice(boolean editPrice) {
+    public void setEditPrice(boolean editPrice)
+    {
         this.editPrice = editPrice;
     }
 
     private String statusName;
 
     @Transient
-    public String getStatusName() {
-        if (status != null) {
-            if (status.equals(0l)) {
+    public String getStatusName()
+    {
+        if (status != null)
+        {
+            if (status.equals(0l))
+            {
                 statusName = MessageUtil.getResourceBundleMessage("datatable.header.pack.status0");
-            } else if (status.equals(1l)) {
+            }
+            else if (status.equals(1l))
+            {
                 statusName = MessageUtil.getResourceBundleMessage("datatable.header.pack.status1");
-            } else if (status.equals(2l)) {
+            }
+            else if (status.equals(2l))
+            {
                 statusName = MessageUtil.getResourceBundleMessage("datatable.header.pack.status2");
-            } else if (status.equals(3l)) {
+            }
+            else if (status.equals(3l))
+            {
                 statusName = MessageUtil.getResourceBundleMessage("datatable.header.pack.status3");
             }
         }
@@ -388,54 +464,71 @@ public class CatGroupPack {
         return statusName;
     }
 
-    public void setStatusName(String statusName) {
+    public void setStatusName(String statusName)
+    {
         this.statusName = statusName;
     }
 
     @Column(name = "PERIOD")
-    public Long getPeriod() {
+    public Long getPeriod()
+    {
         return period;
     }
 
-    public void setPeriod(Long period) {
+    public void setPeriod(Long period)
+    {
         this.period = period;
     }
 
     @Column(name = "TYPE")
-    public Long getType() {
+    public Long getType()
+    {
         return type;
     }
 
-    public void setType(Long type) {
+    public void setType(Long type)
+    {
         this.type = type;
     }
 
     @Transient
-    public String getTypeName() {
-        if (type != null) {
-            if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_LE)) {
+    public String getTypeName()
+    {
+        if (type != null)
+        {
+            if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_LE))
+            {
                 typeName = MessageUtil.getResourceBundleMessage("catGroupPack.type1");
-            } else if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_HV_LUOT)) {
+            }
+            else if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_HV_LUOT))
+            {
                 typeName = MessageUtil.getResourceBundleMessage("catGroupPack.type2");
-            } else if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_HV_TIME)) {
+            }
+            else if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_HV_TIME))
+            {
                 typeName = MessageUtil.getResourceBundleMessage("catGroupPack.type3");
-            } else if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_GROUP)) {
+            }
+            else if (type.equals(Constant.GROUP_PACK_TYPE.TYPE_GROUP))
+            {
                 typeName = MessageUtil.getResourceBundleMessage("catGroupPack.type4");
             }
         }
         return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    public void setTypeName(String typeName)
+    {
         this.typeName = typeName;
     }
 
     @Column(name = "require_trainer")
-    public Long getRequireTrainer() {
+    public Long getRequireTrainer()
+    {
         return requireTrainer;
     }
 
-    public void setRequireTrainer(Long requireTrainer) {
+    public void setRequireTrainer(Long requireTrainer)
+    {
         this.requireTrainer = requireTrainer;
     }
 

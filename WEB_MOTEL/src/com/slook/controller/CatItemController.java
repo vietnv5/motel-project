@@ -33,12 +33,12 @@ import java.util.*;
 import static org.apache.commons.lang3.exception.ExceptionUtils.getRootCauseMessage;
 
 /**
- *
  * @author vietnv14
  */
 @ViewScoped
 @ManagedBean
-public class CatItemController {
+public class CatItemController
+{
 
     protected static final Logger logger = LoggerFactory.getLogger(CatItemController.class);
 
@@ -62,109 +62,135 @@ public class CatItemController {
     private String oldObjectStr = null;
 
     //<editor-fold defaultstate="collapsed" desc="get/set">
-    public String getRegexValue() {
+    public String getRegexValue()
+    {
         return regexValue;
     }
 
-    public void setRegexValue(String regexValue) {
+    public void setRegexValue(String regexValue)
+    {
         this.regexValue = regexValue;
     }
 
-    public String getMessageValid() {
+    public String getMessageValid()
+    {
         return messageValid;
     }
 
-    public void setMessageValid(String messageValid) {
+    public void setMessageValid(String messageValid)
+    {
         this.messageValid = messageValid;
     }
 
-    public Long getRequireValue() {
+    public Long getRequireValue()
+    {
         return requireValue;
     }
 
-    public void setRequireValue(Long requireValue) {
+    public void setRequireValue(Long requireValue)
+    {
         this.requireValue = requireValue;
     }
 
-    public VCatItemServiceImpl getvCatItemServiceImpl() {
+    public VCatItemServiceImpl getvCatItemServiceImpl()
+    {
         return vCatItemServiceImpl;
     }
 
-    public void setvCatItemServiceImpl(VCatItemServiceImpl vCatItemServiceImpl) {
+    public void setvCatItemServiceImpl(VCatItemServiceImpl vCatItemServiceImpl)
+    {
         this.vCatItemServiceImpl = vCatItemServiceImpl;
     }
 
-    public LazyDataModel<V_CatItemBO> getLazyVCatItem() {
+    public LazyDataModel<V_CatItemBO> getLazyVCatItem()
+    {
         return lazyVCatItem;
     }
 
-    public void setLazyVCatItem(LazyDataModel<V_CatItemBO> lazyVCatItem) {
+    public void setLazyVCatItem(LazyDataModel<V_CatItemBO> lazyVCatItem)
+    {
         this.lazyVCatItem = lazyVCatItem;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
 
-    public CatItemServiceImpl getCatItemServiceImpl() {
+    public CatItemServiceImpl getCatItemServiceImpl()
+    {
         return catItemServiceImpl;
     }
 
-    public void setCatItemServiceImpl(CatItemServiceImpl catItemServiceImpl) {
+    public void setCatItemServiceImpl(CatItemServiceImpl catItemServiceImpl)
+    {
         this.catItemServiceImpl = catItemServiceImpl;
     }
 
-    public V_CatItemBO getSelectVCatItemBO() {
+    public V_CatItemBO getSelectVCatItemBO()
+    {
         return selectVCatItemBO;
     }
 
-    public void setSelectVCatItemBO(V_CatItemBO selectVCatItemBO) {
+    public void setSelectVCatItemBO(V_CatItemBO selectVCatItemBO)
+    {
         this.selectVCatItemBO = selectVCatItemBO;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
 
-    public CatDictionaryServiceImpl getCatDictionaryServiceImpl() {
+    public CatDictionaryServiceImpl getCatDictionaryServiceImpl()
+    {
         return catDictionaryServiceImpl;
     }
 
-    public void setCatDictionaryServiceImpl(CatDictionaryServiceImpl catDictionaryServiceImpl) {
+    public void setCatDictionaryServiceImpl(CatDictionaryServiceImpl catDictionaryServiceImpl)
+    {
         this.catDictionaryServiceImpl = catDictionaryServiceImpl;
     }
 
-    public List<CatDictionaryBO> getLstCatDictionary() {
+    public List<CatDictionaryBO> getLstCatDictionary()
+    {
         return lstCatDictionary;
     }
 
-    public void setLstCatDictionary(List<CatDictionaryBO> lstCatDictionary) {
+    public void setLstCatDictionary(List<CatDictionaryBO> lstCatDictionary)
+    {
         this.lstCatDictionary = lstCatDictionary;
     }
 
-    public CatItemBO getObjCatItemBO() {
+    public CatItemBO getObjCatItemBO()
+    {
         return objCatItemBO;
     }
 
-    public void setObjCatItemBO(CatItemBO objCatItemBO) {
+    public void setObjCatItemBO(CatItemBO objCatItemBO)
+    {
         this.objCatItemBO = objCatItemBO;
     }
 
-//</editor-fold>
-    public void onToggler(ToggleEvent e) {
+    //</editor-fold>
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
     @PostConstruct
-    public void onStart() {
+    public void onStart()
+    {
         Map<String, Object> filters = new HashMap<String, Object>();
         LinkedHashMap<String, String> orders = new LinkedHashMap<>();
         orders.put("itemCode", Constant.ORDER.ASC);
@@ -172,30 +198,39 @@ public class CatItemController {
         lazyVCatItem = new LazyDataModelBase<>(vCatItemServiceImpl, filters, orders);
         columnVisibale = Arrays.asList(true, true, true, true, true,
                 true, false, true, true, true);
-        try {
+        try
+        {
             Map<String, Object> filtersD = new HashMap<String, Object>();
             filtersD.put("editable", 1l);
             LinkedHashMap<String, String> ordersD = new LinkedHashMap<>();
             ordersD.put("catName", Constant.ORDER.ASC);
             lstCatDictionary = catDictionaryServiceImpl.findList(filtersD, ordersD);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
 
-    public void preInsert() {
+    public void preInsert()
+    {
         this.objCatItemBO = new CatItemBO();
         this.isEdit = false;
         oldObjectStr = null;
     }
 
-    public void preEdit(V_CatItemBO vcatItem) {
+    public void preEdit(V_CatItemBO vcatItem)
+    {
         this.selectVCatItemBO = vcatItem;
         this.isEdit = true;
-        if (selectVCatItemBO.getItemId() != null) {
-            try {
+        if (selectVCatItemBO.getItemId() != null)
+        {
+            try
+            {
                 this.objCatItemBO = catItemServiceImpl.findById(selectVCatItemBO.getItemId());
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 logger.error(e.getMessage(), e);
             }
         }
@@ -203,47 +238,61 @@ public class CatItemController {
         onchangeCatDictionary();
     }
 
-    public void onDelete(V_CatItemBO vcatItem) {
-        try {
+    public void onDelete(V_CatItemBO vcatItem)
+    {
+        try
+        {
             this.objCatItemBO = catItemServiceImpl.findById(vcatItem.getItemId());
             catItemServiceImpl.delete(objCatItemBO);
             LogActionController.writeLogAction(Constant.LOG_ACTION.DELETE, null, objCatItemBO.toString(), null, this.getClass().getSimpleName(),
-                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+                    (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             MessageUtil.setInfoMessageFromRes("info.delete.success");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             getRootCauseMessage(e);
             logger.error(e.getMessage(), e);
-            if (e.getMessage() != null && e.getMessage().contains("integrity constraint") && e.getMessage().contains("child record found")) {
+            if (e.getMessage() != null && e.getMessage().contains("integrity constraint") && e.getMessage().contains("child record found"))
+            {
                 MessageUtil.setErrorMessage(MessageUtil.getResourceBundleMessage("error.existTableUsedRecod")
                         + ": " + CommonUtil.getTableInConstraint(e.getMessage()));
-            } else {
+            }
+            else
+            {
                 MessageUtil.setErrorMessageFromRes("error.existTableUsedRecod");
 //                MessageUtil.setErrorMessageFromRes("error.delete.unsuccess");
             }
         }
     }
 
-    public void onSaveOrUpdate() {
-        try {
-            if (objCatItemBO == null) {
+    public void onSaveOrUpdate()
+    {
+        try
+        {
+            if (objCatItemBO == null)
+            {
                 return;
             }
-            if (!StringUtil.isNotNull(objCatItemBO.getCatCode())) {
+            if (!StringUtil.isNotNull(objCatItemBO.getCatCode()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("catItem.catCode")));
                 return;
             }
-            if (!StringUtil.isNotNull(objCatItemBO.getCode())) {
+            if (!StringUtil.isNotNull(objCatItemBO.getCode()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("catItem.itemCode")));
                 return;
             }
-            if (!StringUtil.isNotNull(objCatItemBO.getName())) {
+            if (!StringUtil.isNotNull(objCatItemBO.getName()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("catItem.itemName")));
                 return;
             }
-            if (requireValue != null && requireValue.equals(1l) && !StringUtil.isNotNull(objCatItemBO.getValue())) {
+            if (requireValue != null && requireValue.equals(1l) && !StringUtil.isNotNull(objCatItemBO.getValue()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("catItem.value")));
                 return;
@@ -252,40 +301,49 @@ public class CatItemController {
             Map<String, Object> filters = new HashMap<String, Object>();
             filters.put("catCode-EXAC_IGNORE_CASE", objCatItemBO.getCatCode());
             filters.put("code-EXAC_IGNORE_CASE", objCatItemBO.getCode());
-            if (objCatItemBO.getItemId() != null) {
+            if (objCatItemBO.getItemId() != null)
+            {
                 filters.put("itemId-NEQ", objCatItemBO.getItemId());
             }
             List<CatItemBO> lst = catItemServiceImpl.findList(filters);
-            if (!lst.isEmpty() && lst.size() > 0) {
+            if (!lst.isEmpty() && lst.size() > 0)
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.exist"),
                         MessageUtil.getResourceBundleMessage("catItem.catName")
-                        + ", " + MessageUtil.getResourceBundleMessage("catItem.itemCode")
+                                + ", " + MessageUtil.getResourceBundleMessage("catItem.itemCode")
                 ));
                 return;
             }
 
             catItemServiceImpl.saveOrUpdate(objCatItemBO);
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, objCatItemBO.toString(),
-                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, objCatItemBO.toString(),
-                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
+                        this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("common.message.success");
             RequestContext.getCurrentInstance().execute("PF('catItemDlg').hide();PF('widTableCatItem').clearFilters();");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("common.message.fail");
             logger.error(e.getMessage(), e);
         }
     }
 
-    public static void main(String[] args) {
-        try {
-            String[] ar="../../abv/ttt".split("\\.\\./");
+    public static void main(String[] args)
+    {
+        try
+        {
+            String[] ar = "../../abv/ttt".split("\\.\\./");
             System.out.println("../../abv/ttt".split("../"));
 //            new GenericDaoImplNewV2<V_CustomerCheckin, Long>() {
 //            }.findList();
@@ -300,21 +358,27 @@ public class CatItemController {
 //            List lst = ipsv.findList();
 //            System.out.println(lst.size());
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
 
-    public void onchangeCatDictionary() {
+    public void onchangeCatDictionary()
+    {
         // set lai gia tri
         regexValue = "";
         requireValue = 0l;
         messageValid = "";
 
-        if (objCatItemBO != null && StringUtil.isNotNull(objCatItemBO.getCatCode()) && lstCatDictionary != null) {
+        if (objCatItemBO != null && StringUtil.isNotNull(objCatItemBO.getCatCode()) && lstCatDictionary != null)
+        {
 
-            for (CatDictionaryBO bo : lstCatDictionary) {
-                if (objCatItemBO.getCatCode().equalsIgnoreCase(bo.getCatCode())) {
+            for (CatDictionaryBO bo : lstCatDictionary)
+            {
+                if (objCatItemBO.getCatCode().equalsIgnoreCase(bo.getCatCode()))
+                {
                     regexValue = bo.getRegexValue();
                     requireValue = bo.getRequireValue();
                     messageValid = bo.getMessageValid();

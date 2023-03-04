@@ -12,12 +12,15 @@ import org.springframework.stereotype.Service;
 
 @Scope("session")
 @Service(value = "vCustomerCheckinService")
-public class VCustomerCheckinServiceImpl extends GenericDaoImplNewV2<V_CustomerCheckin, Long> {
+public class VCustomerCheckinServiceImpl extends GenericDaoImplNewV2<V_CustomerCheckin, Long>
+{
 
     private static VCustomerCheckinServiceImpl instance;
 
-    public static VCustomerCheckinServiceImpl getInstance() {
-        if (instance == null) {
+    public static VCustomerCheckinServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new VCustomerCheckinServiceImpl();
         }
 

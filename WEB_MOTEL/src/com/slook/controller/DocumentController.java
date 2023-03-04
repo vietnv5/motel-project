@@ -34,7 +34,8 @@ import static org.omnifaces.util.Faces.getResponse;
  */
 @ManagedBean
 @ViewScoped
-public class DocumentController {
+public class DocumentController
+{
 
     private static final Logger logger = getLogger(DocumentController.class);
 
@@ -47,21 +48,26 @@ public class DocumentController {
     private String fileName;
 
     @PostConstruct
-    public void onStart() {
-        documentServiceImpl = new GenericDaoImplNewV2<Document, Long>() {
+    public void onStart()
+    {
+        documentServiceImpl = new GenericDaoImplNewV2<Document, Long>()
+        {
         };
         LinkedHashMap<String, String> ordersDocument = new LinkedHashMap<>();
         ordersDocument.put("documentName", "ASC");
         lazyModelDocument = new LazyDataModelBase<>(documentServiceImpl, null, ordersDocument);
     }
 
-    public boolean validateDocument() {
-        if (StringUtil.isNullOrEmpty(newObjDocument.getDocumentName()) || "".equals(newObjDocument.getDocumentName())) {
+    public boolean validateDocument()
+    {
+        if (StringUtil.isNullOrEmpty(newObjDocument.getDocumentName()) || "".equals(newObjDocument.getDocumentName()))
+        {
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                     MessageUtil.getResourceBundleMessage("document.documentName")));
             return false;
         }
-        if (!isAttach) {
+        if (!isAttach)
+        {
             MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                     MessageUtil.getResourceBundleMessage("document.attachFile")));
             return false;
@@ -69,22 +75,28 @@ public class DocumentController {
         return true;
     }
 
-    public void insertDocument() {
-        if (!validateDocument()) {
+    public void insertDocument()
+    {
+        if (!validateDocument())
+        {
             return;
         }
-        try {
+        try
+        {
             Document tempObj;
-            if (uploadedFile != null) {
+            if (uploadedFile != null)
+            {
 
                 String fileName = uploadedFile.getFileName();
                 Map<String, Object> filter = new HashMap<String, Object>();
                 filter.put("fileName-EXAC", fileName);
-                if (newObjDocument != null && newObjDocument.getDocumentId() != null) {
+                if (newObjDocument != null && newObjDocument.getDocumentId() != null)
+                {
                     filter.put("documentId-NEQ", newObjDocument.getDocumentId());
                 }
                 List lst = documentServiceImpl.findList(filter);
-                if (lst != null && lst.size() > 0) {
+                if (lst != null && lst.size() > 0)
+                {
                     MessageUtil.setErrorMessage("File đính kèm đã tồn tại!");
                     return;
                 }
@@ -92,8 +104,10 @@ public class DocumentController {
 
 
 //            InputStream inputStream = null;
-            if (isAttach) {
-                try {
+            if (isAttach)
+            {
+                try
+                {
 
 
                     String resultPath = Constant.DOCUMENT_FOLDER;
@@ -102,7 +116,8 @@ public class DocumentController {
                     System.out.printf("********** " + System.getProperty("user.dir"));
 //                    File fileSaveDir = new File(ctx.getRealPath(resultPath));
                     File fileSaveDir = new File(Util.getRealPath(resultPath));
-                    if (!fileSaveDir.exists()) {
+                    if (!fileSaveDir.exists())
+                    {
                         fileSaveDir.mkdir();
                     }
                     File tmpTemplateFile = new File(fileSaveDir.getPath(), fileName);
@@ -128,7 +143,9 @@ public class DocumentController {
                     newObjDocument.setFileName(fileName);
                     isAttach = false;
                     //session.saveOrUpdate(fub);
-                } catch (Exception e1) {
+                }
+                catch (Exception e1)
+                {
                     MessageUtil.setErrorMessage("Cannot read input file!");
                     e1.printStackTrace();
                     logger.error(e1.getMessage(), e1);
@@ -137,9 +154,12 @@ public class DocumentController {
 
             }
 
-            if (!isEdit) {
+            if (!isEdit)
+            {
                 tempObj = new Document();
-            } else {
+            }
+            else
+            {
                 tempObj = documentServiceImpl.findById(newObjDocument.getDocumentId());
             }
             tempObj.setDocumentName(newObjDocument.getDocumentName());
@@ -151,13 +171,16 @@ public class DocumentController {
 
             MessageUtil.setInfoMessageFromRes("common.message.success");
             RequestContext.getCurrentInstance().execute("PF('addDocumentDlg').hide();");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             MessageUtil.setErrorMessageFromRes("common.message.fail");
         }
     }
 
-    public void preInsertDocument() {
+    public void preInsertDocument()
+    {
         newObjDocument = new Document();
         isEdit = false;
         isAttach = false;
@@ -166,29 +189,39 @@ public class DocumentController {
     }
 
     //Get dữ liệu update
-    public void prepareUpdateDocument(Document node) {
+    public void prepareUpdateDocument(Document node)
+    {
         isEdit = true;
         newObjDocument = node;
         isAttach = true;
         fileName = node.getFileName();
     }
 
-    public void preDeleteDocument(Document servicesDocument) {
+    public void preDeleteDocument(Document servicesDocument)
+    {
         deleteDocument = servicesDocument;
     }
 
-    public void deleteDocument() {
-        if (deleteDocument != null) {
-            try {
+    public void deleteDocument()
+    {
+        if (deleteDocument != null)
+        {
+            try
+            {
                 ServletContext ctx = (ServletContext) FacesContext.getCurrentInstance()
                         .getExternalContext().getContext();
 //                File fileDel = new File(ctx.getRealPath(Constant.DOCUMENT_FOLDER + "/" + deleteDocument.getFileName()));
                 File fileDel = new File(Util.getRealPath(Constant.DOCUMENT_FOLDER + "/" + deleteDocument.getFileName()));
-                if (fileDel.exists()) fileDel.delete();
+                if (fileDel.exists())
+                {
+                    fileDel.delete();
+                }
                 documentServiceImpl.delete(deleteDocument);
                 deleteDocument = null;
                 MessageUtil.setInfoMessageFromRes("info.delete.suceess");
-            } catch (Exception e) {
+            }
+            catch (Exception e)
+            {
                 logger.error(e.getMessage(), e);
                 MessageUtil.setErrorMessageFromRes("error.delete.unsuceess");
             }
@@ -197,16 +230,19 @@ public class DocumentController {
 
     private UploadedFile uploadedFile;
 
-    public void handleFileUpload(FileUploadEvent event) {
+    public void handleFileUpload(FileUploadEvent event)
+    {
         uploadedFile = event.getFile();
         isAttach = true;
         fileName = uploadedFile.getFileName();
     }
 
 
-    public StreamedContent getFileTemplate(Document newObjDocument) {
+    public StreamedContent getFileTemplate(Document newObjDocument)
+    {
         StreamedContent fileDispatch = null;
-        try {
+        try
+        {
             ExternalContext externalContext = FacesContext.getCurrentInstance()
                     .getExternalContext();
 //            HttpServletRequest request = (HttpServletRequest) externalContext
@@ -236,74 +272,92 @@ public class DocumentController {
             fileDispatch = new DefaultStreamedContent(input,
                     externalContext.getMimeType(newObjDocument.getFileName()),
                     newObjDocument.getFileName());
-        } catch (Exception e1) {
+        }
+        catch (Exception e1)
+        {
             logger.error(e1.getMessage(), e1);
         }
         return fileDispatch;
     }
 
 
-    public GenericDaoImplNewV2<Document, Long> getDocumentServiceImpl() {
+    public GenericDaoImplNewV2<Document, Long> getDocumentServiceImpl()
+    {
         return documentServiceImpl;
     }
 
-    public void setDocumentServiceImpl(GenericDaoImplNewV2<Document, Long> documentServiceImpl) {
+    public void setDocumentServiceImpl(GenericDaoImplNewV2<Document, Long> documentServiceImpl)
+    {
         this.documentServiceImpl = documentServiceImpl;
     }
 
-    public LazyDataModel<Document> getLazyModelDocument() {
+    public LazyDataModel<Document> getLazyModelDocument()
+    {
         return lazyModelDocument;
     }
 
-    public void setLazyModelDocument(LazyDataModel<Document> lazyModelDocument) {
+    public void setLazyModelDocument(LazyDataModel<Document> lazyModelDocument)
+    {
         this.lazyModelDocument = lazyModelDocument;
     }
 
-    public Document getNewObjDocument() {
+    public Document getNewObjDocument()
+    {
         return newObjDocument;
     }
 
-    public void setNewObjDocument(Document newObjDocument) {
+    public void setNewObjDocument(Document newObjDocument)
+    {
         this.newObjDocument = newObjDocument;
     }
 
-    public Document getDeleteDocument() {
+    public Document getDeleteDocument()
+    {
         return deleteDocument;
     }
 
-    public void setDeleteDocument(Document deleteDocument) {
+    public void setDeleteDocument(Document deleteDocument)
+    {
         this.deleteDocument = deleteDocument;
     }
 
-    public boolean isAttach() {
+    public boolean isAttach()
+    {
         return isAttach;
     }
 
-    public void setAttach(boolean attach) {
+    public void setAttach(boolean attach)
+    {
         isAttach = attach;
     }
 
-    public boolean getIsEdit() {
+    public boolean getIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean edit) {
+    public void setIsEdit(boolean edit)
+    {
         isEdit = edit;
     }
 
-    public String getFileName() {
+    public String getFileName()
+    {
         return fileName;
     }
 
-    public void setFileName(String fileName) {
+    public void setFileName(String fileName)
+    {
         this.fileName = fileName;
     }
 
-    public UploadedFile getUploadedFile() {
+    public UploadedFile getUploadedFile()
+    {
         return uploadedFile;
     }
 
-    public void setUploadedFile(UploadedFile uploadedFile) {
+    public void setUploadedFile(UploadedFile uploadedFile)
+    {
         this.uploadedFile = uploadedFile;
     }
 }

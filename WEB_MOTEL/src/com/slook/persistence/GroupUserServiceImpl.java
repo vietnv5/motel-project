@@ -10,17 +10,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author VietNV Jan 17, 2018
  */
 @Scope("session")
 @Service(value = "groupUserService")
-public class GroupUserServiceImpl extends GenericDaoImplNewV2<GroupUser, Long> {
+public class GroupUserServiceImpl extends GenericDaoImplNewV2<GroupUser, Long>
+{
 
     private static GroupUserServiceImpl instance;
 
-    public static GroupUserServiceImpl getInstance() {
-        if (instance == null) {
+    public static GroupUserServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new GroupUserServiceImpl();
         }
         return instance;

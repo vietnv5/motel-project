@@ -8,108 +8,132 @@
     <ui:define name="content">
         <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
             <h:form id="scheduleDlgId">
-                <p:growl showDetail="true"  widgetVar="mainMessage"/>
+                <p:growl showDetail="true" widgetVar="mainMessage"/>
 
                 <h:panelGrid id="eventDetails" columns="2">
-                    <p:outputLabel for="title" value="#{msg['datatable.header.schedule.name']}:" />
-                    <p:inputText id="title" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.scheduleName}" required="true" />
+                    <p:outputLabel for="title" value="#{msg['datatable.header.schedule.name']}:"/>
+                    <p:inputText id="title" rendered="#{scheduleController.event.data!=null}"
+                                 value="#{scheduleController.event.data.scheduleName}" required="true"/>
 
-                    <p:outputLabel for="branch" value="#{msg['datatable.header.branch.name']}" />
-                    <p:selectOneMenu id="branch" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.room.branchId}" filter="true"
+                    <p:outputLabel for="branch" value="#{msg['datatable.header.branch.name']}"/>
+                    <p:selectOneMenu id="branch" rendered="#{scheduleController.event.data!=null}"
+                                     value="#{scheduleController.event.data.room.branchId}" filter="true"
                                      filterMatchMode="contains" disabled="false"
                                      required="true" style="width: 43%" scrollHeight="100"
                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branch.name'])}"
-                                     >
+                    >
                         <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
-                        <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
-                        <p:ajax event="change" update="room" onstart="PF('block').show()" oncomplete="PF('block').hide()" />
+                        <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}"
+                                       itemValue="#{p.branchId}"/>
+                        <p:ajax event="change" update="room" onstart="PF('block').show()"
+                                oncomplete="PF('block').hide()"/>
                     </p:selectOneMenu>
-                    <p:outputLabel for="room" value="#{msg['datatable.header.room.name']}" />
-                    <p:selectOneMenu id="room" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.roomId}" filter="true"
+                    <p:outputLabel for="room" value="#{msg['datatable.header.room.name']}"/>
+                    <p:selectOneMenu id="room" rendered="#{scheduleController.event.data!=null}"
+                                     value="#{scheduleController.event.data.roomId}" filter="true"
                                      filterMatchMode="contains"
                                      required="true" style="width: 43%" scrollHeight="100"
                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.room.name'])}"
-                                     >
+                    >
                         <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
-                        <f:selectItems value="#{catRoomController.getRoomsInBranch(scheduleController.event.data.room.branchId)}" var="p" itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
+                        <f:selectItems
+                                value="#{catRoomController.getRoomsInBranch(scheduleController.event.data.room.branchId)}"
+                                var="p" itemLabel="#{p.roomName}" itemValue="#{p.roomId}"/>
                     </p:selectOneMenu>
-                    <p:outputLabel for="pack" value="#{msg['datatable.header.pack.name']}" />
-                    <p:selectOneMenu id="pack" rendered="#{scheduleController.event.data!=null}" value="#{scheduleController.event.data.packId}" filter="true"
+                    <p:outputLabel for="pack" value="#{msg['datatable.header.pack.name']}"/>
+                    <p:selectOneMenu id="pack" rendered="#{scheduleController.event.data!=null}"
+                                     value="#{scheduleController.event.data.packId}" filter="true"
                                      filterMatchMode="contains"
                                      required="true" style="width: 43%" scrollHeight="100"
                                      requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.pack.name'])}"
-                                     >
+                    >
                         <f:selectItem itemValue="" itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
-                        <f:selectItems value="#{catGroupPackController.catPacks}" var="pa" itemLabel="#{pa.packName}" itemValue="#{pa.packId}"/>
+                        <f:selectItems value="#{catGroupPackController.catPacks}" var="pa" itemLabel="#{pa.packName}"
+                                       itemValue="#{pa.packId}"/>
                     </p:selectOneMenu>
 
-                    <p:outputLabel for="from" value="Từ:" />
-                    <p:calendar id="from" required="true" value="#{scheduleController.event.startDate}" maxdate="#{scheduleController.event.endDate}"  pattern="dd/MM/yyyy HH:mm">
+                    <p:outputLabel for="from" value="Từ:"/>
+                    <p:calendar id="from" required="true" value="#{scheduleController.event.startDate}"
+                                maxdate="#{scheduleController.event.endDate}" pattern="dd/MM/yyyy HH:mm">
                         <p:ajax update="to"/>
                     </p:calendar>
 
-                    <p:outputLabel for="to" value="Đến:" />
-                    <p:calendar id="to" required="true" value="#{scheduleController.event.endDate}" mindate="#{scheduleController.event.startDate}"  pattern="dd/MM/yyyy HH:mm">
+                    <p:outputLabel for="to" value="Đến:"/>
+                    <p:calendar id="to" required="true" value="#{scheduleController.event.endDate}"
+                                mindate="#{scheduleController.event.startDate}" pattern="dd/MM/yyyy HH:mm">
                         <p:ajax update="from"/>
                     </p:calendar>
 
-                    <p:outputLabel for="employee" value="HLV/Nhân viên" />
-                    <p:autoComplete id="employee" value="#{scheduleController.event.data.employee}" completeMethod="#{employeeController.completeEmployee}"
+                    <p:outputLabel for="employee" value="HLV/Nhân viên"/>
+                    <p:autoComplete id="employee" value="#{scheduleController.event.data.employee}"
+                                    completeMethod="#{employeeController.completeEmployee}"
                                     style="" placeholder="HLV/Nhân viên" converter="employeeConverter" dropdown="true"
-                                    var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
-                        <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
-                        <p:column><h:outputText value="#{emp.employeeName}"/></p:column>
-                        <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
-                        <p:column><h:outputText value="#{emp.telephone}"/></p:column>
+                                    var="emp" itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}">
+                        <p:column>
+                            <h:outputText value="#{emp.employeeCode}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{emp.employeeName}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{emp.jobTitle.jobTitleName}"/>
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{emp.telephone}"/>
+                        </p:column>
 
                     </p:autoComplete>
-                    <p:commandButton id="addButton" value="#{msg['button.save']}" actionListener="#{scheduleController.addEvent}"
+                    <p:commandButton id="addButton" value="#{msg['button.save']}"
+                                     actionListener="#{scheduleController.addEvent}"
                                      update="@widgetVar(growl),@widgetVar(scheduleGym)"
-                                     oncomplete="PF('scheduleGym').update();" />
+                                     oncomplete="PF('scheduleGym').update();"/>
                 </h:panelGrid>
             </h:form>
 
         </p:dialog>
         <h:form id="form">
-            <p:growl id="messages" showDetail="true" />
+            <p:growl id="messages" showDetail="true"/>
             <div class="Container50 Responsive100 NoIndent">
                 <div class="Container100">
                     <div class="Card">
-                        <div  class="Container33" style="display: #{sessionUtil.getUrlDisplay('/checkinServiceTicket')? '':'none'}">
-                            <div class="Card bg-danger-400 mainMemu" >
+                        <div class="Container33"
+                             style="display: #{sessionUtil.getUrlDisplay('/checkinServiceTicket')? '':'none'}">
+                            <div class="Card bg-danger-400 mainMemu">
 
                                 <a
-                                    href="#{facesContext.externalContext.request.contextPath}/checkinServiceTicket"><i
-                                        class="fa fa-sign-in" style="size: 20px"></i><span > CHECKIN DỊCH VỤ</span></a>
+                                        href="#{facesContext.externalContext.request.contextPath}/checkinServiceTicket"><i
+                                        class="fa fa-sign-in" style="size: 20px"></i><span> CHECKIN DỊCH VỤ</span></a>
                             </div>
                         </div>
-                        <div  class="Container33" style="display: #{sessionUtil.getUrlDisplay('/member')? '':'none'}">
-                            <div class="Card bg-teal-400 mainMemu" >
+                        <div class="Container33" style="display: #{sessionUtil.getUrlDisplay('/member')? '':'none'}">
+                            <div class="Card bg-teal-400 mainMemu">
 
                                 <a
-                                    href="#{facesContext.externalContext.request.contextPath}/member"><i
-                                        class="icon-user7" style="size: 20px"></i><span > HỘI VIÊN/NHÓM</span></a>
+                                        href="#{facesContext.externalContext.request.contextPath}/member"><i
+                                        class="icon-user7" style="size: 20px"></i><span> HỘI VIÊN/NHÓM</span></a>
                             </div>
                         </div>
-                        <div  class="Container33" style="display: #{sessionUtil.getUrlDisplay('/client')? '':'none'}">
-                            <div class="Card bg-orange-400 mainMemu" >
+                        <div class="Container33" style="display: #{sessionUtil.getUrlDisplay('/client')? '':'none'}">
+                            <div class="Card bg-orange-400 mainMemu">
 
                                 <a class="menulink"
                                    href="#{facesContext.externalContext.request.contextPath}/client"><i
                                         class="icon-user7"></i><span> KHÁCH LẺ</span></a>
                             </div>
                         </div>
-                        <div  class="Container10" ></div>
-                        <div  class="Container40"  style="display: #{sessionUtil.getUrlDisplay('/custom_checkin')? '':'none'}">
-                            <div class="Card bg-green-400 mainMemu" >
+                        <div class="Container10"></div>
+                        <div class="Container40"
+                             style="display: #{sessionUtil.getUrlDisplay('/custom_checkin')? '':'none'}">
+                            <div class="Card bg-green-400 mainMemu">
 
                                 <a class="menulink"
                                    href="#{facesContext.externalContext.request.contextPath}/custom_checkin"><i
                                         class="fa fa-cart-plus"></i><span> THÊM DỊCH VỤ</span></a>
                             </div>
                         </div>
-                        <div  class="Container40" style="display: #{sessionUtil.getUrlDisplay('/customer_checkout')? '':'none'}">
-                            <div class="Card bg-green-400 mainMemu" >
+                        <div class="Container40"
+                             style="display: #{sessionUtil.getUrlDisplay('/customer_checkout')? '':'none'}">
+                            <div class="Card bg-green-400 mainMemu">
                                 <a class="menulink"
                                    href="#{facesContext.externalContext.request.contextPath}/customer_checkout"><i
                                         class="fa fa-credit-card"></i><span> NGỪNG SỬ DỤNG</span></a>
@@ -118,16 +142,19 @@
                     </div>
 
 
-
                 </div>
                 <div class="Container100">
                     <div class="Card">
                         <div style="width: 100%; ">
 
-                            <p:selectOneRadio   style="width: 90%; margin-left: 5%" value="#{scheduleController.currBranch.branchId}" layout="grid" columns="5">
+                            <p:selectOneRadio style="width: 90%; margin-left: 5%"
+                                              value="#{scheduleController.currBranch.branchId}" layout="grid"
+                                              columns="5">
                                 <f:selectItem itemValue="" itemLabel="Tất cả"/>
-                                <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}" itemValue="#{p.branchId}"/>
-                                <p:ajax event="change" listener="#{scheduleController.loadSchedule}" update="@widgetVar(scheduleGym)"/>
+                                <f:selectItems value="#{branchController.branchs}" var="p" itemLabel="#{p.branchName}"
+                                               itemValue="#{p.branchId}"/>
+                                <p:ajax event="change" listener="#{scheduleController.loadSchedule}"
+                                        update="@widgetVar(scheduleGym)"/>
                             </p:selectOneRadio>
                         </div>
                         <div class=" Card">
@@ -141,13 +168,19 @@
 
                             </h:panelGrid>
                         </div>
-                        <p:schedule widgetVar="scheduleGym" view="agendaWeek" value="#{scheduleController.scheduleGym}" timeZone="Asia/Ho_Chi_Minh" tooltip="true"
+                        <p:schedule widgetVar="scheduleGym" view="agendaWeek" value="#{scheduleController.scheduleGym}"
+                                    timeZone="Asia/Ho_Chi_Minh" tooltip="true"
                                     allDaySlot="false">
-                            <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}" onstart="PF('block').show()" update="scheduleDlgId:eventDetails" oncomplete="PF('eventDialog').show();PF('block').hide()" />
-                            <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}" onstart="PF('block').show()" update="scheduleDlgId:eventDetails" oncomplete="PF('eventDialog').show();PF('block').hide()" />
-                            <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}"  />
-                            <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}"  />
-                            <p:ajax event="viewChange" update=":form:tip" listener="#{scheduleController.onChangeView}" />
+                            <p:ajax event="dateSelect" listener="#{scheduleController.onDateSelect}"
+                                    onstart="PF('block').show()" update="scheduleDlgId:eventDetails"
+                                    oncomplete="PF('eventDialog').show();PF('block').hide()"/>
+                            <p:ajax event="eventSelect" listener="#{scheduleController.onEventSelect}"
+                                    onstart="PF('block').show()" update="scheduleDlgId:eventDetails"
+                                    oncomplete="PF('eventDialog').show();PF('block').hide()"/>
+                            <p:ajax event="eventMove" listener="#{scheduleController.onEventMove}"/>
+                            <p:ajax event="eventResize" listener="#{scheduleController.onEventResize}"/>
+                            <p:ajax event="viewChange" update=":form:tip"
+                                    listener="#{scheduleController.onChangeView}"/>
                         </p:schedule>
 
 
@@ -161,7 +194,8 @@
                             <div id="container" style="width: 100%; height: 300px"></div>
                             <p:commandButton value="Show" style="display: none"
                                              oncomplete="drawHighChart(xhr, status, args);" process="@this"
-                                             action="#{dashBoardController.loadChartData}" id="chartvalue_btn" update="@parent" />
+                                             action="#{dashBoardController.loadChartData}" id="chartvalue_btn"
+                                             update="@parent"/>
 
                         </p:outputPanel>
                     </div>
@@ -170,7 +204,8 @@
                             <div id="container2" style="width: 100%; height: 300px"></div>
                             <p:commandButton value="Show" style="display: none"
                                              oncomplete="drawHighChart(xhr, status, args);" process="@this"
-                                             action="#{dashBoardController.loadDashboardMemActive}" id="chartvalue_btn2" update="@parent" />
+                                             action="#{dashBoardController.loadDashboardMemActive}" id="chartvalue_btn2"
+                                             update="@parent"/>
 
                         </p:outputPanel>
                     </div>
@@ -179,7 +214,8 @@
                             <div id="container3" style="width: 100%; height: 300px"></div>
                             <p:commandButton value="Show" style="display: none"
                                              oncomplete="drawHighChart(xhr, status, args);" process="@this"
-                                             action="#{dashBoardController.loadDashboardNewMember}" id="chartvalue_btn3" update="@parent" />
+                                             action="#{dashBoardController.loadDashboardNewMember}" id="chartvalue_btn3"
+                                             update="@parent"/>
 
                         </p:outputPanel>
                     </div>
@@ -188,7 +224,8 @@
                             <div id="container4" style="width: 100%; height: 300px"></div>
                             <p:commandButton value="Show" style="display: none"
                                              oncomplete="drawHighChart(xhr, status, args);" process="@this"
-                                             action="#{dashBoardController.loadDashboardMemberFinish}" id="chartvalue_btn4" update="@parent" />
+                                             action="#{dashBoardController.loadDashboardMemberFinish}"
+                                             id="chartvalue_btn4" update="@parent"/>
 
                         </p:outputPanel>
                     </div>
@@ -203,16 +240,18 @@
 
                                 </div>
                                 <div class="Container60 NoIndent Responsive100 TexAlCenter" style="color: #ff9f1a">
-                                    <p:knob value="#{memberController.memberEndToDay}" width="70" height="70" foregroundColor="#ff9f1a" disabled="true"></p:knob>
+                                    <p:knob value="#{memberController.memberEndToDay}" width="70" height="70"
+                                            foregroundColor="#ff9f1a" disabled="true"></p:knob>
                                 </div>
 
-                                <p:outputPanel id="rp1" styleClass="Container20 NoIndent ui-fluid Responsive100 TexAlRight">
+                                <p:outputPanel id="rp1"
+                                               styleClass="Container20 NoIndent ui-fluid Responsive100 TexAlRight">
                                     <p:commandLink ajax="false" process="@this"
                                                    onstart="PF('block').show()"
                                                    oncomplete="PF('block').hide()"
                                                    actionListener="#{memberController.exportMemberEndToday}"
                                                    update="@widgetVar(mainMessage)"
-                                                   >
+                                    >
                                         <i class="fa fa-cloud-download Blue Fs30 Fleft MarRight10"></i>
                                         <p:fileDownload value="#{memberController.fileExported}"/>
 
@@ -220,7 +259,8 @@
 
                                 </p:outputPanel>
                                 <p:tooltip position="right" for="rp1" value="Tải báo cáo"></p:tooltip>
-                                <div class="Container100 NoIndent Responsive100 TexAlCenter" style="margin-top: 5px !important;">
+                                <div class="Container100 NoIndent Responsive100 TexAlCenter"
+                                     style="margin-top: 5px !important;">
                                     <span class="FontLatoBlack Black Opac80 Fleft Fs14 DispBlock">Số hội viên hết hạn hôm nay</span><br/>
                                 </div>
                             </div>
@@ -232,23 +272,26 @@
 
                                 </div>
                                 <div class="Container60 NoIndent Responsive100 TexAlCenter" style="color: green">
-                                    <p:knob value="#{memberController.memberJoinDateToDay}" width="70" height="70" foregroundColor="green" disabled="true"></p:knob>
+                                    <p:knob value="#{memberController.memberJoinDateToDay}" width="70" height="70"
+                                            foregroundColor="green" disabled="true"></p:knob>
                                 </div>
 
-                                <p:outputPanel id="rp2" styleClass="Container20 NoIndent ui-fluid Responsive100 TexAlRight">
-                                    <p:commandLink ajax="false"  process="@this"
+                                <p:outputPanel id="rp2"
+                                               styleClass="Container20 NoIndent ui-fluid Responsive100 TexAlRight">
+                                    <p:commandLink ajax="false" process="@this"
                                                    onstart="PF('block').show()"
                                                    oncomplete="PF('block').hide()"
                                                    actionListener="#{memberController.exportMemberJoinDateToDay}"
                                                    update="@widgetVar(mainMessage)"
-                                                   >
+                                    >
                                         <i class="fa fa-cloud-download Blue Fs30 Fleft MarRight10"></i>
                                         <p:fileDownload value="#{memberController.fileExported}"/>
 
                                     </p:commandLink>
                                 </p:outputPanel>
                                 <p:tooltip position="right" for="rp2" value="Tải báo cáo"></p:tooltip>
-                                <div class="Container100 NoIndent Responsive100 TexAlCenter" style="margin-top: 5px !important;">
+                                <div class="Container100 NoIndent Responsive100 TexAlCenter"
+                                     style="margin-top: 5px !important;">
                                     <span class="FontLatoBlack Black Opac80 Fleft Fs14 DispBlock">Số hội viên tham gia hôm nay</span><br/>
                                 </div>
                             </div>
@@ -259,17 +302,19 @@
                                     <i class="fa fa-users Aqua Fs40 Fleft MarRight10"></i>
 
                                 </div>
-                                <div class="Container60 NoIndent Responsive100 TexAlCenter" >
-                                    <p:knob value="#{memberController.numMemberBirthDateOfTheMonth}" width="70" height="70" foregroundColor="#0084b4" disabled="true"></p:knob>
+                                <div class="Container60 NoIndent Responsive100 TexAlCenter">
+                                    <p:knob value="#{memberController.numMemberBirthDateOfTheMonth}" width="70"
+                                            height="70" foregroundColor="#0084b4" disabled="true"></p:knob>
                                 </div>
 
-                                <p:outputPanel  id="rp3" styleClass="Container20 NoIndent ui-fluid Responsive100 TexAlRight">
-                                    <p:commandLink ajax="false"  process="@this"
+                                <p:outputPanel id="rp3"
+                                               styleClass="Container20 NoIndent ui-fluid Responsive100 TexAlRight">
+                                    <p:commandLink ajax="false" process="@this"
                                                    onstart="PF('block').show()"
                                                    oncomplete="PF('block').hide()"
                                                    actionListener="#{memberController.exportMemberBirthDateOfTheMonth}"
                                                    update="@widgetVar(mainMessage)"
-                                                   >
+                                    >
                                         <i class="fa fa-cloud-download Blue Fs30 Fleft MarRight10"></i>
                                         <p:fileDownload value="#{memberController.fileExported}"/>
 
@@ -277,7 +322,8 @@
 
                                 </p:outputPanel>
                                 <p:tooltip position="left" for="rp3" value="Tải báo cáo"></p:tooltip>
-                                <div class="Container100 NoIndent Responsive100 TexAlCenter" style="margin-top: 5px !important;">
+                                <div class="Container100 NoIndent Responsive100 TexAlCenter"
+                                     style="margin-top: 5px !important;">
                                     <span class="FontLatoBlack Black Opac80 Fleft Fs14 DispBlock">Số hội viên có ngày sinh trong tháng</span><br/>
                                 </div>
                             </div>
@@ -302,197 +348,238 @@
 
         </script>
         <style type="text/css">
-            .fc-scroller{
+            .fc-scroller {
                 height: 100% !important;
             }
 
 
-            .fc-scroller{
+            .fc-scroller {
                 height: 100% !important;
             }
-            .fc-content{
+
+            .fc-content {
                 color: black !important;
             }
-            .Pack1Room1{
+
+            .Pack1Room1 {
                 background: #FFFF66 !important;
                 border-right: solid red 5px !important;
 
             }
-            .Pack2Room1{
+
+            .Pack2Room1 {
                 background: #66FF66 !important;
                 border-right: solid red 5px !important;
             }
-            .Pack3Room1{
+
+            .Pack3Room1 {
                 background: #FFCC66 !important;
                 border-right: solid red 5px !important;
             }
-            .Pack4Room1{
+
+            .Pack4Room1 {
                 background: #FF99CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack5Room1{
+
+            .Pack5Room1 {
                 background: #3399CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack6Room1{
+
+            .Pack6Room1 {
                 background: #3366CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack7Room1{
+
+            .Pack7Room1 {
                 background: #9933CC !important;
                 border-right: solid red 5px !important;
             }
-            .Pack8Room1{
+
+            .Pack8Room1 {
                 background: #3300FF !important;
                 border-right: solid red 5px !important;
             }
-            .Pack9Room1{
+
+            .Pack9Room1 {
                 background: #05c436 !important;
                 border-right: solid red 5px !important;
             }
-            .Pack10Room1{
+
+            .Pack10Room1 {
                 background: #666633 !important;
                 border-right: solid red 5px !important;
             }
 
-            .Pack1Room2{
+            .Pack1Room2 {
                 background: #FFFF66 !important;
                 border-right: solid blue 5px !important;
 
             }
-            .Pack2Room2{
+
+            .Pack2Room2 {
                 background: #66FF66 !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack3Room2{
+
+            .Pack3Room2 {
                 background: #FFCC66 !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack4Room2{
+
+            .Pack4Room2 {
                 background: #FF99CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack5Room2{
+
+            .Pack5Room2 {
                 background: #3399CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack6Room2{
+
+            .Pack6Room2 {
                 background: #3366CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack7Room2{
+
+            .Pack7Room2 {
                 background: #9933CC !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack8Room2{
+
+            .Pack8Room2 {
                 background: #3300FF !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack9Room2{
+
+            .Pack9Room2 {
                 background: #05c436 !important;
                 border-right: solid blue 5px !important;
             }
-            .Pack10Room2{
+
+            .Pack10Room2 {
                 background: #666633 !important;
                 border-right: solid blue 5px !important;
             }
 
-            .Pack1Room3{
+            .Pack1Room3 {
                 background: #FFFF66 !important;
                 border-right: solid gray 5px !important;
 
             }
-            .Pack2Room3{
+
+            .Pack2Room3 {
                 background: #66FF66 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack3Room3{
+
+            .Pack3Room3 {
                 background: #FFCC66 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack4Room3{
+
+            .Pack4Room3 {
                 background: #FF99CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack5Room3{
+
+            .Pack5Room3 {
                 background: #3399CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack6Room3{
+
+            .Pack6Room3 {
                 background: #3366CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack7Room3{
+
+            .Pack7Room3 {
                 background: #9933CC !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack8Room3{
+
+            .Pack8Room3 {
                 background: #3300FF !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack9Room3{
+
+            .Pack9Room3 {
                 background: #05c436 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack10Room3{
+
+            .Pack10Room3 {
                 background: #666633 !important;
                 border-right: solid gray 5px !important;
             }
-            .Pack1Room4{
+
+            .Pack1Room4 {
                 background: #FFFF66 !important;
                 border-right: solid yellow 5px !important;
 
             }
-            .Pack2Room4{
+
+            .Pack2Room4 {
                 background: #66FF66 !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack3Room4{
+
+            .Pack3Room4 {
                 background: #FFCC66 !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack4Room4{
+
+            .Pack4Room4 {
                 background: #FF99CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack5Room4{
+
+            .Pack5Room4 {
                 background: #3399CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack6Room4{
+
+            .Pack6Room4 {
                 background: #3366CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack7Room4{
+
+            .Pack7Room4 {
                 background: #9933CC !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack8Room4{
+
+            .Pack8Room4 {
                 background: #3300FF !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack9Room4{
+
+            .Pack9Room4 {
                 background: #05c436 !important;
                 border-right: solid yellow 5px !important;
             }
-            .Pack10Room4{
+
+            .Pack10Room4 {
                 background: #666633 !important;
                 border-right: solid yellow 5px !important;
             }
 
-            .bg-danger-400{
-                color:#fff;
-                background-color: #f2480c!important;
+            .bg-danger-400 {
+                color: #fff;
+                background-color: #f2480c !important;
                 border-color: #fff;
                 border: 2px;
                 text-align: center;
                 height: 60px;
             }
+
             .bg-teal-400 {
                 background-color: #26A69A;
                 border-color: #26A69A;
                 color: #fff;
             }
+
             .bg-orange-400 {
                 background-color: #FFA726;
                 border-color: #FFA726;
@@ -504,20 +591,23 @@
                 border-color: #9CCC65;
                 color: #fff;
             }
+
             .bg-purple-400 {
                 background-color: #7E57C2;
                 border-color: #7E57C2;
                 color: #fff;
             }
 
-            .mainMemu{
+            .mainMemu {
                 border: 2px;
                 text-align: center;
                 height: 50px;
             }
+
             .mainMemu:hover {
-                transform: scale(1.2,1.2);
+                transform: scale(1.2, 1.2);
             }
+
             .mainMemu a {
                 color: #fff;
             }

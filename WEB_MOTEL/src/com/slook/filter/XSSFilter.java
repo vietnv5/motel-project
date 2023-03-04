@@ -19,28 +19,32 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * XSSFilter.java
- * 
+ *
  * @author Nguyen Hai Ha (hanh45@viettel.com.vn)
- * @since Mar 24, 2014
  * @version 1.0.0
+ * @since Mar 24, 2014
  */
-@WebFilter(dispatcherTypes = { DispatcherType.REQUEST, DispatcherType.FORWARD,
-		DispatcherType.INCLUDE, DispatcherType.ERROR }, urlPatterns = { "/faces/*" })
-public class XSSFilter implements Filter {
+@WebFilter(dispatcherTypes = {DispatcherType.REQUEST, DispatcherType.FORWARD,
+        DispatcherType.INCLUDE, DispatcherType.ERROR}, urlPatterns = {"/faces/*"})
+public class XSSFilter implements Filter
+{
 
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-	}
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException
+    {
+    }
 
-	@Override
-	public void destroy() {
-	}
+    @Override
+    public void destroy()
+    {
+    }
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                         FilterChain chain) throws IOException, ServletException
+    {
 
-		chain.doFilter(new XSSRequestWrapper((HttpServletRequest) request),
-				response);
-	}
+        chain.doFilter(new XSSRequestWrapper((HttpServletRequest) request),
+                response);
+    }
 }

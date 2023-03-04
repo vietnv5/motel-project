@@ -15,7 +15,7 @@
                                          title="#{msg['datatable.header.memberGroupCode']}"
                                          required="true"
                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberCode'])}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['datatable.header.memberGroupCode']} *</label>
@@ -29,7 +29,7 @@
                                          title="#{msg['datatable.header.memberGroupName']}"
                                          required="true"
                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.memberName'])}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['datatable.header.memberGroupName']} *</label>
@@ -39,9 +39,13 @@
 
                     <div class="Container25 Responsive50">
                         <span class="title-top">
-                            <p:autoComplete value="#{groupMemberController.curGroupMember.deputationMember}" completeMethod="#{groupMemberController.searchMemberInherit}"
-                                            style="" placeholder="#{msg['member.deputationMember']}"  dropdown="true" id="deputationMemberId"
-                                            var="mem" itemLabel="#{mem.memberCode} #{mem.memberCode!=null ?'-':''} #{mem.memberName}" itemValue="#{mem}" converter="memberConverter" forceSelection="true">
+                            <p:autoComplete value="#{groupMemberController.curGroupMember.deputationMember}"
+                                            completeMethod="#{groupMemberController.searchMemberInherit}"
+                                            style="" placeholder="#{msg['member.deputationMember']}" dropdown="true"
+                                            id="deputationMemberId"
+                                            var="mem"
+                                            itemLabel="#{mem.memberCode} #{mem.memberCode!=null ?'-':''} #{mem.memberName}"
+                                            itemValue="#{mem}" converter="memberConverter" forceSelection="true">
                                 <p:column><h:outputText value="#{mem.memberCode}"/></p:column>
                                 <p:column><h:outputText value="#{mem.memberName}"/></p:column>
                                 <p:column><h:outputText value="#{mem.cardCode}"/></p:column>
@@ -56,9 +60,12 @@
                     </div>
                     <div class="Container25 Responsive50">
                         <span class="title-top">
-                            <p:autoComplete id="employeeId" value="#{groupMemberController.curGroupMember.employee}" completeMethod="#{employeeController.completeEmployee}"
-                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter" dropdown="true"  scrollHeight="200"
-                                            var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                            <p:autoComplete id="employeeId" value="#{groupMemberController.curGroupMember.employee}"
+                                            completeMethod="#{employeeController.completeEmployee}"
+                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter"
+                                            dropdown="true" scrollHeight="200"
+                                            var="emp" itemLabel="#{emp.employeeCode} #{emp.employeeName}"
+                                            itemValue="#{emp}">
                                 <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
                                 <p:column width="50"><h:outputText value="#{emp.employeeName}"/></p:column>
                                 <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
@@ -115,7 +122,7 @@
                                              required="true"
                                              title="#{msg['datatable.header.status']}"
                                              style="width: 43%"
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}"
                                               noSelectionOption="true"/>
                                 <f:selectItem itemLabel="#{msg['view.label.status0']}"
@@ -138,7 +145,7 @@
                                              required="true"
                                              title="#{msg['datatable.header.branchId']}"
                                              style=""
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}"
                                               noSelectionOption="true"/>
                                 <f:selectItems value="#{branchController.branchs}" var="o"
@@ -162,9 +169,13 @@
                     <div class="Container25 Responsive50">
                         <div class="Container100">
                             <span class="title-top">
-                                <p:autoComplete value="#{groupMemberController.memberAssign}" completeMethod="#{groupMemberController.searchMemberInherit}"
-                                                style="" placeholder="#{msg['member.groupMember.member']}" scrollHeight="200" dropdown="true" id="memberAssignId"
-                                                var="mem" itemLabel="#{mem.memberCode} #{mem.memberCode!=null ?'-':''} #{mem.memberName}" itemValue="#{mem}"
+                                <p:autoComplete value="#{groupMemberController.memberAssign}"
+                                                completeMethod="#{groupMemberController.searchMemberInherit}"
+                                                style="" placeholder="#{msg['member.groupMember.member']}"
+                                                scrollHeight="200" dropdown="true" id="memberAssignId"
+                                                var="mem"
+                                                itemLabel="#{mem.memberCode} #{mem.memberCode!=null ?'-':''} #{mem.memberName}"
+                                                itemValue="#{mem}"
                                                 converter="memberConverter" forceSelection="true">
                                     <p:column><h:outputText value="#{mem.memberCode}"/></p:column>
                                     <p:column><h:outputText value="#{mem.memberName}"/></p:column>
@@ -180,9 +191,11 @@
                         </div>
                         <div class="Container100">
                             <p:commandButton value="Thêm thành viên" icon="fa fa-exchange"
-                                             update="@widgetVar(tblGroupHasMember),@widgetVar(growl)" onclick="PF('block').show()"
+                                             update="@widgetVar(tblGroupHasMember),@widgetVar(growl)"
+                                             onclick="PF('block').show()"
                                              process="@widgetVar(memberInGroupWid)" oncomplete="PF('block').hide()"
-                                             styleClass="AquaButton White Fs14" actionListener="#{groupMemberController.addGroupHasMember()}">
+                                             styleClass="AquaButton White Fs14"
+                                             actionListener="#{groupMemberController.addGroupHasMember()}">
 
                             </p:commandButton>
                         </div>
@@ -193,8 +206,8 @@
                                      rows="5" paginator="true" paginatorPosition="bottom" lazy="false"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                                     rowsPerPageTemplate="3,5,10,15,20,30,50" 
-                                     >
+                                     rowsPerPageTemplate="3,5,10,15,20,30,50"
+                        >
                             <f:facet name="header">
                                 <div class="Card NoPadding" style="background: transparent;">
                                     <div class="Container80 Responsive50">
@@ -203,37 +216,53 @@
                                     </div>
                                     <div class="Container20" style="text-align: right;">
                                         <p:commandButton id="toggler" type="button"
-                                                         style="float:right" icon="fa fa-sliders" styleClass="Fs14 White"/>
+                                                         style="float:right" icon="fa fa-sliders"
+                                                         styleClass="Fs14 White"/>
                                         <p:columnToggler datasource="tblGroupHasMemberId" trigger="toggler"/>
                                     </div>
                                 </div>
                             </f:facet>
-                            <p:column headerText="#{msg['datatable.header.stt']}"  width="20">
+                            <p:column headerText="#{msg['datatable.header.stt']}" width="20">
                                 <h:outputText value="#{rp + 1}"/>
                             </p:column>
                             <p:column headerText="#{msg['datatable.header.memberCode']}" width="100"
                                       sortBy="#{objp.member.memberCode}" filterStyle="width:70%"
-                                      ><h:outputText value="#{objp.member.memberCode}"/></p:column>
+                            >
+                                <h:outputText value="#{objp.member.memberCode}"/>
+                            </p:column>
                             <p:column headerText="#{msg['datatable.header.memberName']}" width="150"
                                       sortBy="#{objp.member.memberName}" filterStyle="width:70%"
-                                      ><h:outputText value="#{objp.member.memberName}"/></p:column>
+                            >
+                                <h:outputText value="#{objp.member.memberName}"/>
+                            </p:column>
                             <p:column headerText="#{msg['datatable.header.cardCode']}" width="100"
                                       sortBy="#{objp.member.cardCode}" filterStyle="width:70%"
-                                      ><h:outputText value="#{objp.member.cardCode}"/></p:column>
+                            >
+                                <h:outputText value="#{objp.member.cardCode}"/>
+                            </p:column>
                             <p:column headerText="#{msg['datatable.header.phoneNumber']}" width="100"
                                       sortBy="#{objp.member.phoneNumber}" filterStyle="width:70%"
-                                      ><h:outputText value="#{objp.member.phoneNumber}"/></p:column>
+                            >
+                                <h:outputText value="#{objp.member.phoneNumber}"/>
+                            </p:column>
                             <p:column headerText="#{msg['datatable.header.email']}" width="100"
                                       sortBy="#{objp.member.email}" filterStyle="width:70%"
-                                      ><h:outputText value="#{objp.member.email}"/></p:column>
+                            >
+                                <h:outputText value="#{objp.member.email}"/>
+                            </p:column>
                             <p:column headerText="Id" width="100" sortBy="#{objp.id}" visible="false"
                                       filterStyle="width:70%"
-                                      ><h:outputText value="#{objp.id}"/></p:column>
+                            >
+                                <h:outputText value="#{objp.id}"/>
+                            </p:column>
                             <p:column headerText="#{msg['datatable.header.action']}" width="40">
-                                <p:commandButton icon="fa fa-trash" actionListener="#{groupMemberController.onDeleteGroupMemberInList(objp)}"
+                                <p:commandButton icon="fa fa-trash"
+                                                 actionListener="#{groupMemberController.onDeleteGroupMemberInList(objp)}"
                                                  onclick="PF('block').show()" oncomplete="PF('block').hide();"
-                                                 update="@widgetVar(tblGroupHasMember),@widgetVar(growlGroupMember)" id="deleteGroupId"
-                                                 title="#{msg['view.button.delete']}" styleClass="White RedButton Fs14 MarTop5">
+                                                 update="@widgetVar(tblGroupHasMember),@widgetVar(growlGroupMember)"
+                                                 id="deleteGroupId"
+                                                 title="#{msg['view.button.delete']}"
+                                                 styleClass="White RedButton Fs14 MarTop5">
                                     <p:confirm icon="ui-icon-alert" header="#{msg['dialog.delete.header']}"
                                                message="#{msg['title.confirm.delete']}">
                                     </p:confirm>
@@ -251,7 +280,8 @@
             <div class="Container100 Responsive50 TexAlRight">
                 <p:commandButton value="#{msg['button.save']}" onclick="PF('block').show()"
                                  oncomplete="PF('block').hide()"
-                                 actionListener="#{groupMemberController.saveOrUpdate}" update="tabViewMain:groupMemberForm,@widgetVar(growlGroupMember)"/>
+                                 actionListener="#{groupMemberController.saveOrUpdate}"
+                                 update="tabViewMain:groupMemberForm,@widgetVar(growlGroupMember)"/>
             </div>
         </div>
     </p:tab>

@@ -10,17 +10,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author VietNV Jan 16, 2018
  */
 @Scope("session")
 @Service(value = "roomService")
-public class RoomServiceImpl extends GenericDaoImplNewV2<Room, Long> {
+public class RoomServiceImpl extends GenericDaoImplNewV2<Room, Long>
+{
 
     private static RoomServiceImpl instance;
 
-    public static RoomServiceImpl getInstance() {
-        if (instance == null) {
+    public static RoomServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new RoomServiceImpl();
         }
 

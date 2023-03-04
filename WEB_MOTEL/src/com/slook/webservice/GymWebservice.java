@@ -13,14 +13,16 @@ import javax.jws.soap.SOAPBinding;
  */
 @WebService
 @SOAPBinding(style = SOAPBinding.Style.RPC)
-public interface GymWebservice {
+public interface GymWebservice
+{
 
     @WebMethod(operationName = "checkDataStatus")
     public JsonResponseBO checkDataStatus(
             @WebParam(name = "authorityBO") AuthorityBO authorityBO,
             @WebParam(name = "type") String type,
             @WebParam(name = "requestId") Long requestId
-    ) ;
+    );
+
     @WebMethod(operationName = "saveDataToDatabase")
     public JsonResponseBO saveDataToDatabase(
             @WebParam(name = "authorityBO") AuthorityBO authorityBO,

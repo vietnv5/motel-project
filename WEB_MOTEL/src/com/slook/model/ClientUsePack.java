@@ -1,6 +1,6 @@
-/* 
-* Copyright 2011 Viettel Telecom. All rights reserved. 
-* VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms. 
+/*
+ * Copyright 2011 Viettel Telecom. All rights reserved.
+ * VIETTEL PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
 package com.slook.model;
 
@@ -10,7 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.GeneratedValue;
 import javax.persistence.SequenceGenerator;
+
 import static javax.persistence.GenerationType.SEQUENCE;
+
 import java.util.Date;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -25,7 +27,8 @@ import javax.persistence.TemporalType;
  * @version: 1.0
  * @since: 1.0
  */
-public class ClientUsePack {
+public class ClientUsePack
+{
 
     private Long status;
     private Long clientUsePackId;
@@ -39,11 +42,13 @@ public class ClientUsePack {
     private Long timesUsed;
 
     @Column(name = "STATUS", precision = 22, scale = 0)
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
@@ -51,95 +56,115 @@ public class ClientUsePack {
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "generator")
     @Column(name = "CLIENT_USE_PACK_ID", unique = true, nullable = false, precision = 22, scale = 0)
-    public Long getClientUsePackId() {
+    public Long getClientUsePackId()
+    {
         return clientUsePackId;
     }
 
-    public void setClientUsePackId(Long clientUsePackId) {
+    public void setClientUsePackId(Long clientUsePackId)
+    {
         this.clientUsePackId = clientUsePackId;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "JOIN_DATE", length = 7)
-    public Date getJoinDate() {
+    public Date getJoinDate()
+    {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(Date joinDate)
+    {
         this.joinDate = joinDate;
     }
 
     @Column(name = "CLIENT_ID", precision = 22, scale = 0)
-    public Long getClientId() {
+    public Long getClientId()
+    {
         return clientId;
     }
 
-    public void setClientId(Long clientId) {
+    public void setClientId(Long clientId)
+    {
         this.clientId = clientId;
     }
 
     @Column(name = "GROUP_PACK_ID", precision = 22, scale = 0)
-    public Long getGroupPackId() {
+    public Long getGroupPackId()
+    {
         return groupPackId;
     }
 
-    public void setGroupPackId(Long groupPackId) {
+    public void setGroupPackId(Long groupPackId)
+    {
         this.groupPackId = groupPackId;
     }
 
     @Temporal(TemporalType.DATE)
     @Column(name = "END_DATE", length = 7)
-    public Date getEndDate() {
+    public Date getEndDate()
+    {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Date endDate)
+    {
         this.endDate = endDate;
     }
 
-    public ClientUsePack() {
+    public ClientUsePack()
+    {
     }
 
-    public ClientUsePack(Long clientUsePackId) {
+    public ClientUsePack(Long clientUsePackId)
+    {
         this.clientUsePackId = clientUsePackId;
     }
 
     @ManyToOne
     @JoinColumn(name = "GROUP_PACK_ID", insertable = false, updatable = false)
-    public CatGroupPack getGroupPack() {
+    public CatGroupPack getGroupPack()
+    {
         return groupPack;
     }
 
-    public void setGroupPack(CatGroupPack pack) {
+    public void setGroupPack(CatGroupPack pack)
+    {
         this.groupPack = pack;
     }
-    
-        @Column(name = "customer_schedule_id")
-    public Long getCustomerScheduleId() {
+
+    @Column(name = "customer_schedule_id")
+    public Long getCustomerScheduleId()
+    {
         return customerScheduleId;
     }
 
-    public void setCustomerScheduleId(Long customerScheduleId) {
+    public void setCustomerScheduleId(Long customerScheduleId)
+    {
         this.customerScheduleId = customerScheduleId;
     }
 
     @Column(name = "number_pack", precision = 22, scale = 0)
-    public Long getNumberPack() {
+    public Long getNumberPack()
+    {
         return numberPack;
     }
 
-    public void setNumberPack(Long numberPack) {
+    public void setNumberPack(Long numberPack)
+    {
         this.numberPack = numberPack;
     }
 
     @Column(name = "times_used", precision = 22, scale = 0)
-    public Long getTimesUsed() {
+    public Long getTimesUsed()
+    {
         return timesUsed;
     }
 
-    public void setTimesUsed(Long timesUsed) {
+    public void setTimesUsed(Long timesUsed)
+    {
         this.timesUsed = timesUsed;
     }
 
-    
+
 }

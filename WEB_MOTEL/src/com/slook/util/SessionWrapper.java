@@ -21,13 +21,15 @@ import java.util.Map;
  * Các hàm thao tác với session cơ bản của cả hệ thống.
  *
  * @author Nguyen Hai Ha (hanh45@viettel.com.vn)
- * @since Jun 7, 2013
  * @version 1.0.0
+ * @since Jun 7, 2013
  */
-public class SessionWrapper implements Serializable {
+public class SessionWrapper implements Serializable
+{
 
     private static final long serialVersionUID = -8318262775763386620L;
-    private static final String _USER_TOKEN = Constant._USER_TOKEN;;
+    private static final String _USER_TOKEN = Constant._USER_TOKEN;
+    ;
     private static final String _VSA_USER_ID = "netID";
 
     /**
@@ -35,7 +37,8 @@ public class SessionWrapper implements Serializable {
      *
      * @return current session
      */
-    public static HttpSession getCurrentSession() {
+    public static HttpSession getCurrentSession()
+    {
         HttpServletRequest request = (HttpServletRequest) FacesContext
                 .getCurrentInstance().getExternalContext().getRequest();
         return request.getSession();
@@ -47,19 +50,24 @@ public class SessionWrapper implements Serializable {
      * @param attributeName
      * @return
      */
-    public String getSessionAttribute(String attributeName) {
+    public String getSessionAttribute(String attributeName)
+    {
         return (String) getCurrentSession().getAttribute(attributeName);
     }
 
     /**
      * Lay thong tin cua user hien tai dang login.
      */
-    public static String getCurrentUsername() {
-        try {
+    public static String getCurrentUsername()
+    {
+        try
+        {
             ExternalContext context = FacesContext.getCurrentInstance().getExternalContext();
             Map sessionMap = context.getSessionMap();
             return ((CatUser) sessionMap.get("user")).getUserName();
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
         return null;
@@ -70,8 +78,10 @@ public class SessionWrapper implements Serializable {
      *
      * @return
      */
-    public boolean getUrlDisplay(String urlCode) {
-        if (DataConfig.getConfigByKey("IS_TEST") != null && DataConfig.getConfigByKey("IS_TEST").equals("1")) {
+    public boolean getUrlDisplay(String urlCode)
+    {
+        if (DataConfig.getConfigByKey("IS_TEST") != null && DataConfig.getConfigByKey("IS_TEST").equals("1"))
+        {
             return true;
         }
         HttpSession session = getCurrentSession();
@@ -79,10 +89,13 @@ public class SessionWrapper implements Serializable {
 
         String objToken;
         CatUser userToken = (CatUser) session.getAttribute(_USER_TOKEN);
-        if (userToken != null && userToken.getRole() != null && userToken.getRole().getFunctionPaths() != null && userToken.getRole().getFunctionPaths().size() > 0) {
-            for (FunctionPath ot : userToken.getRole().getFunctionPaths()) {
+        if (userToken != null && userToken.getRole() != null && userToken.getRole().getFunctionPaths() != null && userToken.getRole().getFunctionPaths().size() > 0)
+        {
+            for (FunctionPath ot : userToken.getRole().getFunctionPaths())
+            {
                 objToken = ot.getUrl();
-                if (objToken.equalsIgnoreCase(urlCode)) {
+                if (objToken.equalsIgnoreCase(urlCode))
+                {
                     result = true;
                     break;
                 }

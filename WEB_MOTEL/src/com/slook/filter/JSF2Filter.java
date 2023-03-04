@@ -31,15 +31,16 @@ import static org.apache.log4j.Logger.getLogger;
  * @author hanh45
  */
 @WebFilter(dispatcherTypes = {
-    DispatcherType.REQUEST,
-    DispatcherType.FORWARD,
-    DispatcherType.INCLUDE,
-    DispatcherType.ERROR},
+        DispatcherType.REQUEST,
+        DispatcherType.FORWARD,
+        DispatcherType.INCLUDE,
+        DispatcherType.ERROR},
         urlPatterns = {
-            "/faces/*"
+                "/faces/*"
 //                "/faces"
         })
-public class JSF2Filter implements Filter {
+public class JSF2Filter implements Filter
+{
 
     private static final Logger logger = getLogger(JSF2Filter.class);
 
@@ -50,19 +51,23 @@ public class JSF2Filter implements Filter {
     private static final String _FACES = "/faces/";
     private static final String _USER_TOKEN = Constant._USER_TOKEN;
 
-    public JSF2Filter() {
+    public JSF2Filter()
+    {
     }
 
-    public void init(FilterConfig fConfig) throws ServletException {
+    public void init(FilterConfig fConfig) throws ServletException
+    {
     }
 
     @Override
-    public void destroy() {
+    public void destroy()
+    {
     }
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-            throws IOException, ServletException {
+            throws IOException, ServletException
+    {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpSession session = req.getSession();
@@ -70,7 +75,8 @@ public class JSF2Filter implements Filter {
         boolean checkAuth = false;
 
         // Skip JSF resources (CSS/JS/Images/etc)
-        if (!req.getRequestURI().startsWith(req.getContextPath() + ResourceHandler.RESOURCE_IDENTIFIER)) {
+        if (!req.getRequestURI().startsWith(req.getContextPath() + ResourceHandler.RESOURCE_IDENTIFIER))
+        {
             res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); // HTTP 1.1.
             res.setHeader("Pragma", "no-cache"); // HTTP 1.0.
             res.setDateHeader("Expires", 0); // Proxies.
@@ -91,13 +97,17 @@ public class JSF2Filter implements Filter {
         CatUser userToken = (CatUser) session.getAttribute(_USER_TOKEN);
 
         if (AuthenticationFilter.isAlowUrl(SUB_REQUEST_PATH.substring(_FACES.length() - 1), AuthenticationFilter.allowedUrls)
-                || (AuthenticationFilter.isAlowUrl(pattern, AuthenticationFilter.allowedUrls))) {
+                || (AuthenticationFilter.isAlowUrl(pattern, AuthenticationFilter.allowedUrls)))
+        {
 
             logger.debug("URL cho phep ko can dang nhap");
             checkAuth = true;
-        } else if (userToken != null) {
+        }
+        else if (userToken != null)
+        {
             // Current session on.
-            switch (SUB_REQUEST_PATH) {
+            switch (SUB_REQUEST_PATH)
+            {
                 case _FACES + "home":
                 case _FACES + "login":
                     checkAuth = true;
@@ -107,17 +117,23 @@ public class JSF2Filter implements Filter {
                     break;
             }
 
-        } else {
+        }
+        else
+        {
             // Session timeout.
             // Xu ly cho ajax khi session timeout.
             session.setAttribute(_USER_TOKEN, null);
             handleSessionTimeout(req, res);
         }
-        if (checkAuth) {
+        if (checkAuth)
+        {
             chain.doFilter(request, response);
-        } else {
+        }
+        else
+        {
 //		 Dieu huong den trang bao loi.
-            if (!res.isCommitted()) {
+            if (!res.isCommitted())
+            {
 //                res.sendRedirect(req.getContextPath() + _ERROR_PATH);
                 res.sendRedirect(req.getContextPath() + Constant.PAGE._ACCESS_DENIED);
             }
@@ -129,14 +145,19 @@ public class JSF2Filter implements Filter {
      *
      * @throws IOException
      */
-    private void handleSessionTimeout(HttpServletRequest req, HttpServletResponse res) throws IOException {
-        if ("partial/ajax".equals(req.getHeader("Faces-Request"))) {
+    private void handleSessionTimeout(HttpServletRequest req, HttpServletResponse res) throws IOException
+    {
+        if ("partial/ajax".equals(req.getHeader("Faces-Request")))
+        {
             res.setContentType("text/xml");
             res.getWriter().append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>").printf(
                     "<partial-response><redirect url=\"%s\"></redirect></partial-response>",
                     req.getContextPath() + _HOME_PATH);
-        } else {
-            if (!res.isCommitted()) {
+        }
+        else
+        {
+            if (!res.isCommitted())
+            {
 //                res.sendRedirect(req.getContextPath() + _HOME_PATH);
                 res.sendRedirect(req.getContextPath() + Constant.PAGE._LOGIN);
             }
@@ -149,15 +170,19 @@ public class JSF2Filter implements Filter {
      * @param urlCode
      * @return
      */
-    private boolean getUrlPermission(HttpSession session, String urlCode) {
+    private boolean getUrlPermission(HttpSession session, String urlCode)
+    {
         boolean result = false;
 
         String objToken;
         CatUser userToken = (CatUser) session.getAttribute(_USER_TOKEN);
-        if (userToken != null && userToken.getRole() != null && userToken.getRole().getFunctionPaths() != null && userToken.getRole().getFunctionPaths().size() > 0) {
-            for (FunctionPath ot : userToken.getRole().getFunctionPaths()) {
+        if (userToken != null && userToken.getRole() != null && userToken.getRole().getFunctionPaths() != null && userToken.getRole().getFunctionPaths().size() > 0)
+        {
+            for (FunctionPath ot : userToken.getRole().getFunctionPaths())
+            {
                 objToken = ot.getUrl();
-                if (objToken.equalsIgnoreCase(urlCode)) {
+                if (objToken.equalsIgnoreCase(urlCode))
+                {
                     result = true;
                     break;
                 }
@@ -167,18 +192,23 @@ public class JSF2Filter implements Filter {
         return result;
     }
 
-    private boolean getPermission(HttpSession session, String requestPath) {
+    private boolean getPermission(HttpSession session, String requestPath)
+    {
         boolean checkAuth = false;
-        if (DataConfig.getConfigByKey("IS_TEST") != null && DataConfig.getConfigByKey("IS_TEST").equals("1")) {
+        if (DataConfig.getConfigByKey("IS_TEST") != null && DataConfig.getConfigByKey("IS_TEST").equals("1"))
+        {
             return true;
         }
-        try {
+        try
+        {
 //            if (Pattern.compile("^" + _FACES + ".+?" + "/index.xhtml$").matcher(requestPath).find())
 //                checkAuth = getUrlPermission(session, requestPath.substring(_FACES.length() - 1, requestPath.indexOf("/index.xhtml")));
             //khai duong dan toi file chuc nang
             checkAuth = getUrlPermission(session, requestPath);
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
         return checkAuth;

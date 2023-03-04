@@ -10,17 +10,19 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author VietNV
  */
 @Scope("session")
 @Service(value = "doorAccessStatusService")
-public class DoorAccessStatusServiceImpl extends GenericDaoImplNewV2<DoorAccessStatus, Long> {
+public class DoorAccessStatusServiceImpl extends GenericDaoImplNewV2<DoorAccessStatus, Long>
+{
 
     private static DoorAccessStatusServiceImpl instance;
 
-    public static DoorAccessStatusServiceImpl getInstance() {
-        if (instance == null) {
+    public static DoorAccessStatusServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new DoorAccessStatusServiceImpl();
         }
         return instance;

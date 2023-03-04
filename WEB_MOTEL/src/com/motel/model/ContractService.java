@@ -25,17 +25,17 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "contract_service")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "ContractService.findAll", query = "SELECT c FROM ContractService c")
-    , @NamedQuery(name = "ContractService.findByContractServiceId", query = "SELECT c FROM ContractService c WHERE c.contractServiceId = :contractServiceId")
-    , @NamedQuery(name = "ContractService.findByInsertTime", query = "SELECT c FROM ContractService c WHERE c.insertTime = :insertTime")})
-public class ContractService implements Serializable {
+        @NamedQuery(name = "ContractService.findAll", query = "SELECT c FROM ContractService c")
+        , @NamedQuery(name = "ContractService.findByContractServiceId", query = "SELECT c FROM ContractService c WHERE c.contractServiceId = :contractServiceId")
+        , @NamedQuery(name = "ContractService.findByInsertTime", query = "SELECT c FROM ContractService c WHERE c.insertTime = :insertTime")})
+public class ContractService implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -46,75 +46,90 @@ public class ContractService implements Serializable {
     @Column(name = "INSERT_TIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date insertTime;
-    @JoinColumn(name = "CONTRACT_ID", referencedColumnName = "CONTRACT_ID",insertable = false,updatable = false)
+    @JoinColumn(name = "CONTRACT_ID", referencedColumnName = "CONTRACT_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Contract contract;
-    @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID",insertable = false,updatable = false)
+    @JoinColumn(name = "SERVICE_ID", referencedColumnName = "SERVICE_ID", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private CatService service;
     @Column(name = "SERVICE_ID")
     private Long serviceId;
     @Column(name = "CONTRACT_ID")
     private Long contractId;
-        
-    
-    public ContractService() {
+
+
+    public ContractService()
+    {
     }
 
-    public ContractService(Long contractServiceId) {
+    public ContractService(Long contractServiceId)
+    {
         this.contractServiceId = contractServiceId;
     }
 
-    public Long getContractServiceId() {
+    public Long getContractServiceId()
+    {
         return contractServiceId;
     }
 
-    public void setContractServiceId(Long contractServiceId) {
+    public void setContractServiceId(Long contractServiceId)
+    {
         this.contractServiceId = contractServiceId;
     }
 
-    public Date getInsertTime() {
+    public Date getInsertTime()
+    {
         return insertTime;
     }
 
-    public void setInsertTime(Date insertTime) {
+    public void setInsertTime(Date insertTime)
+    {
         this.insertTime = insertTime;
     }
 
-    public Contract getContract() {
+    public Contract getContract()
+    {
         return contract;
     }
 
-    public void setContract(Contract contract) {
+    public void setContract(Contract contract)
+    {
         this.contract = contract;
     }
 
-    public CatService getService() {
+    public CatService getService()
+    {
         return service;
     }
 
-    public void setService(CatService service) {
+    public void setService(CatService service)
+    {
         this.service = service;
     }
 
-    public Long getServiceId() {
+    public Long getServiceId()
+    {
         return serviceId;
     }
 
-    public void setServiceId(Long serviceId) {
+    public void setServiceId(Long serviceId)
+    {
         this.serviceId = serviceId;
     }
 
-    public Long getContractId() {
+    public Long getContractId()
+    {
         return contractId;
     }
 
-    public void setContractId(Long contractId) {
+    public void setContractId(Long contractId)
+    {
         this.contractId = contractId;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 3;
         hash = 53 * hash + Objects.hashCode(this.serviceId);
         hash = 53 * hash + Objects.hashCode(this.contractId);
@@ -122,36 +137,44 @@ public class ContractService implements Serializable {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj) {
+    public boolean equals(Object obj)
+    {
+        if (this == obj)
+        {
             return true;
         }
-        if (obj == null) {
+        if (obj == null)
+        {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (getClass() != obj.getClass())
+        {
             return false;
         }
         final ContractService other = (ContractService) obj;
-        if (!Objects.equals(this.serviceId, other.serviceId)) {
+        if (!Objects.equals(this.serviceId, other.serviceId))
+        {
             return false;
         }
-        if (!Objects.equals(this.contractId, other.contractId)) {
+        if (!Objects.equals(this.contractId, other.contractId))
+        {
             return false;
         }
         return true;
     }
 
-    
+
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.ContractService[ contractServiceId=" + contractServiceId + " ]";
     }
 
-    public ContractService(Long serviceId, Long contractId) {
+    public ContractService(Long serviceId, Long contractId)
+    {
         this.serviceId = serviceId;
         this.contractId = contractId;
-        this.insertTime=new Date();
+        this.insertTime = new Date();
     }
-    
+
 }

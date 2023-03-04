@@ -16,6 +16,7 @@ import com.slook.persistence.GroupUserServiceImpl;
 import com.slook.util.Constant;
 import com.slook.util.DateTimeUtils;
 import com.slook.util.MessageUtil;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -26,7 +27,9 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
+
 import static org.omnifaces.util.Faces.getRequest;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.ToggleEvent;
 import org.primefaces.model.LazyDataModel;
@@ -35,12 +38,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
  * @author VietNV May 22, 2018
  */
 @ManagedBean
-@ViewScoped 
-public class GroupUserController {
+@ViewScoped
+public class GroupUserController
+{
 
     protected static final Logger logger = LoggerFactory.getLogger(GroupUserController.class);
 
@@ -54,16 +57,20 @@ public class GroupUserController {
 //    Long groupUserId = null;
 
     // customerGroupUser
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
     @PostConstruct
-    public void onStart() {
+    public void onStart()
+    {
 
-        try {
+        try
+        {
             CatUser catUser = null;
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 catUser = (CatUser) getRequest().getSession().getAttribute("user");
 //                groupUserId = catUser.getGroupUserId();
             }
@@ -71,49 +78,61 @@ public class GroupUserController {
             order.put("name", Constant.ORDER.ASC);
             Map<String, Object> filter = new HashMap<>();
             filter.put("status-NEQ", Constant.STATUS.DELETE);
-            
+
             lazyDataModel = new LazyDataModelBase<GroupUser, Long>(GroupUserServiceImpl.getInstance(), filter, order);
 
-           
-        } catch (Exception e) {
+
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
 //        init();
         columnVisibale = Arrays.asList(true, true, true, false, true,
-                true, true, true, false,false, true
+                true, true, true, false, false, true
         );
     }
 
-    public void preAdd() {
+    public void preAdd()
+    {
         this.currGroupUser = new GroupUser();
         currGroupUser.setCreateTime(new Date());
         currGroupUser.setCode(DateTimeUtils.format(new Date(), "yyyyMMddHHmmss"));
         isEdit = false;
     }
 
-    public void preEdit(GroupUser groupUser) {
-        try {
+    public void preEdit(GroupUser groupUser)
+    {
+        try
+        {
             currGroupUser = GroupUserServiceImpl.getInstance().findById(groupUser.getId());
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         isEdit = true;
         oldObjectStr = currGroupUser.toString();
     }
 
-    public void onSaveOrUpdate() {
-        try {
+    public void onSaveOrUpdate()
+    {
+        try
+        {
 
             // validate
-           
-         
+
+
             GroupUserServiceImpl.getInstance().saveOrUpdate(currGroupUser);
 
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectStr, currGroupUser.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectStr, currGroupUser.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -121,53 +140,67 @@ public class GroupUserController {
             MessageUtil.setInfoMessageFromRes("info.save.success");
             RequestContext.getCurrentInstance().execute("PF('groupUserDlg').hide();");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void onDelete(GroupUser groupUser) {
-        try {
+    public void onDelete(GroupUser groupUser)
+    {
+        try
+        {
             groupUser.setStatus(Constant.STATUS.DELETE);
             GroupUserServiceImpl.getInstance().saveOrUpdate(groupUser);
             MessageUtil.setInfoMessageFromRes("common.message.success");
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
             MessageUtil.setErrorMessageFromRes("common.message.fail");
         }
     }
 
-    public LazyDataModel<GroupUser> getLazyDataModel() {
+    public LazyDataModel<GroupUser> getLazyDataModel()
+    {
         return lazyDataModel;
     }
 
-    public void setLazyDataModel(LazyDataModel<GroupUser> lazyDataModel) {
+    public void setLazyDataModel(LazyDataModel<GroupUser> lazyDataModel)
+    {
         this.lazyDataModel = lazyDataModel;
     }
 
-    public GroupUser getCurrGroupUser() {
+    public GroupUser getCurrGroupUser()
+    {
         return currGroupUser;
     }
 
-    public void setCurrGroupUser(GroupUser currGroupUser) {
+    public void setCurrGroupUser(GroupUser currGroupUser)
+    {
         this.currGroupUser = currGroupUser;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
-    
+
 }

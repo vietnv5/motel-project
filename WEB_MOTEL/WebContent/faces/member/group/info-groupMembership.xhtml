@@ -3,7 +3,7 @@
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <p:tab title="#{msg['view.header.member.membership.detail']}"  disabled="#{!groupMemberController.isEdit}">
+    <p:tab title="#{msg['view.header.member.membership.detail']}" disabled="#{!groupMemberController.isEdit}">
         <div class="Container100 TexAlCenter">
             <p:commandButton icon="fa fa-plus" actionListener="#{groupMemberController.preAddGroupMembership()}"
                              styleClass="White BlueButton" update="panelAddGroupMembership2" process="@this"
@@ -12,9 +12,9 @@
                     <f:param name="mode" value="'show'"/>
                 </p:effect>
             </p:commandButton>
-            <p:spacer width="5px" />
-            <p:commandButton icon="fa fa-eye"  update=":groupMemberUsedServiceDlgId"
-                             onclick="PF('blockDlg').show();" 
+            <p:spacer width="5px"/>
+            <p:commandButton icon="fa fa-eye" update=":groupMemberUsedServiceDlgId"
+                             onclick="PF('blockDlg').show();"
                              oncomplete="PF('groupMemberUsedServiceDlg').show();PF('blockDlg').hide();PF('tblVGroupMemberUsedService').clearFilters();"
                              styleClass="White BlueButton"
                              value="Xem chi tiết dịch vụ">
@@ -32,11 +32,11 @@
                                              required="false"
                                              title="#{msg['datatable.header.group.pack.name']}"
                                              style=""
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}" noSelectionOption="true"/>
                                 <f:selectItems value="#{catGroupPackController.listCatGroupPackByCustomer(3)}" var="c"
                                                itemValue="#{c.groupPackId}" itemLabel="#{c.groupPackName}"/>
-                                <p:ajax event="itemSelect" update="joinDateMembership" />
+                                <p:ajax event="itemSelect" update="joinDateMembership"/>
                             </p:selectOneMenu>
                             <label class="title-elem">#{msg['datatable.header.group.pack.name']} *</label>
                         </span>
@@ -56,7 +56,8 @@
                                         pattern="dd/MM/yyyy" pages="1" effect="slideDown"
                                         showOtherMonths="true" selectOtherMonths="true"
                                         mask="true">
-                                <p:ajax event="dateSelect" process="panelAddGroupMembership" listener="#{groupMemberController.updateEndDate}" update="endDateMembership"/>
+                                <p:ajax event="dateSelect" process="panelAddGroupMembership"
+                                        listener="#{groupMemberController.updateEndDate}" update="endDateMembership"/>
                             </p:calendar>
                             <label class="title-elem">#{msg['datatable.header.joinDate']} </label>
                         </span>
@@ -85,13 +86,16 @@
 
                 </p:outputPanel>
 
-                <p:outputPanel class="Container100 TexAlRight" >
-                    <p:commandButton  value="Thanh toán" styleClass="GreenButton White"
-                                      onclick="PF('blockDlg').show()" actionListener="#{groupMemberController.computingPrice}"
-                                      oncomplete="PF('groupMemberPaymentDlg').show();PF('blockDlg').hide();" update=":groupMemberPaymentDlgId"
-                                      title="#{msg['button.add']}"
-                                      />
-                    <p:commandButton value="#{msg['button.clearForm']}" icon="fa fa-close" styleClass="GrayButton White" process="@this" >
+                <p:outputPanel class="Container100 TexAlRight">
+                    <p:commandButton value="Thanh toán" styleClass="GreenButton White"
+                                     onclick="PF('blockDlg').show()"
+                                     actionListener="#{groupMemberController.computingPrice}"
+                                     oncomplete="PF('groupMemberPaymentDlg').show();PF('blockDlg').hide();"
+                                     update=":groupMemberPaymentDlgId"
+                                     title="#{msg['button.add']}"
+                    />
+                    <p:commandButton value="#{msg['button.clearForm']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this">
                         <p:effect type="clip" event="click" for="panelAddGroupMembership" delay="1">
                             <f:param name="mode" value="'hide'"/>
                         </p:effect>
@@ -100,13 +104,14 @@
             </div>
         </p:outputPanel>
 
-        <p:dataTable value="#{groupMemberController.curGroupMember.groupMemberships}" var="obj" widgetVar="tblGroupMembership"
+        <p:dataTable value="#{groupMemberController.curGroupMember.groupMemberships}" var="obj"
+                     widgetVar="tblGroupMembership"
                      rowIndexVar="r"
                      rows="5" paginator="true" paginatorPosition="bottom"
                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                      currentPageReportTemplate="#{msg['label.total']} {totalRecords} #{msg['label.record']}"
-                     rowsPerPageTemplate="5,10,15,20,30,50" 
-                     >
+                     rowsPerPageTemplate="5,10,15,20,30,50"
+        >
             <f:facet name="header">
                 <h:outputText value="#{msg['datatable.header.current.membership']}"/>
             </f:facet>
@@ -116,7 +121,7 @@
             <p:column headerText="#{msg['datatable.header.group.pack.name']}">
                 <h:outputText value="#{obj.catGroupPack.groupPackName} ("/>
 
-                <p:repeat value="#{obj.catGroupPack.groupHasPacks}" var="p" varStatus="v" >
+                <p:repeat value="#{obj.catGroupPack.groupHasPacks}" var="p" varStatus="v">
                     <h:outputText value="#{p.pack.packName}"/>
                     <h:outputText value=", " rendered="#{!v.last}"/>
                 </p:repeat>
@@ -124,7 +129,7 @@
                 <h:outputText value=")"/>
 
             </p:column>
-            <p:column headerText="#{msg['datatable.header.joinDate']}" sortBy="#{obj.joinDate}" > 
+            <p:column headerText="#{msg['datatable.header.joinDate']}" sortBy="#{obj.joinDate}">
                 <h:outputText value="#{obj.joinDate}">
                     <f:convertDateTime pattern="dd/MM/yyyy"/>
                 </h:outputText>
@@ -137,10 +142,11 @@
             <p:column headerText="#{msg['datatable.header.status']}">
                 <h:outputText value="Hoạt động" rendered="#{obj.status==1}"/>
                 <h:outputText value="Đóng băng" rendered="#{obj.status==2}"/>
-                <p:commandLink rendered="#{obj.status==3}" oncomplete="PF('Assign-#{r}').show('#{component.clientId}')" >
-                    <h:outputText value="Đã chuyển nhượng" rendered="#{obj.status==3}" />
+                <p:commandLink rendered="#{obj.status==3}" oncomplete="PF('Assign-#{r}').show('#{component.clientId}')">
+                    <h:outputText value="Đã chuyển nhượng" rendered="#{obj.status==3}"/>
                 </p:commandLink>
-                <p:overlayPanel modal="true" widgetVar="Assign-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true" rendered="#{obj.status==3}"
+                <p:overlayPanel modal="true" widgetVar="Assign-#{r}" showEffect="scale" hideEffect="fade"
+                                appendToBody="true" rendered="#{obj.status==3}"
                                 style="" dismissable="true" showCloseIcon="true" my="right top">
                     #{memberController.memberService.findById(obj.memberAssignId).memberCode} -
                     #{memberController.memberService.findById(obj.memberAssignId).memberName} -
@@ -150,10 +156,12 @@
 
                 </p:overlayPanel>
 
-                <p:commandLink  rendered="#{obj.status==4}" oncomplete="PF('Grantor-#{r}').show('#{component.clientId}')"  >
-                    <h:outputText value="Được chuyển nhượng" rendered="#{obj.status==4}"  />
+                <p:commandLink rendered="#{obj.status==4}"
+                               oncomplete="PF('Grantor-#{r}').show('#{component.clientId}')">
+                    <h:outputText value="Được chuyển nhượng" rendered="#{obj.status==4}"/>
                 </p:commandLink>
-                <p:overlayPanel modal="true" widgetVar="Grantor-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true" rendered="#{obj.status==4}"
+                <p:overlayPanel modal="true" widgetVar="Grantor-#{r}" showEffect="scale" hideEffect="fade"
+                                appendToBody="true" rendered="#{obj.status==4}"
                                 style="" dismissable="true" showCloseIcon="true" my="right top">
                     #{memberController.memberService.findById(obj.memberGrantorId).memberCode} -
                     #{memberController.memberService.findById(obj.memberGrantorId).memberName} -
@@ -163,57 +171,81 @@
 
                 </p:overlayPanel>
             </p:column>
-            <p:column headerText="#{msg['datatable.header.action']}" styleClass="TexAlCenter" >
-                <p:commandButton icon="fa fa-sign-in" styleClass="White Fs14" title="#{msg['customer.checkin']}" process="@this" actionListener="#{groupMemberController.preCheckin(obj)}"
-                                update="@widgetVar(groupCheckinDlg),@widgetVar(growlGroupMember)" disabled="#{obj.status==3 or obj.status==2}"/>
+            <p:column headerText="#{msg['datatable.header.action']}" styleClass="TexAlCenter">
+                <p:commandButton icon="fa fa-sign-in" styleClass="White Fs14" title="#{msg['customer.checkin']}"
+                                 process="@this" actionListener="#{groupMemberController.preCheckin(obj)}"
+                                 update="@widgetVar(groupCheckinDlg),@widgetVar(growlGroupMember)"
+                                 disabled="#{obj.status==3 or obj.status==2}"/>
                 <p:spacer width="2px"/>
 
-                <p:commandButton icon="fa fa-refresh" styleClass="White Fs14" title="Gia hạn" process="@this" oncomplete="PF('extendGroupMembership-#{r}').show('#{component.clientId}')"
+                <p:commandButton icon="fa fa-refresh" styleClass="White Fs14" title="Gia hạn" process="@this"
+                                 oncomplete="PF('extendGroupMembership-#{r}').show('#{component.clientId}')"
                                  disabled="#{obj.status==3}"/>
-                <p:overlayPanel modal="true" widgetVar="extendGroupMembership-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                <p:overlayPanel modal="true" widgetVar="extendGroupMembership-#{r}" showEffect="scale" hideEffect="fade"
+                                appendToBody="true"
                                 style="" dismissable="true" showCloseIcon="true" my="right top">
 
-                    <p:commandButton value="Gia hạn gói #{obj.catGroupPack.groupPackName}?" icon="fa fa-refresh" oncomplete="PF('extendGroupMembership-#{r}').hide(),PF('block').hide();PF('groupMemberPaymentDlg').show();"
-                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl), :groupMemberPaymentDlgId" onclick="PF('block').show()" process="@this"
-                                     styleClass="GreenButton White Fs14" actionListener="#{groupMemberController.preExtendGroupMembership(obj)}">
+                    <p:commandButton value="Gia hạn gói #{obj.catGroupPack.groupPackName}?" icon="fa fa-refresh"
+                                     oncomplete="PF('extendGroupMembership-#{r}').hide(),PF('block').hide();PF('groupMemberPaymentDlg').show();"
+                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl), :groupMemberPaymentDlgId"
+                                     onclick="PF('block').show()" process="@this"
+                                     styleClass="GreenButton White Fs14"
+                                     actionListener="#{groupMemberController.preExtendGroupMembership(obj)}">
 
                     </p:commandButton>
                 </p:overlayPanel>
-                <p:commandButton icon="fa fa-pause-circle-o" styleClass="OrangeButton White Fs14" title="Đóng băng gói tập" process="@this"
-                                 oncomplete="PF('pausingGroupMembership-#{r}').show('#{component.clientId}')" disabled="#{obj.status==3}"  rendered="#{obj.status!=2}"  />
-                <p:overlayPanel modal="true" widgetVar="pausingGroupMembership-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                <p:commandButton icon="fa fa-pause-circle-o" styleClass="OrangeButton White Fs14"
+                                 title="Đóng băng gói tập" process="@this"
+                                 oncomplete="PF('pausingGroupMembership-#{r}').show('#{component.clientId}')"
+                                 disabled="#{obj.status==3}" rendered="#{obj.status!=2}"/>
+                <p:overlayPanel modal="true" widgetVar="pausingGroupMembership-#{r}" showEffect="scale"
+                                hideEffect="fade" appendToBody="true"
                                 style="" dismissable="true" showCloseIcon="true" my="right top">
 
-                    <p:commandButton value="Đóng băng gói #{obj.catGroupPack.groupPackName}?" icon="fa fa-pause-circle-o" oncomplete="PF('pausingGroupMembership-#{r}').hide(),PF('block').hide()"
-                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl)" onclick="PF('block').show()" process="@this"
-                                     styleClass="OrangeButton White Fs14" actionListener="#{groupMemberController.pausingGroupMembership(obj)}">
+                    <p:commandButton value="Đóng băng gói #{obj.catGroupPack.groupPackName}?"
+                                     icon="fa fa-pause-circle-o"
+                                     oncomplete="PF('pausingGroupMembership-#{r}').hide(),PF('block').hide()"
+                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl)"
+                                     onclick="PF('block').show()" process="@this"
+                                     styleClass="OrangeButton White Fs14"
+                                     actionListener="#{groupMemberController.pausingGroupMembership(obj)}">
 
                     </p:commandButton>
                 </p:overlayPanel>
-                <!--khôi phục gói tập--> 
-                <p:commandButton icon="fa fa-play-circle-o" styleClass="GreenButton White Fs14" title="Khôi phục gói tập" process="@this"
-                                 oncomplete="PF('playGroupMembership-#{r}').show('#{component.clientId}')" disabled="#{obj.status==3}" rendered="#{obj.status==2}" />
-                <p:overlayPanel modal="true" widgetVar="playGroupMembership-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                <!--khôi phục gói tập-->
+                <p:commandButton icon="fa fa-play-circle-o" styleClass="GreenButton White Fs14"
+                                 title="Khôi phục gói tập" process="@this"
+                                 oncomplete="PF('playGroupMembership-#{r}').show('#{component.clientId}')"
+                                 disabled="#{obj.status==3}" rendered="#{obj.status==2}"/>
+                <p:overlayPanel modal="true" widgetVar="playGroupMembership-#{r}" showEffect="scale" hideEffect="fade"
+                                appendToBody="true"
                                 style="" dismissable="true" showCloseIcon="true" my="right top">
 
-                    <p:commandButton value="Khôi phục gói #{obj.catGroupPack.groupPackName}?" icon="fa fa-play-circle-o" oncomplete="PF('playGroupMembership-#{r}').hide(),PF('block').hide()"
-                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl)" onclick="PF('block').show()" process="@this"
-                                     styleClass="GreenButton White Fs14" actionListener="#{groupMemberController.playGroupMembership(obj)}">
+                    <p:commandButton value="Khôi phục gói #{obj.catGroupPack.groupPackName}?" icon="fa fa-play-circle-o"
+                                     oncomplete="PF('playGroupMembership-#{r}').hide(),PF('block').hide()"
+                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl)"
+                                     onclick="PF('block').show()" process="@this"
+                                     styleClass="GreenButton White Fs14"
+                                     actionListener="#{groupMemberController.playGroupMembership(obj)}">
 
                     </p:commandButton>
                 </p:overlayPanel>
 
                 <p:commandButton icon="fa fa-trash" styleClass="RedButton White Fs14" process="@this"
-                                  rendered="#{sessionUtil.getUrlDisplay('/member.action_delete_group_membership')}"
+                                 rendered="#{sessionUtil.getUrlDisplay('/member.action_delete_group_membership')}"
                                  oncomplete="PF('deleteGroupMembershipPanel-#{r}').show('#{component.clientId}')">
 
                 </p:commandButton>
-                <p:overlayPanel modal="true" widgetVar="deleteGroupMembershipPanel-#{r}" showEffect="scale" hideEffect="fade" appendToBody="true"
+                <p:overlayPanel modal="true" widgetVar="deleteGroupMembershipPanel-#{r}" showEffect="scale"
+                                hideEffect="fade" appendToBody="true"
                                 style="" dismissable="true" showCloseIcon="true" my="right top">
 
-                    <p:commandButton value="Xóa #{obj.catGroupPack.groupPackName}?" icon="fa fa-trash" oncomplete="PF('deleteGroupMembershipPanel-#{r}').hide(),PF('block').hide()"
-                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl)" onclick="PF('block').show()" process="@this"
-                                     styleClass="RedButton White Fs14" actionListener="#{groupMemberController.deleteGroupMembership(obj)}">
+                    <p:commandButton value="Xóa #{obj.catGroupPack.groupPackName}?" icon="fa fa-trash"
+                                     oncomplete="PF('deleteGroupMembershipPanel-#{r}').hide(),PF('block').hide()"
+                                     update="@widgetVar(tblGroupMembership),@widgetVar(growl)"
+                                     onclick="PF('block').show()" process="@this"
+                                     styleClass="RedButton White Fs14"
+                                     actionListener="#{groupMemberController.deleteGroupMembership(obj)}">
 
                     </p:commandButton>
                 </p:overlayPanel>

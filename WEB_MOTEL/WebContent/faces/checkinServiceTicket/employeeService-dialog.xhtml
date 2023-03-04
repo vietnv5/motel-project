@@ -4,20 +4,25 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
-    <p:dialog modal="true" header="Nhân viên phục vụ" widgetVar="employeeServiceDlg" width="30%" id="employeeServiceDlgId">
+    <p:dialog modal="true" header="Nhân viên phục vụ" widgetVar="employeeServiceDlg" width="30%"
+              id="employeeServiceDlgId">
 
 
         <h:form id="employeeServiceForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelCheckin" >
+                <p:outputPanel class="Container100 Responsive50" id="panelCheckin">
                     <div class=" Container100">
                         <span class="title-top">
-                            <p:autoComplete id="employeeId" value="#{serviceTicketController.currServiceTicket.employee}" completeMethod="#{employeeController.completeEmployee}"
-                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter" dropdown="true"  scrollHeight="200"
-                                            var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                            <p:autoComplete id="employeeId"
+                                            value="#{serviceTicketController.currServiceTicket.employee}"
+                                            completeMethod="#{employeeController.completeEmployee}"
+                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter"
+                                            dropdown="true" scrollHeight="200"
+                                            var="emp" itemLabel="#{emp.employeeCode} #{emp.employeeName}"
+                                            itemValue="#{emp}">
                                 <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
                                 <p:column width="50"><h:outputText value="#{emp.employeeName}"/></p:column>
                                 <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
@@ -29,15 +34,19 @@
                         <p:message for="employeeId"/>
                     </div>
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlRight" >
+                <p:outputPanel class="Container100 TexAlRight">
 
-                    <p:commandButton value="#{msg['label.edit']}" styleClass="GreenButton White" update="@widgetVar(growl),:checkinServiceTicketForm,:employeeServiceForm"
-                                     actionListener="#{serviceTicketController.saveEmployeeService()}" process=":employeeServiceForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();PF('employeeServiceDlg').hide()"
-                                     >
+                    <p:commandButton value="#{msg['label.edit']}" styleClass="GreenButton White"
+                                     update="@widgetVar(growl),:checkinServiceTicketForm,:employeeServiceForm"
+                                     actionListener="#{serviceTicketController.saveEmployeeService()}"
+                                     process=":employeeServiceForm"
+                                     onstart="PF('blockDlg').show()"
+                                     oncomplete="PF('blockDlg').hide();PF('employeeServiceDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('employeeServiceDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('employeeServiceDlg').hide()">
 
                     </p:commandButton>
 

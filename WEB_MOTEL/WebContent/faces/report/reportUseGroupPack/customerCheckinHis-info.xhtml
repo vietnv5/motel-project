@@ -4,7 +4,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:f="http://xmlns.jcp.org/jsf/core">
     <p:panel id="detailCustomerCheckinHisPanel" style="display: block;padding: 0px;margin: 0px;"
-             >
+    >
         <p:dataTable value="#{reportPaymentController.lazyDataModel}" id="tableDetailCustomerCheckinHis"
                      lazy="true" var="customCheckin" rowKey="#{customCheckin.id}" filterDelay="100"
                      rendered="#{reportPaymentController.showDetailTable}"
@@ -32,12 +32,13 @@
 
                         <p:commandButton icon="fa fa-download" ajax="false"
                                          styleClass="White BlueButton Fs14 MarTop5">
-                            <p:dataExporter type="xls" target="tableDetailCustomerCheckinHis" fileName="DetailCustomerCheckinHis"
+                            <p:dataExporter type="xls" target="tableDetailCustomerCheckinHis"
+                                            fileName="DetailCustomerCheckinHis"
                                             pageOnly="false"/>
                         </p:commandButton>
 
                     </div>
-                    
+
                 </div>
 
             </f:facet>
@@ -57,7 +58,8 @@
             <p:column headerText="#{msg['customerCheckin.type']}" width="100" sortBy="#{customCheckin.type}"
                       filterBy="#{customCheckin.type}" filterStyle="width:70%">
                 <f:facet name="filter">
-                    <p:selectOneMenu onchange="PF('tblDetailCustomerCheckin').filter()" filter="true" filterMatchMode="contains">
+                    <p:selectOneMenu onchange="PF('tblDetailCustomerCheckin').filter()" filter="true"
+                                     filterMatchMode="contains">
                         <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
                         <f:selectItem itemLabel="Hội viên" itemValue="1"/>
                         <f:selectItem itemLabel="Khách lẻ" itemValue="2"/>
@@ -68,29 +70,35 @@
 
             <p:column headerText="#{msg['customerCheckin.checkinTime']}" width="100" sortBy="#{customCheckin.checkTime}"
                       filterBy="#{customCheckin.checkTime-BW}" filterStyle="width:70%">
-                <f:facet name="filter" >
+                <f:facet name="filter">
                     <p:calendar pattern="dd/MM/yyyy" widgetVar="widInDate">
                         <p:ajax event="dateSelect" oncomplete="PF('tblDetailCustomerCheckin').filter()"/>
                     </p:calendar>
                 </f:facet>
-                <h:outputText value="#{customCheckin.checkTime}"><f:convertDateTime
-                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                <h:outputText value="#{customCheckin.checkTime}">
+                    <f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
             </p:column>
 
-            <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100" sortBy="#{customCheckin.checkoutTime}"
+            <p:column headerText="#{msg['customerCheckin.checkoutTime']}" width="100"
+                      sortBy="#{customCheckin.checkoutTime}"
                       visible="true"
                       filterBy="#{customCheckin.checkoutTime-BW}" filterStyle="width:70%">
-                <f:facet name="filter" >
+                <f:facet name="filter">
                     <p:calendar pattern="dd/MM/yyyy" widgetVar="widOutDate">
                         <p:ajax event="dateSelect" oncomplete="PF('tblDetailCustomerCheckin').filter()"/>
                     </p:calendar>
                 </f:facet>
-                <h:outputText value="#{customCheckin.checkoutTime}"><f:convertDateTime
-                        pattern="dd/MM/yyyy HH:mm:ss"/></h:outputText>
+                <h:outputText value="#{customCheckin.checkoutTime}">
+                    <f:convertDateTime
+                            pattern="dd/MM/yyyy HH:mm:ss"/>
+                </h:outputText>
             </p:column>
 
 
-            <p:column headerText="#{msg['customerCheckin.groupName']}" width="100" sortBy="#{customCheckin.groupMemberName}"
+            <p:column headerText="#{msg['customerCheckin.groupName']}" width="100"
+                      sortBy="#{customCheckin.groupMemberName}"
                       filterBy="#{customCheckin.groupMemberName}" filterStyle="width:70%">
                 <h:outputText value="#{customCheckin.groupMemberName}"/>
             </p:column>
@@ -98,19 +106,21 @@
             <p:column headerText="Trạng thái" width="100" sortBy="#{customCheckin.status}"
                       filterBy="#{customCheckin.status}" filterStyle="width:70%">
                 <f:facet name="filter">
-                    <p:selectOneMenu onchange="PF('tblDetailCustomerCheckin').filter()"  filter="true" filterMatchMode="contains">
+                    <p:selectOneMenu onchange="PF('tblDetailCustomerCheckin').filter()" filter="true"
+                                     filterMatchMode="contains">
                         <f:selectItem itemLabel="--Lựa chọn--" itemValue="" noSelectionOption="true"/>
                         <f:selectItem itemLabel="Đang sử dụng" itemValue="1"/>
                         <f:selectItem itemLabel="Đã ngừng sử dụng" itemValue="2"/>
                     </p:selectOneMenu>
                 </f:facet>
-                <h:outputText value="#{customCheckin.statusName}"  style=" font-weight: bold; color: #{customCheckin.status==1 ? '#00aeef':'gray'}" />
+                <h:outputText value="#{customCheckin.statusName}"
+                              style=" font-weight: bold; color: #{customCheckin.status==1 ? '#00aeef':'gray'}"/>
             </p:column>
 
-            <p:column headerText="#{msg['customerAccessStatus.groupPackName']}" width="100" >
+            <p:column headerText="#{msg['customerAccessStatus.groupPackName']}" width="100">
                 <h:outputText value="#{customCheckin.catGroupPack.groupPackName}"/>
             </p:column>
-        </p:dataTable>  
-    </p:panel>            
+        </p:dataTable>
+    </p:panel>
 
 </ui:composition>

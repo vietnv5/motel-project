@@ -1,18 +1,17 @@
- 
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
     <p:dialog widgetVar="widgetCustomerScheduleFormDlg" width="80%" id="customerScheduleFormDlgId" header="Đặt lịch"
-              height="50%"  modal="true" showEffect="size" hideEffect="scale">
+              height="50%" modal="true" showEffect="size" hideEffect="scale">
 
         <h:form id="customerScheduleInsertForm">
-            <p:growl id="growlFormDlg" showDetail="true" showSummary="false" />
+            <p:growl id="growlFormDlg" showDetail="true" showSummary="false"/>
             <!--<h:panelGrid columns="4" width="100%" cellpadding="5" id="panelGridId">-->
             <div class="Card">
                 <div class="Container100 Responsive50 MarTop20">
@@ -20,12 +19,14 @@
                         <span class="title-top">
 
                             <!--<h:outputText class="cd-text-required" value="# {msg['customerSchedule.customerType']}"/>-->
-                            <p:selectOneMenu value="#{customerScheduleController.currCustomerSchedule.customerType}" disabled="#{customerScheduleController.isEdit}"
-                                             style="width: 135px;" >
+                            <p:selectOneMenu value="#{customerScheduleController.currCustomerSchedule.customerType}"
+                                             disabled="#{customerScheduleController.isEdit}"
+                                             style="width: 135px;">
                                 <f:selectItem itemValue="2" itemLabel="Khách lẻ"/>
                                 <f:selectItem itemValue="1" itemLabel="Hội viên"/>
 
-                                <p:ajax event="change" update="memberId,sexId,clientNameId,phoneNumberId" process="@this"/>
+                                <p:ajax event="change" update="memberId,sexId,clientNameId,phoneNumberId"
+                                        process="@this"/>
 
                             </p:selectOneMenu>
                             <label class="title-elem">#{msg['customerSchedule.customerType']} *</label>
@@ -33,10 +34,14 @@
                     </div>
                     <div class="Container25 Responsive50">
                         <span class="title-top">
-                            <p:autoComplete value="#{customerScheduleController.currCustomerSchedule.member}" completeMethod="#{groupMemberController.searchMemberInherit}"
-                                            style="" placeholder="#{msg['customerSchedule.member']}"  dropdown="true" id="memberId"
+                            <p:autoComplete value="#{customerScheduleController.currCustomerSchedule.member}"
+                                            completeMethod="#{groupMemberController.searchMemberInherit}"
+                                            style="" placeholder="#{msg['customerSchedule.member']}" dropdown="true"
+                                            id="memberId"
                                             disabled="#{customerScheduleController.currCustomerSchedule.customerType!=1}"
-                                            var="mem" itemLabel="#{mem.memberCode} #{mem.memberCode!=null ?'-':''} #{mem.memberName}" itemValue="#{mem}" converter="memberConverter"
+                                            var="mem"
+                                            itemLabel="#{mem.memberCode} #{mem.memberCode!=null ?'-':''} #{mem.memberName}"
+                                            itemValue="#{mem}" converter="memberConverter"
                                             forceSelection="true">
                                 <p:column><h:outputText value="#{mem.memberCode}"/></p:column>
                                 <p:column><h:outputText value="#{mem.memberName}"/></p:column>
@@ -44,7 +49,7 @@
                                 <p:column><h:outputText value="#{mem.phoneNumber}"/></p:column>
                                 <p:column><h:outputText value="#{mem.email}"/></p:column>
                                 <p:column><h:outputText value="#{mem.address}"/></p:column>
-                                <p:ajax event="itemSelect" update="sexId,clientNameId,phoneNumberId" 
+                                <p:ajax event="itemSelect" update="sexId,clientNameId,phoneNumberId"
                                         onstart="PF('block').show()" oncomplete="PF('block').hide()"
                                         listener="#{customerScheduleController.onchangeMember()}" process="@this"/>
 
@@ -61,13 +66,13 @@
                                              style="width: 135px;" disabled="#{customerScheduleController.currCustomerSchedule.status !=null
                                                                                and customerScheduleController.currCustomerSchedule.status gt 1}">
                                 <f:selectItem itemValue="1" itemLabel="#{msg['customerSchedule.statusSchedule']}"
-                                              />
+                                />
                                 <f:selectItem itemValue="2" itemLabel="#{msg['customerSchedule.statusActive']}"
-                                              />
+                                />
                                 <f:selectItem itemValue="3" itemLabel="#{msg['customerSchedule.statusCompleted']}"
-                                              />
+                                />
                                 <f:selectItem itemValue="4" itemLabel="#{msg['customerSchedule.statusCancel']}"
-                                              />
+                                />
 
                             </p:selectOneMenu>
                             <label class="title-elem">#{msg['customerSchedule.status']} *</label>
@@ -100,10 +105,12 @@
                     <div class="Container25 Responsive50">
 
                         <span class="title-top">
-                            <p:selectOneRadio id="sexId" disabled="#{customerScheduleController.currCustomerSchedule.customerType==1}"
-                                              value="#{customerScheduleController.currCustomerSchedule.sex}" 
-                                              required="true" requiredMessage="#{msg['datatable.header.sex']} bắt buộc nhập"  style=""
-                                              >
+                            <p:selectOneRadio id="sexId"
+                                              disabled="#{customerScheduleController.currCustomerSchedule.customerType==1}"
+                                              value="#{customerScheduleController.currCustomerSchedule.sex}"
+                                              required="true"
+                                              requiredMessage="#{msg['datatable.header.sex']} bắt buộc nhập" style=""
+                            >
                                 <f:selectItem itemLabel="#{msg['view.label.sexMale']}"
                                               itemValue="#{msg['view.label.sexMale']}"/>
                                 <f:selectItem itemLabel="#{msg['view.label.sexFemale']}"
@@ -117,11 +124,12 @@
                     <div class="Container25 Responsive50">
                         <span class="md-inputfield">
                             <p:inputText value="#{customerScheduleController.currCustomerSchedule.name}"
-                                         id="clientNameId" readonly="#{customerScheduleController.currCustomerSchedule.customerType==1}"
+                                         id="clientNameId"
+                                         readonly="#{customerScheduleController.currCustomerSchedule.customerType==1}"
                                          title="#{msg['client.name']}"
                                          required="true" maxlength="200"
                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['client.name'])}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['client.name']} *</label>
@@ -131,7 +139,8 @@
                     <div class="Container25 Responsive50">
                         <span class="md-inputfield">
                             <p:inputMask value="#{customerScheduleController.currCustomerSchedule.phoneNumber}"
-                                         id="phoneNumberId"  readonly="#{customerScheduleController.currCustomerSchedule.customerType==1}"
+                                         id="phoneNumberId"
+                                         readonly="#{customerScheduleController.currCustomerSchedule.customerType==1}"
                                          title="#{msg['datatable.header.phoneNumber']}"
                                          required="true"
                                          requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.phoneNumber'])}"
@@ -148,7 +157,7 @@
                                         mindate="#{currentDate}" styleClass="CalendarSearch"
                                         id="endTime"
                                         showButtonPanel="true" style="width: calc(100% - 15px)"
-                                        
+
                                         showOn="both"
                                         pattern="dd/MM/yyyy HH:mm:ss" pages="1" effect="slideDown"
                                         showOtherMonths="true" selectOtherMonths="true"
@@ -166,24 +175,27 @@
                 <div class="Container100 Responsive50 MarTop20">
                     <div class="Container75 Responsive50">
                         <span class="title-top">
-                            <p:autoComplete value="#{customerScheduleController.currCustomerSchedule.lstCatGroupPacks}" completeMethod="#{customerScheduleController.searchGroupPack}"
-                                            placeholder="#{msg['customerSchedule.service']}"  dropdown="true" id="groupPackId" scrollHeight="200"
-                                            multiple="true" 
-                                            var="mem" itemLabel="#{mem.groupPackName} " itemValue="#{mem}" converter="catGroupPackConverter"
+                            <p:autoComplete value="#{customerScheduleController.currCustomerSchedule.lstCatGroupPacks}"
+                                            completeMethod="#{customerScheduleController.searchGroupPack}"
+                                            placeholder="#{msg['customerSchedule.service']}" dropdown="true"
+                                            id="groupPackId" scrollHeight="200"
+                                            multiple="true"
+                                            var="mem" itemLabel="#{mem.groupPackName} " itemValue="#{mem}"
+                                            converter="catGroupPackConverter"
                                             forceSelection="true">
                                 <p:column headerText="#{msg['datatable.header.group.pack.name']}" width="100">
                                     <h:outputText value="#{mem.groupPackName}"/></p:column>
-                                <p:column  width="200">
-                                    <p:repeat value="#{mem.groupHasPacks}" var="p" varStatus="v" >
+                                <p:column width="200">
+                                    <p:repeat value="#{mem.groupHasPacks}" var="p" varStatus="v">
                                         <h:outputText value="#{p.pack.packName}"/>
                                         <h:outputText value=", " rendered="#{!v.last}"/>
                                     </p:repeat>
                                 </p:column>
                                 <p:column headerText="#{msg['datatable.header.group.pack.price']}" width="100">
-                                    <h:outputText value="#{mem.price}" >
+                                    <h:outputText value="#{mem.price}">
                                             <f:convertNumber pattern="#,###"/>
                                         </h:outputText>
-                                        <h:outputText value=" VNĐ" />
+                                        <h:outputText value=" VNĐ"/>
                                     </p:column>
                             </p:autoComplete>
 
@@ -196,9 +208,13 @@
 
                     <div class="Container25 Responsive50">
                         <span class="title-top">
-                            <p:autoComplete id="employee" value="#{customerScheduleController.currCustomerSchedule.employee}" completeMethod="#{employeeController.completeEmployee}"
-                                            placeholder="HLV/Nhân viên" converter="employeeConverter" dropdown="true"  scrollHeight="200"
-                                            var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                            <p:autoComplete id="employee"
+                                            value="#{customerScheduleController.currCustomerSchedule.employee}"
+                                            completeMethod="#{employeeController.completeEmployee}"
+                                            placeholder="HLV/Nhân viên" converter="employeeConverter" dropdown="true"
+                                            scrollHeight="200"
+                                            var="emp" itemLabel="#{emp.employeeCode} #{emp.employeeName}"
+                                            itemValue="#{emp}">
                                 <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
                                 <p:column width="50"><h:outputText value="#{emp.employeeName}"/></p:column>
                                 <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
@@ -216,8 +232,9 @@
                                              value="#{customerScheduleController.currCustomerSchedule.branchId}"
                                              required="true"
                                              title="#{msg['datatable.header.branchId']}"
-                                             style="" requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branchId'])}"
-                                             >
+                                             style=""
+                                             requiredMessage="#{msg['common.required'].replace('{0}',msg['datatable.header.branchId'])}"
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}"
                                               noSelectionOption="true"/>
                                 <f:selectItems value="#{branchController.branchs}" var="o"
@@ -233,9 +250,13 @@
                     </div>
                     <div class="Container25 Responsive50 ">
                         <span class="title-top">
-                            <p:autoComplete id="employeeScheduleId" value="#{customerScheduleController.currCustomerSchedule.employeeSchedule}" completeMethod="#{employeeController.completeEmployee}"
-                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter" dropdown="true"  scrollHeight="200"
-                                            var="emp"  itemLabel="#{emp.employeeCode} #{emp.employeeName}" itemValue="#{emp}" >
+                            <p:autoComplete id="employeeScheduleId"
+                                            value="#{customerScheduleController.currCustomerSchedule.employeeSchedule}"
+                                            completeMethod="#{employeeController.completeEmployee}"
+                                            placeholder="#{msg['catUser.employee']}" converter="employeeConverter"
+                                            dropdown="true" scrollHeight="200"
+                                            var="emp" itemLabel="#{emp.employeeCode} #{emp.employeeName}"
+                                            itemValue="#{emp}">
                                 <p:column><h:outputText value="#{emp.employeeCode}"/></p:column>
                                 <p:column width="50"><h:outputText value="#{emp.employeeName}"/></p:column>
                                 <p:column><h:outputText value="#{emp.jobTitle.jobTitleName}"/></p:column>
@@ -249,8 +270,9 @@
                 <div class="Container100 Responsive50 MarTop20">
                     <span class="md-inputfield">
 
-                        <p:inputTextarea label="#{msg['catItem.description']}" maxlength="200"  style="width: 90%"
-                                         value="#{customerScheduleController.currCustomerSchedule.description}" rows="3" converter="trimConverter">
+                        <p:inputTextarea label="#{msg['catItem.description']}" maxlength="200" style="width: 90%"
+                                         value="#{customerScheduleController.currCustomerSchedule.description}" rows="3"
+                                         converter="trimConverter">
                         </p:inputTextarea>
                         <label>#{msg['catItem.description']} </label>
 
@@ -258,14 +280,18 @@
                 </div>
             </div>
 
-            <div class="row" style="margin-bottom: 10px; text-align: center;margin-left: auto;margin-right: auto;display: block">
-                <p:commandButton style="color: white;" icon="fa fa-save" process=":customerScheduleInsertForm" onstart="PF('blockDlg').show()"
-                                 actionListener="#{customerScheduleController.saveOrUpdate()}" oncomplete="PF('blockDlg').hide();"
-                                 update=":customerScheduleForm, :customerScheduleInsertForm:growlFormDlg" value="#{msg['button.save']}"
+            <div class="row"
+                 style="margin-bottom: 10px; text-align: center;margin-left: auto;margin-right: auto;display: block">
+                <p:commandButton style="color: white;" icon="fa fa-save" process=":customerScheduleInsertForm"
+                                 onstart="PF('blockDlg').show()"
+                                 actionListener="#{customerScheduleController.saveOrUpdate()}"
+                                 oncomplete="PF('blockDlg').hide();"
+                                 update=":customerScheduleForm, :customerScheduleInsertForm:growlFormDlg"
+                                 value="#{msg['button.save']}"
                                  rendered="#{customerScheduleController.currCustomerSchedule.status == null or
                                              customerScheduleController.currCustomerSchedule.status lt 2}"
                                  id="actionCustomerScheduleId"
-                                 />
+                />
                 <p:commandButton style="color: white;" icon="fa fa-close" styleClass="RedButton"
                                  onclick="PF('widgetCustomerScheduleFormDlg').hide()" value="#{msg['button.close']}"/>
             </div>

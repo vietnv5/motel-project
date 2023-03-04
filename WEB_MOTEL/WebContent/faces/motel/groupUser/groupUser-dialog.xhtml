@@ -4,7 +4,7 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
     <p:dialog modal="true" widgetVar="groupUserDlg" width="60%" id="groupUserDlgId">
@@ -15,18 +15,18 @@
 
         <h:form id="groupUserForm">
             <div class="Card">
-                <p:outputPanel class="Container100 " id="panelCheckin" >
+                <p:outputPanel class="Container100 " id="panelCheckin">
 
                     <div class=" Container100">
-                        
+
                         <div class=" Container33 Responsive50 ">
                             <span class="md-inputfield">
                                 <p:inputText value="#{groupUserController.currGroupUser.code}"
-                                             id="codeId"  converter="trimConverter" maxlength="200"
+                                             id="codeId" converter="trimConverter" maxlength="200"
                                              title="#{msg['groupUser.code']}"
                                              required="false"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.code'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['groupUser.code']} *</label>
@@ -36,11 +36,11 @@
                         <div class=" Container33 Responsive50 ">
                             <span class="md-inputfield">
                                 <p:inputText value="#{groupUserController.currGroupUser.name}"
-                                             id="nameId"  converter="trimConverter" maxlength="200"
+                                             id="nameId" converter="trimConverter" maxlength="200"
                                              title="#{msg['groupUser.name']}"
                                              required="true"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.name'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['groupUser.name']} *</label>
@@ -54,7 +54,7 @@
                                                required="false" decimalPlaces="0" minValue="-999999999"
                                                requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.maxNumberRoom'])}"
                                                title="#{msg['groupUser.maxNumberRoom']}"
-                                               >
+                                >
                                 </p:inputNumber>
 
                                 <label>#{msg['groupUser.maxNumberRoom']} </label>
@@ -97,7 +97,7 @@
                             <span class="title-top">
                                 <p:selectOneMenu value="#{groupUserController.currGroupUser.status}" required="true"
                                                  id="statusId"
-                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.status'])}" >
+                                                 requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.status'])}">
                                     <f:selectItem itemLabel="-- Lựa chọn --" itemValue="" noSelectionOption="true"/>
                                     <f:selectItem itemValue="1" itemLabel="#{msg['common.ACTIVE']}"/>
                                     <f:selectItem itemValue="2" itemLabel="#{msg['common.INACTIVE']}"/>
@@ -109,34 +109,35 @@
                     </div>
                     <!--<div class=" Container100">-->
 
-                        <div class=" Container100 Responsive50 MarTop20">
+                    <div class=" Container100 Responsive50 MarTop20">
                             <span class="md-inputfield">
                                 <p:inputText value="#{groupUserController.currGroupUser.description}"
-                                             id="descriptionId"  converter="trimConverter" maxlength="300"
+                                             id="descriptionId" converter="trimConverter" maxlength="300"
                                              title="#{msg['groupUser.description']}"
                                              required="false" style="width: 90%"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['groupUser.description'])}"
-                                             >
+                                >
                                 </p:inputText>
 
                                 <label>#{msg['groupUser.description']} </label>
                             </span>
-                            <p:message for="descriptionId"/>
-                        </div>
-                        
-                        
+                        <p:message for="descriptionId"/>
+                    </div>
+
+
                     <!--</div>-->
                 </p:outputPanel>
-                <p:outputPanel class="Container100 TexAlCenter" >
+                <p:outputPanel class="Container100 TexAlCenter">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growl),:groupUserTableForm,:groupUserForm"
-                                     actionListener="#{groupUserController.onSaveOrUpdate()}" process=":groupUserForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{groupUserController.onSaveOrUpdate()}" process=":groupUserForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('groupUserDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('groupUserDlg').hide()">
 
                     </p:commandButton>
 
@@ -147,7 +148,9 @@
     </p:dialog>
 
     <p:confirmDialog global="true" closeOnEscape="true">
-        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check"/>
-        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close"/>
+        <p:commandButton value="#{msg['server.button.yes']}" type="button" styleClass="ui-confirmdialog-yes"
+                         icon="ui-icon-check"/>
+        <p:commandButton value="#{msg['server.button.no']}" type="button" styleClass="ui-confirmdialog-no"
+                         icon="ui-icon-close"/>
     </p:confirmDialog>
 </ui:composition>

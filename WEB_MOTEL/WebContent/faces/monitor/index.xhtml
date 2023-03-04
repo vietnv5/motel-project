@@ -19,7 +19,7 @@
                          emptyMessage="#{msg['datatable.empty']}"
                          styleClass="Container100 NoPadding MarTop10"
                          resizableColumns="false"
-                    >
+            >
 
                 <!--Header-->
                 <f:facet name="header">
@@ -38,11 +38,13 @@
                             </p:commandButton>
                         </div>
                         <script type="text/javascript">
-                            function start() {
+                            function start()
+                            {
                                 PF('block').show();
                             }
 
-                            function stop() {
+                            function stop()
+                            {
                                 PF('block').hide();
                             }
                         </script>
@@ -85,7 +87,7 @@
                                          actionListener="#{serverHisController.showHis(vAlarmMonitoring)}"
                                          title="#{msg['button.history']}"
                                          rendered="#{vAlarmMonitoring.monitorType == 'SERVER'}"
-                                />
+                        />
                         <p:commandButton icon="fa fa-history"
                                          styleClass="White TealButton Fs14"
                                          update=":form:growl, :form:dbHisDlg"
@@ -94,7 +96,7 @@
                                          actionListener="#{databaseHisController.showHis(vAlarmMonitoring)}"
                                          title="#{msg['button.history']}"
                                          rendered="#{vAlarmMonitoring.monitorType == 'DATABASE'}"
-                                />
+                        />
                     </p:outputPanel>
                 </p:column>
                 <!--extraInfor-->

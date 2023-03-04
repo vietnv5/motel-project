@@ -15,12 +15,12 @@ import org.springframework.stereotype.Service;
 import java.io.Serializable;
 
 /**
- *
  * @author vietnv14
  */
 @Scope("session")
 @Service(value = "catItemService")
-public class CatItemServiceImpl extends GenericDaoImplNewV2<CatItemBO, Long> implements GenericDaoServiceNewV2<CatItemBO, Long>, Serializable {
+public class CatItemServiceImpl extends GenericDaoImplNewV2<CatItemBO, Long> implements GenericDaoServiceNewV2<CatItemBO, Long>, Serializable
+{
     private static Logger logger = LogManager.getLogger(CatItemServiceImpl.class);
-    
+
 }

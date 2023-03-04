@@ -4,53 +4,55 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
 
-
-    <p:dialog modal="true" widgetVar="grantRoleActionDlg" header="Gán quyền hành động" width="70%" height="500px" id="grantRoleActionDlgId">
+    <p:dialog modal="true" widgetVar="grantRoleActionDlg" header="Gán quyền hành động" width="70%" height="500px"
+              id="grantRoleActionDlgId">
 
         <h:form id="grantRoleActionForm">
             <div class="Card">
 
-                <p:growl id="msg" showDetail="true" escape="false" />
-                <p:outputPanel class="Container100 " >
-                    <div >
+                <p:growl id="msg" showDetail="true" escape="false"/>
+                <p:outputPanel class="Container100 ">
+                    <div>
 
                         <h:outputText value="#{roleController.currRole.roleName}" style="font-weight: bold"/>
                     </div>
                     <div class="MarTop10 Container100">
-                        
+
                         <p:treeTable value="#{roleController.rootAction}" var="document" selectionMode="checkbox"
                                      id="treeTableActionSelectId" widgetVar="treeTableActionWid"
                                      selection="#{roleController.selectedNodeActions}"
-                                      resizableColumns="true" liveResize="true">
+                                     resizableColumns="true" liveResize="true">
                             <f:facet name="header">
                                 Cấp quyền hành động
                             </f:facet>
                             <p:column headerText="Mã chức năng" width="100">
-                                <h:outputText value="#{document.url}" />
+                                <h:outputText value="#{document.url}"/>
                             </p:column>
                             <p:column headerText="Tên chức năng" width="100">
-                                <h:outputText value="#{document.name}" />
+                                <h:outputText value="#{document.name}"/>
                             </p:column>
-                            <p:column headerText="Loại chức năng"  width="50">
-                                <h:outputText value="#{document.typeName}" />
+                            <p:column headerText="Loại chức năng" width="50">
+                                <h:outputText value="#{document.typeName}"/>
                             </p:column>
                         </p:treeTable>
                     </div>
                 </p:outputPanel>
 
-                <p:outputPanel class="Container80 TexAlCenter" >
+                <p:outputPanel class="Container80 TexAlCenter">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" 
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
                                      update="@widgetVar(growl),:catRoleTableForm,:grantRoleActionForm"
-                                     actionListener="#{roleController.onSaveOrUpdateRoleActionSelectedMultiple(roleController.selectedNodeActions)}" process=":grantRoleActionForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide()"
-                                     >
+                                     actionListener="#{roleController.onSaveOrUpdateRoleActionSelectedMultiple(roleController.selectedNodeActions)}"
+                                     process=":grantRoleActionForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide()"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('grantRoleActionDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('grantRoleActionDlg').hide()">
 
                     </p:commandButton>
 

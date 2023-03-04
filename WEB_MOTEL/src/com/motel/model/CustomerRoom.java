@@ -6,6 +6,7 @@
 package com.motel.model;
 
 import com.slook.util.Constant;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -25,21 +26,21 @@ import javax.persistence.Transient;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- *
  * @author VietNV
  */
 @Entity
 @Table(name = "customer_room")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "CustomerRoom.findAll", query = "SELECT c FROM CustomerRoom c")
-    , @NamedQuery(name = "CustomerRoom.findByCustomerRoomId", query = "SELECT c FROM CustomerRoom c WHERE c.customerRoomId = :customerRoomId")
-    , @NamedQuery(name = "CustomerRoom.findByStartTime", query = "SELECT c FROM CustomerRoom c WHERE c.startTime = :startTime")
-    , @NamedQuery(name = "CustomerRoom.findByEndTime", query = "SELECT c FROM CustomerRoom c WHERE c.endTime = :endTime")
-    , @NamedQuery(name = "CustomerRoom.findByStatus", query = "SELECT c FROM CustomerRoom c WHERE c.status = :status")
-    , @NamedQuery(name = "CustomerRoom.findByCreateTime", query = "SELECT c FROM CustomerRoom c WHERE c.createTime = :createTime")
-    , @NamedQuery(name = "CustomerRoom.findByType", query = "SELECT c FROM CustomerRoom c WHERE c.type = :type")})
-public class CustomerRoom implements Serializable {
+        @NamedQuery(name = "CustomerRoom.findAll", query = "SELECT c FROM CustomerRoom c")
+        , @NamedQuery(name = "CustomerRoom.findByCustomerRoomId", query = "SELECT c FROM CustomerRoom c WHERE c.customerRoomId = :customerRoomId")
+        , @NamedQuery(name = "CustomerRoom.findByStartTime", query = "SELECT c FROM CustomerRoom c WHERE c.startTime = :startTime")
+        , @NamedQuery(name = "CustomerRoom.findByEndTime", query = "SELECT c FROM CustomerRoom c WHERE c.endTime = :endTime")
+        , @NamedQuery(name = "CustomerRoom.findByStatus", query = "SELECT c FROM CustomerRoom c WHERE c.status = :status")
+        , @NamedQuery(name = "CustomerRoom.findByCreateTime", query = "SELECT c FROM CustomerRoom c WHERE c.createTime = :createTime")
+        , @NamedQuery(name = "CustomerRoom.findByType", query = "SELECT c FROM CustomerRoom c WHERE c.type = :type")})
+public class CustomerRoom implements Serializable
+{
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -79,136 +80,170 @@ public class CustomerRoom implements Serializable {
     @Transient
     private String typeName;
 
-    public CustomerRoom() {
+    public CustomerRoom()
+    {
     }
 
-    public CustomerRoom(Long customerRoomId) {
+    public CustomerRoom(Long customerRoomId)
+    {
         this.customerRoomId = customerRoomId;
     }
 
-    public Long getCustomerRoomId() {
+    public Long getCustomerRoomId()
+    {
         return customerRoomId;
     }
 
-    public void setCustomerRoomId(Long customerRoomId) {
+    public void setCustomerRoomId(Long customerRoomId)
+    {
         this.customerRoomId = customerRoomId;
     }
 
-    public Date getStartTime() {
+    public Date getStartTime()
+    {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
+    public void setStartTime(Date startTime)
+    {
         this.startTime = startTime;
     }
 
-    public Date getEndTime() {
+    public Date getEndTime()
+    {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
+    public void setEndTime(Date endTime)
+    {
         this.endTime = endTime;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
-    public Date getCreateTime() {
+    public Date getCreateTime()
+    {
         return createTime;
     }
 
-    public void setCreateTime(Date createTime) {
+    public void setCreateTime(Date createTime)
+    {
         this.createTime = createTime;
     }
 
-    public Long getType() {
+    public Long getType()
+    {
         return type;
     }
 
-    public void setType(Long type) {
+    public void setType(Long type)
+    {
         this.type = type;
     }
 
-    public Customer getCustomer() {
+    public Customer getCustomer()
+    {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
+    public void setCustomer(Customer customer)
+    {
         this.customer = customer;
     }
 
-    public Room getRoom() {
+    public Room getRoom()
+    {
         return room;
     }
 
-    public void setRoom(Room room) {
+    public void setRoom(Room room)
+    {
         this.room = room;
     }
 
-    public Long getCustomerId() {
+    public Long getCustomerId()
+    {
         return customerId;
     }
 
-    public void setCustomerId(Long customerId) {
+    public void setCustomerId(Long customerId)
+    {
         this.customerId = customerId;
     }
 
-    public Long getRoomId() {
+    public Long getRoomId()
+    {
         return roomId;
     }
 
-    public void setRoomId(Long roomId) {
+    public void setRoomId(Long roomId)
+    {
         this.roomId = roomId;
     }
 
-    public Long getContractId() {
+    public Long getContractId()
+    {
         return contractId;
     }
 
-    public void setContractId(Long contractId) {
+    public void setContractId(Long contractId)
+    {
         this.contractId = contractId;
     }
 
     @Override
-    public int hashCode() {
+    public int hashCode()
+    {
         int hash = 0;
         hash += (customerRoomId != null ? customerRoomId.hashCode() : 0);
         return hash;
     }
 
     @Override
-    public boolean equals(Object object) {
+    public boolean equals(Object object)
+    {
         // TODO: Warning - this method won't work in the case the id fields are not set
-        if (!(object instanceof CustomerRoom)) {
+        if (!(object instanceof CustomerRoom))
+        {
             return false;
         }
         CustomerRoom other = (CustomerRoom) object;
-        if ((this.customerRoomId == null && other.customerRoomId != null) || (this.customerRoomId != null && !this.customerRoomId.equals(other.customerRoomId))) {
+        if ((this.customerRoomId == null && other.customerRoomId != null) || (this.customerRoomId != null && !this.customerRoomId.equals(other.customerRoomId)))
+        {
             return false;
         }
         return true;
     }
 
     @Override
-    public String toString() {
+    public String toString()
+    {
         return "model.CustomerRoom[ customerRoomId=" + customerRoomId + " ]";
     }
 
-    public String getTypeName() {
-        if (Constant.CUSTOMER_ROOM.TYPE_PRIMARY.equals(type)) {
+    public String getTypeName()
+    {
+        if (Constant.CUSTOMER_ROOM.TYPE_PRIMARY.equals(type))
+        {
             typeName = "Chính";
-        } else if (Constant.CUSTOMER_ROOM.TYPE_EXTRA.equals(type)) {
+        }
+        else if (Constant.CUSTOMER_ROOM.TYPE_EXTRA.equals(type))
+        {
             typeName = "Ở ghép";
         }
         return typeName;
     }
 
-    public void setTypeName(String typeName) {
+    public void setTypeName(String typeName)
+    {
         this.typeName = typeName;
     }
 

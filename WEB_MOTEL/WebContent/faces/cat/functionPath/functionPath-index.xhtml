@@ -7,7 +7,7 @@
 
 
     <ui:define name="content">
-        <h:form  id="form">
+        <h:form id="form">
             <p:growl id="growl" showDetail="true" showSummary="false" widgetVar="growl"/>
             <p:dataTable value="#{functionPathController.lazyFunctionPath}" id="tableFunctionPath"
                          lazy="true" var="functionPath" rowKey="#{functionPath.functionPathId}"
@@ -56,7 +56,8 @@
                     <h:outputText value="${cusIdx+1}"/>
                 </p:column>
                 <!--Action-->
-                <p:column headerText="#{msg['datatable.header.action']}" styleClass="TexAlCenter" width="60" exportable="false">
+                <p:column headerText="#{msg['datatable.header.action']}" styleClass="TexAlCenter" width="60"
+                          exportable="false">
                     <p:commandButton icon="fa fa-info-circle"
                                      styleClass="GreenButton Fs14 White"
                                      style=" margin-right: 10px"
@@ -84,7 +85,7 @@
                                      actionListener="#{functionPathController.preRemove(functionPath)}"
                                      title="#{msg['label.delete']}"/>
                 </p:column>
-                
+
                 <!--URL-->
                 <p:column headerText="#{msg['category.functionPath.url']}" width="100" styleClass="TexAlLeft"
                           visible="#{functionPathController.colVisible.get('url')}"
@@ -107,13 +108,14 @@
                 <p:column headerText="#{msg['category.functionPath.parentId']}" width="100" styleClass="TexAlLeft"
                           visible="#{functionPathController.colVisible.get('parentId')}"
                           filterBy="#{functionPath.parentId}">
-                    <h:outputText value="#{functionPath.parentId} - #{ functionPathController.mapNameFuncionPath.get(functionPath.parentId)}"/>
+                    <h:outputText
+                            value="#{functionPath.parentId} - #{ functionPathController.mapNameFuncionPath.get(functionPath.parentId)}"/>
                 </p:column>
             </p:dataTable>
-            
-           
+
+
         </h:form>
-         <!--Loading dialog-->
+        <!--Loading dialog-->
         <p:dialog modal="true" class="transparent-dialog" showHeader="false"
                   widgetVar="block" draggable="false" closable="false" resizable="false">
             <span class="fa-stack fa-2x" style="width: 5em; height: 5em; line-height: 5em;">
@@ -123,7 +125,7 @@
             </span>
         </p:dialog>
         <ui:include src="add.xhtml"/>
-     
+
 
     </ui:define>
 </ui:composition>

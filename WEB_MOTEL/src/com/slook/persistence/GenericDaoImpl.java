@@ -35,7 +35,8 @@ import java.util.*;
  * @version 1.0.0
  * @since Aug 15, 2013
  */
-public abstract class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK> {
+public abstract class GenericDaoImpl<T, PK extends Serializable> implements GenericDao<T, PK>
+{
     private static final Logger logger = LoggerFactory.getLogger(GenericDaoImpl.class);
     protected String pkName;
 
@@ -46,21 +47,24 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * Method to return the class of the domain object
      */
 
-	/*
+    /*
      * (non-Javadoc)
-	 *
-	 * @see com.viettel.persistence.util.GenericDaoService#findById(java.io.
-	 * Serializable)
-	 */
+     *
+     * @see com.viettel.persistence.util.GenericDaoService#findById(java.io.
+     * Serializable)
+     */
     @Override
-    public T findById(PK id) throws AppException, SysException {
+    public T findById(PK id) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         T object = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
-            switch (id.getClass().getName()) {
+            switch (id.getClass().getName())
+            {
                 case "java.lang.String":
                     String identifierName = session.getSessionFactory().getClassMetadata(domainClass)
                             .getIdentifierPropertyName();
@@ -74,19 +78,31 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
             }
 
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return (T) object;
     }
@@ -98,27 +114,41 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * com.viettel.persistence.util.GenericDaoService#delete(java.lang.Object)
      */
     @Override
-    public void delete(T object) throws AppException, SysException {
+    public void delete(T object) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.delete(object);
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
     }
 
@@ -129,28 +159,44 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * com.viettel.persistence.util.GenericDaoService#delete(java.util.List)
      */
     @Override
-    public void delete(List<T> objects) throws AppException, SysException {
+    public void delete(List<T> objects) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             for (T object : objects)
+            {
                 session.delete(object);
+            }
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
     }
 
@@ -162,28 +208,42 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * Object)
      */
     @Override
-    public void saveOrUpdate(T object) throws AppException, SysException {
+    public void saveOrUpdate(T object) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.saveOrUpdate(object);
             session.flush();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
     }
 
@@ -194,28 +254,42 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * com.viettel.persistence.util.GenericDaoService#save(java.lang.Object)
      */
     @Override
-    public PK save(T object) throws AppException, SysException {
+    public PK save(T object) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         PK o = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             o = (PK) session.save(object);
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return o;
     }
@@ -228,28 +302,44 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * List)
      */
     @Override
-    public void saveOrUpdate(List<T> objects) throws AppException, SysException {
+    public void saveOrUpdate(List<T> objects) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             for (T object : objects)
+            {
                 session.saveOrUpdate(object);
+            }
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
     }
 
@@ -259,30 +349,44 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @see com.viettel.persistence.util.GenericDaoService#findList()
      */
     @Override
-    public List<T> findList() throws AppException, SysException {
+    public List<T> findList() throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         List<T> objects = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Criteria criteria = session.createCriteria(domainClass);
             criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
             objects = criteria.list();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return objects;
     }
@@ -295,11 +399,13 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * java.util.Map)
      */
     @Override
-    public List<T> findList(Map<String, Object> filters, Map<String, String> orders) throws AppException, SysException {
+    public List<T> findList(Map<String, Object> filters, Map<String, String> orders) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         List<T> objects = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Criteria criteria = session.createCriteria(domainClass);
@@ -313,19 +419,31 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
 
             objects = criteria.list();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return objects;
     }
@@ -337,11 +455,13 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * java.util.Map)
      */
     @Override
-    public List<T> findList(int first, int pageSize, Map<String, Object> filters) throws AppException, SysException {
+    public List<T> findList(int first, int pageSize, Map<String, Object> filters) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         List<T> objects = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Criteria criteria = session.createCriteria(domainClass);
@@ -356,19 +476,31 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
 
             objects = criteria.list();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return objects;
     }
@@ -381,11 +513,13 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      */
     @Override
     public List<T> findList(int first, int pageSize, Map<String, Object> filters, Map<String, String> orders)
-            throws AppException, SysException {
+            throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         List<T> objects = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Criteria criteria = session.createCriteria(domainClass);
@@ -403,21 +537,33 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
 
             objects = criteria.list();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return objects;
     }
@@ -428,11 +574,13 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @see com.viettel.persistence.util.GenericDaoService#count(java.util.Map)
      */
     @Override
-    public int count(Map<String, Object> filters) throws AppException, SysException {
+    public int count(Map<String, Object> filters) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         int count = 0;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Criteria criteria = session.createCriteria(domainClass);
@@ -444,21 +592,33 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
             count = criteria.uniqueResult() == null ? 0 : ((Long) criteria.uniqueResult()).intValue();
             session.flush();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return count;
     }
@@ -469,11 +629,13 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @see com.viettel.persistence.util.GenericDaoService#count()
      */
     @Override
-    public int count() throws AppException, SysException {
+    public int count() throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         int count = 0;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             Criteria criteria = session.createCriteria(domainClass);
@@ -481,21 +643,33 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
             count = criteria.uniqueResult() == null ? 0 : ((Long) criteria.uniqueResult()).intValue();
             session.flush();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return count;
     }
@@ -507,30 +681,44 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * com.viettel.persistence.util.GenericDaoService#persist(java.lang.Object)
      */
     @Override
-    public void persist(T object) throws AppException, SysException {
+    public void persist(T object) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.persist(object);
             session.flush();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
     }
 
@@ -541,60 +729,88 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * com.viettel.persistence.util.GenericDaoService#merge(java.lang.Object)
      */
     @Override
-    public void merge(T object) throws AppException, SysException {
+    public void merge(T object) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             session.clear();
             session.merge(object);
             session.flush();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
     }
 
     @Override
-    public T get(PK id) throws AppException, SysException {
+    public T get(PK id) throws AppException, SysException
+    {
         Session session = null;
         Transaction tx = null;
         T object = null;
-        try {
+        try
+        {
             session = HibernateUtil.getSessionFactory().openSession();
             tx = session.beginTransaction();
             object = (T) session.get(domainClass, id);
             session.flush();
             tx.commit();
-        } catch (HibernateException ex) {
+        }
+        catch (HibernateException ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new AppException();
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             if (tx != null)
+            {
                 tx.rollback();
+            }
             logger.error(ex.getMessage(), ex);
 
             throw new SysException();
-        } finally {
+        }
+        finally
+        {
             if (session != null)
+            {
                 session.close();
+            }
         }
         return object;
     }
@@ -605,21 +821,26 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @param criteria
      * @return criteria
      */
-    protected Criteria setCriteriaRestrictions(Criteria criteria, Map<String, Object> filters) {
+    protected Criteria setCriteriaRestrictions(Criteria criteria, Map<String, Object> filters)
+    {
         if (filters == null)
+        {
             return criteria;
+        }
 
         Map<String, String> properties = getFields();
 
         String type;
         String filedName;
         String fieldValue;
-        for (Iterator<String> it = filters.keySet().iterator(); it.hasNext(); ) {
+        for (Iterator<String> it = filters.keySet().iterator(); it.hasNext(); )
+        {
             filedName = it.next();
             fieldValue = (String) filters.get(filedName);
 
             type = properties.get(filedName);
-            switch (type) {
+            switch (type)
+            {
                 case "java.lang.String":
                     criteria.add(Restrictions.ilike(filedName, fieldValue.toLowerCase(), MatchMode.ANYWHERE));
                     break;
@@ -643,50 +864,68 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @param criteria
      * @return criteria
      */
-    protected Criteria setCriteriaOrders(Criteria criteria, Map<String, String> orders) {
+    protected Criteria setCriteriaOrders(Criteria criteria, Map<String, String> orders)
+    {
         if (orders == null)
+        {
             return criteria;
+        }
 
         String propertyName;
         String orderType;
 
-        for (Iterator<String> it = orders.keySet().iterator(); it.hasNext(); ) {
+        for (Iterator<String> it = orders.keySet().iterator(); it.hasNext(); )
+        {
             propertyName = it.next();
             orderType = orders.get(propertyName);
-            if (propertyName.contains(".")) {
-                if (propertyName.startsWith(pkName + ".")) {
+            if (propertyName.contains("."))
+            {
+                if (propertyName.startsWith(pkName + "."))
+                {
 
-                } else {
+                }
+                else
+                {
                     String[] prs = propertyName.split("\\.", -1);
-                    for (int i = 0; i < prs.length - 1; i++) {
+                    for (int i = 0; i < prs.length - 1; i++)
+                    {
                         String alias = "";
                         String aliasNew = "";
-                        for (int j = 0; j <= i; j++) {
+                        for (int j = 0; j <= i; j++)
+                        {
                             alias += prs[j] + ".";
                             aliasNew += prs[j] + (j == i - 2 ? "." : "");
                         }
                         alias = alias.replaceAll("\\.$", "");
                         Iterator<CriteriaImpl.Subcriteria> iter = ((CriteriaImpl) criteria).iterateSubcriteria();
 
-                        if (iter.hasNext()) {
+                        if (iter.hasNext())
+                        {
                             int c = 0;
-                            while (iter.hasNext()) {
+                            while (iter.hasNext())
+                            {
                                 Criteria subcriteria = (Criteria) iter.next();
-                                if (subcriteria.getAlias() != null && subcriteria.getAlias().contains(aliasNew)) {
+                                if (subcriteria.getAlias() != null && subcriteria.getAlias().contains(aliasNew))
+                                {
                                     c++;
                                     break;
                                 }
                             }
-                            if (c == 0) {
+                            if (c == 0)
+                            {
                                 criteria.createAlias(alias, aliasNew);
 
                             }
-                        } else {
+                        }
+                        else
+                        {
                             criteria.createAlias(alias, aliasNew);
 
                         }
                         if (i < prs.length - 2)
+                        {
                             propertyName = propertyName.replaceFirst("\\.", "");
+                        }
                     }
 
                     //fieldName = fieldName.replaceAll("^" + alias, alias + "-alias");
@@ -697,7 +936,8 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
                 }
             }
 
-            switch (orderType.toUpperCase()) {
+            switch (orderType.toUpperCase())
+            {
                 case "ASC":
                     criteria.addOrder(Order.asc(propertyName));
                     break;
@@ -719,59 +959,85 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @return
      * @throws ClassNotFoundException
      */
-    private Map<String, String> getFields() {
+    private Map<String, String> getFields()
+    {
         PropertyDescriptor[] propertyDescriptors;
         Map<String, String> result = new HashMap<String, String>();
-        try {
+        try
+        {
             propertyDescriptors = Introspector.getBeanInfo(domainClass).getPropertyDescriptors();
             String fieldName;
             String fieldType;
-            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            for (PropertyDescriptor propertyDescriptor : propertyDescriptors)
+            {
                 fieldName = propertyDescriptor.getName();
                 fieldType = propertyDescriptor.getPropertyType().getCanonicalName();
 
-                if (ClassUtils.isPrimitiveOrWrapper(Class.forName(fieldType))) {
+                if (ClassUtils.isPrimitiveOrWrapper(Class.forName(fieldType)))
+                {
                     result.put(fieldName, fieldType);
-                } else if ("java.lang.String".equalsIgnoreCase(fieldType)) {
+                }
+                else if ("java.lang.String".equalsIgnoreCase(fieldType))
+                {
                     result.put(fieldName, fieldType);
-                } else if ("java.util.Date".equalsIgnoreCase(fieldType)) {
+                }
+                else if ("java.util.Date".equalsIgnoreCase(fieldType))
+                {
                     result.put(fieldName, fieldType);
-                } else {
-                    if (!"java.lang.Class".equalsIgnoreCase(fieldType)) {
+                }
+                else
+                {
+                    if (!"java.lang.Class".equalsIgnoreCase(fieldType))
+                    {
                         result = getSubField(fieldName, fieldType, result);
                     }
                 }
             }
-        } catch (IntrospectionException | ClassNotFoundException ex) {
+        }
+        catch (IntrospectionException | ClassNotFoundException ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
 
         return result;
     }
 
-    private Map<String, String> getSubField(String fieldName, String fieldType, Map<String, String> result) {
-        try {
+    private Map<String, String> getSubField(String fieldName, String fieldType, Map<String, String> result)
+    {
+        try
+        {
             PropertyDescriptor[] propertyDescriptors = Introspector.getBeanInfo(Class.forName(fieldType))
                     .getPropertyDescriptors();
             String subFieldName;
             String subFieldType;
-            for (PropertyDescriptor propertyDescriptor : propertyDescriptors) {
+            for (PropertyDescriptor propertyDescriptor : propertyDescriptors)
+            {
                 subFieldName = fieldName.concat("." + propertyDescriptor.getName());
                 subFieldType = propertyDescriptor.getPropertyType().getCanonicalName();
 
-                if (ClassUtils.isPrimitiveOrWrapper(Class.forName(subFieldType))) {
+                if (ClassUtils.isPrimitiveOrWrapper(Class.forName(subFieldType)))
+                {
                     result.put(subFieldName, subFieldType);
-                } else if ("java.lang.String".equalsIgnoreCase(subFieldType)) {
+                }
+                else if ("java.lang.String".equalsIgnoreCase(subFieldType))
+                {
                     result.put(subFieldName, subFieldType);
-                } else if ("java.util.Date".equalsIgnoreCase(subFieldType)) {
+                }
+                else if ("java.util.Date".equalsIgnoreCase(subFieldType))
+                {
                     result.put(subFieldName, subFieldType);
-                } else {
-                    if (!"java.lang.Class".equalsIgnoreCase(subFieldType)) {
+                }
+                else
+                {
+                    if (!"java.lang.Class".equalsIgnoreCase(subFieldType))
+                    {
                         result = getSubField(subFieldName, subFieldType, result);
                     }
                 }
             }
-        } catch (IntrospectionException | ClassNotFoundException ex) {
+        }
+        catch (IntrospectionException | ClassNotFoundException ex)
+        {
             logger.error(ex.getMessage(), ex);
         }
 
@@ -788,26 +1054,33 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @param childClass the child class
      * @return a list of the raw classes for the actual type arguments.
      */
-    public static <T> List<Class<?>> getTypeArguments(Class<T> baseClass, Class<? extends T> childClass) {
+    public static <T> List<Class<?>> getTypeArguments(Class<T> baseClass, Class<? extends T> childClass)
+    {
         Map<Type, Type> resolvedTypes = new HashMap<Type, Type>();
         Type type = childClass;
         // start walking up the inheritance hierarchy until we hit baseClass
-        while (!getClass(type).equals(baseClass)) {
-            if (type instanceof Class) {
+        while (!getClass(type).equals(baseClass))
+        {
+            if (type instanceof Class)
+            {
                 // there is no useful information for us in raw types, so just
                 // keep going.
                 type = ((Class) type).getGenericSuperclass();
-            } else {
+            }
+            else
+            {
                 ParameterizedType parameterizedType = (ParameterizedType) type;
                 Class<?> rawType = (Class) parameterizedType.getRawType();
 
                 Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
                 TypeVariable<?>[] typeParameters = rawType.getTypeParameters();
-                for (int i = 0; i < actualTypeArguments.length; i++) {
+                for (int i = 0; i < actualTypeArguments.length; i++)
+                {
                     resolvedTypes.put(typeParameters[i], actualTypeArguments[i]);
                 }
 
-                if (!rawType.equals(baseClass)) {
+                if (!rawType.equals(baseClass))
+                {
                     type = rawType.getGenericSuperclass();
                 }
             }
@@ -817,15 +1090,20 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
         // determine (if possible)
         // the raw class for that type argument.
         Type[] actualTypeArguments;
-        if (type instanceof Class) {
+        if (type instanceof Class)
+        {
             actualTypeArguments = ((Class) type).getTypeParameters();
-        } else {
+        }
+        else
+        {
             actualTypeArguments = ((ParameterizedType) type).getActualTypeArguments();
         }
         List<Class<?>> typeArgumentsAsClasses = new ArrayList<Class<?>>();
         // resolve types by chasing down type variables.
-        for (Type baseType : actualTypeArguments) {
-            while (resolvedTypes.containsKey(baseType)) {
+        for (Type baseType : actualTypeArguments)
+        {
+            while (resolvedTypes.containsKey(baseType))
+            {
                 baseType = resolvedTypes.get(baseType);
             }
             typeArgumentsAsClasses.add(getClass(baseType));
@@ -840,20 +1118,31 @@ public abstract class GenericDaoImpl<T, PK extends Serializable> implements Gene
      * @param type the type
      * @return the underlying class
      */
-    private static Class<?> getClass(Type type) {
-        if (type instanceof Class) {
+    private static Class<?> getClass(Type type)
+    {
+        if (type instanceof Class)
+        {
             return (Class) type;
-        } else if (type instanceof ParameterizedType) {
+        }
+        else if (type instanceof ParameterizedType)
+        {
             return getClass(((ParameterizedType) type).getRawType());
-        } else if (type instanceof GenericArrayType) {
+        }
+        else if (type instanceof GenericArrayType)
+        {
             Type componentType = ((GenericArrayType) type).getGenericComponentType();
             Class<?> componentClass = getClass(componentType);
-            if (componentClass != null) {
+            if (componentClass != null)
+            {
                 return Array.newInstance(componentClass, 0).getClass();
-            } else {
+            }
+            else
+            {
                 return null;
             }
-        } else {
+        }
+        else
+        {
             return null;
         }
     }

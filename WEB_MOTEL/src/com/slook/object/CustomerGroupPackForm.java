@@ -8,10 +8,10 @@ package com.slook.object;
 import java.util.Date;
 
 /**
- *
  * @author VietNV on Nov 16, 2017
  */
-public class CustomerGroupPackForm extends PaymentGroupPackForm {
+public class CustomerGroupPackForm extends PaymentGroupPackForm
+{
 
     private Long totalNumber;
     private Long usedNumber;
@@ -21,61 +21,75 @@ public class CustomerGroupPackForm extends PaymentGroupPackForm {
     private Long status;
     private String key;
 
-    public Long getTotalNumber() {
+    public Long getTotalNumber()
+    {
         return totalNumber;
     }
 
-    public void setTotalNumber(Long totalNumber) {
+    public void setTotalNumber(Long totalNumber)
+    {
         this.totalNumber = totalNumber;
     }
 
-    public Long getUsedNumber() {
+    public Long getUsedNumber()
+    {
         return usedNumber;
     }
 
-    public void setUsedNumber(Long usedNumber) {
+    public void setUsedNumber(Long usedNumber)
+    {
         this.usedNumber = usedNumber;
     }
 
-    public Long getMembershipId() {
+    public Long getMembershipId()
+    {
         return membershipId;
     }
 
-    public void setMembershipId(Long membershipId) {
+    public void setMembershipId(Long membershipId)
+    {
         this.membershipId = membershipId;
     }
 
-    public Date getJoinDate() {
+    public Date getJoinDate()
+    {
         return joinDate;
     }
 
-    public void setJoinDate(Date joinDate) {
+    public void setJoinDate(Date joinDate)
+    {
         this.joinDate = joinDate;
     }
 
-    public Date getEndDate() {
+    public Date getEndDate()
+    {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(Date endDate)
+    {
         this.endDate = endDate;
     }
 
-    public Long getStatus() {
+    public Long getStatus()
+    {
         return status;
     }
 
-    public void setStatus(Long status) {
+    public void setStatus(Long status)
+    {
         this.status = status;
     }
 
     @Override
-    public String getKey() {
+    public String getKey()
+    {
         key = super.getKeyCustomerId() + "_" + (membershipId != null ? membershipId : "");
         return key;
     }
 
-    public void setKey(String key) {
+    public void setKey(String key)
+    {
         this.key = key;
     }
 

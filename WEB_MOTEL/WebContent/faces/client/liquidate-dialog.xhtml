@@ -4,19 +4,19 @@
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:c="http://java.sun.com/jsp/jstl/core"
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
-                >
+>
 
     <p:dialog modal="true" header="Thanh toán" widgetVar="clientLiquidateDlg" width="90%" id="clientLiquidateDlgId">
 
         <h:form id="insertClientLiquidateForm">
             <div class="Card">
-                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth3" >
+                <p:outputPanel class="Container100 Responsive50" id="panelAddHealth3">
                     <div class=" Container25">
                         <span class="md-inputfield">
                             <p:inputText value="#{clientController.curClient.clientPayment.paymentCode}"
                                          id="grouppackcode" readonly="true" disabled="true"
                                          title="#{msg['memberPayment.paymentCode']}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['memberPayment.paymentCode']}</label>
@@ -28,7 +28,7 @@
                             <p:inputText value="#{authenticationController.user.userName}"
                                          readonly="true" disabled="true"
                                          title="#{msg['memberPayment.employee']}"
-                                         >
+                            >
                             </p:inputText>
 
                             <label>#{msg['memberPayment.employee']}</label>
@@ -41,7 +41,7 @@
                             <p:inputNumber value="#{clientController.curClient.clientPayment.price}" decimalPlaces="0"
                                            id="priceId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
                                            title="#{msg['memberPayment.debt']}"
-                                           >
+                            >
                             </p:inputNumber>
 
                             <label>#{msg['memberPayment.debt']} *</label>
@@ -55,11 +55,11 @@
                                            required="true" decimalPlaces="0"
                                            requiredMessage="#{msg['common.required'].replace('{0}',msg['membership.memberPayment.paymentValue'])}"
                                            title="#{msg['memberPayment.paymentValue']}"
-                                           >
+                            >
 
-                                <p:ajax update="priceId,debtId"  process="@this" 
+                                <p:ajax update="priceId,debtId" process="@this"
                                         onstart="PF('block').show()" oncomplete="PF('block').hide()"
-                                        listener="#{clientController.onChangeComputingLiquidate()}" />
+                                        listener="#{clientController.onChangeComputingLiquidate()}"/>
                             </p:inputNumber>
 
                             <label>#{msg['membership.memberPayment.paymentValue']} *</label>
@@ -68,10 +68,11 @@
                     </div>
                     <div class="Container25 MarTop30">
                         <span class="md-inputfield">
-                            <p:inputNumber value="#{clientController.curClient.clientPayment.debt}" styleClass="boldText"
+                            <p:inputNumber value="#{clientController.curClient.clientPayment.debt}"
+                                           styleClass="boldText"
                                            id="debtId" symbol=" VNĐ" symbolPosition="suffix" readonly="true"
                                            title="#{msg['payment.surplus']}" decimalPlaces="0"
-                                           >
+                            >
                             </p:inputNumber>
 
                             <label>#{msg['payment.surplus']} *</label>
@@ -85,10 +86,10 @@
                                              filter="true" filterMatchMode="contains" style="width: 135px;"
                                              required="#{clientController.curClient.clientPayment.debt lt 0}"
                                              requiredMessage="#{msg['common.required'].replace('{0}',msg['memberPayment.reason'])}"
-                                             >
+                            >
                                 <f:selectItem itemLabel="#{msg['label.choose']}" itemValue="" noSelectionOption="true"/>
-                                <f:selectItems value="#{clientController.lstReason}" var="item" itemLabel="#{item.name}" 
-                                               itemValue="#{item.name}"  />
+                                <f:selectItems value="#{clientController.lstReason}" var="item" itemLabel="#{item.name}"
+                                               itemValue="#{item.name}"/>
                             </p:selectOneMenu>
 
                             <label class="title-elem">#{msg['memberPayment.reason']} </label>
@@ -99,23 +100,26 @@
                         <span class="md-inputfield">
                             <p:inputTextarea value="#{clientController.curClient.clientPayment.description}"
                                              id="descriptionId" rows="1" style="width: 70%"
-                                             title="#{msg['memberPayment.description']}" 
-                                             >
+                                             title="#{msg['memberPayment.description']}"
+                            >
                             </p:inputTextarea>
                             <label>#{msg['memberPayment.description']} </label>
                         </span>
                         <p:message for="descriptionId"/>
                     </div>
-                </p:outputPanel>  
-                <p:outputPanel class="Container100 TexAlRight" >
+                </p:outputPanel>
+                <p:outputPanel class="Container100 TexAlRight">
 
-                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White" update="@widgetVar(tblPayment),@widgetVar(growl),:insertClientForm,:insertClientLiquidateForm"
-                                     actionListener="#{clientController.liquidate()}" process=":insertClientLiquidateForm" 
-                                     onstart="PF('blockDlg').show()"  oncomplete="PF('blockDlg').hide();"
-                                     >
+                    <p:commandButton value="#{msg['button.save']}" styleClass="GreenButton White"
+                                     update="@widgetVar(tblPayment),@widgetVar(growl),:insertClientForm,:insertClientLiquidateForm"
+                                     actionListener="#{clientController.liquidate()}"
+                                     process=":insertClientLiquidateForm"
+                                     onstart="PF('blockDlg').show()" oncomplete="PF('blockDlg').hide();"
+                    >
                     </p:commandButton>
-                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White" process="@this"
-                                     onclick="PF('clientLiquidateDlg').hide()"  >
+                    <p:commandButton value="#{msg['button.cancel']}" icon="fa fa-close" styleClass="GrayButton White"
+                                     process="@this"
+                                     onclick="PF('clientLiquidateDlg').hide()">
 
                     </p:commandButton>
 
@@ -125,7 +129,7 @@
     </p:dialog>
 
     <style>
-        .boldText .ui-inputfield{
+        .boldText .ui-inputfield {
             font-weight: bold !important;
         }
     </style>

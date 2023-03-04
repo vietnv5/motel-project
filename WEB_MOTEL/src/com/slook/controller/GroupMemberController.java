@@ -44,6 +44,7 @@ import com.slook.util.HibernateUtil;
 import com.slook.util.MessageUtil;
 import com.slook.util.PdfUtil;
 import com.slook.util.StringUtil;
+
 import java.math.BigDecimal;
 import java.text.MessageFormat;
 import java.util.ArrayList;
@@ -61,14 +62,19 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import javax.faces.context.FacesContext;
+
 import org.apache.log4j.Logger;
+
 import static org.apache.log4j.Logger.getLogger;
+
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+
 import static org.omnifaces.util.Faces.getRequest;
+
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 import org.primefaces.event.ToggleEvent;
@@ -76,12 +82,12 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.Visibility;
 
 /**
- *
  * @author VietNV
  */
 @ManagedBean
 @ViewScoped
-public class GroupMemberController {
+public class GroupMemberController
+{
 
     private static final Logger logger = getLogger(GroupMemberController.class);
     LazyDataModel<GroupMember> lazyGroupMember;
@@ -119,27 +125,38 @@ public class GroupMemberController {
     V_GroupMemberDebtPayment debtAll = new V_GroupMemberDebtPayment();
 
     @PostConstruct
-    public void onStart() {
-        catGroupPackService = new GenericDaoImplNewV2<CatGroupPack, Long>() {
+    public void onStart()
+    {
+        catGroupPackService = new GenericDaoImplNewV2<CatGroupPack, Long>()
+        {
         };
-        memberService = new GenericDaoImplNewV2<Member, Long>() {
+        memberService = new GenericDaoImplNewV2<Member, Long>()
+        {
         };
-        groupMemberService = new GenericDaoImplNewV2<GroupMember, Long>() {
+        groupMemberService = new GenericDaoImplNewV2<GroupMember, Long>()
+        {
         };
-        groupMemberShipService = new GenericDaoImplNewV2<GroupMembership, Long>() {
+        groupMemberShipService = new GenericDaoImplNewV2<GroupMembership, Long>()
+        {
         };
-        groupMemberPaymentService = new GenericDaoImplNewV2<GroupMemberPayment, Long>() {
+        groupMemberPaymentService = new GenericDaoImplNewV2<GroupMemberPayment, Long>()
+        {
         };
-        groupMemberPromotionService = new GenericDaoImplNewV2<GroupMemberPromotion, Long>() {
+        groupMemberPromotionService = new GenericDaoImplNewV2<GroupMemberPromotion, Long>()
+        {
         };
-        groupHasMemberService = new GenericDaoImplNewV2<GroupHasMember, Long>() {
+        groupHasMemberService = new GenericDaoImplNewV2<GroupHasMember, Long>()
+        {
         };
-        vGroupMemberUsedServiceService = new GenericDaoImplNewV2<V_GroupMemberUsedService, Long>() {
+        vGroupMemberUsedServiceService = new GenericDaoImplNewV2<V_GroupMemberUsedService, Long>()
+        {
         };
 
-        groupMemberUsedServiceService = new GenericDaoImplNewV2<GroupMemberUsedService, Long>() {
+        groupMemberUsedServiceService = new GenericDaoImplNewV2<GroupMemberUsedService, Long>()
+        {
         };
-        customerCheckinService = new GenericDaoImplNewV2<CustomerCheckin, Long>() {
+        customerCheckinService = new GenericDaoImplNewV2<CustomerCheckin, Long>()
+        {
         };
         Map<String, Object> filterDefault = new HashMap<String, Object>();
         filterDefault.put("status-NEQ", -1l);//xoa
@@ -152,21 +169,27 @@ public class GroupMemberController {
         lstReason.remove(0);
         Map<String, Object> filterCatPromotion = new HashMap();
         filterCatPromotion.put("status", 1l);
-        try {
-            lstCatPromotions = (new GenericDaoImplNewV2<CatPromotion, Long>() {
+        try
+        {
+            lstCatPromotions = (new GenericDaoImplNewV2<CatPromotion, Long>()
+            {
             }).findList(filterCatPromotion);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         columnVisibale = Arrays.asList(true, true, true, true, true,
                 true, true, false, true, true);
     }
 
-    public void onToggler(ToggleEvent e) {
+    public void onToggler(ToggleEvent e)
+    {
         this.columnVisibale.set((Integer) e.getData(), e.getVisibility() == Visibility.VISIBLE);
     }
 
-    public List<Member> searchMemberInherit(String key) {
+    public List<Member> searchMemberInherit(String key)
+    {
         ConditionQuery query = new ConditionQuery();
         Criterion criterion = Restrictions.or(Restrictions.ilike("memberCode", key, MatchMode.ANYWHERE),
                 Restrictions.ilike("memberName", key, MatchMode.ANYWHERE),
@@ -186,13 +209,15 @@ public class GroupMemberController {
         return memberService.findList(query, orderBy, 1, 100);
     }
 
-    public void preAddGroupMember() {
+    public void preAddGroupMember()
+    {
         removeTempImg();
         curGroupMember = new GroupMember();
         lstDelGroupHasMembers = new ArrayList<>();
         //set chi nhanh mac dinh theo chi nhanh cua nhan vien dang nhap
         CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
-        if (user != null && user.getEmployee() != null) {
+        if (user != null && user.getEmployee() != null)
+        {
             curGroupMember.setBranchId(user.getEmployee().getBranchId());
             //set nhan vien phuc vu mac dinh theo account
             curGroupMember.setEmployee(user.getEmployee());
@@ -202,8 +227,10 @@ public class GroupMemberController {
 
     }
 
-    public void pausingGroupMembership(GroupMembership groupMembership) {
-        try {
+    public void pausingGroupMembership(GroupMembership groupMembership)
+    {
+        try
+        {
             String oldMeberShip = groupMembership.toString();
 
             groupMembership.setFreezeTime(new Date());
@@ -214,19 +241,25 @@ public class GroupMemberController {
             LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldMeberShip, groupMembership.toString(), this.getClass().getSimpleName(),
                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             MessageUtil.setInfoMessageFromRes("info.pausing.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.pausing.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void playGroupMembership(GroupMembership groupMembership) {
-        try {
+    public void playGroupMembership(GroupMembership groupMembership)
+    {
+        try
+        {
             String oldMeberShip = groupMembership.toString();
 
-            if (groupMembership.getEndDate() != null && groupMembership.getFreezeTime() != null) {
+            if (groupMembership.getEndDate() != null && groupMembership.getFreezeTime() != null)
+            {
                 Long periodTime = groupMembership.getEndDate().getTime() - groupMembership.getFreezeTime().getTime();
-                if (periodTime > 0) {
+                if (periodTime > 0)
+                {
                     Date newEndDate = new Date((new Date()).getTime() + periodTime);
                     groupMembership.setEndDate(newEndDate);
                 }
@@ -240,14 +273,18 @@ public class GroupMemberController {
             LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldMeberShip, groupMembership.toString(), this.getClass().getSimpleName(),
                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             MessageUtil.setInfoMessageFromRes("info.play.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.play.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void extendGroupMembership(GroupMembership groupMembership) {
-        try {
+    public void extendGroupMembership(GroupMembership groupMembership)
+    {
+        try
+        {
             String oldMeberShip = groupMembership.toString();
 
             Calendar calendar = Calendar.getInstance();
@@ -263,14 +300,18 @@ public class GroupMemberController {
                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 
             MessageUtil.setInfoMessageFromRes("info.extend.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.extend.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void preEditGroupMember(GroupMember groupMember) {
-        try {
+    public void preEditGroupMember(GroupMember groupMember)
+    {
+        try
+        {
             curGroupMember = groupMemberService.findById(groupMember.getGroupMemberId());
             oldObjectStr = groupMember.toString();
 
@@ -293,7 +334,8 @@ public class GroupMemberController {
 
             LinkedHashMap<String, String> orderPro = new LinkedHashMap<>();
             orderPro.put("createDate", Constant.ORDER.DESC);
-            List<GroupMemberPromotion> lstPro = new GenericDaoImplNewV2<GroupMemberPromotion, Long>() {
+            List<GroupMemberPromotion> lstPro = new GenericDaoImplNewV2<GroupMemberPromotion, Long>()
+            {
             }.findList(filterPay, orderPro);
             curGroupMember.setGroupMemberPromotions(lstPro);
             // lay tong cong no
@@ -314,14 +356,17 @@ public class GroupMemberController {
             orderV.put("serviceName", Constant.ORDER.ASC);
             lazyVGroupMemberUsedServices = new LazyDataModelBase<>(vGroupMemberUsedServiceService, filterV, orderV);
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
         removeTempImg();
         isEdit = true;
     }
 
-    public void preAddGroupMembership() {
+    public void preAddGroupMembership()
+    {
         curGroupMember.setNewGroupMembership(new GroupMembership());
 
         //set gia tri mac dinh
@@ -332,31 +377,40 @@ public class GroupMemberController {
         oldObjectGroupMemberShipStr = null;
     }
 
-    public void saveOrUpdateGroupMembership() {
-        try {
+    public void saveOrUpdateGroupMembership()
+    {
+        try
+        {
             GroupMembership newGroupMembership = curGroupMember.getNewGroupMembership();
             newGroupMembership.setGroupMemberId(curGroupMember.getGroupMemberId());
             newGroupMembership.setStatus(1L);
             groupMemberShipService.saveOrUpdate(newGroupMembership);
             curGroupMember = groupMemberService.findById(curGroupMember.getGroupMemberId());
             //ghi log
-            if (oldObjectGroupMemberShipStr != null) {
+            if (oldObjectGroupMemberShipStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectGroupMemberShipStr, newGroupMembership.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectGroupMemberShipStr, newGroupMembership.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void deleteGroupMembership(GroupMembership groupMembership) {
-        try {
+    public void deleteGroupMembership(GroupMembership groupMembership)
+    {
+        try
+        {
             groupMemberShipService.delete(groupMembership);
             curGroupMember = groupMemberService.findById(curGroupMember.getGroupMemberId());
             Map<String, Object> filterPay = new HashMap<>();
@@ -371,14 +425,18 @@ public class GroupMemberController {
 
             MessageUtil.setInfoMessageFromRes("info.delete.suceess");
             preEditGroupMember(curGroupMember);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void updateEndDate(SelectEvent event) {
-        try {
+    public void updateEndDate(SelectEvent event)
+    {
+        try
+        {
             Date date = (Date) event.getObject();
             Calendar calendar = Calendar.getInstance();
             calendar.setTime(date);
@@ -386,17 +444,22 @@ public class GroupMemberController {
             calendar.add(Calendar.DAY_OF_YEAR, groupPack.getAmong().intValue());
             Date endate = calendar.getTime();
             curGroupMember.getNewGroupMembership().setEndDate(endate);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    private void removeTempImg() {
+    private void removeTempImg()
+    {
         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().remove("previewProfile");
     }
 
-    public void onDelete(GroupMember groupMember) {
-        try {
+    public void onDelete(GroupMember groupMember)
+    {
+        try
+        {
             String old = groupMember.toString();
             groupMember.setStatus(Constant.MEMBER_STATUS.DELETE);
 
@@ -406,22 +469,28 @@ public class GroupMemberController {
                     (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 
             MessageUtil.setInfoMessageFromRes("info.delete.suceess");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             e.printStackTrace();
             MessageUtil.setErrorMessageFromRes("error.delete.unsuceess");
         }
     }
 
-    public void saveOrUpdate() {
-        try {
+    public void saveOrUpdate()
+    {
+        try
+        {
             // validate
             Map<String, Object> filterExist = new HashMap<>();
             filterExist.put("groupMemberCode-EXAC_IGNORE_CASE", curGroupMember.getGroupMemberCode());
-            if (curGroupMember.getGroupMemberId() != null) {
+            if (curGroupMember.getGroupMemberId() != null)
+            {
                 filterExist.put("groupMemberId-NEQ", curGroupMember.getGroupMemberId());
             }
             List<GroupMember> lstExist = groupMemberService.findList(filterExist);
-            if (lstExist != null && lstExist.size() > 0) {
+            if (lstExist != null && lstExist.size() > 0)
+            {
                 MessageUtil.setErrorMessageFromRes("groupMember.existGroupMemberCode");
                 return;
             }
@@ -434,10 +503,12 @@ public class GroupMemberController {
 //                }
 //            }
 // luu thong tin nhom
-            if (curGroupMember.getDeputationMember() != null && curGroupMember.getDeputationMember().getMemberId() != null) {
+            if (curGroupMember.getDeputationMember() != null && curGroupMember.getDeputationMember().getMemberId() != null)
+            {
                 curGroupMember.setDeputationMemberId(curGroupMember.getDeputationMember().getMemberId());
             }
-            if (curGroupMember.getEmployee() != null) {
+            if (curGroupMember.getEmployee() != null)
+            {
                 curGroupMember.setEmployeeId(curGroupMember.getEmployee().getEmployeeId());
             }
             groupMemberService.saveOrUpdate(curGroupMember);
@@ -448,30 +519,41 @@ public class GroupMemberController {
             saveGroupHasMember();
 
             //ghi log
-            if (oldObjectStr != null) {
+            if (oldObjectStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, curGroupMember.getGroupMemberCode(), oldObjectStr, curGroupMember.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, curGroupMember.getGroupMemberCode(), oldObjectStr, curGroupMember.toString(),
                         this.getClass().getSimpleName(), (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
 
             MessageUtil.setInfoMessageFromRes("info.save.success");
-            if (!isEdit) {
+            if (!isEdit)
+            {
                 RequestContext.getCurrentInstance().execute("PF('tabViewGroupMemberInfo').select(1)");
-            } else {
+            }
+            else
+            {
                 RequestContext.getCurrentInstance().execute("PF('groupMemberInfoDlg').hide();");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void paymentGroupMembership() {
-        try {
+    public void paymentGroupMembership()
+    {
+        try
+        {
             //validate
-            if (curGroupMember.getGroupMemberPayment().getDebt() < 0 && StringUtil.isNullOrEmpty(curGroupMember.getGroupMemberPayment().getReason())) {
+            if (curGroupMember.getGroupMemberPayment().getDebt() < 0 && StringUtil.isNullOrEmpty(curGroupMember.getGroupMemberPayment().getReason()))
+            {
                 MessageUtil.setErrorMessage(MessageFormat.format(MessageUtil.getResourceBundleMessage("common.required"),
                         MessageUtil.getResourceBundleMessage("memberPayment.reason")));
                 return;
@@ -482,7 +564,8 @@ public class GroupMemberController {
             CatPromotion catPromotion = groupMemberPayment.getCatPromotion();
             //km them thoi gian
             if (catPromotion != null && Constant.PROMOTION_TYPE.THEM_THOI_GIAN.equals(catPromotion.getType())
-                    && newGroupMembership.getEndDate() != null && catPromotion.getValue() != null) {
+                    && newGroupMembership.getEndDate() != null && catPromotion.getValue() != null)
+            {
                 Date date = newGroupMembership.getEndDate();
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(date);
@@ -498,21 +581,25 @@ public class GroupMemberController {
             //groupMemberPayment
             groupMemberPayment.setGroupMemberId(curGroupMember.getGroupMemberId());
             groupMemberPayment.setGroupMembershipId(newGroupMembership.getGroupMembershipId());
-            if (catPromotion != null) {
+            if (catPromotion != null)
+            {
                 groupMemberPayment.setCatPromotionId(catPromotion.getCatPromotionId());
             }
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 groupMemberPayment.setEmployeeId(((CatUser) getRequest().getSession().getAttribute("user")).getEmpId());
             }
             //cong no chi co gia trị am 
-            if (groupMemberPayment.getDebt() > 0) {
+            if (groupMemberPayment.getDebt() > 0)
+            {
                 groupMemberPayment.setDebt(0l);
             }
             groupMemberPayment.setCreateTime(new Date());
             groupMemberPayment.setType(Constant.PAYMENT_TYPE.DAT_COC_MUA_GOI);
             groupMemberPaymentService.saveOrUpdate(groupMemberPayment);
             //groupMemberPromotion
-            if (catPromotion != null && catPromotion.getCatPromotionId() != null) {
+            if (catPromotion != null && catPromotion.getCatPromotionId() != null)
+            {
 
                 GroupMemberPromotion groupMemberPromotion = new GroupMemberPromotion();
                 groupMemberPromotion.setGroupMemberId(curGroupMember.getGroupMemberId());
@@ -527,16 +614,21 @@ public class GroupMemberController {
                 groupMemberPromotion.setGroupMembershipId(newGroupMembership.getGroupMembershipId());
                 groupMemberPromotionService.saveOrUpdate(groupMemberPromotion);
             }
-            if (!Constant.MEMBERSHIP_ACTION_TYPE.EXTEND.equals(groupMembershipActionType)) {
+            if (!Constant.MEMBERSHIP_ACTION_TYPE.EXTEND.equals(groupMembershipActionType))
+            {
                 //them thong tin user using service
                 CatGroupPack catGroupPack = newGroupMembership.getCatGroupPack();
                 List<GroupMemberUsedService> lstGroupMemberUsedServices = new ArrayList<GroupMemberUsedService>();
 //            List<CatService> lstCatServices = new ArrayList<>();
-                try {
+                try
+                {
                     List<CatPack> lstCatPacks = catGroupPack.getPacks();
-                    if (lstCatPacks != null) {
-                        for (CatPack bo : lstCatPacks) {
-                            if (bo != null && bo.getCatService() != null) {
+                    if (lstCatPacks != null)
+                    {
+                        for (CatPack bo : lstCatPacks)
+                        {
+                            if (bo != null && bo.getCatService() != null)
+                            {
                                 CatServiceOld boService = bo.getCatService();
 
                                 GroupMemberUsedService mus = new GroupMemberUsedService();
@@ -550,7 +642,8 @@ public class GroupMemberController {
                                 mus.setAvailable(bo.getNumberOfTime());
                                 mus.setTotalNumber(bo.getNumberOfTime());
                                 if (catPromotion != null && Constant.PROMOTION_TYPE.THEM_LUOT.equals(catPromotion.getType())
-                                        && mus.getAvailable() != null) {
+                                        && mus.getAvailable() != null)
+                                {
                                     mus.setAvailable(mus.getAvailable() + Math.round(catPromotion.getValue()));
                                     mus.setTotalNumber(mus.getAvailable() + Math.round(catPromotion.getValue()));
                                 }
@@ -560,7 +653,8 @@ public class GroupMemberController {
                     }
                     //tao user using service
 
-                    GenericDaoImplNewV2 groupMemberUsedServiceService = new GenericDaoImplNewV2<GroupMemberUsedService, Long>() {
+                    GenericDaoImplNewV2 groupMemberUsedServiceService = new GenericDaoImplNewV2<GroupMemberUsedService, Long>()
+                    {
                     };
                     groupMemberUsedServiceService.saveOrUpdate(lstGroupMemberUsedServices);
                     LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, null, lstGroupMemberUsedServices.toArray().toString(), this.getClass().getSimpleName(),
@@ -570,36 +664,49 @@ public class GroupMemberController {
 //                filterMus.put("memberId", newGroupMembership.getGroupMemberId());
 //                filterMus.put("membershipId", newGroupMembership.getMembershipId());
 //                filterMus.put("status", 1l);
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
-            } else {
+            }
+            else
+            {
                 //cap nhat lai thoi gian khi gia han
                 List<GroupMemberUsedService> lstMemberUsedServices = new ArrayList<GroupMemberUsedService>();
-                try {
+                try
+                {
                     Map<String, Object> filter = new HashMap();
                     filter.put("groupMembershipId", curGroupMember.getNewGroupMembership().getGroupMembershipId());
-                    GenericDaoImplNewV2 musService = new GenericDaoImplNewV2<GroupMemberUsedService, Long>() {
+                    GenericDaoImplNewV2 musService = new GenericDaoImplNewV2<GroupMemberUsedService, Long>()
+                    {
                     };
 
                     lstMemberUsedServices = musService.findList(filter);
-                    if (lstMemberUsedServices != null && lstMemberUsedServices.size() > 0) {
-                        for (GroupMemberUsedService bo : lstMemberUsedServices) {
+                    if (lstMemberUsedServices != null && lstMemberUsedServices.size() > 0)
+                    {
+                        for (GroupMemberUsedService bo : lstMemberUsedServices)
+                        {
                             bo.setEndDate(curGroupMember.getNewGroupMembership().getEndDate());
                         }
                         musService.saveOrUpdate(lstMemberUsedServices);
                     }
-                } catch (Exception e) {
+                }
+                catch (Exception e)
+                {
                     e.printStackTrace();
                 }
             }
 
             curGroupMember = groupMemberService.findById(curGroupMember.getGroupMemberId());
             //ghi log
-            if (oldObjectGroupMemberShipStr != null) {
+            if (oldObjectGroupMemberShipStr != null)
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.UPDATE, null, oldObjectGroupMemberShipStr, newGroupMembership.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
-            } else {
+            }
+            else
+            {
                 LogActionController.writeLogAction(Constant.LOG_ACTION.INSERT, null, oldObjectGroupMemberShipStr, newGroupMembership.toString(), this.getClass().getSimpleName(),
                         (new Exception("get Name method").getStackTrace()[0].getMethodName()));
             }
@@ -610,7 +717,8 @@ public class GroupMemberController {
             MessageUtil.setInfoMessageFromRes("info.save.success");
             RequestContext.getCurrentInstance().execute("PF('groupMemberPaymentDlg').hide();");
             //show thanh toan
-            if (billImgPath != null) {
+            if (billImgPath != null)
+            {
                 RequestContext.getCurrentInstance().update(":cfImgGroupMemberFormLocal");
                 RequestContext.getCurrentInstance().execute("PF('cfImgGroupMemberDlgLocal').show();");
             }
@@ -618,78 +726,105 @@ public class GroupMemberController {
             preEditGroupMember(curGroupMember);
             preAddGroupMembership();
 
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void computingPrice() {
-        try {
+    public void computingPrice()
+    {
+        try
+        {
             groupMembershipActionType = Constant.MEMBERSHIP_ACTION_TYPE.NEW;
             CatGroupPack catGroupPack = catGroupPackService.findById(curGroupMember.getNewGroupMembership().getGroupPackId());
             curGroupMember.getNewGroupMembership().setCatGroupPack(catGroupPack);
             Long price = Math.round(catGroupPack.getPrice());
             curGroupMember.getGroupMemberPayment().setPrice(price);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void onChangeComputingPrice() {
-        try {
+    public void onChangeComputingPrice()
+    {
+        try
+        {
             CatGroupPack catGroupPack = curGroupMember.getNewGroupMembership().getCatGroupPack();
             Double price = catGroupPack.getPrice();
 
             CatPromotion catPromotion = curGroupMember.getGroupMemberPayment().getCatPromotion();
-            if (catPromotion != null && catPromotion.getValue() != null) {
-                if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType())) {
+            if (catPromotion != null && catPromotion.getValue() != null)
+            {
+                if (Constant.PROMOTION_TYPE.GIAM_TIEN_MAT.equals(catPromotion.getType()))
+                {
                     price = price - catPromotion.getValue();
-                } else if (Constant.PROMOTION_TYPE.GIAM_TIEN_PERCENT.equals(catPromotion.getType())) {
+                }
+                else if (Constant.PROMOTION_TYPE.GIAM_TIEN_PERCENT.equals(catPromotion.getType()))
+                {
                     price = price - price * catPromotion.getValue() / 100;
                 }
             }
-            if (curGroupMember.getGroupMemberPayment().getIsVAT()) {
+            if (curGroupMember.getGroupMemberPayment().getIsVAT())
+            {
                 price = price * 1.1;
             }
             curGroupMember.getGroupMemberPayment().setPrice(Math.round(price));
 
-            if (curGroupMember.getGroupMemberPayment().getPaymentValue() != null) {
+            if (curGroupMember.getGroupMemberPayment().getPaymentValue() != null)
+            {
                 curGroupMember.getGroupMemberPayment().setDebt(curGroupMember.getGroupMemberPayment().getPaymentValue() - curGroupMember.getGroupMemberPayment().getPrice());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void computinDebt() {
+    public void computinDebt()
+    {
         // lay tong cong no
         String sqlDebt = "select sum(debt) debt from group_member_payment where group_member_id=:groupMemberId "
                 + " and ( group_Membership_Id in (select GROUP_MEMBERSHIP_ID from GROUP_MEMBERSHIP where GROUP_MEMBER_ID= :groupMemberId) )";
         Session session = null;
-        try {
+        try
+        {
             session = HibernateUtil.openSession();
             SQLQuery sQLQuery = session.createSQLQuery(sqlDebt);
             sQLQuery.setParameter("groupMemberId", curGroupMember.getGroupMemberId());
             BigDecimal res = (BigDecimal) sQLQuery.list().get(0);
-            if (res != null) {
+            if (res != null)
+            {
                 Long debt = ((BigDecimal) sQLQuery.list().get(0)).longValue();
                 curGroupMember.setTotalPayment(debt);
-            } else {
+            }
+            else
+            {
                 curGroupMember.setTotalPayment(0l);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
-        } finally {
-            if (session != null) {
+        }
+        finally
+        {
+            if (session != null)
+            {
                 session.close();
             }
         }
 
     }
 
-    public void preAddLiquidate() {
+    public void preAddLiquidate()
+    {
         //set gia tri mac dinh
         curGroupMember.setGroupMemberPayment(new GroupMemberPayment());
         curGroupMember.getGroupMemberPayment().createPaymentCode(curGroupMember.getBranchId());
@@ -698,42 +833,56 @@ public class GroupMemberController {
         //lay ds thong tin thanh toan cac goi dang no
         Map<String, Object> filterPayment = new HashMap<>();
         filterPayment.put("groupMemberId", curGroupMember.getGroupMemberId());
-        try {
+        try
+        {
             debtAll.setGroupMembershipId(-1l);
             debtAll.setGroupPackName(MessageUtil.getResourceBundleMessage("totalDebt"));
             debtAll.setSumDept(curGroupMember.getTotalPayment());
 
             lstGroupMemberDebtPayments = VGroupMemberDebtPaymentServiceImpl.getInstance().findList(filterPayment);
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
 
         oldObjectGroupMemberShipStr = null;
     }
 
-    public void onChangeComputingLiquidate() {
-        try {
-            if (curGroupMember.getGroupMemberPayment().getPaymentValue() != null) {
+    public void onChangeComputingLiquidate()
+    {
+        try
+        {
+            if (curGroupMember.getGroupMemberPayment().getPaymentValue() != null)
+            {
                 curGroupMember.getGroupMemberPayment().setDebt(curGroupMember.getGroupMemberPayment().getPaymentValue() + curGroupMember.getGroupMemberPayment().getPrice());
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
-    public void liquidate() {
-        try {
+    public void liquidate()
+    {
+        try
+        {
             //groupMemberPayment
             GroupMemberPayment groupMemberPayment = curGroupMember.getGroupMemberPayment();
             groupMemberPayment.setGroupMemberId(curGroupMember.getGroupMemberId());
 
-            if (getRequest().getSession().getAttribute("user") != null) {
+            if (getRequest().getSession().getAttribute("user") != null)
+            {
                 groupMemberPayment.setEmployeeId(((CatUser) getRequest().getSession().getAttribute("user")).getEmpId());
             }
             //cong no chi co gia trị duong la phan thu tien cua khach hang
-            if (groupMemberPayment.getPaymentValue() <= -groupMemberPayment.getPrice()) {
+            if (groupMemberPayment.getPaymentValue() <= -groupMemberPayment.getPrice())
+            {
                 groupMemberPayment.setDebt(groupMemberPayment.getPaymentValue());
-            } else {
+            }
+            else
+            {
                 groupMemberPayment.setDebt(-groupMemberPayment.getPrice());
             }
             //set lai gia tien bang 0 vi day la tra no
@@ -743,11 +892,15 @@ public class GroupMemberController {
             // xu ly tao thong tin tra no cho tat ca cac khoan
             List<GroupMemberPayment> paymetPerPacks = new ArrayList<>();
             if (groupMemberPayment.getCurDebt() == null || groupMemberPayment.getCurDebt().getGroupMembershipId() == null
-                    || groupMemberPayment.getCurDebt().getGroupMembershipId().equals(-1L)) {
-                if (lstGroupMemberDebtPayments != null && lstGroupMemberDebtPayments.size() > 0) {
+                    || groupMemberPayment.getCurDebt().getGroupMembershipId().equals(-1L))
+            {
+                if (lstGroupMemberDebtPayments != null && lstGroupMemberDebtPayments.size() > 0)
+                {
                     Long paymentDebt = groupMemberPayment.getDebt();
-                    for (V_GroupMemberDebtPayment bo : lstGroupMemberDebtPayments) {
-                        if (paymentDebt > 0 && bo.getGroupMembershipId() != null) {
+                    for (V_GroupMemberDebtPayment bo : lstGroupMemberDebtPayments)
+                    {
+                        if (paymentDebt > 0 && bo.getGroupMembershipId() != null)
+                        {
                             GroupMemberPayment newPay = new GroupMemberPayment();
                             newPay.setGroupMemberId(groupMemberPayment.getGroupMemberId());
                             newPay.setEmployeeId(groupMemberPayment.getEmployeeId());
@@ -760,25 +913,32 @@ public class GroupMemberController {
                             newPay.setDebtTotal(-bo.getSumDept());
 
                             newPay.setType(Constant.PAYMENT_TYPE.THANH_TOAN_TRA_NO);
-                            if (paymentDebt >= -bo.getSumDept()) {
+                            if (paymentDebt >= -bo.getSumDept())
+                            {
                                 newPay.setDebt(-bo.getSumDept());
 
                                 //giam tien
                                 paymentDebt += bo.getSumDept();
-                            } else {
+                            }
+                            else
+                            {
                                 newPay.setDebt(paymentDebt);
                                 paymentDebt = 0l;
                             }
                             newPay.setPaymentValue(newPay.getDebt());
                             paymetPerPacks.add(newPay);
-                        } else {
+                        }
+                        else
+                        {
                             break;
                         }
                     }
                 }
                 onPrintBillLiquidate(paymetPerPacks);
                 groupMemberPaymentService.saveOrUpdate(paymetPerPacks);
-            } else {// truong hop chi lam 1 goi
+            }
+            else
+            {// truong hop chi lam 1 goi
                 groupMemberPayment.setGroupMembershipId(groupMemberPayment.getCurDebt().getGroupMembershipId());
                 groupMemberPayment.setDebtTotal(-groupMemberPayment.getPrice());
                 paymetPerPacks.add(groupMemberPayment);
@@ -796,7 +956,8 @@ public class GroupMemberController {
             MessageUtil.setInfoMessageFromRes("info.save.success");
             RequestContext.getCurrentInstance().execute("PF('groupMemberLiquidateDlg').hide();");
             //show thanh toan
-            if (billImgPath != null) {
+            if (billImgPath != null)
+            {
                 RequestContext.getCurrentInstance().update(":cfImgGroupMemberFormLocal");
                 RequestContext.getCurrentInstance().execute("PF('cfImgGroupMemberDlgLocal').show();");
             }
@@ -805,14 +966,18 @@ public class GroupMemberController {
 
             preEditGroupMember(curGroupMember);
 //            computinDebt();
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
             e.printStackTrace();
         }
     }
 
-    public void addGroupHasMember() {
-        if (curGroupMember.getLstGroupHasMembers() == null) {
+    public void addGroupHasMember()
+    {
+        if (curGroupMember.getLstGroupHasMembers() == null)
+        {
             curGroupMember.setLstGroupHasMembers(new ArrayList<>());
         }
         GroupHasMember ghm = new GroupHasMember();
@@ -821,23 +986,30 @@ public class GroupMemberController {
         ghm.setMemberId(memberAssign.getMemberId());
         ghm.setStatus(1l);
 
-        if (!curGroupMember.getLstGroupHasMembers().contains(ghm)) {
+        if (!curGroupMember.getLstGroupHasMembers().contains(ghm))
+        {
             curGroupMember.getLstGroupHasMembers().add(0, ghm);
             MessageUtil.setInfoMessageFromRes("msg.insert.succ");
-        } else {
+        }
+        else
+        {
             MessageUtil.setErrorMessageFromRes("error.member.exist");
         }
         memberAssign = new Member();
     }
 
-    public void onDeleteGroupMemberInList(GroupHasMember ob) {
+    public void onDeleteGroupMemberInList(GroupHasMember ob)
+    {
 
-        try {
+        try
+        {
             int size = curGroupMember.getLstGroupHasMembers().size();
 
             int i = 0;
-            for (int j = 0; j < size; j++) {
-                if (curGroupMember.getLstGroupHasMembers().get(i).equals(ob)) {
+            for (int j = 0; j < size; j++)
+            {
+                if (curGroupMember.getLstGroupHasMembers().get(i).equals(ob))
+                {
                     lstDelGroupHasMembers.add(curGroupMember.getLstGroupHasMembers().get(i));
                     curGroupMember.getLstGroupHasMembers().remove(curGroupMember.getLstGroupHasMembers().get(i));
                     i--;
@@ -847,32 +1019,42 @@ public class GroupMemberController {
             MessageUtil.setInfoMessageFromRes("info.delete.success");
             RequestContext.getCurrentInstance().execute("PF('tblGroupHasMember').clearFilters();");
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.delete.unsuccess");
             logger.error(e.getMessage(), e);
         }
     }
 
-    public void saveGroupHasMember() throws Exception {
-        try {
+    public void saveGroupHasMember() throws Exception
+    {
+        try
+        {
 
             //del
-            if (lstDelGroupHasMembers != null && !lstDelGroupHasMembers.isEmpty()) {
+            if (lstDelGroupHasMembers != null && !lstDelGroupHasMembers.isEmpty())
+            {
                 List<GroupHasMember> lstDel = new ArrayList<>();
-                for (GroupHasMember vsubo : lstDelGroupHasMembers) {
-                    if (vsubo.getId() != null) {
+                for (GroupHasMember vsubo : lstDelGroupHasMembers)
+                {
+                    if (vsubo.getId() != null)
+                    {
                         lstDel.add(vsubo);
                     }
                 }
                 groupHasMemberService.delete(lstDel);
             }
 
-            if (curGroupMember.getLstGroupHasMembers() == null || curGroupMember.getLstGroupHasMembers().size() == 0) {
+            if (curGroupMember.getLstGroupHasMembers() == null || curGroupMember.getLstGroupHasMembers().size() == 0)
+            {
                 curGroupMember.setLstGroupHasMembers(new ArrayList<>());
             }
 
-            if (curGroupMember.getLstGroupHasMembers() != null && curGroupMember.getLstGroupHasMembers().size() > 0) {
-                for (GroupHasMember bo : curGroupMember.getLstGroupHasMembers()) {
+            if (curGroupMember.getLstGroupHasMembers() != null && curGroupMember.getLstGroupHasMembers().size() > 0)
+            {
+                for (GroupHasMember bo : curGroupMember.getLstGroupHasMembers())
+                {
                     bo.setGroupMemberId(curGroupMember.getGroupMemberId());
                 }
             }
@@ -880,28 +1062,35 @@ public class GroupMemberController {
             filterGroup.put("groupMemberId", curGroupMember.getGroupMemberId());
             List<GroupHasMember> lstCurrent = groupHasMemberService.findList(filterGroup);
             List<Long> lstMemId = new ArrayList<>();
-            if (lstCurrent != null && lstCurrent.size() > 0) {
-                for (GroupHasMember bo : lstCurrent) {
+            if (lstCurrent != null && lstCurrent.size() > 0)
+            {
+                for (GroupHasMember bo : lstCurrent)
+                {
                     lstMemId.add(bo.getMemberId());
                 }
             }
             // loai trung 
             Set<Long> setIdMember = new HashSet<>(lstMemId);
-            for (GroupHasMember bo : curGroupMember.getLstGroupHasMembers()) {
-                if (!setIdMember.contains(bo.getMemberId())) {
+            for (GroupHasMember bo : curGroupMember.getLstGroupHasMembers())
+            {
+                if (!setIdMember.contains(bo.getMemberId()))
+                {
                     setIdMember.add(bo.getMemberId());
                     groupHasMemberService.saveOrUpdate(bo);
                 }
             }
             // luu thanh vien dai dien
-            if (!setIdMember.contains(curGroupMember.getDeputationMemberId())) {
+            if (!setIdMember.contains(curGroupMember.getDeputationMemberId()))
+            {
                 GroupHasMember ghm = new GroupHasMember();
                 ghm.setGroupMemberId(curGroupMember.getGroupMemberId());
                 ghm.setMemberId(curGroupMember.getDeputationMemberId());
                 ghm.setStatus(1l);
                 groupHasMemberService.saveOrUpdate(ghm);
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
             MessageUtil.setErrorMessage("Lỗi lưu danh sách thành viên!");
 
@@ -909,16 +1098,21 @@ public class GroupMemberController {
 
     }
 
-    public void preExtendGroupMembership(GroupMembership groupMembership) {
-        try {
+    public void preExtendGroupMembership(GroupMembership groupMembership)
+    {
+        try
+        {
             groupMembershipActionType = Constant.MEMBERSHIP_ACTION_TYPE.EXTEND;
 
             curGroupMember.setNewGroupMembership(groupMembership);
 
             Calendar calendar = Calendar.getInstance();
-            if (groupMembership.getEndDate() != null && groupMembership.getEndDate().getTime() >= (new Date()).getTime()) {
+            if (groupMembership.getEndDate() != null && groupMembership.getEndDate().getTime() >= (new Date()).getTime())
+            {
                 calendar.setTime(groupMembership.getEndDate());
-            } else {
+            }
+            else
+            {
                 calendar.setTime(new Date());
             }
             CatGroupPack groupPack = groupMembership.getCatGroupPack();
@@ -938,18 +1132,23 @@ public class GroupMemberController {
 //                    (new Exception("get Name method").getStackTrace()[0].getMethodName()));
 //
 //            MessageUtil.setInfoMessageFromRes("info.extend.success");
-        } catch (AppException e) {
+        }
+        catch (AppException e)
+        {
             MessageUtil.setErrorMessageFromRes("error.extend.unsuccess");
             e.printStackTrace();
         }
     }
 
     //check in cho nhom
-    public void preCheckin(GroupMembership membership) {
+    public void preCheckin(GroupMembership membership)
+    {
         List<GroupHasMember> lstGhms = curGroupMember.getLstGroupHasMembers();
         lstCustomerCheckins = new ArrayList<>();
-        if (lstGhms != null && lstGhms.size() > 0) {
-            for (GroupHasMember bo : lstGhms) {
+        if (lstGhms != null && lstGhms.size() > 0)
+        {
+            for (GroupHasMember bo : lstGhms)
+            {
                 CustomerCheckin cu = new CustomerCheckin();
                 cu.setCustomerId(bo.getMemberId());
                 cu.setGroupMemberId(bo.getGroupMemberId());
@@ -963,25 +1162,33 @@ public class GroupMemberController {
         }
         if ((Constant.MEMBERSHIP_STATUS.ACTIVE.equals(membership.getStatus()))
                 && (membership.getJoinDate() == null || membership.getJoinDate().getTime() <= (new Date()).getTime())
-                && (membership.getEndDate() != null && membership.getEndDate().getTime() >= (new Date()).getTime())) {
+                && (membership.getEndDate() != null && membership.getEndDate().getTime() >= (new Date()).getTime()))
+        {
             RequestContext.getCurrentInstance().execute("PF('groupCheckinDlg').show();");
             curGroupMember.setNewGroupMembership(membership);
-        } else {
+        }
+        else
+        {
             MessageUtil.setErrorMessage("gói phải ở trạng thái đang hoạt động hoặc dược chuyển nhượng và khoảng thời gian hoạt động là hợp lệ!");
         }
 
     }
 
-    public void checkin() {
-        try {
+    public void checkin()
+    {
+        try
+        {
             List<CustomerCheckin> lstCheckins = new ArrayList<>();
-            for (CustomerCheckin customerCheckin : lstCustomerCheckins) {
+            for (CustomerCheckin customerCheckin : lstCustomerCheckins)
+            {
                 customerCheckin.setCheckTime(new Date());
-                if (StringUtil.isNotNull(customerCheckin.getCardCode())) {
+                if (StringUtil.isNotNull(customerCheckin.getCardCode()))
+                {
                     lstCheckins.add(customerCheckin);
                 }
             }
-            if (lstCheckins.size() == 0) {
+            if (lstCheckins.size() == 0)
+            {
                 MessageUtil.setErrorMessage("Chưa nhập mã khóa đeo tay để Checkin!");
                 return;
             }
@@ -993,29 +1200,38 @@ public class GroupMemberController {
             filter.put("startDate-LE", new Date());
             filter.put("endDate-GE", DateTimeUtils.trunc(new Date()));
             List<GroupMemberUsedService> lst = groupMemberUsedServiceService.findList(filter);
-            if (lst != null && lst.size() > 0) {
-                for (GroupMemberUsedService bo : lst) {
-                    if (bo.getAvailable() != null && bo.getAvailable() >= lstCheckins.size()) {
+            if (lst != null && lst.size() > 0)
+            {
+                for (GroupMemberUsedService bo : lst)
+                {
+                    if (bo.getAvailable() != null && bo.getAvailable() >= lstCheckins.size())
+                    {
                         bo.setAvailable(bo.getAvailable() - lstCheckins.size());
-                    } else if (bo.getTotalNumber() != null && bo.getTotalNumber() > 0) {
+                    }
+                    else if (bo.getTotalNumber() != null && bo.getTotalNumber() > 0)
+                    {
                         MessageUtil.setErrorMessage("Dịch vụ " + bo.getCatService().getServiceName() + " của gói không còn đủ lượt sử dụng");
                         return;
                     }
                     //luon ghi lai so luot su dung
-                    if (bo.getUsedNumber() == null) {
+                    if (bo.getUsedNumber() == null)
+                    {
                         bo.setUsedNumber(0l);
                     }
                     bo.setUsedNumber(bo.getUsedNumber() + lstCheckins.size());
 
                 }
-            } else {
+            }
+            else
+            {
 
                 MessageUtil.setErrorMessage("Không có dịch vụ còn hiệu lực để sử dụng");
                 return;
             }
             //cap nhat quyen vao may quet
             List<String> lstCardCode = new ArrayList<>();
-            for (CustomerCheckin customerCheckin : lstCheckins) {
+            for (CustomerCheckin customerCheckin : lstCheckins)
+            {
                 updateAccessCatMachineNew(customerCheckin.getMember(), curGroupMember.getNewGroupMembership(), Constant.METHOD.INSERT, customerCheckin.getCardCode());
                 lstCardCode.add(customerCheckin.getCardCode());
             }
@@ -1026,27 +1242,33 @@ public class GroupMemberController {
             RequestContext.getCurrentInstance().execute("PF('groupCheckinDlg').hide();");
 
 // show result
-            if (Constant.CONFIG.IS_LOCAL.equals(DataConfig.getConfigByKey("IS_LOCAL"))) {
+            if (Constant.CONFIG.IS_LOCAL.equals(DataConfig.getConfigByKey("IS_LOCAL")))
+            {
                 showResultAccessStatus(lstCardCode);
                 RequestContext.getCurrentInstance().execute("PF('groupCheckinResultDlg').show();");
                 RequestContext.getCurrentInstance().update("@widgetVar('groupCheckinResultDlg')");
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             MessageUtil.setErrorMessageFromRes("error.save.unsuccess");
 
             e.printStackTrace();
         }
     }
 
-    public void updateAccessCatMachineNew(Member member, GroupMembership membershipDel, String method, String cardCode) {
+    public void updateAccessCatMachineNew(Member member, GroupMembership membershipDel, String method, String cardCode)
+    {
 
         List<CatGroupPack> lstON = new ArrayList<>();
         List<CatGroupPack> lstOFF = new ArrayList<>();
-        if (membershipDel != null && membershipDel.getCatGroupPack() != null) {
+        if (membershipDel != null && membershipDel.getCatGroupPack() != null)
+        {
             lstOFF.add(membershipDel.getCatGroupPack());
         }
 
-        try {
+        try
+        {
 
             List<CatMachine> lstCatMachineOff = CatGroupPackController.getListMachineOffNotExistInON(lstON, lstOFF);
             List<String> lstIp = new ArrayList<>();
@@ -1057,269 +1279,338 @@ public class GroupMemberController {
             cfg.setType(Constant.DATA_TYPE.EMPLOYEE);
             cfg.setMethod(method);
             cfg.setStatus(Constant.STATUS.IS_NOT_PUSH_DATA);
-            for (CatMachine catMachine : lstCatMachineOff) {
+            for (CatMachine catMachine : lstCatMachineOff)
+            {
                 // Template data response sang ws c# - userid (check_in_code)|name|so the|do uu tien|ip thiet bi
                 cfg.setContent("MEM_" + member.getMemberId() + "|" + member.getMemberName() + "|" + cardCode + "|1|" + catMachine.getIp());
                 cfgWsTimekeeperService.save(cfg);
-                if (!lstIp.contains(catMachine.getIp())) {
+                if (!lstIp.contains(catMachine.getIp()))
+                {
                     lstIp.add(catMachine.getIp());
                 }
             }
             //goi ws online
-            if (Constant.METHOD.INSERT.equals(method)) {
+            if (Constant.METHOD.INSERT.equals(method))
+            {
                 CustomerAccessStatusController.callWSUpdateAccess(cardCode, lstIp, Constant.STATUS.ACTIVE, Constant.WS_C_METHOD.TYPE_CARD);
-            } else {
+            }
+            else
+            {
                 CustomerAccessStatusController.callWSUpdateAccess(cardCode, lstIp, Constant.STATUS.DISABLE, Constant.WS_C_METHOD.TYPE_CARD);
             }
 
-        } catch (Exception ex) {
+        }
+        catch (Exception ex)
+        {
             ex.printStackTrace();
         }
     }
 
     //
-    public void showResultAccessStatus(List<String> listCardCode) {
+    public void showResultAccessStatus(List<String> listCardCode)
+    {
 
-        try {
+        try
+        {
             LinkedHashMap<String, String> order = new LinkedHashMap<>();
             Map<String, Object> filter = new HashMap<>();
             filter.put("cardCode", listCardCode);
             lazyDataCustomerAccessModel = new LazyDataModelBase<V_CustomerAccessStatus, Long>(VCustomerAccessStatusServiceImpl.getInstance(), filter, order);
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             e.printStackTrace();
         }
     }
 
     //<editor-fold defaultstate="collapsed" desc="get/set">
-    public LazyDataModel<V_CustomerAccessStatus> getLazyDataCustomerAccessModel() {
+    public LazyDataModel<V_CustomerAccessStatus> getLazyDataCustomerAccessModel()
+    {
         return lazyDataCustomerAccessModel;
     }
 
-    public void setLazyDataCustomerAccessModel(LazyDataModel<V_CustomerAccessStatus> lazyDataCustomerAccessModel) {
+    public void setLazyDataCustomerAccessModel(LazyDataModel<V_CustomerAccessStatus> lazyDataCustomerAccessModel)
+    {
         this.lazyDataCustomerAccessModel = lazyDataCustomerAccessModel;
     }
 
-    public GenericDaoServiceNewV2<CustomerCheckin, Long> getCustomerCheckinService() {
+    public GenericDaoServiceNewV2<CustomerCheckin, Long> getCustomerCheckinService()
+    {
         return customerCheckinService;
     }
 
-    public void setCustomerCheckinService(GenericDaoServiceNewV2<CustomerCheckin, Long> customerCheckinService) {
+    public void setCustomerCheckinService(GenericDaoServiceNewV2<CustomerCheckin, Long> customerCheckinService)
+    {
         this.customerCheckinService = customerCheckinService;
     }
 
-    public GenericDaoImplNewV2<GroupMemberUsedService, Long> getGroupMemberUsedServiceService() {
+    public GenericDaoImplNewV2<GroupMemberUsedService, Long> getGroupMemberUsedServiceService()
+    {
         return groupMemberUsedServiceService;
     }
 
-    public void setGroupMemberUsedServiceService(GenericDaoImplNewV2<GroupMemberUsedService, Long> groupMemberUsedServiceService) {
+    public void setGroupMemberUsedServiceService(GenericDaoImplNewV2<GroupMemberUsedService, Long> groupMemberUsedServiceService)
+    {
         this.groupMemberUsedServiceService = groupMemberUsedServiceService;
     }
 
-    public List<CustomerCheckin> getLstCustomerCheckins() {
+    public List<CustomerCheckin> getLstCustomerCheckins()
+    {
         return lstCustomerCheckins;
     }
 
-    public void setLstCustomerCheckins(List<CustomerCheckin> lstCustomerCheckins) {
+    public void setLstCustomerCheckins(List<CustomerCheckin> lstCustomerCheckins)
+    {
         this.lstCustomerCheckins = lstCustomerCheckins;
     }
 
-    public LazyDataModel<GroupMember> getLazyGroupMember() {
+    public LazyDataModel<GroupMember> getLazyGroupMember()
+    {
         return lazyGroupMember;
     }
 
-    public void setLazyGroupMember(LazyDataModel<GroupMember> lazyGroupMember) {
+    public void setLazyGroupMember(LazyDataModel<GroupMember> lazyGroupMember)
+    {
         this.lazyGroupMember = lazyGroupMember;
     }
 
-    public GroupMember getCurGroupMember() {
+    public GroupMember getCurGroupMember()
+    {
         return curGroupMember;
     }
 
-    public void setCurGroupMember(GroupMember curGroupMember) {
+    public void setCurGroupMember(GroupMember curGroupMember)
+    {
         this.curGroupMember = curGroupMember;
     }
 
-    public Member getMemberAssign() {
+    public Member getMemberAssign()
+    {
         return memberAssign;
     }
 
-    public void setMemberAssign(Member memberAssign) {
+    public void setMemberAssign(Member memberAssign)
+    {
         this.memberAssign = memberAssign;
     }
 
-    public GenericDaoServiceNewV2<Member, Long> getMemberService() {
+    public GenericDaoServiceNewV2<Member, Long> getMemberService()
+    {
         return memberService;
     }
 
-    public void setMemberService(GenericDaoServiceNewV2<Member, Long> memberService) {
+    public void setMemberService(GenericDaoServiceNewV2<Member, Long> memberService)
+    {
         this.memberService = memberService;
     }
 
-    public GenericDaoServiceNewV2<GroupMember, Long> getGroupMemberService() {
+    public GenericDaoServiceNewV2<GroupMember, Long> getGroupMemberService()
+    {
         return groupMemberService;
     }
 
-    public void setGroupMemberService(GenericDaoServiceNewV2<GroupMember, Long> groupMemberService) {
+    public void setGroupMemberService(GenericDaoServiceNewV2<GroupMember, Long> groupMemberService)
+    {
         this.groupMemberService = groupMemberService;
     }
 
-    public GenericDaoServiceNewV2<GroupMembership, Long> getGroupMemberShipService() {
+    public GenericDaoServiceNewV2<GroupMembership, Long> getGroupMemberShipService()
+    {
         return groupMemberShipService;
     }
 
-    public void setGroupMemberShipService(GenericDaoServiceNewV2<GroupMembership, Long> groupMemberShipService) {
+    public void setGroupMemberShipService(GenericDaoServiceNewV2<GroupMembership, Long> groupMemberShipService)
+    {
         this.groupMemberShipService = groupMemberShipService;
     }
 
-    public GenericDaoServiceNewV2<CatGroupPack, Long> getCatGroupPackService() {
+    public GenericDaoServiceNewV2<CatGroupPack, Long> getCatGroupPackService()
+    {
         return catGroupPackService;
     }
 
-    public void setCatGroupPackService(GenericDaoServiceNewV2<CatGroupPack, Long> catGroupPackService) {
+    public void setCatGroupPackService(GenericDaoServiceNewV2<CatGroupPack, Long> catGroupPackService)
+    {
         this.catGroupPackService = catGroupPackService;
     }
 
-    public GenericDaoServiceNewV2<GroupMemberPayment, Long> getGroupMemberPaymentService() {
+    public GenericDaoServiceNewV2<GroupMemberPayment, Long> getGroupMemberPaymentService()
+    {
         return groupMemberPaymentService;
     }
 
-    public void setGroupMemberPaymentService(GenericDaoServiceNewV2<GroupMemberPayment, Long> groupMemberPaymentService) {
+    public void setGroupMemberPaymentService(GenericDaoServiceNewV2<GroupMemberPayment, Long> groupMemberPaymentService)
+    {
         this.groupMemberPaymentService = groupMemberPaymentService;
     }
 
-    public GenericDaoServiceNewV2<GroupMemberPromotion, Long> getGroupMemberPromotionService() {
+    public GenericDaoServiceNewV2<GroupMemberPromotion, Long> getGroupMemberPromotionService()
+    {
         return groupMemberPromotionService;
     }
 
-    public void setGroupMemberPromotionService(GenericDaoServiceNewV2<GroupMemberPromotion, Long> groupMemberPromotionService) {
+    public void setGroupMemberPromotionService(GenericDaoServiceNewV2<GroupMemberPromotion, Long> groupMemberPromotionService)
+    {
         this.groupMemberPromotionService = groupMemberPromotionService;
     }
 
-    public GenericDaoServiceNewV2<GroupHasMember, Long> getGroupHasMemberService() {
+    public GenericDaoServiceNewV2<GroupHasMember, Long> getGroupHasMemberService()
+    {
         return groupHasMemberService;
     }
 
-    public void setGroupHasMemberService(GenericDaoServiceNewV2<GroupHasMember, Long> groupHasMemberService) {
+    public void setGroupHasMemberService(GenericDaoServiceNewV2<GroupHasMember, Long> groupHasMemberService)
+    {
         this.groupHasMemberService = groupHasMemberService;
     }
 
-    public CfgWsTimekeeperServiceImpl getCfgWsTimekeeperService() {
+    public CfgWsTimekeeperServiceImpl getCfgWsTimekeeperService()
+    {
         return cfgWsTimekeeperService;
     }
 
-    public void setCfgWsTimekeeperService(CfgWsTimekeeperServiceImpl cfgWsTimekeeperService) {
+    public void setCfgWsTimekeeperService(CfgWsTimekeeperServiceImpl cfgWsTimekeeperService)
+    {
         this.cfgWsTimekeeperService = cfgWsTimekeeperService;
     }
 
-    public String getOldObjectStr() {
+    public String getOldObjectStr()
+    {
         return oldObjectStr;
     }
 
-    public void setOldObjectStr(String oldObjectStr) {
+    public void setOldObjectStr(String oldObjectStr)
+    {
         this.oldObjectStr = oldObjectStr;
     }
 
-    public String getOldObjectGroupMemberShipStr() {
+    public String getOldObjectGroupMemberShipStr()
+    {
         return oldObjectGroupMemberShipStr;
     }
 
-    public void setOldObjectGroupMemberShipStr(String oldObjectGroupMemberShipStr) {
+    public void setOldObjectGroupMemberShipStr(String oldObjectGroupMemberShipStr)
+    {
         this.oldObjectGroupMemberShipStr = oldObjectGroupMemberShipStr;
     }
 
-    public boolean isIsEdit() {
+    public boolean isIsEdit()
+    {
         return isEdit;
     }
 
-    public void setIsEdit(boolean isEdit) {
+    public void setIsEdit(boolean isEdit)
+    {
         this.isEdit = isEdit;
     }
 
-    public List<CatPromotion> getLstCatPromotions() {
+    public List<CatPromotion> getLstCatPromotions()
+    {
         return lstCatPromotions;
     }
 
-    public void setLstCatPromotions(List<CatPromotion> lstCatPromotions) {
+    public void setLstCatPromotions(List<CatPromotion> lstCatPromotions)
+    {
         this.lstCatPromotions = lstCatPromotions;
     }
 
-    public List<CatItemBO> getLstReason() {
+    public List<CatItemBO> getLstReason()
+    {
         return lstReason;
     }
 
-    public void setLstReason(List<CatItemBO> lstReason) {
+    public void setLstReason(List<CatItemBO> lstReason)
+    {
         this.lstReason = lstReason;
     }
 
-    public List<GroupHasMember> getLstDelGroupHasMembers() {
+    public List<GroupHasMember> getLstDelGroupHasMembers()
+    {
         return lstDelGroupHasMembers;
     }
 
-    public void setLstDelGroupHasMembers(List<GroupHasMember> lstDelGroupHasMembers) {
+    public void setLstDelGroupHasMembers(List<GroupHasMember> lstDelGroupHasMembers)
+    {
         this.lstDelGroupHasMembers = lstDelGroupHasMembers;
     }
 
-    public Long getGroupMembershipActionType() {
+    public Long getGroupMembershipActionType()
+    {
         return groupMembershipActionType;
     }
 
-    public void setGroupMembershipActionType(Long groupMembershipActionType) {
+    public void setGroupMembershipActionType(Long groupMembershipActionType)
+    {
         this.groupMembershipActionType = groupMembershipActionType;
     }
 
-    public GenericDaoServiceNewV2<V_GroupMemberUsedService, Long> getvGroupMemberUsedServiceService() {
+    public GenericDaoServiceNewV2<V_GroupMemberUsedService, Long> getvGroupMemberUsedServiceService()
+    {
         return vGroupMemberUsedServiceService;
     }
 
-    public void setvGroupMemberUsedServiceService(GenericDaoServiceNewV2<V_GroupMemberUsedService, Long> vGroupMemberUsedServiceService) {
+    public void setvGroupMemberUsedServiceService(GenericDaoServiceNewV2<V_GroupMemberUsedService, Long> vGroupMemberUsedServiceService)
+    {
         this.vGroupMemberUsedServiceService = vGroupMemberUsedServiceService;
     }
 
-    public List<Boolean> getColumnVisibale() {
+    public List<Boolean> getColumnVisibale()
+    {
         return columnVisibale;
     }
 
-    public void setColumnVisibale(List<Boolean> columnVisibale) {
+    public void setColumnVisibale(List<Boolean> columnVisibale)
+    {
         this.columnVisibale = columnVisibale;
     }
 
-    public LazyDataModel<V_GroupMemberUsedService> getLazyVGroupMemberUsedServices() {
+    public LazyDataModel<V_GroupMemberUsedService> getLazyVGroupMemberUsedServices()
+    {
         return lazyVGroupMemberUsedServices;
     }
 
-    public void setLazyVGroupMemberUsedServices(LazyDataModel<V_GroupMemberUsedService> lazyVGroupMemberUsedServices) {
+    public void setLazyVGroupMemberUsedServices(LazyDataModel<V_GroupMemberUsedService> lazyVGroupMemberUsedServices)
+    {
         this.lazyVGroupMemberUsedServices = lazyVGroupMemberUsedServices;
     }
 
-    public List<V_GroupMemberDebtPayment> getLstGroupMemberDebtPayments() {
+    public List<V_GroupMemberDebtPayment> getLstGroupMemberDebtPayments()
+    {
         return lstGroupMemberDebtPayments;
     }
 
-    public void setLstGroupMemberDebtPayments(List<V_GroupMemberDebtPayment> lstGroupMemberDebtPayments) {
+    public void setLstGroupMemberDebtPayments(List<V_GroupMemberDebtPayment> lstGroupMemberDebtPayments)
+    {
         this.lstGroupMemberDebtPayments = lstGroupMemberDebtPayments;
     }
 
-    public V_GroupMemberDebtPayment getDebtAll() {
+    public V_GroupMemberDebtPayment getDebtAll()
+    {
         return debtAll;
     }
 
-    public void setDebtAll(V_GroupMemberDebtPayment debtAll) {
+    public void setDebtAll(V_GroupMemberDebtPayment debtAll)
+    {
         this.debtAll = debtAll;
     }
 
 //</editor-fold>
+
     /**
      * onPrint: in anh
      */
-    public void onPrintBill() {
+    public void onPrintBill()
+    {
         PrintPaymentForm printForm = getObjectBillImg();
 //        billImgPath = ImageStreamerBill.generateBillImg(getObjectBillImg());
         billImgPath = PdfUtil.generateBillPdf(printForm);
     }
 
-    public PrintPaymentForm getObjectBillImg() {
+    public PrintPaymentForm getObjectBillImg()
+    {
         PrintPaymentForm paymentForm = new PrintPaymentForm();
-        try {
+        try
+        {
 
             GroupMembership newMembership = curGroupMember.getNewGroupMembership();
             GroupMemberPayment groupMemberPayment = curGroupMember.getGroupMemberPayment();
@@ -1338,11 +1629,13 @@ public class GroupMemberController {
             Long totalDept = 0l;
 
             CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
-            if (user != null && user.getEmployee() != null) {
+            if (user != null && user.getEmployee() != null)
+            {
                 employeeName = user.getEmployee().getEmployeeName();
 
             }
-            if (curGroupMember.getGroupMemberName() != null) {
+            if (curGroupMember.getGroupMemberName() != null)
+            {
                 customerName = curGroupMember.getGroupMemberName();
             }
 
@@ -1350,20 +1643,24 @@ public class GroupMemberController {
             Long paymentValue = groupMemberPayment.getPaymentValue();
             //cong no chi co gia trị am 
             Long debt = groupMemberPayment.getDebt();
-            if (groupMemberPayment.getDebt() > 0) {
+            if (groupMemberPayment.getDebt() > 0)
+            {
                 paymentValue = groupMemberPayment.getPrice();
                 debt = 0l;
             }
             //lay gia trị duong
-            if (debt < 0) {
+            if (debt < 0)
+            {
                 debt = -debt;
             }
             //
-            if (curGroupMember.getTotalPayment() != null) {
+            if (curGroupMember.getTotalPayment() != null)
+            {
                 oldDept = Math.abs(curGroupMember.getTotalPayment());
                 totalDept = oldDept;
             }
-            if (debt != null) {
+            if (debt != null)
+            {
                 totalDept += debt;
             }
             paymentForm.setPaymentTime(DateTimeUtils.format(new Date(), Constant.PATTERN.DATETIME_COMMON_YY));
@@ -1380,8 +1677,10 @@ public class GroupMemberController {
             List<PaymentPackObj> lstPaymentPackObjs = new ArrayList<>();
             lstMemberPayments.add(groupMemberPayment);
 
-            if (lstMemberPayments != null) {
-                for (GroupMemberPayment bo : lstMemberPayments) {
+            if (lstMemberPayments != null)
+            {
+                for (GroupMemberPayment bo : lstMemberPayments)
+                {
                     PaymentPackObj payPack = new PaymentPackObj();
                     // item
 //                    String itemStr = iPack.get("item");
@@ -1389,16 +1688,20 @@ public class GroupMemberController {
                     CatGroupPack catGroupPack = newMembership.getCatGroupPack();
                     Long price = null;
                     String groupPackName = "";
-                    if (catGroupPack != null && catGroupPack.getPrice() != null) {
+                    if (catGroupPack != null && catGroupPack.getPrice() != null)
+                    {
                         price = catGroupPack.getPrice().longValue();
                         groupPackName = catGroupPack.getGroupPackName();
 
                     }
                     // tinh tong vat
-                    if (bo.getIsVAT() && bo.getPrice() != null) {
+                    if (bo.getIsVAT() && bo.getPrice() != null)
+                    {
                         vatPrice += bo.getPrice() / 11;
                         discount += price - bo.getPrice() * 10 / 11;
-                    } else {
+                    }
+                    else
+                    {
                         discount += price - bo.getPrice();
                     }
                     // num
@@ -1406,7 +1709,8 @@ public class GroupMemberController {
                     payPack.setQuantity(numPack);
                     payPack.setPrice(price);
 
-                    if (price != null) {
+                    if (price != null)
+                    {
                         totalPrice += numPack * price;
                     }
                     //KM
@@ -1437,29 +1741,36 @@ public class GroupMemberController {
             // tong cong no total dept
             paymentForm.setTotalDept(totalDept);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return paymentForm;
     }
 
-    public String getBillImgPath() {
+    public String getBillImgPath()
+    {
         return billImgPath;
     }
 
-    public void setBillImgPath(String billImgPath) {
+    public void setBillImgPath(String billImgPath)
+    {
         this.billImgPath = billImgPath;
     }
 
-    public void onPrintBillLiquidate(List<GroupMemberPayment> paymetPerPacks) {
+    public void onPrintBillLiquidate(List<GroupMemberPayment> paymetPerPacks)
+    {
         PrintPaymentForm printForm = getObjectBillImg(paymetPerPacks);
 //        billImgPath = ImageStreamerBill.generateBillImg(getObjectBillImg(paymetPerPacks));
         billImgPath = PdfUtil.generateBillPdf(printForm);
     }
 
-    public PrintPaymentForm getObjectBillImg(List<GroupMemberPayment> paymetPerPacks) {
+    public PrintPaymentForm getObjectBillImg(List<GroupMemberPayment> paymetPerPacks)
+    {
         PrintPaymentForm paymentForm = new PrintPaymentForm();
-        try {
+        try
+        {
 
 //            Membership newMembership = curGroupMember.getNewMembership();
             GroupMemberPayment groupMemberPayment = curGroupMember.getGroupMemberPayment();
@@ -1478,11 +1789,13 @@ public class GroupMemberController {
             Long totalDept = 0l;
 
             CatUser user = (CatUser) getRequest().getSession().getAttribute("user");
-            if (user != null && user.getEmployee() != null) {
+            if (user != null && user.getEmployee() != null)
+            {
                 employeeName = user.getEmployee().getEmployeeName();
 
             }
-            if (curGroupMember.getGroupMemberName() != null) {
+            if (curGroupMember.getGroupMemberName() != null)
+            {
                 customerName = curGroupMember.getGroupMemberName();
             }
 
@@ -1493,7 +1806,8 @@ public class GroupMemberController {
 //            oldDept = -groupMemberPayment.getPrice();
             oldDept = -curGroupMember.getTotalPayment();
             totalDept = oldDept - paymentValue;
-            if (totalDept < 0) {
+            if (totalDept < 0)
+            {
                 totalDept = -totalDept;
             }
 
@@ -1511,21 +1825,27 @@ public class GroupMemberController {
 //            lstMemberPayments.add(groupMemberPayment);
             List<PaymentPackObj> lstPaymentPackObjs = new ArrayList<>();
 
-            if (paymetPerPacks != null) {
-                for (GroupMemberPayment bo : paymetPerPacks) {
+            if (paymetPerPacks != null)
+            {
+                for (GroupMemberPayment bo : paymetPerPacks)
+                {
                     PaymentPackObj payPack = new PaymentPackObj();
                     // item
 //                    String itemStr = iPack.get("item");
                     // price dong gia
                     GroupMembership membership = new GroupMembership();
-                    try {
+                    try
+                    {
                         membership = groupMemberShipService.findById(bo.getGroupMembershipId());
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e)
+                    {
                     }
                     CatGroupPack catGroupPack = membership.getCatGroupPack();
 //                    Long price = null;
                     String groupPackName = "";
-                    if (catGroupPack != null && catGroupPack.getPrice() != null) {
+                    if (catGroupPack != null && catGroupPack.getPrice() != null)
+                    {
 //                        price = catGroupPack.getPrice().longValue();
                         groupPackName = catGroupPack.getGroupPackName();
 
@@ -1589,14 +1909,18 @@ public class GroupMemberController {
             // tong cong no total dept
             paymentForm.setTotalDept(totalDept);
 
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             logger.error(e.getMessage(), e);
         }
         return paymentForm;
     }
 
-    public void onchangeDebtPack() {
-        if (curGroupMember.getGroupMemberPayment().getCurDebt() != null) {
+    public void onchangeDebtPack()
+    {
+        if (curGroupMember.getGroupMemberPayment().getCurDebt() != null)
+        {
             curGroupMember.getGroupMemberPayment().setPrice(curGroupMember.getGroupMemberPayment().getCurDebt().getSumDept());
             onChangeComputingLiquidate();
         }

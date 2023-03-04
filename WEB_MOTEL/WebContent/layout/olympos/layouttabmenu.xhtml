@@ -1,15 +1,15 @@
 <ui:composition
-    xmlns="http://www.w3.org/1999/xhtml"
-    xmlns:ui="http://java.sun.com/jsf/facelets"
-    >
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:ui="http://java.sun.com/jsf/facelets"
+>
 
     <ul id="layout-tab-menu">
         <li><a href="#" class="active" rel="layout-hr"> <i class="icon-male238"></i> <span
-                    class="layout-tab-menu-link-text"><span></span> Quản lý chung</span> </a></li>
+                class="layout-tab-menu-link-text"><span></span> Quản lý chung</span> </a></li>
         <li><a href="#" rel="layout-category"> <i class="fa fa-list"></i> <span
-                    class="layout-tab-menu-link-text"><span></span> Danh mục</span> </a></li>
+                class="layout-tab-menu-link-text"><span></span> Danh mục</span> </a></li>
         <li><a href="#" rel="layout-admin"> <i class="icon-settings47"></i> <span
-                    class="layout-tab-menu-link-text"><span></span> Quản trị</span> </a></li>
+                class="layout-tab-menu-link-text"><span></span> Quản trị</span> </a></li>
         <!--        <li><a href="#" rel="layout-report"> <i class="fa fa-file-excel-o"></i> <span
                             class="layout-tab-menu-link-text"><span></span> Báo cáo</span> </a></li>-->
     </ul>
@@ -121,20 +121,20 @@
     </ul>
     <ul class="layout-tab-submenu" id="layout-admin">
         <li id="" role="menuitem">
-            <a href="#" class="menulink" > <span> QUẢN TRỊ</span></a>
+            <a href="#" class="menulink"> <span> QUẢN TRỊ</span></a>
             <ul role="menu">
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/catUser')? '':'none'}">
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/catUser')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/catUser"><i
                             class="fa fa-user"></i><span>Acount</span></a>
                 </li>
-                
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/groupUser')? '':'none'}">
+
+                <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/groupUser')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/groupUser"><i
                             class="fa fa-user"></i><span>Nhóm Acount</span></a>
                 </li>
-                
+
                 <li id="" role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/functionPath')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/functionPath"><i
@@ -145,12 +145,12 @@
                        href="#{facesContext.externalContext.request.contextPath}/catRole"><i
                             class="fa fa-user"></i><span>Phân quyền</span></a>
                 </li>
-                <li  role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/logAction')? '':'none'}">
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/logAction')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/logAction"><i
                             class="fa fa-user"></i><span>Lịch sử tác động</span></a>
                 </li>
-                <li  role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/document')? '':'none'}">
+                <li role="menuitem" style="display: #{sessionUtil.getUrlDisplay('/document')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/document"><i
                             class="fa fa-file"></i><span>Hướng dẫn</span></a>
@@ -160,20 +160,23 @@
     </ul>
     <ul class="layout-tab-submenu" id="layout-report">
         <li id="" role="menuitem">
-            <a href="#" class="menulink" > <span> BÁO CÁO DỊCH VỤ</span></a>
+            <a href="#" class="menulink"> <span> BÁO CÁO DỊCH VỤ</span></a>
             <ul role="menu">
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportPaymentGroupPack')? '':'none'}">
+                <li id="" role="menuitem"
+                    style="display: #{sessionUtil.getUrlDisplay('/reportPaymentGroupPack')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/reportPaymentGroupPack"><i
                             class="fa fa-user"></i><span>Doanh thu theo dịch vụ</span></a>
                 </li>
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportEmployeePayment')? '':'none'}">
+                <li id="" role="menuitem"
+                    style="display: #{sessionUtil.getUrlDisplay('/reportEmployeePayment')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/reportEmployeePayment"><i
                             class="fa fa-user"></i><span>Doanh thu theo nhân viên</span></a>
                 </li>
 
-                <li id="" role="menuitem"  style="display: #{sessionUtil.getUrlDisplay('/reportCustomerPayment')? '':'none'}">
+                <li id="" role="menuitem"
+                    style="display: #{sessionUtil.getUrlDisplay('/reportCustomerPayment')? '':'none'}">
                     <a class="menulink"
                        href="#{facesContext.externalContext.request.contextPath}/reportCustomerPayment"><i
                             class="fa fa-user"></i><span>Doanh thu khách hàng</span></a>

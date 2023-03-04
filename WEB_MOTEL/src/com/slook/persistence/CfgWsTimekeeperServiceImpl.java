@@ -11,12 +11,15 @@ import java.io.Serializable;
  */
 @Service(value = "cfgWsTimekeeperService")
 @Scope("session")
-public class CfgWsTimekeeperServiceImpl extends GenericDaoImplNewV2<CfgWsTimekeeper, Serializable> {
+public class CfgWsTimekeeperServiceImpl extends GenericDaoImplNewV2<CfgWsTimekeeper, Serializable>
+{
 
     private static CfgWsTimekeeperServiceImpl instance;
 
-    public static CfgWsTimekeeperServiceImpl getInstance() {
-        if (instance == null) {
+    public static CfgWsTimekeeperServiceImpl getInstance()
+    {
+        if (instance == null)
+        {
             instance = new CfgWsTimekeeperServiceImpl();
         }
         return instance;
